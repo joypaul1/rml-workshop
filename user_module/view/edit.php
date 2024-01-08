@@ -3,6 +3,7 @@ $dynamic_link_js[]  = 'https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/d
 $dynamic_link_css[] = 'https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css';
 include_once('../../_helper/2step_com_conn.php');
 
+
 $data = [];
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit') {
     $edit_id = trim($_GET["id"]);
@@ -95,7 +96,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                 </div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
-                                    <input type="file"  name="IMAGE_LINK" class="dropify" />
+                                    <input type="file"  name="IMAGE_LINK" class="dropify" 
+                                    data-default-file="<?php echo $basePath . '/' . $data['IMAGE_LINK'] ?>"
+                                    />
                                     <!-- <div class="valid-feedback">Looks good!</div> -->
 
                                 </div>
