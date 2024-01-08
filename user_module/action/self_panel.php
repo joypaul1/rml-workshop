@@ -7,6 +7,83 @@ $folderPath = $rs_img_path;
 
 ini_set('memory_limit', '2560M');
 $valid_formats = array( "jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP" );
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
+
+    $USER_NAME     = $_POST['USER_NAME'];
+    $USER_MOBILE   = $_POST['USER_MOBILE'];
+    $USER_BRAND_ID = $_POST['USER_BRAND_ID'];
+    $USER_TYPE_ID  = $_POST['USER_TYPE_ID'];
+    $IMAGE_LINK    = $_FILES['IMAGE_LINK'];
+    $filename      = null;
+
+    if ($IMAGE_LINK) {
+        $imagename = $IMAGE_LINK['name'];
+        $size      = $IMAGE_LINK['size'];
+
+        if (strlen($imagename)) {
+            $ext = strtolower(getExtension($imagename));
+            if (in_array($ext, $valid_formats)) {
+                $imgStorePath = '../../user_profile_image/';
+
+                pathExitOrCreate($imgStorePath); // check if folder exists or create
+
+                $actual_image_name = 'user_' . $editId . '_' . time() . "." . $ext;
+                $uploadedfile      = $IMAGE_LINK['tmp_name'];
+                //Re-sizing image. 
+                $width    = 150; //You can change dimension here.
+                $height   = 100; //You can change dimension here.
+                $filename = compressImage($ext, $uploadedfile, $imgStorePath, $actual_image_name, $width, $height);
+
+
+                if ($filename) {
+
+                }
+                else {
+
+                    $imageStatus              = "Something went wrong file uploading!";
+                    $_SESSION['noti_message'] = $imageStatus;
+                    echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+                    exit();
+                }
+            }
+            else {
+                $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
+                $_SESSION['noti_message'] = $imageStatus;
+                echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+            }
+        }
+
+    }
+
+    // Prepare the SQL statement
+    $query = "INSERT INTO USER_PROFILE 
+            (USER_NAME, USER_MOBILE, USER_BRAND_ID, USER_TYPE_ID, IMAGE_LINK) 
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_BRAND_ID', '$USER_TYPE_ID', '$filename')";
+
+    $strSQL = @oci_parse($objConnect, $query);
+
+    // Execute the query
+    if (@oci_execute($strSQL)) {
+
+        $message = [
+            'text'   => 'Data Saved successfully.',
+            'status' => 'true',
+        ];
+
+        $_SESSION['noti_message'] = $message;
+
+        echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
+    }
+    else {
+        $e                        = @oci_error($strSQL);
+        $message                  = [
+            'text'   => htmlentities($e['message'], ENT_QUOTES),
+            'status' => 'false',
+        ];
+        $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit') {
 
@@ -34,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
                 $height   = 100; //You can change dimension here.
                 $filename = compressImage($ext, $uploadedfile, $imgStorePath, $actual_image_name, $width, $height);
                 $insert   = false; //
-            
+
                 if ($filename) {
                     // delet previous image
                     $query  = "SELECT UP.ID,UP.IMAGE_LINK

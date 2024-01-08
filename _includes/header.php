@@ -36,7 +36,7 @@
         referrerpolicy="no-referrer">
     <?php
     if (isset($dynamic_link_css) && count($dynamic_link_css) > 0) {
-        foreach ($dynamic_link_css as $key => $linkCss) {
+    foreach ($dynamic_link_css as $key => $linkCss) {
             echo "<link rel='stylesheet' type='text/css' href='$linkCss'>";
         }
     }

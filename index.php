@@ -15,7 +15,7 @@ if (isset($_POST['login_hr'])) {
 
         $sql    = "SELECT 
                 ID, USER_NAME, USER_MOBILE, 
-                RML_ID, USER_PASSWORD, USER_BRAND_ID, 
+                RML_ID, USER_PASSWORD, USER_BRAND_ID, IMAGE_LINK,
                 USER_TYPE_ID, USER_STATUS FROM USER_PROFILE WHERE USER_MOBILE ='$v_usermobile' and USER_PASSWORD = '$v_password'";
         $strSQL = @oci_parse($objConnect, $sql);
         @oci_execute($strSQL);
@@ -23,7 +23,7 @@ if (isset($_POST['login_hr'])) {
         if ($dataRow) {
             unset($dataRow['USER_PASSWORD']);
 
-            $_SESSION['USER_INFO']          = $dataRow;
+            $_SESSION['USER_INFO']   = $dataRow;
             $_SESSION['baseUrl']     = $baseUrl;
             $_SESSION['basePath']    = $basePath;
             $_SESSION['rs_img_path'] = $rs_img_path;
