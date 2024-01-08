@@ -20,9 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     if ($IMAGE_LINK) {
         $imagename = $IMAGE_LINK['name'];
         $size      = $IMAGE_LINK['size'];
-        echo $imagename;
-        echo $size;
-        die();
+      
         if (strlen($imagename)) {
             $ext = strtolower(getExtension($imagename));
             if (in_array($ext, $valid_formats)) {
@@ -31,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
 
 
                 $actual_image_name = time() . "." . $ext;
-                $uploadedfile      = $_FILES['IMAGE_LINK']['tmp_name'];
+                $uploadedfile      =  $IMAGE_LINK['tmp_name'];
                 //Re-sizing image. 
                 $width    = 125; //You can change dimension here.
                 $height   = 80; //You can change dimension here.
