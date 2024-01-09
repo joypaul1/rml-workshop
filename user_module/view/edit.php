@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
-                                    <label for="validationCustom02" class="form-label">User Mobile <span class="text-danger">*</span></label>
+                                    <label for="validationCustom02" class="form-label">User Mobile (Login ID) <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control"  autocomplete="off" name="USER_MOBILE" 
                                     onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                                     id="validationCustom02" value="<?php echo $data['USER_MOBILE'] ?>"

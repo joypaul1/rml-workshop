@@ -52,7 +52,7 @@
                         </li> -->
                     </ul>
                 </li>
-                <li>
+                <li class="<?php echo isActive('/user_module/view/edit.php'); ?>">
                     <a href="javascript:;" class="has-arrow">
 
                         <div class="parent-icon"><i class='bx bx-group'></i>
@@ -60,8 +60,10 @@
                         <div class="menu-title">User Panel</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create User</a> </li>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of User</a> </li>
+                        <li> <a href="<?php echo $basePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create User</a>
+                        </li>
+                        <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of User</a>
+                        </li>
                     </ul>
                 </li>
 

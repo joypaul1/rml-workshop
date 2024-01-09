@@ -340,7 +340,7 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
+                    <li><a class="dropdown-item" href="<?php echo $basePath . '/user_module/view/profile.php?id=' . $_SESSION['USER_INFO']['ID'] . '&actionType=profileEdit' ?>"><i class="bx bx-user"></i><span>Profile</span></a>
                     </li>
 
                     <li>

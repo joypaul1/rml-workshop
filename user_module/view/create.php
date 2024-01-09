@@ -31,7 +31,7 @@ include_once('../../_helper/2step_com_conn.php');
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
-                                    <label for="validationCustom02" class="form-label">User Mobile <span class="text-danger">*</span></label>
+                                    <label for="validationCustom02" class="form-label">User Mobile (Login ID) <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" 
                                     onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                                     autocomplete="off"

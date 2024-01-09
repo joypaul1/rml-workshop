@@ -9,25 +9,7 @@ $valid_formats = array( "jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG"
 $log_user_id   = $_SESSION['USER_INFO']['ID'];
 
 
-if (($_GET["deleteID"]) && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $editId = $_GET["deleteID"];
-    $query          = "UPDATE USER_PROFILE SET USER_STATUS = '0' WHERE ID = $editId";
 
-    $strSQL = @oci_parse($objConnect, $query);
-    if (@oci_execute($strSQL)) {
-
-        $response['status']  = 'success';
-        $response['message'] = 'Deleted Successfully ...';
-        echo json_encode($response);
-        exit();
-    }
-    else {
-        $response['status']  = 'error';
-        $response['message'] = 'Something went wrong! Please try again';
-        echo json_encode($response);
-        exit();
-    }
-}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
@@ -230,8 +212,137 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
         echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
     }
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'profileUpdate') {
 
 
+    $editId        = $_POST['editId'];
+    $USER_NAME     = $_POST['user_name'];
+    $USER_PASSWORD = $_POST['user_password'];
+    $IMAGE_LINK    = $_FILES['user_image'];
+    if ($IMAGE_LINK) {
+        $imagename = $IMAGE_LINK['name'];
+        $size      = $IMAGE_LINK['size'];
+
+        if (strlen($imagename)) {
+            $ext = strtolower(getExtension($imagename));
+            if (in_array($ext, $valid_formats)) {
+                $imgStorePath = '../../user_profile_image/';
+
+                pathExitOrCreate($imgStorePath); // check if folder exists or create
+
+                $actual_image_name = 'user_' . $editId . '_' . time() . "." . $ext;
+                $uploadedfile      = $IMAGE_LINK['tmp_name'];
+                //Re-sizing image. 
+                $width    = 150; //You can change dimension here.
+                $height   = 100; //You can change dimension here.
+                $filename = compressImage($ext, $uploadedfile, $imgStorePath, $actual_image_name, $width, $height);
+                $insert   = false; //
+
+                if ($filename) {
+                    // delet previous image
+                    $query  = "SELECT UP.ID,UP.IMAGE_LINK
+                    FROM USER_PROFILE UP WHERE ID = $editId";
+                    $strSQL = @oci_parse($objConnect, $query);
+                    @oci_execute($strSQL);
+                    $data = @oci_fetch_assoc($strSQL);
+
+                    if ($data['IMAGE_LINK']) {
+                        $file = '../../user_profile_image/' . $data['IMAGE_LINK'];
+                        if (file_exists($file)) {
+                            unlink($file); // delete image if exist
+                        }
+                    }  // end delet previous image
+                    // update image  link
+                    $query = "UPDATE USER_PROFILE SET IMAGE_LINK = '$filename' WHERE ID = $editId";
+
+                    $strSQL = @oci_parse($objConnect, $query);
+                    if (@oci_execute($strSQL)) {
+                    }
+                    else {
+                        $e                        = @oci_error($strSQL);
+                        $message                  = [
+                            'text'   => htmlentities($e['message'], ENT_QUOTES),
+                            'status' => 'false',
+                        ];
+                        $_SESSION['noti_message'] = $message;
+                        echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+                    }
+                }
+                else {
+
+                    $imageStatus              = "Something went wrong file uploading!";
+                    $_SESSION['noti_message'] = $imageStatus;
+                    echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+                    exit();
+                }
+            }
+            else {
+                $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
+                $_SESSION['noti_message'] = $imageStatus;
+                echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+            }
+        }
+
+
+    }
+
+    if ($USER_PASSWORD) {
+        // Prepare the SQL statement
+        $query = "UPDATE USER_PROFILE SET 
+        USER_NAME       = '$USER_NAME',
+        USER_PASSWORD   = '$USER_PASSWORD',
+        PENDRIVE_ID     = '$USER_PASSWORD'
+        WHERE ID        = $editId";
+    }
+    else {
+        $query = "UPDATE USER_PROFILE SET 
+        USER_NAME       = '$USER_NAME'
+        WHERE ID        = $editId";
+    }
+
+    $strSQL = @oci_parse($objConnect, $query);
+
+    // Execute the query
+    if (@oci_execute($strSQL)) {
+
+        $message = [
+            'text'   => 'Data Saved successfully.',
+            'status' => 'true',
+        ];
+
+        $_SESSION['noti_message'] = $message;
+
+        echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+    }
+    else {
+        $e                        = @oci_error($strSQL);
+        $message                  = [
+            'text'   => htmlentities($e['message'], ENT_QUOTES),
+            'status' => 'false',
+        ];
+        $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+    }
+}
+if (($_GET["deleteID"]) && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $editId = $_GET["deleteID"];
+    $query  = "UPDATE USER_PROFILE SET USER_STATUS = '0' WHERE ID = $editId";
+
+    $strSQL = @oci_parse($objConnect, $query);
+    if (@oci_execute($strSQL)) {
+
+        $response['status']  = 'success';
+        $response['message'] = 'Deleted Successfully ...';
+        echo json_encode($response);
+        exit();
+    }
+    else {
+        $response['status']  = 'error';
+        $response['message'] = 'Something went wrong! Please try again';
+        echo json_encode($response);
+        exit();
+    }
+}
 
 function pathExitOrCreate($folderPath)
 {
