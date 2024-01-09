@@ -30,6 +30,7 @@ include_once('../../_helper/2step_com_conn.php');
                                         <th>RML ID</th>
                                         <th>BRAND</th>
                                         <th>TYPE</th>
+                                        <th>Tree User</th>
                                         <th>CREATED DATE</th>
                                     </tr>
                                 </thead>
