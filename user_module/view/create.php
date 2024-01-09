@@ -22,16 +22,34 @@ include_once('../../_helper/2step_com_conn.php');
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post" action="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                            <form method="post" action="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>"
+                                class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="actionType" value="create">
                                 <div class="col-sm-12 col-md-4">
                                     <label for="validationCustom01" class="form-label">User Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="USER_NAME" class="form-control" id="validationCustom01" required="">
+                                    <input type="text"  autocomplete="off" name="USER_NAME" class="form-control" id="validationCustom01" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom02" class="form-label">User Mobile <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="USER_MOBILE" id="validationCustom02" required="">
+                                    <input type="text" class="form-control" 
+                                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                    autocomplete="off"
+                                    autocomplete="off"
+                                    name="USER_MOBILE" id="validationCustom02" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="col-sm-12  col-md-4">
+                                    <label for="validationCustom08" class="form-label">User Password <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="USER_PASSWORD" 
+                                    autocomplete="off"id="validationCustom08" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="col-sm-12  col-md-4">
+                                    <label for="validationCustom09" class="form-label">User RML ID </label>
+                                    <input type="text" class="form-control" name="RML_ID" 
+                                    autocomplete="off"
+                                    id="validationCustom09">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
 

@@ -4,14 +4,12 @@ session_regenerate_id(TRUE);
 require_once('./_config/connoracle.php');
 include_once('./config_file_path.php');
 
-if (isset($_POST['login_hr'])) {
+if (isset($_POST['login_submit'])) {
 
     if (!empty($_POST['user_mobile']) && !empty($_POST['password'])) {
         $v_usermobile = trim($_POST['user_mobile']);
         $v_password   = trim($_POST['password']);
-
-        $md5Password = md5($v_password);
-        // last_log_seen,
+        $md5Password  = md5($v_password);
 
         $sql    = "SELECT 
                 ID, USER_NAME, USER_MOBILE, 
@@ -103,19 +101,19 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                                                 <label for="inputEmailAddress" class="form-label">USER MOBILE NUMBER</label>
                                                 <input type="text" name="user_mobile" class="form-control rounded-5"
                                                     onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="inputEmailAddress"
-                                                    laceholder="">
+                                                    autocomplete="off" placeholder="">
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Password</label>
 
-                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword"
+                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword" autocomplete="off"
                                                     placeholder="">
                                             </div>
 
 
                                             <div class="col-12">
                                                 <div class="d-grid">
-                                                    <button type="submit" name="login_hr" class="btn btn-gradient-info rounded-5">
+                                                    <button type="submit" name="login_submit" class="btn btn-gradient-info rounded-5">
                                                         <i class="bx bxs-lock-open"></i>Sign in
                                                     </button>
                                                 </div>

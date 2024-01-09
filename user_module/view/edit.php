@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
     UP.USER_NAME,
     UP.USER_MOBILE,
     UP.RML_ID,
+    UP.PENDRIVE_ID,
     UP.USER_BRAND_ID,
     UP.USER_TYPE_ID,
     UP.IMAGE_LINK
@@ -42,14 +43,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                             <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
                                 <div class="col-sm-12 col-md-4">
                                     <label for="validationCustom01" class="form-label">User Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="USER_NAME"  class="form-control" id="validationCustom01" value="<?php echo $data['USER_NAME'] ?>"
+                                    <input type="text" name="USER_NAME" autocomplete="off"  class="form-control" id="validationCustom01" value="<?php echo $data['USER_NAME'] ?>"
                                         required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom02" class="form-label">User Mobile <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control"  name="USER_MOBILE"   id="validationCustom02" value="<?php echo $data['USER_MOBILE'] ?>"
-                                        required="">
+                                    <input type="text" class="form-control"  autocomplete="off" name="USER_MOBILE" 
+                                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                    id="validationCustom02" value="<?php echo $data['USER_MOBILE'] ?>"
+                                    required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="col-sm-12  col-md-4">
+                                    <label for="validationCustom08" class="form-label">User Password </label>
+                                    <input type="text" class="form-control" name="USER_PASSWORD" 
+                                    autocomplete="off"
+                                    value="<?php echo $data['PENDRIVE_ID'] ?>"id="validationCustom08" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="col-sm-12  col-md-4">
+                                    <label for="validationCustom09" class="form-label">User RML ID </label>
+                                    <input type="text" class="form-control"  autocomplete="off"name="RML_ID" value="<?php echo $data['RML_ID'] ?>" id="validationCustom09">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
 

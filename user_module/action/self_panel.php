@@ -4,13 +4,16 @@ require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
 $basePath   = $_SESSION['basePath'];
 $folderPath = $rs_img_path;
-
 ini_set('memory_limit', '2560M');
 $valid_formats = array( "jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP" );
+$log_user_id   = $_SESSION['USER_INFO']['ID'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
     $USER_NAME     = $_POST['USER_NAME'];
+    $USER_PASSWORD = $_POST['USER_PASSWORD'];
     $USER_MOBILE   = $_POST['USER_MOBILE'];
+    $RML_ID        = $_POST['RML_ID'];
     $USER_BRAND_ID = $_POST['USER_BRAND_ID'];
     $USER_TYPE_ID  = $_POST['USER_TYPE_ID'];
     $IMAGE_LINK    = $_FILES['IMAGE_LINK'];
@@ -26,8 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
                 $imgStorePath = '../../user_profile_image/';
 
                 pathExitOrCreate($imgStorePath); // check if folder exists or create
-
-                $actual_image_name = 'user_' . $editId . '_' . time() . "." . $ext;
+                $getLastUser = @oci_parse($objConnect, "SELECT ID from USER_PROFILE ORDER BY ID DESC FETCH FIRST 1 ROWS ONLY");
+                @oci_execute($getLastUser);
+                $getLastUserData   = @oci_fetch_assoc($getLastUser);
+                $actual_image_name = 'user_' . $getLastUserData['ID'] + 1 . '_' . time() . "." . $ext;
                 $uploadedfile      = $IMAGE_LINK['tmp_name'];
                 //Re-sizing image. 
                 $width    = 150; //You can change dimension here.
@@ -42,14 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
                     $imageStatus              = "Something went wrong file uploading!";
                     $_SESSION['noti_message'] = $imageStatus;
-                    echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+                    echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
                     exit();
                 }
             }
             else {
                 $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
                 $_SESSION['noti_message'] = $imageStatus;
-                echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+                echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
+                exit();
             }
         }
 
@@ -57,8 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
     // Prepare the SQL statement
     $query = "INSERT INTO USER_PROFILE 
-            (USER_NAME, USER_MOBILE, USER_BRAND_ID, USER_TYPE_ID, IMAGE_LINK) 
-            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_BRAND_ID', '$USER_TYPE_ID', '$filename')";
+            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_ID,USER_BRAND_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE) 
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$USER_PASSWORD','$RML_ID','$USER_BRAND_ID', '$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE)";
+
 
     $strSQL = @oci_parse($objConnect, $query);
 
@@ -71,8 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         ];
 
         $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
+        exit();
 
-        echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
     }
     else {
         $e                        = @oci_error($strSQL);
@@ -81,7 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
+        exit();
     }
 }
 
@@ -90,6 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     $editId        = $_POST['editId'];
     $USER_NAME     = $_POST['USER_NAME'];
     $USER_MOBILE   = $_POST['USER_MOBILE'];
+    $USER_PASSWORD = $_POST['USER_PASSWORD'];
+    $RML_ID        = $_POST['RML_ID'];
     $USER_BRAND_ID = $_POST['USER_BRAND_ID'];
     $USER_TYPE_ID  = $_POST['USER_TYPE_ID'];
     $IMAGE_LINK    = $_FILES['IMAGE_LINK'];
@@ -139,21 +150,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
                             'status' => 'false',
                         ];
                         $_SESSION['noti_message'] = $message;
-                        echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+                        echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
                     }
                 }
                 else {
 
                     $imageStatus              = "Something went wrong file uploading!";
                     $_SESSION['noti_message'] = $imageStatus;
-                    echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+                    echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
                     exit();
                 }
             }
             else {
                 $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
                 $_SESSION['noti_message'] = $imageStatus;
-                echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+                echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
             }
         }
 
@@ -164,9 +175,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     $query  = "UPDATE USER_PROFILE SET 
     USER_NAME       = '$USER_NAME',
     USER_MOBILE     = '$USER_MOBILE',
+    USER_PASSWORD   = '$USER_PASSWORD',
+    PENDRIVE_ID     = '$USER_PASSWORD',
+    RML_ID          = '$RML_ID',
     USER_BRAND_ID   = '$USER_BRAND_ID',
-    USER_TYPE_ID    = '$USER_TYPE_ID'          
+    USER_TYPE_ID    = '$USER_TYPE_ID',  
+    UPDATED_BY_ID   = $log_user_id,
+    UPDATED_DATE    = SYSDATE 
     WHERE ID        = $editId";
+
     $strSQL = @oci_parse($objConnect, $query);
 
     // Execute the query
@@ -188,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$basePath}/resale_module/view/self_panel/edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
     }
 }
 
