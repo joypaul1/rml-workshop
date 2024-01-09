@@ -8,6 +8,28 @@ ini_set('memory_limit', '2560M');
 $valid_formats = array( "jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP" );
 $log_user_id   = $_SESSION['USER_INFO']['ID'];
 
+
+if (($_GET["deleteID"]) && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $editId = $_GET["deleteID"];
+    $query          = "UPDATE USER_PROFILE SET USER_STATUS = '0' WHERE ID = $editId";
+
+    $strSQL = @oci_parse($objConnect, $query);
+    if (@oci_execute($strSQL)) {
+
+        $response['status']  = 'success';
+        $response['message'] = 'Deleted Successfully ...';
+        echo json_encode($response);
+        exit();
+    }
+    else {
+        $response['status']  = 'error';
+        $response['message'] = 'Something went wrong! Please try again';
+        echo json_encode($response);
+        exit();
+    }
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
     $USER_NAME     = $_POST['USER_NAME'];
@@ -172,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     }
 
     // Prepare the SQL statement
-    $query  = "UPDATE USER_PROFILE SET 
+    $query = "UPDATE USER_PROFILE SET 
     USER_NAME       = '$USER_NAME',
     USER_MOBILE     = '$USER_MOBILE',
     USER_PASSWORD   = '$USER_PASSWORD',

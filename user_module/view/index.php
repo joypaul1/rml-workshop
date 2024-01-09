@@ -45,7 +45,7 @@ include_once('../../_helper/2step_com_conn.php');
                                             WHERE ID = UP.USER_BRAND_ID)
                                             AS USER_BRAND, 
                                             ( SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                                            FROM USER_PROFILE UP ORDER BY ID DESC";
+                                            FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ORDER BY UP.ID DESC";
 
                                     $strSQL = @oci_parse($objConnect, $query);
 
@@ -63,7 +63,9 @@ include_once('../../_helper/2step_com_conn.php');
                                             <td class="text-center">
                                                 <a href="<?php echo $basePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>"
                                                     class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
-                                                <button type="button" class="btn btn-sm btn-gradient-danger"><i class='bx bxs-trash'></i></button>
+                                                <button type="button" 
+                                                data-id="<?php echo $row['ID']?>" data-href="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>"
+                                                class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button>
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
@@ -105,3 +107,47 @@ include_once('../../_helper/2step_com_conn.php');
 include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
+<script>
+    //delete data processing
+
+    $(document).on('click', '.delete_check', function() {
+        var id = $(this).data('id');
+        let url = $(this).data('href');
+        swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.value) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                        url: url,
+                        type: 'GET',
+                        data: {
+                            deleteID: id
+                        },
+                        dataType: 'json'
+                    })
+                    .done(function(response) {
+                        swal.fire('Deleted!', response.message, response.status);
+                        location.reload(); // Reload the page
+                    })
+                    .fail(function() {
+                        swal.fire('Oops...', 'Something went wrong!', 'error');
+                    });
+
+            }
+
+        })
+
+    });
+</script>
