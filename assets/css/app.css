@@ -1693,7 +1693,14 @@ a {
 }
 
 .bg-login {
-	background-image: url(../images/login-images/03.png);
+	background-image: url('../images/login-images/03.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed
+}
+.bg-tree {
+	background-image: url('../images/textures/1.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -1701,7 +1708,7 @@ a {
 }
 
 .bg-register {
-	background-image: url(../images/login-images/02.png);
+	background-image: url('../images/login-images/02.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;

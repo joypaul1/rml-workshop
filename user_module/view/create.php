@@ -25,8 +25,7 @@ include_once('../../_helper/2step_com_conn.php');
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post" action="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>"
-                                class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                            <form method="post" action="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="actionType" value="create">
                                 <div class="col-sm-12 col-md-4">
                                     <label for="validationCustom01" class="form-label">User Name <span class="text-danger">*</span></label>
@@ -34,16 +33,13 @@ include_once('../../_helper/2step_com_conn.php');
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
-                                    <label for="validationCustom02" class="form-label">User Mobile (Login ID) <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                                        autocomplete="off" autocomplete="off" name="USER_MOBILE" id="validationCustom02" required="">
+                                    <label for="validationCustom02" class="form-label">User Mobile (Login ID) <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" autocomplete="off" name="USER_MOBILE" id="validationCustom02" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom08" class="form-label">User Password <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="USER_PASSWORD" autocomplete="off" id="validationCustom08"
-                                        required="">
+                                    <input type="text" class="form-control" name="USER_PASSWORD" autocomplete="off" id="validationCustom08" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
@@ -64,7 +60,7 @@ include_once('../../_helper/2step_com_conn.php');
 
                                         @oci_execute($strSQL);
                                         while ($typeRow = @oci_fetch_assoc($strSQL)) {
-                                            ?>
+                                        ?>
                                             <option value="<?php echo $typeRow['ID'] ?>">
                                                 <?php echo $typeRow['TITLE'] ?>
                                             </option>
@@ -83,7 +79,7 @@ include_once('../../_helper/2step_com_conn.php');
 
                                         @oci_execute($strSQL);
                                         while ($brandRow = @oci_fetch_assoc($strSQL)) {
-                                            ?>
+                                        ?>
                                             <option value="<?php echo $brandRow['ID'] ?>">
                                                 <?php echo $brandRow['TITLE'] ?>
                                             </option>
@@ -121,7 +117,7 @@ include_once('../../_includes/footer.php');
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
     const $user_brand_id = $('select[name="USER_BRAND_ID"]');
 
-    $('select[name="USER_TYPE_ID"], select[name="USER_BRAND_ID"]').on('change', function () {
+    $('select[name="USER_TYPE_ID"], select[name="USER_BRAND_ID"]').on('change', function() {
         getVerifyData();
     });
 
@@ -159,7 +155,7 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 1,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                         <label for="validationCustom10_hod" class="form-label">Responsible HOD <span class="text-danger">*</span></label>
                         <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_hod" required><option  hidden value="<?php echo Null ?>"> <- Selecte HOD -></option>`;
@@ -182,6 +178,7 @@ include_once('../../_includes/footer.php');
 
         })
     };
+
     function get_cod() {
         $.ajax({
             type: "method",
@@ -191,7 +188,7 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 2,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                             <label for="validationCustom10_coord" class="form-label">Responsible COORDINATOR <span class="text-danger">*</span></label>
                             <select class="form-select" id="validationCustom10_coord" name="RESPONSIBLE_ID" required>
@@ -215,6 +212,7 @@ include_once('../../_includes/footer.php');
         });
 
     }
+
     function get_mec() {
         $.ajax({
             type: "method",
@@ -224,7 +222,7 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 3,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                             <label for="validationCustom10_ret" class="form-label">Responsible RETAILER <span class="text-danger">*</span></label>
                             <select class="form-select single-select"name="RESPONSIBLE_ID" id="validationCustom10_ret" required>
@@ -248,6 +246,7 @@ include_once('../../_includes/footer.php');
         });
 
     }
+
     function get_selExc() {
         $.ajax({
             type: "method",
@@ -257,7 +256,7 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 4,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                             <label for="validationCustom10_sale" class="form-label">Responsible SALE EXECUTIVE <span class="text-danger">*</span></label>
                             <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_sale" required>
@@ -282,7 +281,7 @@ include_once('../../_includes/footer.php');
     }
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
+    (function() {
         'use strict'
         $('.dropify').dropify({
             messages: {
@@ -298,8 +297,8 @@ include_once('../../_includes/footer.php');
 
         // Loop over them and prevent submission
         Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
+            .forEach(function(form) {
+                form.addEventListener('submit', function(event) {
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
@@ -309,6 +308,4 @@ include_once('../../_includes/footer.php');
                 }, false)
             });
     })();
-
-
 </script>

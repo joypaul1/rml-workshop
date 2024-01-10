@@ -21,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
     $strSQL  = @oci_parse($objConnect, $query);
     @oci_execute($strSQL);
     $data = @oci_fetch_assoc($strSQL);
-
 }
 ?>
 
@@ -41,39 +40,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post"
-                            action="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation"  enctype="multipart/form-data"novalidate="">
-                            <input type="hidden" name="actionType" value="edit">
-                            <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
+                            <form method="post" action="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                                <input type="hidden" name="actionType" value="edit">
+                                <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
                                 <div class="col-sm-12 col-md-4">
                                     <label for="validationCustom01" class="form-label">User Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="USER_NAME" autocomplete="off"  class="form-control" id="validationCustom01" value="<?php echo $data['USER_NAME'] ?>"
-                                        required="">
+                                    <input type="text" name="USER_NAME" autocomplete="off" class="form-control" id="validationCustom01" value="<?php echo $data['USER_NAME'] ?>" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom02" class="form-label">User Mobile (Login ID) <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control"  autocomplete="off" name="USER_MOBILE" 
-                                    onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                                    id="validationCustom02" value="<?php echo $data['USER_MOBILE'] ?>"
-                                    required="">
+                                    <input type="text" class="form-control" autocomplete="off" name="USER_MOBILE" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="validationCustom02" value="<?php echo $data['USER_MOBILE'] ?>" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom08" class="form-label">User Password </label>
-                                    <input type="text" class="form-control" name="USER_PASSWORD" 
-                                    autocomplete="off"
-                                    value="<?php echo $data['PENDRIVE_ID'] ?>"id="validationCustom08" required="">
+                                    <input type="text" class="form-control" name="USER_PASSWORD" autocomplete="off" value="<?php echo $data['PENDRIVE_ID'] ?>" id="validationCustom08" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom09" class="form-label">User RML ID </label>
-                                    <input type="text" class="form-control"  autocomplete="off"name="RML_ID" value="<?php echo $data['RML_ID'] ?>" id="validationCustom09">
+                                    <input type="text" class="form-control" autocomplete="off" name="RML_ID" value="<?php echo $data['RML_ID'] ?>" id="validationCustom09">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom06" class="form-label"> User Type <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="validationCustom06" name="USER_TYPE_ID"  required="">
+                                    <select class="form-select" id="validationCustom06" name="USER_TYPE_ID" required="">
                                         <option hidden value="<?php echo Null ?>"><- Select Type -></option>
                                         <?php
                                         $typeRow = [];
@@ -82,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
 
                                         @oci_execute($strSQL);
                                         while ($typeRow = @oci_fetch_assoc($strSQL)) {
-                                            ?>
+                                        ?>
                                             <option value="<?php echo $typeRow['ID'] ?>" <?php echo $typeRow['ID'] == $data['USER_TYPE_ID'] ? 'Selected' : '' ?>>
                                                 <?php echo $typeRow['TITLE'] ?>
                                             </option>
@@ -93,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
 
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom04" class="form-label">User Brand <span class="text-danger">*</span> </label>
-                                    <select class="form-select" id="validationCustom04" name="USER_BRAND_ID"  required="">
+                                    <select class="form-select" id="validationCustom04" name="USER_BRAND_ID" required="">
                                         <option hidden value="<?php echo Null ?>"><- Select Brand -></option>
                                         <?php
                                         $brandRow = [];
@@ -102,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
 
                                         @oci_execute($strSQL);
                                         while ($brandRow = @oci_fetch_assoc($strSQL)) {
-                                            ?>
+                                        ?>
                                             <option value="<?php echo $brandRow['ID'] ?>" <?php echo $brandRow['ID'] == $data['USER_BRAND_ID'] ? 'Selected' : '' ?>>
                                                 <?php echo $brandRow['TITLE'] ?>
                                             </option>
@@ -113,9 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                 <div id="addResponsiableData"></div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
-                                    <input type="file"  name="IMAGE_LINK" class="dropify" 
-                                    data-default-file="<?php echo $basePath . '/' . $data['IMAGE_LINK'] ?>"
-                                    />
+                                    <input type="file" name="IMAGE_LINK" class="dropify" data-default-file="<?php echo $basePath . '/' . $data['IMAGE_LINK'] ?>" />
                                     <!-- <div class="valid-feedback">Looks good!</div> -->
 
                                 </div>
@@ -137,13 +127,13 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
-    const $RESPONSIBLE_ID = "<?php echo $data['RESPONSIBLE_ID']?>";
+    const $RESPONSIBLE_ID = "<?php echo $data['RESPONSIBLE_ID'] ?>";
 
     const url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
     const $user_brand_id = $('select[name="USER_BRAND_ID"]');
 
-    $('select[name="USER_TYPE_ID"], select[name="USER_BRAND_ID"]').on('change', function () {
+    $('select[name="USER_TYPE_ID"], select[name="USER_BRAND_ID"]').on('change', function() {
         getVerifyData();
     });
 
@@ -181,7 +171,7 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 1,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                         <label for="validationCustom10_hod"  class="form-label">Responsible HOD <span class="text-danger">*</span></label>
                         <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_hod" required>
@@ -205,6 +195,7 @@ include_once('../../_includes/footer.php');
 
         })
     };
+
     function get_cod() {
         $.ajax({
             type: "method",
@@ -214,12 +205,12 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 2,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                             <label for="validationCustom10_coord" class="form-label">Responsible COORDINATOR <span class="text-danger">*</span></label>
                             <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_coord" required>
                             <option  hidden value="<?php echo Null ?>"> <- Selecte Coordinator -></option>`;
-                 if (res.status) {
+                if (res.status) {
                     (res.data).forEach(element => {
                         htmlTag += '<option value="' + element.ID + '" ' + ($RESPONSIBLE_ID == element.ID ? 'selected' : '') + '> ' + element.USER_NAME + ' </option>';
                     });
@@ -237,6 +228,7 @@ include_once('../../_includes/footer.php');
         });
 
     }
+
     function get_mec() {
         $.ajax({
             type: "method",
@@ -246,7 +238,7 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 3,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                             <label for="validationCustom10_ret" class="form-label">Responsible RETAILER <span class="text-danger">*</span></label>
                             <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_ret" required>
@@ -269,6 +261,7 @@ include_once('../../_includes/footer.php');
         });
 
     }
+
     function get_selExc() {
         $.ajax({
             type: "method",
@@ -278,7 +271,7 @@ include_once('../../_includes/footer.php');
                 brand_ID: $user_brand_id.val(),
                 type_ID: 4,
             },
-            success: function (res) {
+            success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
                             <label for="validationCustom10_sale" class="form-label">Responsible SALE EXECUTIVE <span class="text-danger">*</span></label>
                             <select class="form-select single-select"  name="RESPONSIBLE_ID" id="validationCustom10_sale" required>
@@ -303,7 +296,7 @@ include_once('../../_includes/footer.php');
     }
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
+    (function() {
         'use strict'
         $('.dropify').dropify({
             messages: {
@@ -319,8 +312,8 @@ include_once('../../_includes/footer.php');
 
         // Loop over them and prevent submission
         Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
+            .forEach(function(form) {
+                form.addEventListener('submit', function(event) {
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
@@ -330,6 +323,4 @@ include_once('../../_includes/footer.php');
                 }, false)
             });
     })();
-
-
 </script>

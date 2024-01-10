@@ -30,8 +30,8 @@ include_once('../../_helper/2step_com_conn.php');
                                         <th>RML ID</th>
                                         <th>BRAND</th>
                                         <th>TYPE</th>
+                                        <th>RESponsible User</th>
                                         <th>Tree User</th>
-                                        <th>CREATED DATE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,6 +41,10 @@ include_once('../../_helper/2step_com_conn.php');
                                             UP.USER_MOBILE,
                                             UP.RML_ID,
                                             UP.CREATED_DATE,
+                                            (SELECT USER_NAME
+                                            FROM USER_PROFILE
+                                            WHERE ID = UP.RESPONSIBLE_ID)
+                                            AS USER_RESPONSIBLE_NAME, 
                                             (SELECT TITLE
                                             FROM USER_BRAND
                                             WHERE ID = UP.USER_BRAND_ID)
@@ -54,7 +58,7 @@ include_once('../../_helper/2step_com_conn.php');
                                     $number = 0;
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
-                                        ?>
+                                    ?>
                                         <tr>
                                             <td class="text-center">
                                                 <strong>
@@ -62,11 +66,8 @@ include_once('../../_helper/2step_com_conn.php');
                                                 </strong>
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?php echo $basePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>"
-                                                    class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
-                                                <button type="button" 
-                                                data-id="<?php echo $row['ID']?>" data-href="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>"
-                                                class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button>
+                                                <a href="<?php echo $basePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button>
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
@@ -84,9 +85,11 @@ include_once('../../_helper/2step_com_conn.php');
                                                 <?php echo $row['USER_TYPE']; ?>
                                             </td>
                                             <td>
-                                                <?php echo $row['CREATED_DATE']; ?>
+                                                <?php echo $row['USER_RESPONSIBLE_NAME']; ?>
                                             </td>
-
+                                            <td class="text-center">
+                                                <a href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
+                                            </td>
 
                                         </tr>
 
