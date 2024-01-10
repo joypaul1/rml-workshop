@@ -1,51 +1,21 @@
 <?php
 session_start();
-session_regenerate_id(TRUE);
 include_once('../../_config/connoracle.php');
 include_once('../../config_file_path.php');
 
-if (isset($_POST['login_submit'])) {
-
-    if (!empty($_POST['user_mobile']) && !empty($_POST['password'])) {
-        $v_usermobile = trim($_POST['user_mobile']);
-        $v_password   = trim($_POST['password']);
-        $md5Password  = md5($v_password);
-
-        $sql    = "SELECT 
-                ID, USER_NAME, USER_MOBILE, 
-                RML_ID, USER_PASSWORD, USER_BRAND_ID, IMAGE_LINK,
-                USER_TYPE_ID, USER_STATUS FROM USER_PROFILE WHERE USER_MOBILE ='$v_usermobile' and USER_PASSWORD = '$v_password'";
-        $strSQL = @oci_parse($objConnect, $sql);
-        @oci_execute($strSQL);
-        $dataRow = @oci_fetch_assoc($strSQL);
-        if ($dataRow) {
-            unset($dataRow['USER_PASSWORD']);
-
-            $_SESSION['USER_INFO']   = $dataRow;
-            $_SESSION['baseUrl']     = $baseUrl;
-            $_SESSION['basePath']    = $basePath;
-            $_SESSION['rs_img_path'] = $rs_img_path;
-            header('location:home/dashboard.php');
-            exit;
-        } else {
-            $errorMsg = "Wrong EMP-ID or password";
+$coodinoatorData = array();
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $userID = $_GET['id'];
+    $query    = "SELECT ID, USER_NAME FROM USER_PROFILE WHERE RESPONSIBLE_ID = $userID";
+    $strSQL = @oci_parse($objConnect, $query);
+    if (@oci_execute($strSQL)) {
+        while ($row = @oci_fetch_assoc($strSQL)) {
+            $coodinoatorData[] = $row; // Append each row to the $data array
         }
     }
+    // print_r($coodinoatorData);
 }
-
-if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
-    $basePath    = $_SESSION['basePath'];
-    $rs_img_path = $_SESSION['rs_img_path'];
-    session_start();
-    session_unset();
-    session_destroy();
-    session_write_close();
-    setcookie(session_name(), '', 0, '/');
-    session_regenerate_id(true);
-    header("location:" . $basePath . "/index.php");
-    exit;
-}
-
+$basePath    = $_SESSION['basePath'];
 ?>
 
 
@@ -71,12 +41,13 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     <link href="<?php echo $basePath ?>/assets/css/app.css" rel="stylesheet">
     <link href="<?php echo $basePath ?>/assets/css/icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.3/css/jquery.orgchart.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <style>
     #chart-container {
         font-family: Arial;
-        height: 420px;
-        border: 2px dashed #aaa;
+        height: 450px;
+        border: 2px dashed #0ce983;
         border-radius: 5px;
         overflow: auto;
         text-align: center;
@@ -155,7 +126,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                             <div class="card-bodys">
                                 <div class="borders p-4 rounded-4">
                                     <div id="chart-container"></div>
-                                    <a id="github-link" href="https://github.com/dabeng/OrgChart" target="_blank"><i class="fa fa-github-square"></i></a>
+
                                 </div>
                             </div>
                         </div>
@@ -176,109 +147,86 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     <!--app JS-->
     <script src="assets/js/app.js"></script>
     <script>
-        "use strict";
+        var coodinoatorData = <?php echo json_encode($coodinoatorData); ?>;
 
-        (function($) {
-            $(function() {
-                var datascource = {
-                    name: "MR. Joy",
-                    title: "HOD",
-                    children: [{
-                            name: "Bo Miao",
-                            title: "Coordinoator",
-                            className: "middle-level",
-                            children: [{
-                                    name: "Li Jing",
+        var buildHierarchy = function(data) {
+            var hierarchy = {
+                name: "MR. Joy",
+                title: "HOD",
+                children: []
+            };
+
+            for (var i = 0; i < data.length; i++) {
+                (function(userData) {
+                    var parentChild = {
+                        name: userData.USER_NAME,
+                        title: "Coordinator",
+                        className: "middle-level",
+                        children: []
+                    };
+                    hierarchy.children.push(parentChild);
+
+                    $.ajax({
+                        type: "GET",
+                        url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                        data: {
+                            sale_executive: userData.ID
+                        },
+                        dataType: "JSON",
+                        success: function(res) {
+                            for (var j = 0; j < res.data.length; j++) {
+                                var child = {
+                                    name: res.data[j].USER_NAME,
                                     title: "Sale Executive",
                                     className: "product-dept",
-                                },
-                                {
-                                    name: "Li Xin",
-                                    title: "Sale Executive",
-                                    className: "product-dept",
-                                    children: [{
-                                            name: "To To",
-                                            title: "Retailer",
-                                            className: "frontend1"
-                                        },
-                                        {
-                                            name: "Fei Fei",
-                                            title: "Retailer",
-                                            className: "frontend1",
-                                            children: [{
-                                                    name: "To To",
-                                                    title: "Mechanics",
-                                                    className: "rd-dept",
-                                                },
-                                                {
-                                                    name: "Fei Fei",
-                                                    title: "Mechanics",
-                                                    className: "rd-dept",
-                                                }
-                                            ],
-                                        },
-                                        {
-                                            name: "Xuan Xuan",
-                                            title: "Retailer",
-                                            className: "rd-dept",
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                        {
-                            name: "Su Miao",
-                            title: "Coordinoator",
-                            className: "middle-level",
-                            children: [{
-                                    name: "Pang Pang",
-                                    title: "Sale Executive",
-                                    className: "rd-dept",
-                                },
-                                {
-                                    name: "Hei Hei",
-                                    title: "Sale Executive",
-                                    className: "rd-dept",
-                                    children: [{
-                                            name: "Xiang Xiang",
-                                            title: "UE Retailer",
-                                            className: "frontend1",
-                                        },
-                                        {
-                                            name: "Dan Dan",
-                                            title: "Retailer",
-                                            className: "frontend1"
-                                        },
-                                        {
-                                            name: "Zai Zai",
-                                            title: "Retailer",
-                                            className: "frontend1",
-                                            children: [{
-                                                    name: "To To",
-                                                    title: "Mechanics",
-                                                    className: "pipeline1",
-                                                },
-                                                {
-                                                    name: "Fei Fei",
-                                                    title: "Mechanics",
-                                                    className: "pipeline1",
-                                                }
-                                            ],
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                };
+                                    children: []
+                                };
+                                parentChild.children.push(child);
 
-                var oc = $("#chart-container").orgchart({
-                    data: datascource,
-                    nodeContent: "title",
-                });
-            });
-        })(jQuery);
+                                $.ajax({
+                                    type: "GET",
+                                    url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                    data: {
+                                        retailer: res.data[j].ID
+                                    },
+                                    dataType: "JSON",
+                                    success: function(res) {
+                                        for (var k = 0; k < res.data.length; k++) {
+                                            var child = {
+                                                name: res.data[k].USER_NAME,
+                                                title: "Retailer",
+                                                className: "frontend1",
+                                                children: []
+                                            };
+                                            parentChild.children.push(child);
+                                        }
+                                        // Re-render org chart after adding all children
+                                        $("#chart-container").empty().orgchart({
+                                            data: hierarchy,
+                                            nodeContent: "title"
+                                        });
+                                    }
+                                });
+                            }
+                            // Re-render org chart after adding all children
+                            $("#chart-container").empty().orgchart({
+                                data: hierarchy,
+                                nodeContent: "title"
+                            });
+                        }
+                    });
+                })(data[i]);
+            }
+
+            return hierarchy;
+        };
+
+        $(function() {
+            var chartData = buildHierarchy(coodinoatorData);
+        });
     </script>
+
+
 </body>
 
 </html>

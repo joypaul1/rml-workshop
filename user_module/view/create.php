@@ -181,7 +181,7 @@ include_once('../../_includes/footer.php');
 
     function get_cod() {
         $.ajax({
-            type: "method",
+            type: "GET",
             url: url,
             dataType: "json",
             data: {
@@ -215,7 +215,7 @@ include_once('../../_includes/footer.php');
 
     function get_mec() {
         $.ajax({
-            type: "method",
+            type: "GET",
             url: url,
             dataType: "json",
             data: {
@@ -249,7 +249,7 @@ include_once('../../_includes/footer.php');
 
     function get_selExc() {
         $.ajax({
-            type: "method",
+            type: "GET",
             url: url,
             dataType: "json",
             data: {

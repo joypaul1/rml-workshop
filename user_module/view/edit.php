@@ -128,8 +128,7 @@ include_once('../../_includes/footer.php');
 ?>
 <script>
     const $RESPONSIBLE_ID = "<?php echo $data['RESPONSIBLE_ID'] ?>";
-
-    const url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
+    let url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
     const $user_brand_id = $('select[name="USER_BRAND_ID"]');
 
@@ -140,6 +139,7 @@ include_once('../../_includes/footer.php');
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
         const userBrandId = $user_brand_id.val();
+        console.log(userTypeId,userBrandId);
         $('#addResponsiableData').empty();
         if (userTypeId && userBrandId) {
             switch (parseInt(userTypeId)) {
@@ -198,7 +198,7 @@ include_once('../../_includes/footer.php');
 
     function get_cod() {
         $.ajax({
-            type: "method",
+            type: "GET",
             url: url,
             dataType: "json",
             data: {
@@ -231,7 +231,7 @@ include_once('../../_includes/footer.php');
 
     function get_mec() {
         $.ajax({
-            type: "method",
+            type: "GET",
             url: url,
             dataType: "json",
             data: {
