@@ -112,6 +112,14 @@
     integrity="sha512-7x7HoEikRZhV0FAORWP+hrUzl75JW/uLHBbg2kHnPdFmScpIeHY0ieUVSacjusrKrlA/RsA2tDOBvisFmKc3xw==" crossorigin="anonymous"
     referrerpolicy="no-referrer"></script>
 <!--app JS-->
+
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 <script src="<?php echo $basePath ?>/assets/js/app.js"></script>
 <?php if (isset($dynamic_link_js) && count($dynamic_link_js) > 0) {
     foreach ($dynamic_link_js as $key => $linkJs) {

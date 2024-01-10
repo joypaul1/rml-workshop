@@ -14,14 +14,15 @@ $log_user_id   = $_SESSION['USER_INFO']['ID'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
-    $USER_NAME     = $_POST['USER_NAME'];
-    $USER_PASSWORD = $_POST['USER_PASSWORD'];
-    $USER_MOBILE   = $_POST['USER_MOBILE'];
-    $RML_ID        = $_POST['RML_ID'];
-    $USER_BRAND_ID = $_POST['USER_BRAND_ID'];
-    $USER_TYPE_ID  = $_POST['USER_TYPE_ID'];
-    $IMAGE_LINK    = $_FILES['IMAGE_LINK'];
-    $filename      = null;
+    $USER_NAME      = $_POST['USER_NAME'];
+    $USER_PASSWORD  = $_POST['USER_PASSWORD'];
+    $USER_MOBILE    = $_POST['USER_MOBILE'];
+    $RML_ID         = $_POST['RML_ID'];
+    $USER_BRAND_ID  = $_POST['USER_BRAND_ID'];
+    $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
+    $RESPONSIBLE_ID = $_POST['RESPONSIBLE_ID'];
+    $IMAGE_LINK     = $_FILES['IMAGE_LINK'];
+    $filename       = null;
 
     if ($IMAGE_LINK) {
         $imagename = $IMAGE_LINK['name'];
@@ -67,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
     // Prepare the SQL statement
     $query = "INSERT INTO USER_PROFILE 
-            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_ID,USER_BRAND_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE) 
-            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$USER_PASSWORD','$RML_ID','$USER_BRAND_ID', '$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE)";
+            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_ID,USER_BRAND_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,RESPONSIBLE_ID) 
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$USER_PASSWORD','$RML_ID','$USER_BRAND_ID', '$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$RESPONSIBLE_ID')";
 
 
     $strSQL = @oci_parse($objConnect, $query);
@@ -100,14 +101,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit') {
 
-    $editId        = $_POST['editId'];
-    $USER_NAME     = $_POST['USER_NAME'];
-    $USER_MOBILE   = $_POST['USER_MOBILE'];
-    $USER_PASSWORD = $_POST['USER_PASSWORD'];
-    $RML_ID        = $_POST['RML_ID'];
-    $USER_BRAND_ID = $_POST['USER_BRAND_ID'];
-    $USER_TYPE_ID  = $_POST['USER_TYPE_ID'];
-    $IMAGE_LINK    = $_FILES['IMAGE_LINK'];
+    $editId         = $_POST['editId'];
+    $USER_NAME      = $_POST['USER_NAME'];
+    $USER_MOBILE    = $_POST['USER_MOBILE'];
+    $USER_PASSWORD  = $_POST['USER_PASSWORD'];
+    $RML_ID         = $_POST['RML_ID'];
+    $USER_BRAND_ID  = $_POST['USER_BRAND_ID'];
+    $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
+    $RESPONSIBLE_ID = $_POST['RESPONSIBLE_ID'];
+    $IMAGE_LINK     = $_FILES['IMAGE_LINK'];
     if ($IMAGE_LINK) {
         $imagename = $IMAGE_LINK['name'];
         $size      = $IMAGE_LINK['size'];
@@ -185,6 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     USER_BRAND_ID   = '$USER_BRAND_ID',
     USER_TYPE_ID    = '$USER_TYPE_ID',  
     UPDATED_BY_ID   = $log_user_id,
+    RESPONSIBLE_ID   = $RESPONSIBLE_ID,
     UPDATED_DATE    = SYSDATE 
     WHERE ID        = $editId";
 

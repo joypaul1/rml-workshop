@@ -1,6 +1,9 @@
 <?php
 $dynamic_link_js[]  = 'https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js';
 $dynamic_link_css[] = 'https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css';
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2.min.css';
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
+$dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
 include_once('../../_helper/2step_com_conn.php');
 
 
@@ -52,7 +55,7 @@ include_once('../../_helper/2step_com_conn.php');
 
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom06" class="form-label">User Type <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="validationCustom06" name="USER_TYPE_ID" required="">
+                                    <select class="form-select " id="validationCustom06" name="USER_TYPE_ID" required="">
                                         <option hidden value="<?php echo Null ?>"><- Select Type -></option>
                                         <?php
                                         $typeRow = [];
@@ -115,28 +118,39 @@ include_once('../../_includes/footer.php');
 ?>
 <script>
     const url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
-    let $user_type_id = $('select[name="USER_TYPE_ID"]');
-    let $user_brand_id = $('select[name="USER_BRAND_ID"]');
-    $('select[name="USER_TYPE_ID"]').on('change', function () {
-        $('#addResponsiableData').empty();
-        if ($user_type_id.val() == 2) {
-            get_hod();
-        } else if ($user_type_id.val() == 3) {
-            get_cod();
-        } else if ($user_type_id.val() == 4) {
-            get_selExc();
-        } else if ($user_type_id.val() == 5) {
-            get_mec();
-        }
-        console.log($user_type_id.val());
-        console.log($user_brand_id.val());
+    const $user_type_id = $('select[name="USER_TYPE_ID"]');
+    const $user_brand_id = $('select[name="USER_BRAND_ID"]');
+
+    $('select[name="USER_TYPE_ID"], select[name="USER_BRAND_ID"]').on('change', function () {
+        getVerifyData();
     });
-    function get_hod() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+    function getVerifyData() {
+        const userTypeId = $user_type_id.val();
+        const userBrandId = $user_brand_id.val();
+        $('#addResponsiableData').empty();
+        if (userTypeId && userBrandId) {
+            switch (parseInt(userTypeId)) {
+                case 2:
+                    get_hod();
+                    break;
+                case 3:
+                    get_cod();
+                    break;
+                case 4:
+                    get_selExc();
+                    break;
+                case 5:
+                    get_mec();
+                    break;
+                default:
+                    // Handle other cases if needed
+                    break;
             }
-        });
+        }
+    }
+
+    function get_hod() {
         $.ajax({
             type: "GET",
             url: url,
@@ -146,92 +160,130 @@ include_once('../../_includes/footer.php');
                 type_ID: 1,
             },
             success: function (res) {
-                console.log(res);
                 let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10" class="form-label">Responsible HOD <span class="text-danger">*</span></label>
-                            <select class="form-select" id="validationCustom10" required>
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte HOD -></option>`;
+                        <label for="validationCustom10_hod" class="form-label">Responsible HOD <span class="text-danger">*</span></label>
+                        <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_hod" required><option  hidden value="<?php echo Null ?>"> <- Selecte HOD -></option>`;
                 if (res.status) {
                     (res.data).forEach(element => {
-                        console.log(element);
                         htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
                     });
-
                 }
                 htmlTag += `</select></div>`;
                 $('#addResponsiableData').append(htmlTag);
-            }
-        });
 
-    }
-    function get_cod() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                // Initialize Select2 for the appended dropdown element
+                $('#addResponsiableData').find('#validationCustom10_hod').select2({
+                    theme: 'bootstrap4',
+                    width: '100%', // Set the width as needed
+                    placeholder: 'Select HOD', // Set the placeholder text
+                    allowClear: true, // Enable clearing the selection
+                });
             }
-        });
+
+        })
+    };
+    function get_cod() {
         $.ajax({
             type: "method",
-            url: "url",
+            url: url,
             dataType: "json",
             data: {
                 brand_ID: $user_brand_id.val(),
                 type_ID: 2,
             },
             success: function (res) {
-                console.log(res);
                 let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10" class="form-label">Responsible COORDINATOR <span class="text-danger">*</span></label>
-                            <select class="form-select" id="validationCustom10" required>
+                            <label for="validationCustom10_coord" class="form-label">Responsible COORDINATOR <span class="text-danger">*</span></label>
+                            <select class="form-select" id="validationCustom10_coord" name="RESPONSIBLE_ID" required>
                             <option  hidden value="<?php echo Null ?>"> <- Selecte Coordinator -></option>`;
                 if (res.status) {
                     (res.data).forEach(element => {
-                        console.log(element);
                         htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
                     });
 
                 }
                 htmlTag += `</select></div>`;
                 $('#addResponsiableData').append(htmlTag);
+                // Initialize Select2 for the appended dropdown element
+                $('#addResponsiableData').find('#validationCustom10_coord').select2({
+                    theme: 'bootstrap4',
+                    width: '100%', // Set the width as needed
+                    placeholder: 'Select Coordinator', // Set the placeholder text
+                    allowClear: true, // Enable clearing the selection
+                });
             }
         });
-        let htmlTag = `<div class="col-sm-12 col-md-4">
-            <label for="validationCustom10" class="form-label">Responsible COORDINATOR <span class="text-danger">*</span></label>
-            <select class="form-select" id="validationCustom10" required>
-                <option  hidden value="<?php echo Null ?>"> <- Selecte Coordinator -></option>
-                <option value="1">One</option>
-            </select>
-        </div>`;
-        $('#addResponsiableData').append(htmlTag);
 
     }
     function get_mec() {
-        let htmlTag = `<div class="col-sm-12 col-md-4">
-            <label for="validationCustom10" class="form-label">Responsible RETAILER <span class="text-danger">*</span></label>
-            <select class="form-select" id="validationCustom10" required>
-                <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer-></option>
-                <option value="1">One</option>
-            </select>
-        </div>`;
-        $('#addResponsiableData').append(htmlTag);
+        $.ajax({
+            type: "method",
+            url: url,
+            dataType: "json",
+            data: {
+                brand_ID: $user_brand_id.val(),
+                type_ID: 3,
+            },
+            success: function (res) {
+                let htmlTag = `<div class="col-sm-12 col-md-4">
+                            <label for="validationCustom10_ret" class="form-label">Responsible RETAILER <span class="text-danger">*</span></label>
+                            <select class="form-select single-select"name="RESPONSIBLE_ID" id="validationCustom10_ret" required>
+                            <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
+                if (res.status) {
+                    (res.data).forEach(element => {
+                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
+                    });
+
+                }
+                htmlTag += `</select></div>`;
+                $('#addResponsiableData').append(htmlTag);
+                // Initialize Select2 for the appended dropdown element
+                $('#addResponsiableData').find('#validationCustom10_ret').select2({
+                    theme: 'bootstrap4',
+                    width: '100%', // Set the width as needed
+                    placeholder: 'Select Retailer', // Set the placeholder text
+                    allowClear: true, // Enable clearing the selection
+                });
+            }
+        });
 
     }
     function get_selExc() {
-        let htmlTag = `<div class="col-sm-12 col-md-4">
-            <label for="validationCustom10" class="form-label">Responsible SALE EXECUTIVE <span class="text-danger">*</span></label>
-            <select class="form-select" id="validationCustom10" required>
-                <option  hidden value="<?php echo Null ?>"> <- Selecte Sale Excutive -></option>
-                <option value="1">One</option>
-            </select>
-        </div>`;
-        $('#addResponsiableData').append(htmlTag);
+        $.ajax({
+            type: "method",
+            url: url,
+            dataType: "json",
+            data: {
+                brand_ID: $user_brand_id.val(),
+                type_ID: 4,
+            },
+            success: function (res) {
+                let htmlTag = `<div class="col-sm-12 col-md-4">
+                            <label for="validationCustom10_sale" class="form-label">Responsible SALE EXECUTIVE <span class="text-danger">*</span></label>
+                            <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_sale" required>
+                            <option  hidden value="<?php echo Null ?>"> <- Selecte Sale Excutive -></option>`;
+                if (res.status) {
+                    (res.data).forEach(element => {
+                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
+                    });
+                }
+                htmlTag += `</select></div>`;
+                $('#addResponsiableData').append(htmlTag);
+                // Initialize Select2 for the appended dropdown element
+                $('#addResponsiableData').find('#validationCustom10_sale').select2({
+                    theme: 'bootstrap4',
+                    width: '100%', // Set the width as needed
+                    placeholder: 'Select Sale Excutive', // Set the placeholder text
+                    allowClear: true, // Enable clearing the selection
+                });
+            }
+        });
 
     }
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         'use strict'
-
         $('.dropify').dropify({
             messages: {
                 'default': 'Select User Profile Image',
@@ -255,7 +307,7 @@ include_once('../../_includes/footer.php');
 
                     form.classList.add('was-validated')
                 }, false)
-            })
+            });
     })();
 
 
