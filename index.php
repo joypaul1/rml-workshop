@@ -1,34 +1,65 @@
 <?php
 session_start();
 session_regenerate_id(TRUE);
-require_once('./_config/connoracle.php');
+require_once('./_config/sqlConfig.php');
 include_once('./config_file_path.php');
 
 if (isset($_POST['login_submit'])) {
 
-    if (!empty($_POST['user_mobile']) && !empty($_POST['password'])) {
-        $v_usermobile = trim($_POST['user_mobile']);
+    if (!empty($_POST['user_rml_id']) && !empty($_POST['password'])) {
+        $v_user_rml_id = trim($_POST['user_rml_id']);
         $v_password   = trim($_POST['password']);
         $md5Password  = md5($v_password);
 
-        $sql    = "SELECT 
-                ID, USER_NAME, USER_MOBILE, 
-                RML_ID, USER_PASSWORD, USER_BRAND_ID, IMAGE_LINK,
-                USER_TYPE_ID, USER_STATUS FROM USER_PROFILE WHERE USER_MOBILE ='$v_usermobile' and USER_PASSWORD = '$v_password'";
-        $strSQL = @oci_parse($objConnect, $sql);
-        @oci_execute($strSQL);
-        $dataRow = @oci_fetch_assoc($strSQL);
-        if ($dataRow) {
-            unset($dataRow['USER_PASSWORD']);
+        $sql = "SELECT * FROM tbl_users WHERE emp_id = '" . $v_user_rml_id . "' and password = '" . $md5Password . "'";
+        $rs = mysqli_query($conn, $sql);
+        $getNumRows = mysqli_num_rows($rs);
 
-            $_SESSION['USER_INFO']   = $dataRow;
-            $_SESSION['baseUrl']     = $baseUrl;
-            $_SESSION['basePath']    = $basePath;
-            $_SESSION['rs_img_path'] = $rs_img_path;
-            header('location:home/dashboard.php');
+        if ($getNumRows == 1) {
+            $getUserRow = mysqli_fetch_assoc($rs);
+            unset($getUserRow['password']);
+
+            $_SESSION['USER_INFO'] = $getUserRow;
+            $_SESSION['basePath']  = $basePath;
+
+            // For Separation Dashbord
+            $USER_ROLE = getUserAccessRoleByID($_SESSION['USER_INFO']['user_role_id']);
+            // echo $USER_ROLE;
+            // die();
+            if ($USER_ROLE == "SC") {
+                header('location:home/dashboard_sc.php');
+            } else if ($USER_ROLE == "IT") {
+                header('location:home/dashboard_it.php');
+            } else if ($USER_ROLE == "ZH") {
+                header('location:home/dashboard_zh.php');
+            } else if ($USER_ROLE == "TT") {
+                header('location:home/dashboard_tt.php');
+            } else if ($USER_ROLE == "AH") {
+                header('location:home/dashboard_ah.php');
+            } else if ($USER_ROLE == "ADM") {
+                header('location:home/dashboard_adm.php');
+            } else if ($USER_ROLE == "AUDIT") {
+                header('location:dashboard_audit.php');
+            } else if ($USER_ROLE == "SERVICE") {
+                header('location:home/dashboard_service.php');
+            } else if ($USER_ROLE == "SEIZED") {
+                header('location:dashboard_seized.php');
+            } else if ($USER_ROLE == "RMWL") {
+                header('location:home/dashboard_rmwl.php');
+            } else if ($USER_ROLE == "CALL SERVICE") {
+                header('location:home/dashboard_service.php');
+            } else if ($USER_ROLE == "Accounts") {
+                header('location:home/dashboard_accounts.php');
+            } else if ($USER_ROLE == "CCD_CALL") {
+                header('location:home/dashboard_ccd_call.php');
+            } else if ($USER_ROLE == "SALE") {
+                header('location:home/dashboard_sale.php');
+            } else {
+                header('location:dashboard.php');
+            }
+            // For Separation Dashbord End
             exit;
-        }
-        else {
+        } else {
             $errorMsg = "Wrong EMP-ID or password";
         }
     }
@@ -61,6 +92,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
+    <title>COLLECTION-APPS| RML</title>
     <!--favicon-->
     <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png">
     <!--plugins-->
@@ -76,7 +108,6 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     <link href="../../../css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="assets/css/app.css" rel="stylesheet">
     <link href="assets/css/icons.css" rel="stylesheet">
-    <title>SFCM-SYSTEM | RML</title>
 </head>
 
 <body class="bg-login">
@@ -92,22 +123,19 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                                     <div class="text-center mb-5">
                                         <img src="assets/images/logo-img.png" width="200" alt="">
                                         <h5 class="mt-3 mb-0"><u> COLLECTION - APPS </u></h5>
-                                       
+
                                     </div>
 
                                     <div class="form-body">
                                         <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" class="row g-3">
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">USER RML-ID :</label>
-                                                <input type="text" name="user_mobile" class="form-control rounded-5"
-                                                     id="inputEmailAddress"
-                                                    autocomplete="off" placeholder="">
+                                                <input type="text" name="user_rml_id" class="form-control rounded-5" id="inputEmailAddress" autocomplete="off" placeholder="">
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">PASSWORD : </label>
 
-                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword" autocomplete="off"
-                                                    placeholder="">
+                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword" autocomplete="off" placeholder="">
                                             </div>
 
 
@@ -142,8 +170,8 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
     <!--Password show & hide js -->
     <script>
-        $(document).ready(function () {
-            $("#show_hide_password a").on('click', function (event) {
+        $(document).ready(function() {
+            $("#show_hide_password a").on('click', function(event) {
                 event.preventDefault();
                 if ($('#show_hide_password input').attr("type") == "text") {
                     $('#show_hide_password input').attr('type', 'password');

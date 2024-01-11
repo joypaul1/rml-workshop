@@ -20,18 +20,18 @@
                     <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
                 </div> -->
                 <div>
-                    <h4 class="logo-text">COLLECTION </h4>
+                    <h4 class="logo-text">COLLECTION APPS</h4>
                 </div>
                 <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
                 </div>
             </div>
             <!--navigation-->
             <ul class="metismenu" id="menu">
-                <li class="<?php echo isActive('/home/dashboard.php'); ?>">
-                    <a href="<?php echo $basePath ?>/home/dashboard.php">
+                <li class="<?php echo isActive('/home/dashboard_adm.php'); ?>">
+                    <a href="<?php echo $basePath ?>/home/dashboard_adm.php">
                         <div class="parent-icon"><i class="bx bx-home-circle"></i>
                         </div>
-                        <div class="menu-title">Dashboard</div>
+                        <div class="menu-title">ADM Dashboard</div>
                     </a>
                 </li>
 

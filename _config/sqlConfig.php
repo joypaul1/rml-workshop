@@ -11,20 +11,11 @@ if (mysqli_connect_errno()) {
 	exit();
 }
 
-if (!mysqli_query($conn, "SET a=1")) {
-	printf("Error message: %s\n", mysqli_error($conn));
-}
-
-
-
 function getUserAccessRoleByID($id)
 {
 	global $conn;
-
-	$query = "select user_role from tbl_user_role where  id = " . $id;
-
+	$query = "SELECT user_role FROM tbl_user_role WHERE  id = " . $id;
 	$rs = mysqli_query($conn, $query);
 	$row = mysqli_fetch_assoc($rs);
-
 	return $row['user_role'];
 }
