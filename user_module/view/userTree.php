@@ -4,16 +4,25 @@ include_once('../../_config/connoracle.php');
 include_once('../../config_file_path.php');
 
 $coodinoatorData = array();
+$selfData = array();
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $userID = $_GET['id'];
-    $query    = "SELECT ID, USER_NAME FROM USER_PROFILE WHERE RESPONSIBLE_ID = $userID";
+    //Self Data 
+    $query    = "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  ID = $userID";
     $strSQL = @oci_parse($objConnect, $query);
+    if (@oci_execute($strSQL)) {
+        $selfData = @oci_fetch_assoc($strSQL);
+    }
+    //END Self Data 
+    // coodinoatorData
+    $query2    = "SELECT ID, USER_NAME FROM USER_PROFILE WHERE USER_TYPE_ID = 2 AND RESPONSIBLE_ID = $userID";
+    $strSQL = @oci_parse($objConnect, $query2);
     if (@oci_execute($strSQL)) {
         while ($row = @oci_fetch_assoc($strSQL)) {
             $coodinoatorData[] = $row; // Append each row to the $data array
         }
     }
-    // print_r($coodinoatorData);
+    //end coodinoatorData
 }
 $basePath    = $_SESSION['basePath'];
 ?>
@@ -147,11 +156,12 @@ $basePath    = $_SESSION['basePath'];
     <!--app JS-->
     <script src="assets/js/app.js"></script>
     <script>
+        var selfData = <?php echo json_encode($selfData); ?>;
         var coodinoatorData = <?php echo json_encode($coodinoatorData); ?>;
 
         var buildHierarchy = function(data) {
             var hierarchy = {
-                name: "MR. Joy",
+                name: selfData.USER_NAME,
                 title: "HOD",
                 children: []
             };
@@ -170,7 +180,7 @@ $basePath    = $_SESSION['basePath'];
                         type: "GET",
                         url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
                         data: {
-                            sale_executive: userData.ID
+                            coordinator: userData.ID
                         },
                         dataType: "JSON",
                         success: function(res) {
@@ -187,18 +197,46 @@ $basePath    = $_SESSION['basePath'];
                                     type: "GET",
                                     url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
                                     data: {
-                                        retailer: res.data[j].ID
+                                        sale_executive: res.data[j].ID
                                     },
                                     dataType: "JSON",
                                     success: function(res) {
                                         for (var k = 0; k < res.data.length; k++) {
-                                            var child = {
+                                            var subChild = {
                                                 name: res.data[k].USER_NAME,
                                                 title: "Retailer",
                                                 className: "frontend1",
                                                 children: []
                                             };
-                                            parentChild.children.push(child);
+                                            child.children.push(subChild);
+
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                                data: {
+                                                    retailer: res.data[k].ID
+                                                },
+                                                dataType: "JSON",
+                                                success: function(res) {
+                                                    for (var jk = 0; jk < res.data.length; jk++) {
+                                                        var subsubChild = {
+                                                            name: res.data[jk].USER_NAME,
+                                                            title: "Mechanics",
+                                                            className: "pipeline1",
+                                                            children: []
+                                                        };
+                                                        subChild.children.push(subsubChild);
+                                                    }
+                                                    // Re-render org chart after adding all children
+                                                    $("#chart-container").empty().orgchart({
+                                                        data: hierarchy,
+                                                        nodeContent: "title"
+                                                    });
+                                                }
+
+                                            });
+
+
                                         }
                                         // Re-render org chart after adding all children
                                         $("#chart-container").empty().orgchart({
