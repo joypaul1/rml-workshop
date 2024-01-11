@@ -89,22 +89,22 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                         <div class="card rounded-4">
                             <div class="card-body">
                                 <div class="border p-4 rounded-4">
-                                    <div class="text-center">
+                                    <div class="text-center mb-5">
                                         <img src="assets/images/logo-img.png" width="200" alt="">
-                                        <h5 class="mt-3 mb-0"><u> SFCM - SYSTEM </u></h5>
-                                        <p class="mb-4">Please Login Bef ore Enter The Dashboard.</p>
+                                        <h5 class="mt-3 mb-0"><u> COLLECTION - APPS </u></h5>
+                                       
                                     </div>
 
                                     <div class="form-body">
                                         <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" class="row g-3">
                                             <div class="col-12">
-                                                <label for="inputEmailAddress" class="form-label">USER MOBILE NUMBER</label>
+                                                <label for="inputEmailAddress" class="form-label">USER RML-ID :</label>
                                                 <input type="text" name="user_mobile" class="form-control rounded-5"
-                                                    onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="inputEmailAddress"
+                                                     id="inputEmailAddress"
                                                     autocomplete="off" placeholder="">
                                             </div>
                                             <div class="col-12">
-                                                <label for="inputChoosePassword" class="form-label">Password</label>
+                                                <label for="inputChoosePassword" class="form-label">PASSWORD : </label>
 
                                                 <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword" autocomplete="off"
                                                     placeholder="">
