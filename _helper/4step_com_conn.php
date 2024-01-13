@@ -10,6 +10,9 @@ if (!isset($_SESSION['USER_INFO'])) {
     exit;
 }
 $basePath = $_SESSION['basePath'];
+$emp_session_id  = $_SESSION['USER_INFO']['emp_id'];
+
+include_once('../../../../_config/connoracle.php');
 include_once('../../../../_includes/header.php');
 
 if ($_SESSION['USER_INFO']['user_role_id'] == 2) {

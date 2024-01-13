@@ -44,7 +44,7 @@
                     <ul>
                         <li> <a href="<?php echo $basePath ?>/zh_module/view/concern_list.php"><i class='bx bxs-arrow-to-right'></i></i>Concern List</a>
                         </li>
-                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Approval List</a>
+                        <li> <a href="<?php echo $basePath ?>/zh_module/view/visit_approval_list.php"><i class='bx bxs-arrow-to-right'></i></i>Approval List</a>
                         </li>
                         <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Report List</a>
                         </li>

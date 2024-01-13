@@ -1,7 +1,7 @@
 <?php
 //   <i class=" bx bx-list-ul" style=""></i>
 if (isset($headerType) && $headerType == 'List') {
-    $html = '<div class="card">
+    $html = '<div class="cards">
     <div class="card-header d-flex align-items-center justify-content-between">
         <div href="#" style="font-size: 18px;font-weight:700">
             <i class=" bx bx-list-ul"></i>';

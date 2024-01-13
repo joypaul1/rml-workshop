@@ -11,6 +11,7 @@ if (!isset($_SESSION['USER_INFO'])) {
 }
 $basePath = $_SESSION['basePath'];
 $emp_session_id  = $_SESSION['USER_INFO']['emp_id'];
+
 include_once('../../_config/connoracle.php');
 include_once('../../_includes/header.php');
 
