@@ -269,23 +269,6 @@ if (isset($_POST['submit_denied'])) {
                                 <?php } ?>
 
                             </tbody>
-
-
-                            <tfoot>
-                                <tr>
-                                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
-                                        <td colspan="3">
-                                            <button class="btn btn-sm btn-gradient-info" type="submit" name="submit_approval"><i class='bx bx-save'></i> Save & Approve</button>
-                                        </td>
-                                        <td colspan="3">
-                                            <button class="btn btn-sm btn-gradient-danger" type="submit" name="submit_denied" value="Save &amp; Denied"> <i class='bx bx-message-alt-x'></i>Save & Denied</button>
-
-
-                                        </td>
-                                    </form>
-                                </tr>
-                            </tfoot>
-
                         </table>
                     </div>
                 </div>

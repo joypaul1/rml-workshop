@@ -37,7 +37,7 @@ $dataRow = @oci_fetch_assoc($strSQL);
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <p class="mb-0 text-white"><?php echo $dataRow['MIDDLE_TITLE'] ?></p>
-                                <h4 class="my-1 text-"><?php echo $dataRow['TOTAL_CONCERN'] ?></h4>
+                                <h4 class="my-1 text-white"><?php echo $dataRow['TOTAL_CONCERN'] ?></h4>
                                 <p class="mb-0 font-13 text-white"><?php echo $dataRow['FOOTER_TITLE'] ?></p>
                             </div>
                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
