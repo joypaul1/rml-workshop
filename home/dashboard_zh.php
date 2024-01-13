@@ -505,8 +505,8 @@ $dataRow = @oci_fetch_assoc($strSQL);
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-sm table-bordered align-middle mb-0 concerntList">
-                                <thead class="bg-warning">
-                                    <tr>
+                                <thead class="bg-warning text-center">
+                                    <tr >
                                         <th>SL</th>
                                         <!-- <th>Photo</th> -->
                                         <th>Concern Name</th>

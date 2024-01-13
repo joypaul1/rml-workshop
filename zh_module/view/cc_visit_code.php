@@ -159,7 +159,9 @@ if ($len == 1) {
                                         </td>
                                         <td class="concern-info">
                                             <?php
-                                            echo 'Last Payment: ' . $row['LAST_PAYMENT_AMOUNT'];
+                                           
+                                           echo 'Last Payment: <span class="fw-bold text-success">' . number_format($row['LAST_PAYMENT_AMOUNT'], 2) . ' TK</span>';
+ 
                                             echo '<br>';
                                             echo 'Last Payment Date: ' . $row['LAST_PAYMENT_DATE'];
                                             echo '<br>';
