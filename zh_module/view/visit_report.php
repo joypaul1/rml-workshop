@@ -91,7 +91,10 @@ if (isset($_POST['submit_denied'])) {
                                                 <select name="emp_concern" class="form-control single-select">
                                                     <option hidden><- Select Concern -></option>
                                                     <?php
-                                                    $strSQL = oci_parse($objConnect, "SELECT CONCERN, RML_ID FROM MONTLY_COLLECTION WHERE IS_ACTIVE=1 AND ZONAL_HEAD='$emp_session_id'");
+                                                    $strSQL = oci_parse($objConnect, "SELECT 
+                                                    CONCERN,RML_ID FROM MONTLY_COLLECTION
+                                                    WHERE IS_ACTIVE=1
+                                                    AND ZONAL_HEAD='$emp_session_id'");
                                                     oci_execute($strSQL);
 
                                                     while ($row = oci_fetch_assoc($strSQL)) {
@@ -132,9 +135,6 @@ if (isset($_POST['submit_denied'])) {
                                             <div class="col-sm-2">
                                                 <button class="form-control  btn btn-sm btn-gradient-primary mt-4" type="submit">Search Data<i class='bx bx-file-find'></i></button>
                                             </div>
-
-
-
                                         </div>
 
                                     </form>
@@ -150,7 +150,7 @@ if (isset($_POST['submit_denied'])) {
                 <?php
 
                 $headerType   = 'List';
-                $leftSideName = 'Visit Approval List';
+                $leftSideName = 'Visit Report List';
                 include('../../_includes/com_header.php');
                 ?>
                 <div class="card-body">
@@ -159,10 +159,9 @@ if (isset($_POST['submit_denied'])) {
                             <thead class="table-cust text-uppercase text-center ">
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Select</th>
-                                    <th>Customer Information</th>
                                     <th>Concern Information </th>
-                                    <th>Visit Information</th>
+                                    <th>Assign Information</th>
+                                    <th>Hot Information</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -176,31 +175,32 @@ if (isset($_POST['submit_denied'])) {
                                     $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                 }
                                 //query statement 
-                                $query  = "SELECT B.ID, 
-                                            A.REF_ID,
-                                            A.ASSIGN_DATE,
-                                            A.CREATED_BY CONCERN_ID,C.AREA_ZONE,
-                                            C.EMP_NAME CC_NAME,
-                                            A.CUSTOMER_REMARKS,
-                                            A.CREATED_DATE,
-                                            A.VISIT_LOCATION,
-                                            A.CUSTOMER_NAME,
-                                            A.INSTALLMENT_AMOUNT,
-                                            (select NUMBER_OF_DUE from LEASE_ALL_INFO_ERP K where REF_CODE=A.REF_ID) NUMBER_OF_DUE,
-                                            (select LAST_PAYMENT_AMOUNT from LEASE_ALL_INFO_ERP where REF_CODE=A.REF_ID) LAST_PAYMENT_AMOUNT,
-                                            (select LAST_PAYMENT_DATE from LEASE_ALL_INFO_ERP where REF_CODE=A.REF_ID) LAST_PAYMENT_DATE,
-                                            (select PARTY_ADDRESS from LEASE_ALL_INFO_ERP where REF_CODE=A.REF_ID) PARTY_ADDRESS
-                                            FROM RML_COLL_VISIT_ASSIGN A,COLL_VISIT_ASSIGN_APPROVAL B,RML_COLL_APPS_USER C
-                                            WHERE A.ID=B.RML_COLL_VISIT_ASSIGN_ID
-                                            AND A.CREATED_BY=C.RML_ID
-                                            AND TRUNC(ASSIGN_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                            AND B.APPROVAL_STATUS IS NULL
-                                            AND A.CREATED_BY IN
-                                            (
-                                            SELECT RML_ID FROM MONTLY_COLLECTION
-                                                WHERE IS_ACTIVE=1
-                                                AND ZONAL_HEAD='$emp_session_id'
-                                            )";
+                                $query  = "SELECT 
+                                            ZONE,
+                                            RML_ID,
+                                            CONCERN,
+                                            CODE_ASSIGN_ERP(RML_ID) TOTAL_CODE,
+                                            (select count(B.REF_ID) from RML_COLL_VISIT_ASSIGN B
+                                                    WHERE B.CREATED_BY=A.RML_ID
+                                                    AND trunc(B.ASSIGN_DATE) between TO_DATE('$v_start_date','DD/MM/YYYY') and TO_DATE('$v_end_date','DD/MM/YYYY'))
+                                                TOTAL_VISIT_ASSIGN,
+                                                (select count(UNIQUE(B.REF_ID)) from RML_COLL_VISIT_ASSIGN B
+                                                    WHERE B.CREATED_BY=A.RML_ID
+                                                    AND trunc(B.ASSIGN_DATE) between TO_DATE('$v_start_date','DD/MM/YYYY') and TO_DATE('$v_end_date','DD/MM/YYYY'))
+                                                TOTAL_UNIQUE_ASSIGN,
+                                                (select count(B.REF_ID) from RML_COLL_VISIT_ASSIGN B
+                                                    WHERE B.VISIT_STATUS=1
+                                                    AND B.CREATED_BY=A.RML_ID
+                                                    AND trunc(B.ASSIGN_DATE) between TO_DATE('$v_start_date','DD/MM/YYYY') and TO_DATE('$v_end_date','DD/MM/YYYY'))
+                                                TOTAL_VISITED,
+                                                (select count(unique(B.REF_ID)) from RML_COLL_VISIT_ASSIGN B
+                                                    WHERE B.VISIT_STATUS=1
+                                                    AND B.CREATED_BY=A.RML_ID
+                                                    AND trunc(B.ASSIGN_DATE) between TO_DATE('$v_start_date','DD/MM/YYYY') and TO_DATE('$v_end_date','DD/MM/YYYY'))
+                                                UNIQUE_VISITED	
+                                        FROM MONTLY_COLLECTION A
+                                        WHERE IS_ACTIVE=1
+                                        AND ZONAL_HEAD='$emp_session_id'";
                                 // 
                                 if (isset($_POST['emp_concern'])) {
                                     $emp_concern = $_REQUEST['emp_concern'];
@@ -219,33 +219,47 @@ if (isset($_POST['submit_denied'])) {
                                                 <?php echo $number; ?>
                                             </strong>
                                         </td>
-                                        <td class="text-center">
-                                            <input type="checkbox" name="check_list[]" value="<?php echo $row['ID']; ?>" style="text-align: center; vertical-align: middle;horiz-align: middle;">
-                                        </td>
+
                                         <td class="customer-info">
                                             <?php
-                                            echo 'Customer: ' . $row['CUSTOMER_NAME'] . '<br>';
-                                            echo 'Number Of Due: <span class="text-danger fw-bold">' . $row['NUMBER_OF_DUE'] . '</span> TK<br>';
-                                            echo 'Last Payment: <span class="text-infos fw-bold">' . number_format($row['LAST_PAYMENT_AMOUNT'], 2) . '</span> TK<br>';
-                                            echo 'Last Payment Date: <span class="text-primarys fw-bold">' . $row['LAST_PAYMENT_DATE'] . '</span>.<br>';
-                                            echo 'EMI:  <span class="text-success fw-bold">' . number_format($row['INSTALLMENT_AMOUNT'], 2) . '</span> TK';
+                                            echo 'Name: ' . $row['CONCERN'];
+                                            echo '<br>';
+                                            echo 'ID: ' . $row['RML_ID'];
+                                            echo '<br>';
+                                            echo 'Zone: <b style="color:red;">' . $row['ZONE'] . '</b>';
                                             ?>
                                         </td>
                                         <td class="concern-info">
+                                            <u>
+                                                <a href="cc_visit_code.php?<?php echo '&login_id=' . $row['RML_ID'] . '&start_date=' . $v_start_date . '&end_date=' . $v_end_date . '&want=total_code'; ?>">
+                                                    <?php
+                                                    echo 'Total Code: ' . $row['TOTAL_CODE'];
+                                                    echo '<br>'; ?>
+                                                </a>
+                                            </u>
+                                            <u>
+                                                <a href="cc_visit_code.php?<?php echo '&login_id=' . $row['RML_ID'] . '&start_date=' . $v_start_date . '&end_date=' . $v_end_date . '&want=total_assign'; ?>">
+                                                    <?php echo 'Total Assign: ' . $row['TOTAL_VISIT_ASSIGN']; ?>
+                                                </a>
+                                            </u>
+                                            <br>
                                             <?php
-                                            echo 'Concern Name: ' . $row['CC_NAME'] . '<br>';
-                                            echo 'Concern ID: ' . $row['CONCERN_ID'] . '<br>';
-                                            echo 'Zone: ' . $row['AREA_ZONE'] . '<br>';
-                                            echo 'Entry Date: ' . $row['CREATED_DATE'];
+                                            echo 'Unique Assign: ' . $row['TOTAL_UNIQUE_ASSIGN'];
                                             ?>
                                         </td>
                                         <td>
+                                            <u>
+                                                <a target="_blank" href="cc_visit_code.php?<?php echo '&login_id=' . $row['RML_ID'] . '&start_date=' . $v_start_date . '&end_date=' . $v_end_date . '&want=Not_Touching_Code'; ?>">
+                                                    <?php echo 'Not Touching: ' . ($row['TOTAL_CODE'] - $row['TOTAL_UNIQUE_ASSIGN']); ?>
+                                                </a>
+                                            </u>
+
                                             <?php
-                                            echo 'Code: ' . $row['REF_ID'] . '<br>';
-                                            echo 'Assign Visit Location: <span class="fw-bold text-danger">' . $row['VISIT_LOCATION'] . '</span><br>';
-                                            echo 'Party Address: <i>' . $row['PARTY_ADDRESS'] . '</i><br>';
-                                            echo 'Visit Date: <span>' . $row['ASSIGN_DATE'] . '</span><br>';
-                                            echo 'Remarks: <span class="fw-bold text-danger">' . $row['CUSTOMER_REMARKS'] . '</span>';
+
+                                            echo '<br>';
+                                            echo 'Total Visited: ' . $row['TOTAL_VISITED'];
+                                            echo '<br>';
+                                            echo 'Unique Visited: ' . $row['UNIQUE_VISITED'];
                                             ?>
                                         </td>
 
