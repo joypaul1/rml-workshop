@@ -39,17 +39,15 @@
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-cart'></i>
                         </div>
-                        <div class="menu-title">Product Panel </div>
+                        <div class="menu-title">Visit Assign Module </div>
                     </a>
                     <ul>
-                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Products</a>
+                        <li> <a href="<?php echo $basePath ?>/zh_module/view/concern_list.php"><i class='bx bxs-arrow-to-right'></i></i>Concern List</a>
                         </li>
-                        <!-- <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Product Details</a>
+                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Approval List</a>
                         </li>
-                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Add New Products</a>
+                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Report List</a>
                         </li>
-                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Orders</a>
-                        </li> -->
                     </ul>
                 </li>
                 <li class="<?php echo isActive('/user_module/view/edit.php'); ?>">

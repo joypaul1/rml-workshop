@@ -11,6 +11,17 @@ if (!isset($_SESSION['USER_INFO'])) {
 }
 include_once('../../../_config/connoracle.php');
 $basePath = $_SESSION['basePath'];
+$emp_session_id  = $_SESSION['USER_INFO']['emp_id'];
+
 include_once('../../../_includes/header.php');
-include_once('../../../_includes/sidebar.php');
+
+if ($_SESSION['USER_INFO']['user_role_id'] == 2) {
+    include_once('../../../_includes/adm_sidebar.php');
+}
+if ($_SESSION['USER_INFO']['user_role_id'] == 3) {
+    include_once('../../../_includes/ah_sidebar.php');
+}
+if ($_SESSION['USER_INFO']['user_role_id'] == 4) {
+    include_once('../../../_includes/zh_sidebar.php');
+}
 include_once('../../../_includes/top_header.php');

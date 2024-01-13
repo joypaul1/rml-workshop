@@ -196,8 +196,7 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="<?php echo $basePath . '/user_module/view/profile.php?id=' . $_SESSION['USER_INFO']['id'] . '&actionType=profileEdit' ?>"><i class="bx bx-user"></i><span>Profile</span></a>
-                    </li>
+                    
 
                     <li>
                         <a class="dropdown-item" href="<?php echo $basePath ?>/index.php?logout_hr=true"><i
