@@ -236,7 +236,7 @@ include_once('../../_includes/footer.php');
             dataType: "json",
             data: {
                 brand_ID: $user_brand_id.val(),
-                type_ID: 3,
+                type_ID: 4,
             },
             success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
@@ -269,7 +269,7 @@ include_once('../../_includes/footer.php');
             dataType: "json",
             data: {
                 brand_ID: $user_brand_id.val(),
-                type_ID: 4,
+                type_ID: 3,
             },
             success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
