@@ -10,7 +10,7 @@ $log_user_id   = $_SESSION['USER_INFO']['ID'];
 if (isset($_GET["brand_ID"]) && isset($_GET["type_ID"])) {
     $brand_ID = $_GET["brand_ID"];
     $type_ID  = $_GET["type_ID"];
-    $query    = "SELECT ID,USER_NAME FROM USER_PROFILE WHERE USER_BRAND_ID = $brand_ID or USER_BRAND_ID = 1 AND USER_TYPE_ID = $type_ID";
+    $query    = "SELECT ID,USER_NAME FROM USER_PROFILE WHERE USER_BRAND_ID = $brand_ID AND USER_TYPE_ID = $type_ID";
 
     $strSQL = @oci_parse($objConnect, $query);
     if (@oci_execute($strSQL)) {
@@ -23,12 +23,10 @@ if (isset($_GET["brand_ID"]) && isset($_GET["type_ID"])) {
         $response['data']   = $data;
         echo json_encode($response);
         exit();
-    }
-    else {
+    } else {
         $response['status']  = false;
         $response['message'] = 'Something went wrong! Please try again';
         echo json_encode($response);
         exit();
     }
 }
-

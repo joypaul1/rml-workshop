@@ -5,7 +5,7 @@ require_once('../../_config/connoracle.php');
 $basePath   = $_SESSION['basePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
-$valid_formats = array( "jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP" );
+$valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP");
 $log_user_id   = $_SESSION['USER_INFO']['ID'];
 
 
@@ -46,24 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
 
                 if ($filename) {
-
-                }
-                else {
+                } else {
 
                     $imageStatus              = "Something went wrong file uploading!";
                     $_SESSION['noti_message'] = $imageStatus;
                     echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
                     exit();
                 }
-            }
-            else {
+            } else {
                 $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
                 $_SESSION['noti_message'] = $imageStatus;
                 echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
                 exit();
             }
         }
-
     }
 
     // Prepare the SQL statement
@@ -85,9 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         $_SESSION['noti_message'] = $message;
         echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
         exit();
-
-    }
-    else {
+    } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
             'text'   => htmlentities($e['message'], ENT_QUOTES),
@@ -101,15 +95,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit') {
 
-    $editId         = $_POST['editId'];
-    $USER_NAME      = $_POST['USER_NAME'];
-    $USER_MOBILE    = $_POST['USER_MOBILE'];
-    $USER_PASSWORD  = $_POST['USER_PASSWORD'];
-    $RML_ID         = $_POST['RML_ID'];
-    $USER_BRAND_ID  = $_POST['USER_BRAND_ID'];
-    $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
-    $RESPONSIBLE_ID = $_POST['RESPONSIBLE_ID'];
-    $IMAGE_LINK     = $_FILES['IMAGE_LINK'];
+    $editId                 = $_POST['editId'];
+    $USER_NAME              = $_POST['USER_NAME'];
+    $USER_MOBILE            = $_POST['USER_MOBILE'];
+    $USER_PASSWORD          = $_POST['USER_PASSWORD'];
+    $RML_ID                 = $_POST['RML_ID'];
+    $USER_BRAND_ID          = $_POST['USER_BRAND_ID'];
+    $USER_TYPE_ID           = $_POST['USER_TYPE_ID'];
+    $RESPONSIBLE_ID         = $_POST['RESPONSIBLE_ID'];
+    $LANG                   = $_POST['LANG'];
+    $LAT                    = $_POST['LAT'];
+    $LOCATION_REMARKS       = $_POST['LOCATION_REMARKS'];
+    $IMAGE_LINK             = $_FILES['IMAGE_LINK'];
+    $IMAGE_LINK             = $_FILES['IMAGE_LINK'];
+    $IMAGE_LINK             = $_FILES['IMAGE_LINK'];
     if ($IMAGE_LINK) {
         $imagename = $IMAGE_LINK['name'];
         $size      = $IMAGE_LINK['size'];
@@ -148,8 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
 
                     $strSQL = @oci_parse($objConnect, $query);
                     if (@oci_execute($strSQL)) {
-                    }
-                    else {
+                    } else {
                         $e                        = @oci_error($strSQL);
                         $message                  = [
                             'text'   => htmlentities($e['message'], ENT_QUOTES),
@@ -158,38 +156,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
                         $_SESSION['noti_message'] = $message;
                         echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
                     }
-                }
-                else {
+                } else {
 
                     $imageStatus              = "Something went wrong file uploading!";
                     $_SESSION['noti_message'] = $imageStatus;
                     echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
                     exit();
                 }
-            }
-            else {
+            } else {
                 $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
                 $_SESSION['noti_message'] = $imageStatus;
                 echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
             }
         }
-
-
     }
 
     // Prepare the SQL statement
     $query = "UPDATE USER_PROFILE SET 
-    USER_NAME       = '$USER_NAME',
-    USER_MOBILE     = '$USER_MOBILE',
-    USER_PASSWORD   = '$USER_PASSWORD',
-    PENDRIVE_ID     = '$USER_PASSWORD',
-    RML_ID          = '$RML_ID',
-    USER_BRAND_ID   = '$USER_BRAND_ID',
-    USER_TYPE_ID    = '$USER_TYPE_ID',  
-    UPDATED_BY_ID   = $log_user_id,
-    RESPONSIBLE_ID   = $RESPONSIBLE_ID,
-    UPDATED_DATE    = SYSDATE 
-    WHERE ID        = $editId";
+    USER_NAME           = '$USER_NAME',
+    USER_MOBILE         = '$USER_MOBILE',
+    USER_PASSWORD       = '$USER_PASSWORD',
+    PENDRIVE_ID         = '$USER_PASSWORD',
+    RML_ID              = '$RML_ID',
+    USER_BRAND_ID       = '$USER_BRAND_ID',
+    USER_TYPE_ID        = '$USER_TYPE_ID',  
+    UPDATED_BY_ID       = $log_user_id,
+    RESPONSIBLE_ID      = $RESPONSIBLE_ID,
+    LANG                = '$LANG',
+    LAT                 = '$LAT',
+    LOCATION_REMARKS    = '$LOCATION_REMARKS',
+    UPDATED_DATE        = SYSDATE 
+    WHERE ID            = $editId";
 
     $strSQL = @oci_parse($objConnect, $query);
 
@@ -204,8 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
         $_SESSION['noti_message'] = $message;
 
         echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
-    }
-    else {
+    } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
             'text'   => htmlentities($e['message'], ENT_QUOTES),
@@ -260,8 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
 
                     $strSQL = @oci_parse($objConnect, $query);
                     if (@oci_execute($strSQL)) {
-                    }
-                    else {
+                    } else {
                         $e                        = @oci_error($strSQL);
                         $message                  = [
                             'text'   => htmlentities($e['message'], ENT_QUOTES),
@@ -270,23 +265,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
                         $_SESSION['noti_message'] = $message;
                         echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
                     }
-                }
-                else {
+                } else {
 
                     $imageStatus              = "Something went wrong file uploading!";
                     $_SESSION['noti_message'] = $imageStatus;
                     echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
                     exit();
                 }
-            }
-            else {
+            } else {
                 $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
                 $_SESSION['noti_message'] = $imageStatus;
                 echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
             }
         }
-
-
     }
 
     if ($USER_PASSWORD) {
@@ -296,8 +287,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
         USER_PASSWORD   = '$USER_PASSWORD',
         PENDRIVE_ID     = '$USER_PASSWORD'
         WHERE ID        = $editId";
-    }
-    else {
+    } else {
         $query = "UPDATE USER_PROFILE SET 
         USER_NAME       = '$USER_NAME'
         WHERE ID        = $editId";
@@ -316,8 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
         $_SESSION['noti_message'] = $message;
 
         echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
-    }
-    else {
+    } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
             'text'   => htmlentities($e['message'], ENT_QUOTES),
@@ -338,8 +327,7 @@ if (($_GET["deleteID"]) && $_SERVER['REQUEST_METHOD'] === 'GET') {
         $response['message'] = 'Deleted Successfully ...';
         echo json_encode($response);
         exit();
-    }
-    else {
+    } else {
         $response['status']  = 'error';
         $response['message'] = 'Something went wrong! Please try again';
         echo json_encode($response);
@@ -368,17 +356,14 @@ function compressImage($ext, $uploadedfile, $path, $actual_image_name, $newwidth
 {
     if ($ext == "jpg" || $ext == "jpeg") {
         $src = imagecreatefromjpeg($uploadedfile);
-    }
-    else if ($ext == "png") {
+    } else if ($ext == "png") {
         $src = imagecreatefrompng($uploadedfile);
-    }
-    else if ($ext == "gif") {
+    } else if ($ext == "gif") {
         $src = imagecreatefromgif($uploadedfile);
-    }
-    else {
+    } else {
         $src = imagecreatefrombmp($uploadedfile);
     }
-    list( $width, $height ) = getimagesize($uploadedfile);
+    list($width, $height) = getimagesize($uploadedfile);
     if (!$newheight) {
         $newheight = ($height / $width) * $newwidth;
     }

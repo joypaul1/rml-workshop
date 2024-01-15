@@ -16,7 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
     UP.USER_BRAND_ID,
     UP.USER_TYPE_ID,
     UP.IMAGE_LINK,
-    UP.RESPONSIBLE_ID
+    UP.RESPONSIBLE_ID,
+    UP.LAT,
+    UP.LANG,
+    UP.LOCATION_REMARKS
     FROM USER_PROFILE UP WHERE ID = $edit_id";
     $strSQL  = @oci_parse($objConnect, $query);
     @oci_execute($strSQL);
@@ -102,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                     </select>
                                     <div class="invalid-feedback">Please select a User Brand.</div>
                                 </div>
-                                <div id="addResponsiableData"></div>
+                                <div class="row mt-3" id="addResponsiableData"></div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
                                     <input type="file" name="IMAGE_LINK" class="dropify" data-default-file="<?php echo $basePath . '/' . $data['IMAGE_LINK'] ?>" />
@@ -128,6 +131,10 @@ include_once('../../_includes/footer.php');
 ?>
 <script>
     const $RESPONSIBLE_ID = "<?php echo $data['RESPONSIBLE_ID'] ?>";
+    const $LAT            = "<?php echo $data['LAT'] ?>";
+    const $LANG           = "<?php echo $data['LANG'] ?>";
+    const $LOCATION_REMARKS           = "<?php echo $data['LOCATION_REMARKS'] ?>";
+    
     let url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
     const $user_brand_id = $('select[name="USER_BRAND_ID"]');
@@ -236,7 +243,7 @@ include_once('../../_includes/footer.php');
             dataType: "json",
             data: {
                 brand_ID: $user_brand_id.val(),
-                type_ID: 3,
+                type_ID: 4,
             },
             success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
@@ -264,12 +271,12 @@ include_once('../../_includes/footer.php');
 
     function get_selExc() {
         $.ajax({
-            type: "method",
+            type: "GET",
             url: url,
             dataType: "json",
             data: {
                 brand_ID: $user_brand_id.val(),
-                type_ID: 4,
+                type_ID: 3,
             },
             success: function(res) {
                 let htmlTag = `<div class="col-sm-12 col-md-4">
@@ -282,6 +289,20 @@ include_once('../../_includes/footer.php');
                     });
                 }
                 htmlTag += `</select></div>`;
+                htmlTag += `<div class="col-sm-12 col-md-4">
+                                    <label for="validationCustom12" class="form-label">Loc. LAT. <span class="text-danger">*</span></label>
+                                    <input type="text" name="LAT" value="${$LAT}"  autocomplete="off" class="form-control" id="validationCustom12" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div><div class="col-sm-12 col-md-4">
+                                    <label for="validationCustom13" class="form-label">Loc. LANG. <span class="text-danger">*</span></label>
+                                    <input type="text" name="LANG" value="${$LANG}" autocomplete="off" class="form-control" id="validationCustom13" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 mt-3">
+                                    <label for="validationCustom14" class="form-label">Address Location <span class="text-danger">*</span></label>
+                                    <input type="text" name="LOCATION_REMARKS" autocomplete="off" class="form-control" id="validationCustom14" value="${$LOCATION_REMARKS}" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>`;
                 $('#addResponsiableData').append(htmlTag);
                 // Initialize Select2 for the appended dropdown element
                 $('#addResponsiableData').find('#validationCustom10_sale').select2({
