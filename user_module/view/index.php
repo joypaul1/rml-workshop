@@ -50,7 +50,7 @@ include_once('../../_helper/2step_com_conn.php');
                                             WHERE ID = UP.USER_BRAND_ID)
                                             AS USER_BRAND, 
                                             ( SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                                            FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ORDER BY UP.ID DESC";
+                                            FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ORDER BY UP.USER_TYPE_ID";
 
                                     $strSQL = @oci_parse($objConnect, $query);
 
