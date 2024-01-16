@@ -31,25 +31,23 @@
                     <a href="<?php echo $basePath ?>/home/dashboard.php">
                         <div class="parent-icon"><i class="bx bx-home-circle"></i>
                         </div>
-                        <div class="menu-title">Dashboard  </div>
+                        <div class="menu-title">Dashboard </div>
                     </a>
                 </li>
 
-                <li>
+
+                <li class="<?php echo isActive('/visit_module/view/edit.php'); ?>">
                     <a href="javascript:;" class="has-arrow">
-                        <div class="parent-icon"><i class='bx bx-cart'></i>
+
+                        <div class="parent-icon"><i class='bx bx-group'></i>
                         </div>
-                        <div class="menu-title">Product Panel </div>
+                        <div class="menu-title">Visit Module</div>
                     </a>
                     <ul>
-                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Products</a>
+                        <li> <a href="<?php echo $basePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create Visit</a>
                         </li>
-                        <!-- <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Product Details</a>
+                        <li> <a href="<?php echo $basePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of Visit</a>
                         </li>
-                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Add New Products</a>
-                        </li>
-                        <li> <a href="#"><i class='bx bxs-arrow-to-right'></i></i>Orders</a>
-                        </li> -->
                     </ul>
                 </li>
                 <li class="<?php echo isActive('/user_module/view/edit.php'); ?>">

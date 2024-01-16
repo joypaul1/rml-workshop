@@ -218,8 +218,6 @@ $basePath    = $_SESSION['basePath'];
                                                 },
                                                 dataType: "JSON",
                                                 success: function(res) {
-                                                    console.log(res.data[k].USER_NAME, res.data[k].ID);
-                                                    
                                                     for (var jk = 0; jk < res.data.length; jk++) {
                                                         var subsubChild = {
                                                             name: res.data[jk].USER_NAME,
