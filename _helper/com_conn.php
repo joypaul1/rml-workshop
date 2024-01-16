@@ -13,6 +13,7 @@ include_once('../_config/connoracle.php');
 
 $basePath = $_SESSION['basePath'];
 include_once('../_includes/header.php');
+
 if ($_SESSION['USER_INFO']['USER_TYPE'] == 'HOD') {
     include_once('../_includes/sidebar.php');
 }
@@ -28,5 +29,5 @@ if ($_SESSION['USER_INFO']['USER_TYPE'] == 'RETAILER') {
 if ($_SESSION['USER_INFO']['USER_TYPE'] == 'MECHANICS') {
     include_once('../_includes/mechanics_sidebar.php');
 }
-include_once('../_includes/sidebar.php');
+
 include_once('../_includes/top_header.php');

@@ -12,5 +12,20 @@ if (!isset($_SESSION['USER_INFO'])) {
 include_once('../../../_config/connoracle.php');
 $basePath = $_SESSION['basePath'];
 include_once('../../../_includes/header.php');
-include_once('../../../_includes/sidebar.php');
+
+if ($_SESSION['USER_INFO']['USER_TYPE'] == 'HOD') {
+    include_once('../../../_includes/sidebar.php');
+}
+if ($_SESSION['USER_INFO']['USER_TYPE'] == 'COORDINATOR') {
+    include_once('../../../_includes/coordinator_sidebar.php');
+}
+if ($_SESSION['USER_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
+    include_once('../../../_includes/executive_sidebar.php');
+}
+if ($_SESSION['USER_INFO']['USER_TYPE'] == 'RETAILER') {
+    include_once('../../../_includes/retailer_sidebar.php');
+}
+if ($_SESSION['USER_INFO']['USER_TYPE'] == 'MECHANICS') {
+    include_once('../../../_includes/mechanics_sidebar.php');
+}
 include_once('../../../_includes/top_header.php');
