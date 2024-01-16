@@ -4,6 +4,8 @@
     $v_active      = 'mm-active';
     $v_active_open = 'mm-active';
     $currentUrl    = $_SERVER['REQUEST_URI'];
+
+    
     function isActive($url)
     {
         global $currentUrl;

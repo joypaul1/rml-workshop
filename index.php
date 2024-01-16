@@ -11,9 +11,12 @@ if (isset($_POST['login_submit'])) {
         $v_password   = trim($_POST['password']);
         $md5Password  = md5($v_password);
         $sql    = "SELECT 
-                ID, USER_NAME, USER_MOBILE, 
-                RML_ID, USER_PASSWORD, USER_BRAND_ID, IMAGE_LINK,
-                USER_TYPE_ID, USER_STATUS FROM USER_PROFILE WHERE USER_MOBILE ='$v_usermobile' and USER_PASSWORD = '$md5Password'";
+                UP.ID, UP.USER_NAME,UP.USER_MOBILE, 
+                UP.RML_ID, UP.USER_PASSWORD, UP.USER_BRAND_ID, UP.IMAGE_LINK,
+                UP.USER_TYPE_ID,
+                (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
+                FROM USER_PROFILE UP WHERE UP.USER_MOBILE ='$v_usermobile' and UP.USER_PASSWORD = '$md5Password'
+                and USER_STATUS = 1";
         $strSQL = @oci_parse($objConnect, $sql);
         @oci_execute($strSQL);
         $dataRow = @oci_fetch_assoc($strSQL);
