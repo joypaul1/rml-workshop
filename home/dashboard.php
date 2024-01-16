@@ -1,4 +1,11 @@
 <?php
+$dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js';
+$dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js';
+$dynamic_link_js[]  = '../assets/plugins/apexcharts-bundle/js/apexcharts.min.js';
+$dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.min.js';
+$dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.extension.js';
+$dynamic_link_js[]  = '../assets/js/index2.js';
+
 include_once('../_helper/com_conn.php');
 ?>
 
@@ -78,8 +85,7 @@ include_once('../_helper/com_conn.php');
                                 <h6 class="mb-0">Sales Overview</h6>
                             </div>
                             <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i
-                                        class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="javascript:;">Action</a>
@@ -106,8 +112,7 @@ include_once('../_helper/com_conn.php');
                                 <h6 class="mb-0">Monthly Orders</h6>
                             </div>
                             <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i
-                                        class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="javascript:;">Action</a>
@@ -138,8 +143,7 @@ include_once('../_helper/com_conn.php');
                                 <h6 class="mb-0">Top Categories</h6>
                             </div>
                             <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i
-                                        class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="javascript:;">Action</a>
@@ -229,8 +233,7 @@ include_once('../_helper/com_conn.php');
                                 <h6 class="mb-0">New Users</h6>
                             </div>
                             <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i
-                                        class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="javascript:;">Action</a>
@@ -386,8 +389,7 @@ include_once('../_helper/com_conn.php');
                                 <h6 class="mb-0">Browser Statistics</h6>
                             </div>
                             <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i
-                                        class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="javascript:;">Action</a>
@@ -407,14 +409,11 @@ include_once('../_helper/com_conn.php');
                         <div id="chart6"></div>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center border-top">Chrome <span
-                                class="badge bg-danger rounded-pill">10</span>
+                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center border-top">Chrome <span class="badge bg-danger rounded-pill">10</span>
                         </li>
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Opera <span
-                                class="badge bg-primary rounded-pill">65</span>
+                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Opera <span class="badge bg-primary rounded-pill">65</span>
                         </li>
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Firefox <span
-                                class="badge bg-warning text-dark rounded-pill">14</span>
+                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Firefox <span class="badge bg-warning text-dark rounded-pill">14</span>
                         </li>
                     </ul>
                 </div>
@@ -427,8 +426,7 @@ include_once('../_helper/com_conn.php');
                                 <h6 class="mb-0">Top Selling Countries</h6>
                             </div>
                             <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i
-                                        class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="javascript:;">Action</a>
@@ -477,8 +475,7 @@ include_once('../_helper/com_conn.php');
                                 <h6 class="mb-0">Recent Orders</h6>
                             </div>
                             <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i
-                                        class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
+                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="javascript:;">Action</a>

@@ -9,9 +9,6 @@ $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG",
 $log_user_id   = $_SESSION['USER_INFO']['ID'];
 
 
-
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
     $USER_NAME      = $_POST['USER_NAME'];

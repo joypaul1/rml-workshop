@@ -28,7 +28,7 @@
     <!-- Theme Style CSS -->
     <!-- <link rel="stylesheet" href="<?php echo $basePath ?>/assets/css/dark-theme.css"> -->
     <!-- <link rel="stylesheet" href="<?php echo $basePath ?>/assets/css/semi-dark.css"> -->
-    <link rel="stylesheet" href="<?php echo $basePath ?>/assets/css/header-colors.css">
+<link rel="stylesheet" href="<?php echo $basePath ?>/assets/css/header-colors.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.8/sweetalert2.min.css"

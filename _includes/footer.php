@@ -101,12 +101,6 @@
 <script src="<?php echo $basePath ?>/assets/plugins/simplebar/js/simplebar.min.js"></script>
 <script src="<?php echo $basePath ?>/assets/plugins/metismenu/js/metisMenu.min.js"></script>
 <script src="<?php echo $basePath ?>/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/chartjs/js/Chart.min.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/chartjs/js/Chart.extension.js"></script>
-<script src="<?php echo $basePath ?>/assets/js/index2.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.8/sweetalert2.min.js"
     integrity="sha512-7x7HoEikRZhV0FAORWP+hrUzl75JW/uLHBbg2kHnPdFmScpIeHY0ieUVSacjusrKrlA/RsA2tDOBvisFmKc3xw==" crossorigin="anonymous"
