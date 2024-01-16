@@ -15,12 +15,14 @@ $log_user_id   = $_SESSION['USER_INFO']['ID'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
     $USER_NAME      = $_POST['USER_NAME'];
-    $USER_PASSWORD  = $_POST['USER_PASSWORD'];
+    $PENDRIVE_ID    = $_POST['USER_PASSWORD'];
+    $USER_PASSWORD  = isset($_POST['USER_PASSWORD']) ? md5($_POST['USER_PASSWORD']) : '';
     $USER_MOBILE    = $_POST['USER_MOBILE'];
     $RML_ID         = $_POST['RML_ID'];
     $USER_BRAND_ID  = $_POST['USER_BRAND_ID'];
     $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
-    $RESPONSIBLE_ID = $_POST['RESPONSIBLE_ID'];
+    $RESPONSIBLE_ID = isset($_POST['RESPONSIBLE_ID'])? $_POST['RESPONSIBLE_ID']: '';
+    $RML_ID         = isset($_POST['RML_ID'])? $_POST['RML_ID']: '';
     $IMAGE_LINK     = $_FILES['IMAGE_LINK'];
     $filename       = null;
 
@@ -65,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
     // Prepare the SQL statement
     $query = "INSERT INTO USER_PROFILE 
             (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_ID,USER_BRAND_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,RESPONSIBLE_ID) 
-            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$USER_PASSWORD','$RML_ID','$USER_BRAND_ID', '$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$RESPONSIBLE_ID')";
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_BRAND_ID', '$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$RESPONSIBLE_ID')";
 
 
     $strSQL = @oci_parse($objConnect, $query);
@@ -98,101 +100,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     $editId                 = $_POST['editId'];
     $USER_NAME              = $_POST['USER_NAME'];
     $USER_MOBILE            = $_POST['USER_MOBILE'];
-    $USER_PASSWORD          = $_POST['USER_PASSWORD'];
-    $RML_ID                 = $_POST['RML_ID'];
+    $PENDRIVE_ID            = $_POST['USER_PASSWORD'];
+    $USER_PASSWORD          = isset($_POST['USER_PASSWORD']) ? md5($_POST['USER_PASSWORD']) : '';
+    $RML_ID                 = isset($_POST['RML_ID'])? $_POST['RML_ID']: '';
     $USER_BRAND_ID          = $_POST['USER_BRAND_ID'];
     $USER_TYPE_ID           = $_POST['USER_TYPE_ID'];
-    $RESPONSIBLE_ID         = $_POST['RESPONSIBLE_ID'];
-    $LANG                   = $_POST['LANG'];
-    $LAT                    = $_POST['LAT'];
-    $LOCATION_REMARKS       = $_POST['LOCATION_REMARKS'];
-    $IMAGE_LINK             = $_FILES['IMAGE_LINK'];
-    $IMAGE_LINK             = $_FILES['IMAGE_LINK'];
-    $IMAGE_LINK             = $_FILES['IMAGE_LINK'];
-    if ($IMAGE_LINK) {
-        $imagename = $IMAGE_LINK['name'];
-        $size      = $IMAGE_LINK['size'];
-
-        if (strlen($imagename)) {
-            $ext = strtolower(getExtension($imagename));
-            if (in_array($ext, $valid_formats)) {
-                $imgStorePath = '../../user_profile_image/';
-
-                pathExitOrCreate($imgStorePath); // check if folder exists or create
-
-                $actual_image_name = 'user_' . $editId . '_' . time() . "." . $ext;
-                $uploadedfile      = $IMAGE_LINK['tmp_name'];
-                //Re-sizing image. 
-                $width    = 150; //You can change dimension here.
-                $height   = 100; //You can change dimension here.
-                $filename = compressImage($ext, $uploadedfile, $imgStorePath, $actual_image_name, $width, $height);
-                $insert   = false; //
-
-                if ($filename) {
-                    // delet previous image
-                    $query  = "SELECT UP.ID,UP.IMAGE_LINK
-                    FROM USER_PROFILE UP WHERE ID = $editId";
-                    $strSQL = @oci_parse($objConnect, $query);
-                    @oci_execute($strSQL);
-                    $data = @oci_fetch_assoc($strSQL);
-
-                    if ($data['IMAGE_LINK']) {
-                        $file = '../../user_profile_image/' . $data['IMAGE_LINK'];
-                        if (file_exists($file)) {
-                            unlink($file); // delete image if exist
-                        }
-                    }  // end delet previous image
-                    // update image  link
-                    $query = "UPDATE USER_PROFILE SET IMAGE_LINK = '$filename' WHERE ID = $editId";
-
-                    $strSQL = @oci_parse($objConnect, $query);
-                    if (@oci_execute($strSQL)) {
-                    } else {
-                        $e                        = @oci_error($strSQL);
-                        $message                  = [
-                            'text'   => htmlentities($e['message'], ENT_QUOTES),
-                            'status' => 'false',
-                        ];
-                        $_SESSION['noti_message'] = $message;
-                        echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
-                    }
-                } else {
-
-                    $imageStatus              = "Something went wrong file uploading!";
-                    $_SESSION['noti_message'] = $imageStatus;
-                    echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
-                    exit();
-                }
-            } else {
-                $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
-                $_SESSION['noti_message'] = $imageStatus;
-                echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
-            }
-        }
-    }
+    $RESPONSIBLE_ID         = isset($_POST['RESPONSIBLE_ID'])? $_POST['RESPONSIBLE_ID']: '';
+    $LANG                   = isset($_POST['LANG'])? $_POST['LANG']: '';
+    $LAT                    = isset($_POST['LAT'])? $_POST['LAT']: '';
+    $LOCATION_REMARKS       = isset($_POST['LOCATION_REMARKS'])? $_POST['LOCATION_REMARKS']: '';
+   
 
     // Prepare the SQL statement
     $query = "UPDATE USER_PROFILE SET 
     USER_NAME           = '$USER_NAME',
     USER_MOBILE         = '$USER_MOBILE',
     USER_PASSWORD       = '$USER_PASSWORD',
-    PENDRIVE_ID         = '$USER_PASSWORD',
+    PENDRIVE_ID         = '$PENDRIVE_ID',
     RML_ID              = '$RML_ID',
     USER_BRAND_ID       = '$USER_BRAND_ID',
     USER_TYPE_ID        = '$USER_TYPE_ID',  
-    UPDATED_BY_ID       = $log_user_id,
-    RESPONSIBLE_ID      = $RESPONSIBLE_ID,
+    UPDATED_BY_ID       =  $log_user_id,
+    RESPONSIBLE_ID      =  '$RESPONSIBLE_ID',
     LANG                = '$LANG',
     LAT                 = '$LAT',
     LOCATION_REMARKS    = '$LOCATION_REMARKS',
     UPDATED_DATE        = SYSDATE 
     WHERE ID            = $editId";
-
+  
     $strSQL = @oci_parse($objConnect, $query);
-
+   
     // Execute the query
     if (@oci_execute($strSQL)) {
-
+       
         $message = [
             'text'   => 'Data Saved successfully.',
             'status' => 'true',

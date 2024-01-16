@@ -55,7 +55,7 @@ include_once('../../_helper/2step_com_conn.php');
                                         <option hidden value="<?php echo Null ?>"><- Select Type -></option>
                                         <?php
                                         $typeRow = [];
-                                        $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'";
+                                        $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1' ORDER BY ID ASC OFFSET 1 ROWS FETCH NEXT 4 ROWS ONLY";
                                         $strSQL  = @oci_parse($objConnect, $query);
 
                                         @oci_execute($strSQL);
