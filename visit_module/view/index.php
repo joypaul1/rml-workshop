@@ -1,5 +1,16 @@
 <?php
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2.min.css';
+$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.css';
+$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.date.css';
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
+$dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
+$dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.js';
+$dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
+$dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
+$dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 include_once('../../_helper/2step_com_conn.php');
+define('RECORDS_PER_PAGE', 10);
+$currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 ?>
 
 <!--start page wrapper -->
@@ -8,12 +19,84 @@ include_once('../../_helper/2step_com_conn.php');
 
 
         <div class="row">
+            <div class="card rounded-4">
+                <div class="card-body">
+
+                    <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong><i class='bx bx-filter-alt'></i> Filter Data</strong>
+                    </button>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+                                        <div class="row justify-content-center align-items-center">
+                                            <div class="col-sm-4">
+                                                <label>Select Your Retailer:</label>
+                                                <select name="emp_concern" class="form-control single-select">
+                                                    <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
+                                                    <?php
+                                                    $executiveID = $_SESSION['USER_INFO']['ID'];
+                                                    $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = $executiveID");
+                                                    oci_execute($strSQL);
+                    
+                                                    while ($row = oci_fetch_assoc($strSQL)) {
+                                                    ?>
+                                                        <option value="<?php echo $row['ID'] ?>"<?php echo isset($_POST['emp_concern']) && $_POST['emp_concern'] == $row['ID']?'Selected' : '' ?>>
+                                                            <?php echo $row['USER_NAME'] ?>
+                                                        </option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
+
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Start Data: </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar">
+                                                        </i>
+                                                    </div>
+                                                    <input required="" class="form-control datepicker" form="Form1" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01-m-Y'); ?>' />
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>End Data: </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar">
+                                                        </i>
+                                                    </div>
+                                                    <input required="" class="form-control datepicker" form="Form1" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('t-m-Y'); ?>' />
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <button class="form-control  btn btn-sm btn-gradient-primary mt-4" type="submit">Search Data<i class='bx bx-file-find'></i></button>
+                                            </div>
+
+
+
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
-                    $leftSideName  = 'User List';
-                    $rightSideName = 'User Create';
+                    $leftSideName  = 'Visit List';
+                    $rightSideName = 'Visit Create';
                     $routePath     = 'visit_module/view/create.php';
                     include('../../_includes/com_header.php');
 
@@ -49,7 +132,7 @@ include_once('../../_helper/2step_com_conn.php');
                                             FROM USER_BRAND
                                             WHERE ID = UP.USER_BRAND_ID)
                                             AS USER_BRAND, 
-                                            ( SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
+                                            (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
                                             FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ORDER BY UP.USER_TYPE_ID";
 
                                     $strSQL = @oci_parse($objConnect, $query);
@@ -112,46 +195,17 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
-    //delete data processing
+    //select 2
+    $('.single-select').select2({
+        theme: 'bootstrap4',
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        allowClear: Boolean($(this).data('allow-clear')),
+    });
 
-    $(document).on('click', '.delete_check', function() {
-        var id = $(this).data('id');
-        let url = $(this).data('href');
-        swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-        }).then((result) => {
-            if (result.value) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                        url: url,
-                        type: 'GET',
-                        data: {
-                            deleteID: id
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(response) {
-                        swal.fire('Deleted!', response.message, response.status);
-                        location.reload(); // Reload the page
-                    })
-                    .fail(function() {
-                        swal.fire('Oops...', 'Something went wrong!', 'error');
-                    });
-
-            }
-
-        })
-
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: true,
+        format: 'dd-mm-yyyy' // Specify your desired date format
     });
 </script>

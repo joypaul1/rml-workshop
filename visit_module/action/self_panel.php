@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
     $VISIT_TYPE_ID      = $_POST['visit_type'];
     $user_ids           = $_POST['user_id'];
     $user_remarks       = $_POST['user_remarks'];
-    $VISIT_DATE         =  date('Y-m-d', strtotime($_POST['date']));
+    $VISIT_DATE         = date('Y-m-d', strtotime($_POST['date']));
     $ENTRY_BY_ID        = $log_user_id;
     $RETAILER_ID        = $log_user_id;
 
