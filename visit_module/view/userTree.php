@@ -178,7 +178,7 @@ $basePath    = $_SESSION['basePath'];
 
                     $.ajax({
                         type: "GET",
-                        url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                        url: "<?php echo ($basePath . '/visit_module/action/getSaleExecutive.php') ?>",
                         data: {
                             coordinator: userData.ID
                         },
@@ -195,7 +195,7 @@ $basePath    = $_SESSION['basePath'];
 
                                 $.ajax({
                                     type: "GET",
-                                    url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                    url: "<?php echo ($basePath . '/visit_module/action/getSaleExecutive.php') ?>",
                                     data: {
                                         sale_executive: res.data[j].ID
                                     },
@@ -212,7 +212,7 @@ $basePath    = $_SESSION['basePath'];
 
                                             $.ajax({
                                                 type: "GET",
-                                                url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                                url: "<?php echo ($basePath . '/visit_module/action/getSaleExecutive.php') ?>",
                                                 data: {
                                                     retailer: res.data[k].ID
                                                 },

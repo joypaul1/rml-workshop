@@ -44,9 +44,9 @@
                         <div class="menu-title">Visit Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create Visit</a>
+                        <li> <a href="<?php echo $basePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create Visit </a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of Visit</a>
+                        <li> <a href="<?php echo $basePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of Visit </a>
                         </li>
                     </ul>
                 </li>

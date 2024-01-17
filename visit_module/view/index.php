@@ -14,7 +14,7 @@ include_once('../../_helper/2step_com_conn.php');
                     $headerType    = 'List';
                     $leftSideName  = 'User List';
                     $rightSideName = 'User Create';
-                    $routePath     = 'user_module/view/create.php';
+                    $routePath     = 'visit_module/view/create.php';
                     include('../../_includes/com_header.php');
 
                     ?>
@@ -66,8 +66,8 @@ include_once('../../_helper/2step_com_conn.php');
                                                 </strong>
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?php echo $basePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
-                                                <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button>
+                                                <a href="<?php echo $basePath . '/visit_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($basePath . '/visit_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button>
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
@@ -88,7 +88,7 @@ include_once('../../_helper/2step_com_conn.php');
                                                 <?php echo $row['USER_RESPONSIBLE_NAME']; ?>
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
+                                                <a href="<?php echo $basePath . '/visit_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
                                             </td>
 
                                         </tr>

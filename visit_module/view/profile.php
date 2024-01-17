@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                 <div class="card">
                                     <div class="card-body">
                                         <form method="POST"
-                                        action=" <?php echo ($basePath . '/user_module/action/self_panel.php') ?>"
+                                        action=" <?php echo ($basePath . '/visit_module/action/self_panel.php') ?>"
 
                                             class="row g-3" enctype="multipart/form-data" >
                                             <input type="hidden" name="actionType" value="profileUpdate">

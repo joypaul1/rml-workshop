@@ -37,13 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                     $headerType    = 'Edit';
                     $leftSideName  = 'User Edit';
                     $rightSideName = 'User List';
-                    $routePath     = 'user_module/view/index.php';
+                    $routePath     = 'visit_module/view/index.php';
                     include('../../_includes/com_header.php');
 
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post" action="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                            <form method="post" action="<?php echo ($basePath . '/visit_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="actionType" value="edit">
                                 <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
                                 <div class="col-sm-12 col-md-4">
@@ -135,7 +135,7 @@ include_once('../../_includes/footer.php');
     const $LANG           = "<?php echo $data['LANG'] ?>";
     const $LOCATION_REMARKS           = "<?php echo $data['LOCATION_REMARKS'] ?>";
     
-    let url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
+    let url = "<?php echo ($basePath . '/visit_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
     const $user_brand_id = $('select[name="USER_BRAND_ID"]');
 
