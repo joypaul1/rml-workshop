@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
             USER_ID, VISIT_DATE, USER_REMARKS,
             RETAILER_ID, VISIT_TYPE_ID, ENTRY_DATE, 
             ENTRY_BY_ID) 
-         VALUES ('$user_id',to_date('$VISIT_DATE','yyyy-mm-dd') , '$user_remark','$RETAILER_ID','$VISIT_TYPE_ID',SYSDATE,'$ENTRY_BY_ID')";
+         VALUES ('$user_id',TO_DATE('$VISIT_DATE','yyyy-mm-dd') , '$user_remark','$RETAILER_ID','$VISIT_TYPE_ID',SYSDATE,'$ENTRY_BY_ID')";
 
         $strSQL = @oci_parse($objConnect, $query);
         // Execute the query

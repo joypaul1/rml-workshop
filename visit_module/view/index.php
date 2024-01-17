@@ -34,16 +34,16 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                         <div class="row justify-content-center align-items-center">
                                             <div class="col-sm-4">
                                                 <label>Select Your Retailer:</label>
-                                                <select name="emp_concern" class="form-control single-select">
+                                                <select name="retailer" class="form-control single-select">
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
                                                     $executiveID = $_SESSION['USER_INFO']['ID'];
                                                     $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = $executiveID");
                                                     oci_execute($strSQL);
-                    
+
                                                     while ($row = oci_fetch_assoc($strSQL)) {
                                                     ?>
-                                                        <option value="<?php echo $row['ID'] ?>"<?php echo isset($_POST['emp_concern']) && $_POST['emp_concern'] == $row['ID']?'Selected' : '' ?>>
+                                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['retailer']) && $_POST['retailer'] == $row['ID'] ? 'Selected' : '' ?>>
                                                             <?php echo $row['USER_NAME'] ?>
                                                         </option>
                                                     <?php
@@ -107,33 +107,43 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                 <thead class="table-light text-uppercase text-center ">
                                     <tr>
                                         <th>SL.</th>
-                                        <th>Action</th>
-                                        <th>Name</th>
-                                        <th>mobile</th>
-                                        <th>RML ID</th>
-                                        <th>BRAND</th>
-                                        <th>TYPE</th>
-                                        <th>RESponsible User</th>
-                                        <th>Tree User</th>
+                                        <th>Date</th>
+                                        <th>Retailer Name</th>
+                                        <th>VISIT TYPE</th>
+                                        <th>STATUS</th>
+                                        <th>USER REMARKS</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT UP.ID,
-                                            UP.USER_NAME,
-                                            UP.USER_MOBILE,
-                                            UP.RML_ID,
-                                            UP.CREATED_DATE,
-                                            (SELECT USER_NAME
-                                            FROM USER_PROFILE
-                                            WHERE ID = UP.RESPONSIBLE_ID)
-                                            AS USER_RESPONSIBLE_NAME, 
-                                            (SELECT TITLE
-                                            FROM USER_BRAND
-                                            WHERE ID = UP.USER_BRAND_ID)
-                                            AS USER_BRAND, 
-                                            (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                                            FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ORDER BY UP.USER_TYPE_ID";
+                                    $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
+                                    $log_user_id   = $_SESSION['USER_INFO']['ID'];
+                                    $v_start_date = date('01/m/Y');
+                                    $v_end_date   = date('t/m/Y');
+                                    if (isset($_POST['start_date'])) {
+                                        $v_start_date = date("d/m/Y", strtotime($_REQUEST['start_date']));
+                                    }
+                                    if (isset($_POST['end_date'])) {
+                                        $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
+                                    }
+
+
+                                    $query = "SELECT VA.ID, VA.VISIT_DATE, VA.TARGET_AMOUNT, 
+                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE, 
+                                        VA.ENTRY_BY_ID,
+                                        (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
+                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.USER_ID) AS RETAILER_NAME
+                                        FROM VISIT_ASSIGN VA WHERE VA.RETAILER_ID = '$log_user_id'
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
+                                        ";
+
+                                    // check emp_concern data exist 
+                                    if (isset($_POST['retailer'])) {
+                                        $retailerID = $_POST['retailer'];
+                                        $query .= " AND ( USER_ID= $retailerID)";
+                                    }
+                                    $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
 
                                     $strSQL = @oci_parse($objConnect, $query);
 
@@ -148,31 +158,36 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                                     <?php echo $number; ?>
                                                 </strong>
                                             </td>
-                                            <td class="text-center">
-                                                <a href="<?php echo $basePath . '/visit_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
-                                                <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($basePath . '/visit_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button>
+
+                                            <td>
+                                                <?php echo $row['VISIT_DATE']; ?>
                                             </td>
                                             <td>
-                                                <?php echo $row['USER_NAME']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['USER_MOBILE']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['RML_ID']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['USER_BRAND']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['USER_TYPE']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['USER_RESPONSIBLE_NAME']; ?>
+                                                <?php echo $row['RETAILER_NAME']; ?>
                                             </td>
                                             <td class="text-center">
+                                                <button type="button" class="btn btn-sm btn-gradient-primary">
+                                                <?php echo $row['VISIT_TYPE']; ?>
+                                                </button>
+
+                                                
+                                            </td>
+                                            <td class="text-center">
+                                                <?php  if($row['VISIT_STATUS'] == '0'){
+                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-warning "> Pending </button>';
+                                                }else if($row['VISIT_STATUS'] == '1'){
+                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-success"> Success </button>';
+                                                }else if($row['VISIT_STATUS'] == '2'){
+                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-danger"> Failed </button>';
+                                                } ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['USER_REMARKS']; ?>
+                                            </td>
+
+                                            <!-- <td class="text-center">
                                                 <a href="<?php echo $basePath . '/visit_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
-                                            </td>
+                                            </td> -->
 
                                         </tr>
 
