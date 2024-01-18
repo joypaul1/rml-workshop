@@ -30,7 +30,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+                                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                                         <div class="row justify-content-center align-items-center">
                                             <div class="col-sm-4">
                                                 <label>Select Your Retailer:</label>
@@ -38,7 +38,8 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
                                                     $executiveID = $_SESSION['USER_INFO']['ID'];
-                                                    $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = $executiveID");
+                                                    $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = :executiveID");
+                                                    oci_bind_by_name($strSQL, ":executiveID", $executiveID);
                                                     oci_execute($strSQL);
 
                                                     while ($row = oci_fetch_assoc($strSQL)) {
@@ -50,40 +51,21 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                                     }
                                                     ?>
                                                 </select>
-
                                             </div>
                                             <div class="col-sm-3">
-                                                <label>Start Data: </label>
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar">
-                                                        </i>
-                                                    </div>
-                                                    <input required="" class="form-control datepicker" form="Form1" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01-m-Y'); ?>' />
-                                                </div>
-
+                                                <label>Start Date: </label>
+                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01-m-Y'); ?>' />
                                             </div>
                                             <div class="col-sm-3">
-                                                <label>End Data: </label>
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar">
-                                                        </i>
-                                                    </div>
-                                                    <input required="" class="form-control datepicker" form="Form1" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('t-m-Y'); ?>' />
-                                                </div>
-
+                                                <label>End Date: </label>
+                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('t-m-Y'); ?>' />
                                             </div>
-
                                             <div class="col-sm-2">
-                                                <button class="form-control  btn btn-sm btn-gradient-primary mt-4" type="submit">Search Data<i class='bx bx-file-find'></i></button>
+                                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
                                             </div>
-
-
-
                                         </div>
-
                                     </form>
+
                                 </div>
                             </div>
                         </div>
@@ -99,6 +81,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                     $rightSideName = 'Visit Create';
                     $routePath     = 'visit_module/view/create.php';
                     include('../../_includes/com_header.php');
+
 
                     ?>
                     <div class="card-body">
@@ -127,7 +110,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                     if (isset($_POST['end_date'])) {
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
-
+                                    // print_r($_POST);
 
                                     $query = "SELECT VA.ID, VA.VISIT_DATE, VA.TARGET_AMOUNT, 
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE, 
@@ -137,9 +120,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                         FROM VISIT_ASSIGN VA WHERE VA.RETAILER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         ";
-
-                                    // check emp_concern data exist 
-                                    if (isset($_POST['retailer'])) {
+                                    if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
                                         $retailerID = $_POST['retailer'];
                                         $query .= " AND ( USER_ID= $retailerID)";
                                     }
@@ -167,17 +148,17 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                             </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-gradient-primary">
-                                                <?php echo $row['VISIT_TYPE']; ?>
+                                                    <?php echo $row['VISIT_TYPE']; ?>
                                                 </button>
 
-                                                
+
                                             </td>
                                             <td class="text-center">
-                                                <?php  if($row['VISIT_STATUS'] == '0'){
+                                                <?php if ($row['VISIT_STATUS'] == '0') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-warning "> Pending </button>';
-                                                }else if($row['VISIT_STATUS'] == '1'){
+                                                } else if ($row['VISIT_STATUS'] == '1') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-success"> Success </button>';
-                                                }else if($row['VISIT_STATUS'] == '2'){
+                                                } else if ($row['VISIT_STATUS'] == '2') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-danger"> Failed </button>';
                                                 } ?>
                                             </td>
@@ -196,6 +177,38 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-center mt-3">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination round-pagination">
+                                        <?php
+                                        $countQuery = "SELECT  COUNT(VA.ID) AS total
+                                                    FROM VISIT_ASSIGN VA WHERE VA.RETAILER_ID = '$log_user_id'
+                                                    AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
+                                                    ";
+                                        // check retailer data exist 
+                                        if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
+                                            $retailerID = $_POST['retailer'];
+                                            $countQuery .= " AND ( USER_ID= $retailerID)";
+                                        }
+
+                                        $countResult = oci_parse($objConnect, $countQuery);
+                                        oci_execute($countResult);
+                                        $countData = oci_fetch_assoc($countResult);
+                                        $totalRecords = $countData['TOTAL'];
+
+
+                                        for ($i = 1; $i <= ceil($totalRecords / RECORDS_PER_PAGE); $i++) {
+                                            $activeClass = ($i == $currentPage) ? 'active' : '';
+                                            echo "<li class='page-item $activeClass'><a class='page-link' href='index.php?page=$i'>$i</a></li>";
+                                        }
+
+
+                                        ?>
+
+
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
