@@ -128,6 +128,16 @@ include_once('../../_helper/2step_com_conn.php');
                                                         <a target="_blank"  href="<?php echo $basePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
+                                                <?php if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) {?>
+                                                    <td class="text-center">
+                                                        <a target="_blank"  href="<?php echo $basePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                    </td>
+                                                <?php }  ?>
+                                                <?php if (($row['USER_TYPE'] == 'RETAILER')) {?>
+                                                    <td class="text-center">
+                                                        <a target="_blank"  href="<?php echo $basePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                    </td>
+                                                <?php }  ?>
 
                                             <?php }  ?>
 
