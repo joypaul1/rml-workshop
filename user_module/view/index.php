@@ -111,15 +111,24 @@ include_once('../../_helper/2step_com_conn.php');
                                                 ?>
                                                 <a class="btn btn-sm btn-gradient-info text-white" href="<?php echo $url; ?>" target="_blank"><i class='bx bx-map'></i></a>
                                             </td>
+
+
                                             <?php if (($_SESSION['USER_INFO']['USER_TYPE'] == 'HOD')
                                                 || ($_SESSION['USER_INFO']['USER_TYPE'] == 'COORDINATOR')
                                                 || ($_SESSION['USER_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
                                             ) {
-
                                             ?>
-                                                <td class="text-center">
-                                                    <a href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
-                                                </td>
+                                                <?php if (($row['USER_TYPE'] == 'HOD')) {?>
+                                                    <td class="text-center">
+                                                        <a target="_blank" href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                    </td>
+                                                <?php }  ?>
+                                                <?php if (($row['USER_TYPE'] == 'COORDINATOR')) {?>
+                                                    <td class="text-center">
+                                                        <a target="_blank"  href="<?php echo $basePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                    </td>
+                                                <?php }  ?>
+
                                             <?php }  ?>
 
                                         </tr>
