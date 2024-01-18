@@ -31,7 +31,16 @@ include_once('../../_helper/2step_com_conn.php');
                                         <th>BRAND</th>
                                         <th>TYPE</th>
                                         <th>RESponsible User</th>
-                                        <th>Tree User</th>
+                                        <th>Location of User</th>
+
+                                        <?php if (($_SESSION['USER_INFO']['USER_TYPE'] == 'HOD')
+                                            || ($_SESSION['USER_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                            || ($_SESSION['USER_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
+                                        ) {
+                                            echo '<th>Tree User</th>';
+                                        }
+
+                                        ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,6 +49,8 @@ include_once('../../_helper/2step_com_conn.php');
                                             UP.USER_NAME,
                                             UP.USER_MOBILE,
                                             UP.RML_ID,
+                                            UP.LAT,
+                                            UP.LANG,
                                             UP.CREATED_DATE,
                                             (SELECT USER_NAME
                                             FROM USER_PROFILE
@@ -51,13 +62,12 @@ include_once('../../_helper/2step_com_conn.php');
                                             AS USER_BRAND, 
                                             ( SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
                                             FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ";
-                                    if($_SESSION['USER_INFO']['USER_TYPE'] != 'HOD' ){
+                                    if ($_SESSION['USER_INFO']['USER_TYPE'] != 'HOD') {
                                         $log_user_id   = $_SESSION['USER_INFO']['ID'];
                                         $query .= " AND RESPONSIBLE_ID = $log_user_id";
-                                        
                                     }
                                     $query .= " ORDER BY UP.USER_TYPE_ID";
-                                    
+
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -94,13 +104,29 @@ include_once('../../_helper/2step_com_conn.php');
                                                 <?php echo $row['USER_RESPONSIBLE_NAME']; ?>
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
+                                                <?php
+                                                $latitu = $row['LAT'];
+                                                $lng = $row['LANG'];
+                                                $url = "http://www.google.com/maps/place/" . $latitu . "," . $lng;
+                                                ?>
+                                                <a class="btn btn-sm btn-gradient-info text-white" href="<?php echo $url; ?>" target="_blank"><i class='bx bx-map'></i></a>
                                             </td>
+                                            <?php if (($_SESSION['USER_INFO']['USER_TYPE'] == 'HOD')
+                                                || ($_SESSION['USER_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                                || ($_SESSION['USER_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
+                                            ) {
+
+                                            ?>
+                                                <td class="text-center">
+                                                    <a href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                </td>
+                                            <?php }  ?>
 
                                         </tr>
 
 
-                                    <?php } ?>
+                                    <?php
+                                    } ?>
 
                                 </tbody>
                             </table>

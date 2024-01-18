@@ -163,8 +163,10 @@ $basePath    = $_SESSION['basePath'];
             var hierarchy = {
                 name: selfData.USER_NAME,
                 title: "HOD",
-                children: []
+                children: [],
             };
+
+            var coordinatorPromises = [];
 
             for (var i = 0; i < data.length; i++) {
                 (function(userData) {
@@ -176,90 +178,112 @@ $basePath    = $_SESSION['basePath'];
                     };
                     hierarchy.children.push(parentChild);
 
-                    $.ajax({
-                        type: "GET",
-                        url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
-                        data: {
-                            coordinator: userData.ID
-                        },
-                        dataType: "JSON",
-                        success: function(res) {
-                            for (var j = 0; j < res.data.length; j++) {
-                                var child = {
-                                    name: res.data[j].USER_NAME,
-                                    title: "Sale Executive",
-                                    className: "product-dept",
-                                    children: []
-                                };
-                                parentChild.children.push(child);
+                    var coordinatorPromise = new Promise(function(resolve, reject) {
+                        $.ajax({
+                            type: "GET",
+                            url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                            data: {
+                                coordinator: userData.ID
+                            },
+                            dataType: "JSON",
+                            success: function(res) {
+                                var executivePromises = [];
 
-                                $.ajax({
-                                    type: "GET",
-                                    url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
-                                    data: {
-                                        sale_executive: res.data[j].ID
-                                    },
-                                    dataType: "JSON",
-                                    success: function(res) {
-                                        for (var k = 0; k < res.data.length; k++) {
-                                            var subChild = {
-                                                name: res.data[k].USER_NAME,
-                                                title: "Retailer",
-                                                className: "frontend1",
-                                                children: []
-                                            };
-                                            child.children.push(subChild);
+                                for (var j = 0; j < res.data.length; j++) {
+                                    (function(executiveData) {
+                                        var child = {
+                                            name: executiveData.USER_NAME,
+                                            title: "Sale Executive",
+                                            className: "product-dept",
+                                            children: []
+                                        };
+                                        parentChild.children.push(child);
 
+                                        var executivePromise = new Promise(function(resolve, reject) {
                                             $.ajax({
                                                 type: "GET",
                                                 url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
                                                 data: {
-                                                    retailer: res.data[k].ID
+                                                    sale_executive: executiveData.ID
                                                 },
                                                 dataType: "JSON",
                                                 success: function(res) {
-                                                    console.log(res.data[k].USER_NAME, res.data[k].ID);
-                                                    
-                                                    for (var jk = 0; jk < res.data.length; jk++) {
-                                                        var subsubChild = {
-                                                            name: res.data[jk].USER_NAME,
-                                                            title: "Mechanics",
-                                                            className: "pipeline1",
-                                                            children: []
-                                                        };
-                                                        subChild.children.push(subsubChild);
+                                                    var retailerPromises = [];
+
+                                                    for (var k = 0; k < res.data.length; k++) {
+                                                        (function(retailerData) {
+                                                            var subChild = {
+                                                                name: retailerData.USER_NAME,
+                                                                title: "Retailer",
+                                                                className: "frontend1",
+                                                                children: []
+                                                            };
+                                                            child.children.push(subChild);
+
+                                                            var retailerPromise = new Promise(function(resolve, reject) {
+                                                                // Add AJAX call to get Mechanics data
+                                                                $.ajax({
+                                                                    type: "GET",
+                                                                    url: "<?php echo ($basePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                                                    data: {
+                                                                        retailer: retailerData.ID
+                                                                    },
+                                                                    dataType: "JSON",
+                                                                    success: function(res) {
+                                                                        for (var jk = 0; jk < res.data.length; jk++) {
+                                                                            var subsubChild = {
+                                                                                name: res.data[jk].USER_NAME,
+                                                                                title: "Mechanics",
+                                                                                className: "pipeline1",
+                                                                                children: []
+                                                                            };
+                                                                            subChild.children.push(subsubChild);
+                                                                        }
+                                                                        resolve(); // Resolve the retailerPromise after adding all Mechanics
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            retailerPromises.push(retailerPromise);
+                                                        })(res.data[k]);
                                                     }
-                                                    // Re-render org chart after adding all children
-                                                    $("#chart-container").empty().orgchart({
-                                                        data: hierarchy,
-                                                        nodeContent: "title"
+
+                                                    Promise.all(retailerPromises).then(function() {
+                                                        resolve(); // Resolve the executivePromise after all retailerPromises are resolved
                                                     });
                                                 }
-
                                             });
-
-
-                                        }
-                                        // Re-render org chart after adding all children
-                                        $("#chart-container").empty().orgchart({
-                                            data: hierarchy,
-                                            nodeContent: "title"
                                         });
-                                    }
+
+                                        executivePromises.push(executivePromise);
+                                    })(res.data[j]);
+                                }
+
+                                Promise.all(executivePromises).then(function() {
+                                    resolve(); // Resolve the coordinatorPromise after all executivePromises are resolved
                                 });
                             }
-                            // Re-render org chart after adding all children
-                            $("#chart-container").empty().orgchart({
-                                data: hierarchy,
-                                nodeContent: "title"
-                            });
-                        }
+                        });
                     });
+
+                    coordinatorPromises.push(coordinatorPromise);
                 })(data[i]);
             }
 
+            Promise.all(coordinatorPromises).then(function() {
+                // Re-render org chart after adding all children
+                $("#chart-container").empty().orgchart({
+                    data: hierarchy,
+                    nodeContent: "title"
+                });
+            });
+
             return hierarchy;
         };
+
+        // ... (remaining code)
+
+
 
         $(function() {
             var chartData = buildHierarchy(coodinoatorData);
