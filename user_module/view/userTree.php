@@ -61,9 +61,7 @@ $basePath    = $_SESSION['basePath'];
         overflow: auto;
         text-align: center;
     }
-    /* .orgchart .node .title{
-        background-color: rgb(254 7 0 / 80%) !important;
-    } */
+
     .orgchart {
         background: #fff;
     }
@@ -81,6 +79,7 @@ $basePath    = $_SESSION['basePath'];
     .orgchart .first-level .title {
         background-color: red;
     }
+
     .orgchart .middle-level .title {
         background-color: #006699;
     }
@@ -140,9 +139,9 @@ $basePath    = $_SESSION['basePath'];
                         <div class="card bg-gradient-moonlit shadow rounded-4 overflow-hidden">
                             <div class="card-body text-center">
                                 <h5 class="card-title text-white">
-                                    User Member Tree for <?php echo $_SESSION['USER_INFO']['USER_NAME'] ?> 
+                                    User Member Tree for <?php echo $_SESSION['USER_INFO']['USER_NAME'] ?>
                                     <span><i class="fa fa-sort-amount-asc text-info" aria-hidden="true"></i></span>
-                                
+
                                 </h5>
 
                             </div>
