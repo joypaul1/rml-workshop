@@ -131,6 +131,14 @@ $basePath    = $_SESSION['basePath'];
             <div class="container-fluid">
                 <div class="row">
                     <div class="col mx-auto">
+                        <div class="card bg-gradient-moonlit shadow rounded-4 overflow-hidden">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-white">
+                                    User Member Tree for <?php echo $_SESSION['USER_INFO']['USER_NAME'] ?>
+                                    <span><i class="fa fa-sort-amount-asc text-info" aria-hidden="true"></i></span>
+                                </h5>
+                            </div>
+                        </div>
                         <div class="card rounded-4">
                             <div class="card-bodys">
                                 <div class="borders p-4 rounded-4">
@@ -179,7 +187,7 @@ $basePath    = $_SESSION['basePath'];
                     };
                     hierarchy.children.push(parentChild);
 
-                    
+
                 })(data[i]);
             }
 

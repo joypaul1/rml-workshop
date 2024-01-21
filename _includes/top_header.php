@@ -187,7 +187,7 @@
                     aria-expanded="false">
 
                     <img src="<?php echo $_SESSION['USER_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>"
-                        class="user-img" alt="user avatar">
+                        class="user-img" alt="">
                     <div class="user-info ps-3">
                         <p class="user-name mb-0">
                             <?php echo $_SESSION['USER_INFO']['USER_NAME'] ?>

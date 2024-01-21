@@ -125,15 +125,26 @@ $basePath    = $_SESSION['basePath'];
 </style>
 
 <body class="bg-tree">
+
     <!--wrapper-->
     <div class="wrapper">
         <div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col mx-auto">
+                        <div class="card bg-gradient-moonlit shadow rounded-4 overflow-hidden">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-white">
+                                    User Member Tree for <?php echo $_SESSION['USER_INFO']['USER_NAME'] ?> 
+                                    <span><i class="fa fa-sort-amount-asc text-info" aria-hidden="true"></i></span>
+                                
+                                </h5>
+
+                            </div>
+                        </div>
                         <div class="card rounded-4">
                             <div class="card-bodys">
-                                <div class="borders p-4 rounded-4">
+                                <div class="borders p-3 rounded-4">
                                     <div id="chart-container"></div>
 
                                 </div>

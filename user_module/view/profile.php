@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
     $strSQL  = @oci_parse($objConnect, $query);
     @oci_execute($strSQL);
     $data = @oci_fetch_assoc($strSQL);
-
 }
 ?>
 
@@ -42,8 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
-                                            <img src="<?php echo $_SESSION['USER_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>"
-                                                alt="user_image" class="rounded-circle p-1 bg-primary" width="110">
+                                            <img src="<?php echo $_SESSION['USER_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>" alt="user_image" class="rounded-circle p-1 bg-primary" width="110">
                                             <div class="mt-3">
                                                 <h4>
                                                     <?php echo $data['USER_NAME'] ?>
@@ -77,7 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                                     </strong>
 
                                                 </p>
-
+                                                <a href="javascript:void(0)" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                    <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
+                                                </a>
                                             </div>
                                         </div>
 
@@ -87,10 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                             <div class="col-lg-8">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form method="POST"
-                                        action=" <?php echo ($basePath . '/user_module/action/self_panel.php') ?>"
-
-                                            class="row g-3" enctype="multipart/form-data" >
+                                        <form method="POST" action=" <?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="row g-3" enctype="multipart/form-data">
                                             <input type="hidden" name="actionType" value="profileUpdate">
                                             <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
                                             <div class="row mb-3">
@@ -108,10 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
                                                     <div class="input-group mb-3">
-                                                        <input type="password" name="user_password" class="form-control" id="password"
-                                                            placeholder="*****" aria-label="*****" aria-describedby="basic-addon2">
-                                                        <span style="cursor: pointer;color:darkred" class="input-group-text typeChange"
-                                                            id="basic-addon2 "><i class='bx bxs-low-vision'></i></span>
+                                                        <input type="password" name="user_password" class="form-control" id="password" placeholder="*****" aria-label="*****" aria-describedby="basic-addon2">
+                                                        <span style="cursor: pointer;color:darkred" class="input-group-text typeChange" id="basic-addon2 "><i class='bx bxs-low-vision'></i></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -120,8 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                                     <h6 class="mb-0">Your Image </h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
-                                                    <input type="file" name="user_image"
-                                                        data-default-file="<?php echo $basePath . '/' . $data['IMAGE_LINK'] ?>" class="dropify" />
+                                                    <input type="file" name="user_image" data-default-file="<?php echo $basePath . '/' . $data['IMAGE_LINK'] ?>" class="dropify" />
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -149,9 +143,8 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
-
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
+    (function() {
         'use strict'
 
         $('.dropify').dropify({
@@ -163,7 +156,7 @@ include_once('../../_includes/footer.php');
             }
         });
 
-        $('.typeChange').on('click', function () {
+        $('.typeChange').on('click', function() {
 
             // Your code to toggle password visibility goes here
             var passwordInput = $('#password');
@@ -185,8 +178,8 @@ include_once('../../_includes/footer.php');
 
         // Loop over them and prevent submission
         Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
+            .forEach(function(form) {
+                form.addEventListener('submit', function(event) {
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
