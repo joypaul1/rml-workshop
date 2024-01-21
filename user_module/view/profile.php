@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
-                                            <img src="<?php echo $_SESSION['USER_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>" alt="user_image" class="rounded-circle p-1 bg-primary" width="110">
+                                            <img src="<?php echo $_SESSION['USER_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>" alt=" " class="rounded-circle p-1 bg-primary" width="110">
                                             <div class="mt-3">
                                                 <h4>
                                                     <?php echo $data['USER_NAME'] ?>
@@ -75,9 +75,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                                     </strong>
 
                                                 </p>
-                                                <a href="javascript:void(0)" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
-                                                    <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
-                                                </a>
+                                                <?php if (($data['USER_TYPE'] == 'HOD')) { ?>
+                                                    <a target="_blank" href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                        <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
+                                                    </a>
+                                                <?php }  ?>
+                                                <?php if (($data['USER_TYPE'] == 'COORDINATOR')) { ?>
+                                                    <a target="_blank" href="<?php echo $basePath . '/user_module/view/coo_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                        <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
+                                                    </a>
+                                                <?php }  ?>
+                                                <?php if (($data['USER_TYPE'] == 'SALE EXECUTIVE')) { ?>
+                                                    <a target="_blank" href="<?php echo $basePath . '/user_module/view/saleex_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                        <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
+                                                    </a>
+                                                <?php }  ?>
+                                                <?php if (($data['USER_TYPE'] == 'RETAILER')) { ?>
+                                                    <a target="_blank" href="<?php echo $basePath . '/user_module/view/retailer_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                        <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
+                                                    </a>
+                                                <?php }  ?>
+
+
                                             </div>
                                         </div>
 
