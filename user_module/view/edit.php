@@ -72,7 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                         <option hidden value="<?php echo Null ?>"><- Select Type -></option>
                                         <?php
                                         $typeRow = [];
-                                        $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'";
+                                        $currentUserTypeID = $_SESSION['USER_INFO']['USER_TYPE_ID'];
+                                        $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
+                                        AND ID >  '$currentUserTypeID' 
+                                        ORDER BY ID ASC ;
                                         $strSQL  = @oci_parse($objConnect, $query);
 
                                         @oci_execute($strSQL);
@@ -92,7 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                         <option hidden value="<?php echo Null ?>"><- Select Brand -></option>
                                         <?php
                                         $brandRow = [];
-                                        $query    = "SELECT ID,TITLE FROM USER_BRAND WHERE STATUS ='1'";
+                                        $currentUserBrandID = $_SESSION['USER_INFO']['USER_BRAND_ID'];
+                                        $query    = "SELECT ID,TITLE FROM USER_BRAND WHERE STATUS ='1' AND ID = $currentUserBrandID";
                                         $strSQL   = @oci_parse($objConnect, $query);
 
                                         @oci_execute($strSQL);
@@ -131,10 +135,10 @@ include_once('../../_includes/footer.php');
 ?>
 <script>
     const $RESPONSIBLE_ID = "<?php echo $data['RESPONSIBLE_ID'] ?>";
-    const $LAT            = "<?php echo $data['LAT'] ?>";
-    const $LANG           = "<?php echo $data['LANG'] ?>";
-    const $LOCATION_REMARKS           = "<?php echo $data['LOCATION_REMARKS'] ?>";
-    
+    const $LAT = "<?php echo $data['LAT'] ?>";
+    const $LANG = "<?php echo $data['LANG'] ?>";
+    const $LOCATION_REMARKS = "<?php echo $data['LOCATION_REMARKS'] ?>";
+
     let url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
     const $user_brand_id = $('select[name="USER_BRAND_ID"]');
@@ -146,7 +150,7 @@ include_once('../../_includes/footer.php');
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
         const userBrandId = $user_brand_id.val();
-        console.log(userTypeId,userBrandId);
+        console.log(userTypeId, userBrandId);
         $('#addResponsiableData').empty();
         if (userTypeId && userBrandId) {
             switch (parseInt(userTypeId)) {

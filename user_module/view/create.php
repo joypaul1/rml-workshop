@@ -55,7 +55,9 @@ include_once('../../_helper/2step_com_conn.php');
                                         <option hidden value="<?php echo Null ?>"><- Select Type -></option>
                                         <?php
                                         $typeRow = [];
-                                        $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1' ORDER BY ID ASC OFFSET 1 ROWS FETCH NEXT 4 ROWS ONLY";
+                                        $currentUserTypeID = $_SESSION['USER_INFO']['USER_TYPE_ID'];
+                                        $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
+                                        AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
                                         $strSQL  = @oci_parse($objConnect, $query);
 
                                         @oci_execute($strSQL);
@@ -68,19 +70,21 @@ include_once('../../_helper/2step_com_conn.php');
                                     </select>
                                     <div class="invalid-feedback">Please select a User Type.</div>
                                 </div>
+                                            
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom04" class="form-label">User Brand <span class="text-danger">*</span> </label>
                                     <select class="form-select" id="validationCustom04" name="USER_BRAND_ID" required="">
                                         <option hidden value="<?php echo Null ?>"><- Select Brand -></option>
                                         <?php
                                         $brandRow = [];
-                                        $query    = "SELECT ID,TITLE FROM USER_BRAND WHERE STATUS ='1'";
+                                        $currentUserBrandID = $_SESSION['USER_INFO']['USER_BRAND_ID'];
+                                        $query    = "SELECT ID,TITLE FROM USER_BRAND WHERE STATUS ='1' AND ID = $currentUserBrandID";
                                         $strSQL   = @oci_parse($objConnect, $query);
 
                                         @oci_execute($strSQL);
                                         while ($brandRow = @oci_fetch_assoc($strSQL)) {
                                         ?>
-                                            <option value="<?php echo $brandRow['ID'] ?>">
+                                            <option selected value="<?php echo $brandRow['ID'] ?>">
                                                 <?php echo $brandRow['TITLE'] ?>
                                             </option>
                                         <?php } ?>

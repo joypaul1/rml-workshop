@@ -20,8 +20,8 @@ include_once('../_helper/com_conn.php');
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <p class="mb-0 text-white">Total Orders</p>
-                                <h4 class="my-1 text-white">8,643</h4>
-                                <p class="mb-0 font-13 text-white">+2.5% from last week</p>
+                                <h4 class="my-1 text-white">200</h4>
+                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
                             </div>
                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
                             </div>
@@ -34,9 +34,9 @@ include_once('../_helper/com_conn.php');
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="mb-0 text-white">Customers</p>
-                                <h4 class="my-1 text-white">28K</h4>
-                                <p class="mb-0 font-13 text-white">+5.4% from last week</p>
+                                <p class="mb-0 text-white">Total Visit</p>
+                                <h4 class="my-1 text-white">50 </h4>
+                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
                             </div>
                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
                             </div>
@@ -49,9 +49,10 @@ include_once('../_helper/com_conn.php');
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="mb-0 text-white">Revenue</p>
-                                <h4 class="my-1 text-white">$24.5K</h4>
-                                <p class="mb-0 font-13 text-white">-4.5% from last week</p>
+                                <p class="mb-0 text-white">Total Collection</p>
+                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+
                             </div>
                             <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
                             </div>
@@ -64,9 +65,9 @@ include_once('../_helper/com_conn.php');
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="mb-0 text-white">Growth</p>
-                                <h4 class="my-1 text-white">41.86%</h4>
-                                <p class="mb-0 font-13 text-white">+8.4% from last week</p>
+                                <p class="mb-0 text-white">Product Stock </p>
+                                <h4 class="my-1 text-white">0 </h4>
+                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
                             </div>
                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
                             </div>
@@ -82,23 +83,9 @@ include_once('../_helper/com_conn.php');
                     <div class="card-body">
                         <div class="d-flex align-items-cente">
                             <div>
-                                <h6 class="mb-0">Sales Overview</h6>
+                                <h6 class="mb-0">Collection Overview</h6>
                             </div>
-                            <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </div>
                         <div id="chart1"></div>
                     </div>
@@ -111,21 +98,7 @@ include_once('../_helper/com_conn.php');
                             <div>
                                 <h6 class="mb-0">Monthly Orders</h6>
                             </div>
-                            <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </div>
                         <div id="chart2"></div>
                     </div>
@@ -140,23 +113,9 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Top Categories</h6>
+                                <h6 class="mb-0">Top Retailer</h6>
                             </div>
-                            <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -230,89 +189,70 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">New Users</h6>
+                                <h6 class="mb-0">Top Sale Executive</h6>
                             </div>
-                            <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="new-users-list">
+                        <div class="categories-list">
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
-                                    <img src="assets/images/avatars/avatar-1.png" class="rounded-circle" width="45" height="45" alt="user img">
+                                    <img src="assets/images/products/01.png" class="product-img-2" alt="product img">
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">Benji Harper</h6>
-                                    <p class="mb-0 extra-small-font">UI Designer</p>
-                                </div>
-                                <div class="">
-                                    <button type="button" class="btn btn-gradient-primary btn-sm rounded-4 px-4">Add</button>
+                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
+                                    <div class="progress" style="height: 4px;">
+                                        <div class="progress-bar bg-gradient-cosmic" role="progressbar" style="width: 75%"></div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
-                                    <img src="assets/images/avatars/avatar-2.png" class="rounded-circle" width="45" height="45" alt="user img">
+                                    <img src="assets/images/products/02.png" class="product-img-2" alt="product img">
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">John Michael</h6>
-                                    <p class="mb-0 extra-small-font">Project Manger</p>
-                                </div>
-                                <div class="">
-                                    <button type="button" class="btn btn-gradient-primary btn-sm rounded-4 px-4">Add</button>
+                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
+                                    <div class="progress" style="height: 4px;">
+                                        <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="width: 75%"></div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
-                                    <img src="assets/images/avatars/avatar-3.png" class="rounded-circle" width="45" height="45" alt="user img">
+                                    <img src="assets/images/products/03.png" class="product-img-2" alt="product img">
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">Justine Myranda</h6>
-                                    <p class="mb-0 extra-small-font">Php Developer</p>
-                                </div>
-                                <div class="">
-                                    <button type="button" class="btn btn-gradient-primary btn-sm rounded-4 px-4">Add</button>
+                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
+                                    <div class="progress" style="height: 4px;">
+                                        <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 75%"></div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
-                                    <img src="assets/images/avatars/avatar-4.png" class="rounded-circle" width="45" height="45" alt="user img">
+                                    <img src="assets/images/products/04.png" class="product-img-2" alt="product img">
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">Janet Lucas</h6>
-                                    <p class="mb-0 extra-small-font">Team Leader</p>
-                                </div>
-                                <div class="">
-                                    <button type="button" class="btn btn-gradient-primary btn-sm rounded-4 px-4">Add</button>
+                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
+                                    <div class="progress" style="height: 4px;">
+                                        <div class="progress-bar bg-gradient-kyoto" role="progressbar" style="width: 75%"></div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
-                                    <img src="assets/images/avatars/avatar-5.png" class="rounded-circle" width="45" height="45" alt="user img">
+                                    <img src="assets/images/products/05.png" class="product-img-2" alt="product img">
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">Alex Smith</h6>
-                                    <p class="mb-0 extra-small-font">Graphic Designer</p>
-                                </div>
-                                <div class="">
-                                    <button type="button" class="btn btn-gradient-primary btn-sm rounded-4 px-4">Add</button>
+                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
+                                    <div class="progress" style="height: 4px;">
+                                        <div class="progress-bar bg-gradient-blues" role="progressbar" style="width: 75%"></div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -423,7 +363,7 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Top Selling Countries</h6>
+                                <h6 class="mb-0">Retailer Location</h6>
                             </div>
                             <div class="dropdown ms-auto">
                                 <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
@@ -472,23 +412,9 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Recent Orders</h6>
+                                <h6 class="mb-0">Recent Orders </h6>
                             </div>
-                            <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </div>
                     </div>
                     <div class="card-body">
