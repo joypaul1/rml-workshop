@@ -61,7 +61,9 @@ $basePath    = $_SESSION['basePath'];
         overflow: auto;
         text-align: center;
     }
-
+    /* .orgchart .node .title{
+        background-color: rgb(254 7 0 / 80%) !important;
+    } */
     .orgchart {
         background: #fff;
     }
@@ -76,6 +78,9 @@ $basePath    = $_SESSION['basePath'];
         background-color: #aaa;
     }
 
+    .orgchart .first-level .title {
+        background-color: red;
+    }
     .orgchart .middle-level .title {
         background-color: #006699;
     }
@@ -124,7 +129,7 @@ $basePath    = $_SESSION['basePath'];
     }
 </style>
 
-<body class="bg-tree">
+<body class="bg-tree ">
 
     <!--wrapper-->
     <div class="wrapper">
@@ -174,6 +179,7 @@ $basePath    = $_SESSION['basePath'];
             var hierarchy = {
                 name: selfData.USER_NAME,
                 title: "HOD",
+                className: "first-level",
                 children: [],
             };
 

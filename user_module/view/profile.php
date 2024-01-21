@@ -38,38 +38,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-4">
-                                <div class="card">
+                                <div class="card bg-gradient-worldcup">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
                                             <img src="<?php echo $_SESSION['USER_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>" alt=" " class="rounded-circle p-1 bg-primary" width="110">
-                                            <div class="mt-3">
-                                                <h4>
-                                                    <?php echo $data['USER_NAME'] ?>
-                                                </h4>
-                                                <p class="text-secondary mb-1 text-start">
+                                            <div class="mt-3 text-white">
+                                                <u>
+                                                    <h4 class="text-white fw-bold">
+                                                        <?php echo $data['USER_NAME'] ?>
+                                                    </h4>
+                                                </u>
+                                                <p class="mb-1 text-start">
                                                     <strong><i class='bx bxs-mobile-vibration'></i> MOBILE :
-                                                        <span class="text-primary">
+                                                        <span class="">
                                                             <?php echo $data['USER_MOBILE'] ?>
                                                         </span>
                                                     </strong>
                                                 </p>
-                                                <p class="text-secondary mb-1 text-start">
+                                                <p class="mb-1 text-start">
                                                     <strong><i class='bx bx-bookmark'></i> RML-ID :
-                                                        <span class="text-primary">
+                                                        <span class="">
                                                             <?php echo $data['RML_ID'] ?>
                                                         </span>
                                                     </strong>
                                                 </p>
-                                                <p class="text-secondary mb-1 text-start">
+                                                <p class="mb-1 text-start">
                                                     <strong><i class='bx bx-git-branch'></i> BRAND :
-                                                        <span class="text-primary">
+                                                        <span class="">
                                                             <?php echo $data['USER_BRAND'] ?>
                                                         </span>
                                                     </strong>
                                                 </p>
-                                                <p class="text-secondary mb-1 text-start">
+                                                <p class="mb-1 text-start">
                                                     <strong><i class='bx bxl-jquery'></i> TYPE :
-                                                        <span class="text-primary">
+                                                        <span class=" ">
                                                             <?php echo $data['USER_TYPE'] ?>
                                                         </span>
                                                     </strong>
