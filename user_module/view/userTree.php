@@ -139,7 +139,7 @@ $basePath    = $_SESSION['basePath'];
                         <div class="card bg-gradient-moonlit shadow rounded-4 overflow-hidden">
                             <div class="card-body text-center">
                                 <h5 class="card-title text-white">
-                                    User Member Tree for <?php echo $_SESSION['USER_INFO']['USER_NAME'] ?>
+                                    User Member Tree for <?php echo $_SESSION['USER_SFCM_INFO']['USER_NAME'] ?>
                                     <span><i class="fa fa-sort-amount-asc text-info" aria-hidden="true"></i></span>
 
                                 </h5>

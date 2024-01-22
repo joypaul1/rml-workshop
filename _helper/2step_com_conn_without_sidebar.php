@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if (!isset($_SESSION['USER_INFO'])) {
+if (!isset($_SESSION['USER_SFCM_INFO'])) {
     $currentScriptPath = __FILE__;
     $directoryPath     = dirname($currentScriptPath);
     $includeFilePath   = $directoryPath . '../../config_file_path.php';

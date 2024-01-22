@@ -37,7 +37,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                                 <select name="retailer" class="form-control single-select">
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
-                                                    $executiveID = $_SESSION['USER_INFO']['ID'];
+                                                    $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
                                                     $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = :executiveID");
                                                     oci_bind_by_name($strSQL, ":executiveID", $executiveID);
                                                     oci_execute($strSQL);
@@ -101,7 +101,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                 <tbody>
                                     <?php
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-                                    $log_user_id   = $_SESSION['USER_INFO']['ID'];
+                                    $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $v_start_date = date('01/m/Y');
                                     $v_end_date   = date('t/m/Y');
                                     if (isset($_POST['start_date'])) {

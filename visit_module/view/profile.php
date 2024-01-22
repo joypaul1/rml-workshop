@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
-                                            <img src="<?php echo $_SESSION['USER_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>"
+                                            <img src="<?php echo $_SESSION['USER_SFCM_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_SFCM_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>"
                                                 alt="user_image" class="rounded-circle p-1 bg-primary" width="110">
                                             <div class="mt-3">
                                                 <h4>

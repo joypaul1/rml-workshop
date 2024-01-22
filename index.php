@@ -23,7 +23,7 @@ if (isset($_POST['login_submit'])) {
         if ($dataRow) {
             unset($dataRow['USER_PASSWORD']);
 
-            $_SESSION['USER_INFO']   = $dataRow;
+            $_SESSION['USER_SFCM_INFO']   = $dataRow;
             $_SESSION['baseUrl']     = $baseUrl;
             $_SESSION['basePath']    = $basePath;
             $_SESSION['rs_img_path'] = $rs_img_path;

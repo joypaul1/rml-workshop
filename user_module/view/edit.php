@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                         <option hidden value="">- Select Type -</option>
 
                                         <?php
-                                        $currentUserTypeID = $_SESSION['USER_INFO']['USER_TYPE_ID'];
+                                        $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                         $query = "SELECT ID, TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > :currentUserTypeID ORDER BY ID ASC";
                                         $strSQL = oci_parse($objConnect, $query);
 
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                         <option hidden value="<?php echo Null ?>"><- Select Brand -></option>
                                         <?php
                                         $brandRow = [];
-                                        $currentUserBrandID = $_SESSION['USER_INFO']['USER_BRAND_ID'];
+                                        $currentUserBrandID = $_SESSION['USER_SFCM_INFO']['USER_BRAND_ID'];
                                         $query    = "SELECT ID,TITLE FROM USER_BRAND WHERE STATUS ='1' AND ID = $currentUserBrandID";
                                         $strSQL   = @oci_parse($objConnect, $query);
 

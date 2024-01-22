@@ -33,9 +33,9 @@ include_once('../../_helper/2step_com_conn.php');
                                         <th>RESponsible User</th>
                                         <th>Location of User</th>
 
-                                        <?php if (($_SESSION['USER_INFO']['USER_TYPE'] == 'HOD')
-                                            || ($_SESSION['USER_INFO']['USER_TYPE'] == 'COORDINATOR')
-                                            || ($_SESSION['USER_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
+                                        <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
+                                            || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                            || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
                                         ) {
                                             echo '<th>Tree User</th>';
                                         }
@@ -62,8 +62,8 @@ include_once('../../_helper/2step_com_conn.php');
                                             AS USER_BRAND, 
                                             ( SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
                                             FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ";
-                                    if ($_SESSION['USER_INFO']['USER_TYPE'] != 'HOD') {
-                                        $log_user_id   = $_SESSION['USER_INFO']['ID'];
+                                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] != 'HOD') {
+                                        $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                         $query .= " AND RESPONSIBLE_ID = $log_user_id";
                                     }
                                     $query .= " ORDER BY UP.USER_TYPE_ID";
@@ -113,9 +113,9 @@ include_once('../../_helper/2step_com_conn.php');
                                             </td>
 
 
-                                            <?php if (($_SESSION['USER_INFO']['USER_TYPE'] == 'HOD')
-                                                || ($_SESSION['USER_INFO']['USER_TYPE'] == 'COORDINATOR')
-                                                || ($_SESSION['USER_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
+                                            <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
+                                                || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                                || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
                                             ) {
                                             ?>
                                                 <?php if (($row['USER_TYPE'] == 'HOD')) {?>

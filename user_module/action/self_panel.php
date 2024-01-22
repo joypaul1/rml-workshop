@@ -6,7 +6,7 @@ $basePath   = $_SESSION['basePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
 $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP");
-$log_user_id   = $_SESSION['USER_INFO']['ID'];
+$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {

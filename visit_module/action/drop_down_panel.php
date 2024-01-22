@@ -5,7 +5,7 @@ require_once('../../_config/connoracle.php');
 $basePath   = $_SESSION['basePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
-$log_user_id   = $_SESSION['USER_INFO']['ID'];
+$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 if (isset($_GET["brand_ID"]) && isset($_GET["type_ID"])) {
     $brand_ID = $_GET["brand_ID"];
