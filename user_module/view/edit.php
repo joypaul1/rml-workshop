@@ -66,28 +66,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                     <input type="text" class="form-control" autocomplete="off" name="RML_ID" value="<?php echo $data['RML_ID'] ?>" id="validationCustom09">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
-                                <div class="col-sm-12  col-md-4">
-                                    <label for="validationCustom06" class="form-label"> User Type <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="validationCustom06" name="USER_TYPE_ID" required="">
-                                        <option hidden value="<?php echo Null ?>"><- Select Type -></option>
-                                        <?php
-                                        $typeRow = [];
-                                        $currentUserTypeID = $_SESSION['USER_INFO']['USER_TYPE_ID'];
-                                        $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
-                                        AND ID >  '$currentUserTypeID' 
-                                        ORDER BY ID ASC ;
-                                        $strSQL  = @oci_parse($objConnect, $query);
+                                <div class="col-sm-12 col-md-4">
+                                    <label for="validationCustom06" class="form-label">User Type <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="validationCustom06" name="USER_TYPE_ID" required>
+                                        <option hidden value="">- Select Type -</option>
 
-                                        @oci_execute($strSQL);
-                                        while ($typeRow = @oci_fetch_assoc($strSQL)) {
+                                        <?php
+                                        $currentUserTypeID = $_SESSION['USER_INFO']['USER_TYPE_ID'];
+                                        $query = "SELECT ID, TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > :currentUserTypeID ORDER BY ID ASC";
+                                        $strSQL = oci_parse($objConnect, $query);
+
+                                        oci_bind_by_name($strSQL, ":currentUserTypeID", $currentUserTypeID);
+
+                                        oci_execute($strSQL);
+
+                                        while ($typeRow = oci_fetch_assoc($strSQL)) {
+                                            $selected = ($typeRow['ID'] == $data['USER_TYPE_ID']) ? 'selected' : '';
                                         ?>
-                                            <option value="<?php echo $typeRow['ID'] ?>" <?php echo $typeRow['ID'] == $data['USER_TYPE_ID'] ? 'Selected' : '' ?>>
-                                                <?php echo $typeRow['TITLE'] ?>
+                                            <option value="<?= $typeRow['ID'] ?>" <?= $selected ?>>
+                                                <?= $typeRow['TITLE'] ?>
                                             </option>
                                         <?php } ?>
                                     </select>
                                     <div class="invalid-feedback">Please select a User Type.</div>
                                 </div>
+
+
 
                                 <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom04" class="form-label">User Brand <span class="text-danger">*</span> </label>
