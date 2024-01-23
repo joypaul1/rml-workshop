@@ -44,9 +44,9 @@
                         <div class="menu-title">Visit Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create Visit </a>
+                        <li> <a href="<?php echo $basePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Visit </a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of Visit </a>
+                        <li> <a href="<?php echo $basePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Visit </a>
                         </li>
                     </ul>
                 </li>
@@ -55,12 +55,26 @@
 
                         <div class="parent-icon"><i class='bx bx-group'></i>
                         </div>
-                        <div class="menu-title">User Panel</div>
+                        <div class="menu-title">User Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create User</a>
+                        <li> <a href="<?php echo $basePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create User</a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of User</a>
+                        <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="<?php echo isActive('/user_module/view/edit.php'); ?>">
+                    <a href="javascript:;" class="has-arrow">
+
+                        <div class="parent-icon"><i class='bx bx-cog'></i>
+                        </div>
+                        <div class="menu-title">Admin Module</div>
+                    </a>
+                    <ul>
+                        <li> <a href="<?php echo $basePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
+                        </li>
+                        <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
                         </li>
                     </ul>
                 </li>

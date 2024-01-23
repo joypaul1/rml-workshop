@@ -1,5 +1,6 @@
 <?php
 include_once('../../_helper/2step_com_conn.php');
+$number = 0;
 ?>
 
 <!--start page wrapper -->
@@ -8,6 +9,61 @@ include_once('../../_helper/2step_com_conn.php');
 
 
         <div class="row">
+            <div class="card rounded-4">
+                <div class="card-body">
+
+                    <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong><i class='bx bx-filter-alt'></i> Filter Data</strong>
+                    </button>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
+                                        <div class="row justify-content-center align-items-center">
+                                            <div class="col-sm-12  col-md-4">
+                                                <label for="validationCustom06" class="form-label">User Type </label>
+                                                <select class="form-select " id="validationCustom06" name="USER_TYPE_ID">
+                                                    <option  value=""><- Select Type -></option>
+                                                    <?php
+                                                    $typeRow = [];
+                                                    $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID']?$_POST['USER_TYPE_ID'] : '';
+                                                    $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
+                                        AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
+                                                    $strSQL  = @oci_parse($objConnect, $query);
+
+                                                    @oci_execute($strSQL);
+                                                    while ($typeRow = @oci_fetch_assoc($strSQL)) {
+                                                    ?>
+                                                        <option value="<?php echo $typeRow['ID'] ?>"
+                                                        <?php echo $USER_TYPE_ID ==$typeRow['ID']? 'Selected': ' ' ?>
+                                                        >
+                                                            <?php echo $typeRow['TITLE'] ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                </select>
+                                                <div class="invalid-feedback">Please select a User Type.</div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>MOBILE : </label>
+                                                <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="USER_MOBILE" type="text" value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
+                                            </div>
+                                            <div class="col-sm-4 d-flex gap-2">
+                                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
+                                                <a href="<?php echo $basePath  ?>/user_module/view/index.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
@@ -25,9 +81,8 @@ include_once('../../_helper/2step_com_conn.php');
                                     <tr>
                                         <th>SL.</th>
                                         <th>Action</th>
-                                        <th>Name</th>
-                                        <th>mobile</th>
-                                        <th>RML ID</th>
+                                        <th>Name | RML ID</th>
+                                        <th>Mobile [Login]</th>
                                         <th>BRAND</th>
                                         <th>TYPE</th>
                                         <th>RESponsible User</th>
@@ -46,32 +101,46 @@ include_once('../../_helper/2step_com_conn.php');
                                 <tbody>
                                     <?php
                                     $query = "SELECT UP.ID,
-                                            UP.USER_NAME,
-                                            UP.USER_MOBILE,
-                                            UP.RML_ID,
-                                            UP.LAT,
-                                            UP.LANG,
-                                            UP.CREATED_DATE,
-                                            (SELECT USER_NAME
-                                            FROM USER_PROFILE
-                                            WHERE ID = UP.RESPONSIBLE_ID)
-                                            AS USER_RESPONSIBLE_NAME, 
-                                            (SELECT TITLE
-                                            FROM USER_BRAND
-                                            WHERE ID = UP.USER_BRAND_ID)
-                                            AS USER_BRAND, 
-                                            ( SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                                            FROM USER_PROFILE UP WHERE UP.USER_STATUS ='1' ";
+                                                    UP.USER_NAME,
+                                                    UP.USER_MOBILE,
+                                                    UP.RML_ID,
+                                                    UP.LAT,
+                                                    UP.LANG,
+                                                    UP.CREATED_DATE,
+                                                    (SELECT USER_NAME
+                                                        FROM USER_PROFILE
+                                                        WHERE ID = UP.RESPONSIBLE_ID)
+                                                        AS USER_RESPONSIBLE_NAME, 
+                                                    (SELECT TITLE
+                                                        FROM USER_BRAND
+                                                        WHERE ID = UP.USER_BRAND_ID)
+                                                        AS USER_BRAND, 
+                                                    (SELECT TITLE 
+                                                        FROM USER_TYPE 
+                                                        WHERE ID = UP.USER_TYPE_ID) 
+                                                        AS USER_TYPE
+                                            FROM USER_PROFILE UP 
+                                            WHERE UP.USER_STATUS = '1' 
+                                            AND UP.USER_MOBILE NOT IN ('01735699133', '01705102555')";
+
                                     if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] != 'HOD') {
                                         $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                         $query .= " AND RESPONSIBLE_ID = $log_user_id";
                                     }
-                                    $query .= " ORDER BY UP.USER_TYPE_ID";
+                                    if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
+                                        $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
+                                        $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
+                                    }
+                                    if (isset($_POST['USER_MOBILE']) && !empty($_POST['USER_MOBILE'])) {
+                                        $USER_MOBILE = $_POST['USER_MOBILE'];
+                                        $query .= " AND UP.USER_MOBILE LIKE '%" . $USER_MOBILE . "%'";
+                                    }
 
+                                    $query .= " ORDER BY UP.USER_TYPE_ID";
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
-                                    $number = 0;
+                                    
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
                                     ?>
@@ -83,17 +152,17 @@ include_once('../../_helper/2step_com_conn.php');
                                             </td>
                                             <td class="text-center">
                                                 <a href="<?php echo $basePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
-                                                <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button>
+                                                <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($basePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
+                                                <br>
+                                                RML-ID : <?php echo $row['RML_ID']; ?>
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_MOBILE']; ?>
                                             </td>
-                                            <td>
-                                                <?php echo $row['RML_ID']; ?>
-                                            </td>
+
                                             <td>
                                                 <?php echo $row['USER_BRAND']; ?>
                                             </td>
@@ -118,24 +187,24 @@ include_once('../../_helper/2step_com_conn.php');
                                                 || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
                                             ) {
                                             ?>
-                                                <?php if (($row['USER_TYPE'] == 'HOD')) {?>
+                                                <?php if (($row['USER_TYPE'] == 'HOD')) { ?>
                                                     <td class="text-center">
                                                         <a target="_blank" href="<?php echo $basePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
-                                                <?php if (($row['USER_TYPE'] == 'COORDINATOR')) {?>
+                                                <?php if (($row['USER_TYPE'] == 'COORDINATOR')) { ?>
                                                     <td class="text-center">
-                                                        <a target="_blank"  href="<?php echo $basePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $basePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
-                                                <?php if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) {?>
+                                                <?php if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) { ?>
                                                     <td class="text-center">
-                                                        <a target="_blank"  href="<?php echo $basePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $basePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
-                                                <?php if (($row['USER_TYPE'] == 'RETAILER')) {?>
+                                                <?php if (($row['USER_TYPE'] == 'RETAILER')) { ?>
                                                     <td class="text-center">
-                                                        <a target="_blank"  href="<?php echo $basePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $basePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
 
@@ -146,7 +215,11 @@ include_once('../../_helper/2step_com_conn.php');
 
                                     <?php
                                     } ?>
-
+                                    <?php 
+                                    //   echo $number;
+                                    if ($number == 0) {
+                                        echo '<tr><td colspan="9" class="text-center text-danger fw-bold">No Data Found !</td></tr>';
+                                    } ?>
                                 </tbody>
                             </table>
                         </div>

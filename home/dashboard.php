@@ -83,7 +83,7 @@ include_once('../_helper/com_conn.php');
                     <div class="card-body">
                         <div class="d-flex align-items-cente">
                             <div>
-                                <h6 class="mb-0">Collection Overview</h6>
+                                <h6 class="mb-0">Collection Overview [DEMO DATA]</h6>
                             </div>
 
                         </div>
@@ -96,7 +96,7 @@ include_once('../_helper/com_conn.php');
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Monthly Orders</h6>
+                                <h6 class="mb-0">Monthly Orders [DEMO DATA]</h6>
                             </div>
 
                         </div>
@@ -113,7 +113,7 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Top Retailer</h6>
+                                <h6 class="mb-0">Top Retailer [DEMO DATA]</h6>
                             </div>
 
                         </div>
@@ -189,7 +189,7 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Top Sale Executive</h6>
+                                <h6 class="mb-0">Top Sale Executive [DEMO DATA]</h6>
                             </div>
 
                         </div>
@@ -326,23 +326,9 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Browser Statistics</h6>
+                                <h6 class="mb-0">Browser Statistics [DEMO DATA]</h6>
                             </div>
-                            <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </div>
+                          
                         </div>
                     </div>
                     <div class="card-body">
@@ -363,23 +349,9 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Retailer Location</h6>
+                                <h6 class="mb-0">Retailer Location [DEMO DATA]</h6>
                             </div>
-                            <div class="dropdown ms-auto">
-                                <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </div>
+                           
                         </div>
                     </div>
                     <div class="card-body">
@@ -412,7 +384,7 @@ include_once('../_helper/com_conn.php');
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Recent Orders </h6>
+                                <h6 class="mb-0">Recent Orders [DEMO DATA]</h6>
                             </div>
 
                         </div>
