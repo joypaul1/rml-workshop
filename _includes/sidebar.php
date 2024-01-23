@@ -64,7 +64,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="<?php echo isActive('/user_module/view/edit.php'); ?>">
+                <li class="<?php echo isActive('/admin_module/view/ut_edit.php'); ?> <?php echo isActive('/admin_module/view/vt_edit.php'); ?>">
                     <a href="javascript:;" class="has-arrow">
 
                         <div class="parent-icon"><i class='bx bx-cog'></i>
@@ -72,9 +72,9 @@
                         <div class="menu-title">Admin Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
+                        <li> <a href="<?php echo $basePath ?>/admin_module/view/user_type.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
+                        <li> <a href="<?php echo $basePath ?>/admin_module/view/visit_type.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
                         </li>
                     </ul>
                 </li>

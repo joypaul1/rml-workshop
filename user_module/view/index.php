@@ -82,7 +82,7 @@ $number = 0;
                                         <th>SL.</th>
                                         <th>Action</th>
                                         <th>Name | RML ID</th>
-                                        <th>Mobile [Login]</th>
+                                        <th>Mobile | Login ID</th>
                                         <th>BRAND</th>
                                         <th>TYPE</th>
                                         <th>RESponsible User</th>
