@@ -8,23 +8,24 @@ include_once('../../_helper/2step_com_conn.php');
 $data = [];
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit') {
     $edit_id = trim($_GET["id"]);
+    // ECHO  $edit_id ;
     $query   = "SELECT UP.ID,
     UP.USER_NAME,
     UP.USER_MOBILE,
     UP.RML_IDENTITY_ID as RML_ID,
     UP.PENDRIVE_ID,
-    UP.USER_BRAND_ID,
     UP.USER_TYPE_ID,
     UP.IMAGE_LINK,
-    UP.RESPONSIBLE_ID,
     UP.LAT,
     UP.LANG,
     UP.LOCATION_REMARKS
     FROM USER_PROFILE UP WHERE ID = $edit_id";
     $strSQL  = @oci_parse($objConnect, $query);
+
     @oci_execute($strSQL);
     $data = @oci_fetch_assoc($strSQL);
 }
+
 ?>
 
 <!--start page wrapper -->
@@ -34,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
+
                     $headerType    = 'Edit';
                     $leftSideName  = 'User Edit';
                     $rightSideName = 'User List';
@@ -138,7 +140,6 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
-    const $RESPONSIBLE_ID = "<?php echo $data['RESPONSIBLE_ID'] ?>";
     const $LAT = "<?php echo $data['LAT'] ?>";
     const $LANG = "<?php echo $data['LANG'] ?>";
     const $LOCATION_REMARKS = "<?php echo $data['LOCATION_REMARKS'] ?>";
@@ -147,135 +148,35 @@ include_once('../../_includes/footer.php');
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
     const $user_brand_id = $('select[name="USER_BRAND_ID"]');
 
-    $('select[name="USER_TYPE_ID"], select[name="USER_BRAND_ID"]').on('change', function() {
+    $('select[name="USER_TYPE_ID"]').on('change', function() {
         getVerifyData();
     });
 
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
-        const userBrandId = $user_brand_id.val();
-        console.log(userTypeId, userBrandId);
+   
         $('#addResponsiableData').empty();
-        if (userTypeId && userBrandId) {
-            switch (parseInt(userTypeId)) {
-                case 2:
-                    get_hod();
-                    break;
-                case 3:
-                    get_cod();
-                    break;
-                case 4:
-                    get_selExc();
-                    break;
-                case 5:
-                    get_mec();
-                    break;
-                default:
-                    // Handle other cases if needed
-                    break;
-            }
+        if (parseInt(userTypeId) == 4) {
+            let htmlTag = ''; // Initialize htmlTag
+            htmlTag += `<div class="col-sm-12 col-md-4">
+                                    <label for="validationCustom12" class="form-label">Loc. LAT. <span class="text-danger">*</span></label>
+                                    <input type="text" name="LAT" value="${$LAT}"  autocomplete="off" class="form-control" id="validationCustom12" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div><div class="col-sm-12 col-md-4">
+                                    <label for="validationCustom13" class="form-label">Loc. LANG. <span class="text-danger">*</span></label>
+                                    <input type="text" name="LANG" value="${$LANG}" autocomplete="off" class="form-control" id="validationCustom13" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <label for="validationCustom14" class="form-label">Address Location <span class="text-danger">*</span></label>
+                                    <input type="text" name="LOCATION_REMARKS" autocomplete="off" class="form-control" id="validationCustom14" value="${$LOCATION_REMARKS}" required="">
+                                    <div class="valid-feedback">Looks good!</div>
+                                </div>`;
+            $('#addResponsiableData').append(htmlTag);
         }
     }
 
-    function get_hod() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 1,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                        <label for="validationCustom10_hod"  class="form-label">Responsible HOD <span class="text-danger">*</span></label>
-                        <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_hod" required>
-                        <option  hidden value="<?php echo Null ?>"> <- Selecte HOD -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '" ' + ($RESPONSIBLE_ID == element.ID ? 'selected' : '') + '> ' + element.USER_NAME + ' </option>';
-                    });
-                }
-                htmlTag += `</select></div>`;
-                $('#addResponsiableData').append(htmlTag);
 
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_hod').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select HOD', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
-
-        })
-    };
-
-    function get_cod() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 2,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10_coord" class="form-label">Responsible COORDINATOR <span class="text-danger">*</span></label>
-                            <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_coord" required>
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte Coordinator -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '" ' + ($RESPONSIBLE_ID == element.ID ? 'selected' : '') + '> ' + element.USER_NAME + ' </option>';
-                    });
-                }
-                htmlTag += `</select></div>`;
-                $('#addResponsiableData').append(htmlTag);
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_coord').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select Coordinator', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
-        });
-
-    }
-
-    function get_mec() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 4,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10_ret" class="form-label">Responsible RETAILER <span class="text-danger">*</span></label>
-                            <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_ret" required>
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '" ' + ($RESPONSIBLE_ID == element.ID ? 'selected' : '') + '> ' + element.USER_NAME + ' </option>';
-                    });
-                }
-                htmlTag += `</select></div>`;
-                $('#addResponsiableData').append(htmlTag);
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_ret').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select Retailer', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
-        });
-
-    }
 
     function get_selExc() {
         $.ajax({
@@ -297,21 +198,7 @@ include_once('../../_includes/footer.php');
                     });
                 }
                 htmlTag += `</select></div>`;
-                htmlTag += `<div class="col-sm-12 col-md-4">
-                                    <label for="validationCustom12" class="form-label">Loc. LAT. <span class="text-danger">*</span></label>
-                                    <input type="text" name="LAT" value="${$LAT}"  autocomplete="off" class="form-control" id="validationCustom12" required="">
-                                    <div class="valid-feedback">Looks good!</div>
-                                </div><div class="col-sm-12 col-md-4">
-                                    <label for="validationCustom13" class="form-label">Loc. LANG. <span class="text-danger">*</span></label>
-                                    <input type="text" name="LANG" value="${$LANG}" autocomplete="off" class="form-control" id="validationCustom13" required="">
-                                    <div class="valid-feedback">Looks good!</div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 mt-3">
-                                    <label for="validationCustom14" class="form-label">Address Location <span class="text-danger">*</span></label>
-                                    <input type="text" name="LOCATION_REMARKS" autocomplete="off" class="form-control" id="validationCustom14" value="${$LOCATION_REMARKS}" required="">
-                                    <div class="valid-feedback">Looks good!</div>
-                                </div>`;
-                $('#addResponsiableData').append(htmlTag);
+
                 // Initialize Select2 for the appended dropdown element
                 $('#addResponsiableData').find('#validationCustom10_sale').select2({
                     theme: 'bootstrap4',

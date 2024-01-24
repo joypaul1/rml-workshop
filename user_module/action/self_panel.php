@@ -11,14 +11,17 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
-    $USER_NAME      = $_POST['USER_NAME'];
-    $PENDRIVE_ID    = $_POST['USER_PASSWORD'];
-    $USER_PASSWORD  = isset($_POST['USER_PASSWORD']) ? md5($_POST['USER_PASSWORD']) : '';
-    $USER_MOBILE    = $_POST['USER_MOBILE'];
-    $RML_ID         = $_POST['RML_ID'];
-    $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
-    $RML_ID         = isset($_POST['RML_ID']) ? $_POST['RML_ID'] : '';
-    $IMAGE_LINK     = $_FILES['IMAGE_LINK'];
+    $USER_NAME              = $_POST['USER_NAME'];
+    $PENDRIVE_ID            = $_POST['USER_PASSWORD'];
+    $USER_PASSWORD          = isset($_POST['USER_PASSWORD']) ? md5($_POST['USER_PASSWORD']) : '';
+    $USER_MOBILE            = $_POST['USER_MOBILE'];
+    $RML_ID                 = $_POST['RML_ID'];
+    $USER_TYPE_ID           = $_POST['USER_TYPE_ID'];
+    $RML_ID                 = isset($_POST['RML_ID']) ? $_POST['RML_ID'] : '';
+    $IMAGE_LINK             = $_FILES['IMAGE_LINK'];
+    $LANG                   = isset($_POST['LANG']) ? $_POST['LANG'] : '';
+    $LAT                    = isset($_POST['LAT']) ? $_POST['LAT'] : '';
+    $LOCATION_REMARKS       = isset($_POST['LOCATION_REMARKS']) ? $_POST['LOCATION_REMARKS'] : '';
     $filename       = null;
 
     if ($IMAGE_LINK) {
@@ -61,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
     // Prepare the SQL statement
     $query = "INSERT INTO USER_PROFILE 
-            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE) 
-            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE)";
+            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,LANG, LAT,LOCATION_REMARKS) 
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS')";
 
 
     $strSQL = @oci_parse($objConnect, $query);
