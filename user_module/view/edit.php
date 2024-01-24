@@ -95,26 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
 
 
 
-                                <!-- <div class="col-sm-12  col-md-4">
-                                    <label for="validationCustom04" class="form-label">User Brand <span class="text-danger">*</span> </label>
-                                    <select class="form-select" id="validationCustom04" name="USER_BRAND_ID" required="">
-                                        <option hidden value="<?php echo Null ?>"><- Select Brand -></option>
-                                        <?php
-                                        $brandRow = [];
-                                        $currentUserBrandID = $_SESSION['USER_SFCM_INFO']['USER_BRAND_ID'];
-                                        $query    = "SELECT ID,TITLE FROM USER_BRAND WHERE STATUS ='1' AND ID = $currentUserBrandID";
-                                        $strSQL   = @oci_parse($objConnect, $query);
 
-                                        @oci_execute($strSQL);
-                                        while ($brandRow = @oci_fetch_assoc($strSQL)) {
-                                        ?>
-                                            <option value="<?php echo $brandRow['ID'] ?>" <?php echo $brandRow['ID'] == $data['USER_BRAND_ID'] ? 'Selected' : '' ?>>
-                                                <?php echo $brandRow['TITLE'] ?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>
-                                    <div class="invalid-feedback">Please select a User Brand.</div>
-                                </div> -->
                                 <div class="row mt-3" id="addResponsiableData"></div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
@@ -154,7 +135,7 @@ include_once('../../_includes/footer.php');
 
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
-   
+
         $('#addResponsiableData').empty();
         if (parseInt(userTypeId) == 4) {
             let htmlTag = ''; // Initialize htmlTag
@@ -176,40 +157,6 @@ include_once('../../_includes/footer.php');
         }
     }
 
-
-
-    function get_selExc() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 3,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10_sale" class="form-label">Responsible SALE EXECUTIVE <span class="text-danger">*</span></label>
-                            <select class="form-select single-select"  name="RESPONSIBLE_ID" id="validationCustom10_sale" required>
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte Sale Excutive -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '" ' + ($RESPONSIBLE_ID == element.ID ? 'selected' : '') + '> ' + element.USER_NAME + ' </option>';
-                    });
-                }
-                htmlTag += `</select></div>`;
-
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_sale').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select Sale Excutive', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
-        });
-
-    }
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -234,7 +181,6 @@ include_once('../../_includes/footer.php');
                         event.preventDefault()
                         event.stopPropagation()
                     }
-
                     form.classList.add('was-validated')
                 }, false)
             });

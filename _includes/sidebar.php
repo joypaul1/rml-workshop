@@ -62,6 +62,8 @@
                         </li>
                         <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
                         </li>
+                        <li> <a href="<?php echo $basePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Brand Assign</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="<?php echo isActive('/admin_module/view/ut_edit.php'); ?> <?php echo isActive('/admin_module/view/vt_edit.php'); ?>">
