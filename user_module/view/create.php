@@ -43,7 +43,7 @@ include_once('../../_helper/2step_com_conn.php');
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-sm-12  col-md-4">
-                                    <label for="validationCustom09" class="form-label">User RML ID </label>
+                                    <label for="validationCustom09" class="form-label">User RML/RMLW ID </label>
                                     <input type="text" class="form-control" name="RML_ID" autocomplete="off" id="validationCustom09">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
@@ -70,28 +70,9 @@ include_once('../../_helper/2step_com_conn.php');
                                     </select>
                                     <div class="invalid-feedback">Please select a User Type.</div>
                                 </div>
-                                            
-                                <div class="col-sm-12  col-md-4">
-                                    <label for="validationCustom04" class="form-label">User Brand <span class="text-danger">*</span> </label>
-                                    <select class="form-select" id="validationCustom04" name="USER_BRAND_ID" required="">
-                                        <option hidden value="<?php echo Null ?>"><- Select Brand -></option>
-                                        <?php
-                                        $brandRow = [];
-                                        $currentUserBrandID = $_SESSION['USER_SFCM_INFO']['USER_BRAND_ID'];
-                                        $query    = "SELECT ID,TITLE FROM USER_BRAND WHERE STATUS ='1' AND ID = $currentUserBrandID";
-                                        $strSQL   = @oci_parse($objConnect, $query);
 
-                                        @oci_execute($strSQL);
-                                        while ($brandRow = @oci_fetch_assoc($strSQL)) {
-                                        ?>
-                                            <option selected value="<?php echo $brandRow['ID'] ?>">
-                                                <?php echo $brandRow['TITLE'] ?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>
-                                    <div class="invalid-feedback">Please select a User Brand.</div>
-                                </div>
-                                <div id="addResponsiableData"></div>
+
+                                <div class="row mt-3" id="addResponsiableData"></div>
 
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
@@ -119,170 +100,40 @@ include_once('../../_includes/footer.php');
 <script>
     const url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
-    const $user_brand_id = $('select[name="USER_BRAND_ID"]');
 
-    $('select[name="USER_TYPE_ID"], select[name="USER_BRAND_ID"]').on('change', function() {
+
+    $('select[name="USER_TYPE_ID"]').on('change', function() {
         getVerifyData();
     });
 
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
-        const userBrandId = $user_brand_id.val();
+        console.log(parseInt(userTypeId));
         $('#addResponsiableData').empty();
-        if (userTypeId && userBrandId) {
-            switch (parseInt(userTypeId)) {
-                case 2:
-                    get_hod();
-                    break;
-                case 3:
-                    get_cod();
-                    break;
-                case 4:
-                    get_selExc();
-                    break;
-                case 5:
-                    get_mec();
-                    break;
-                default:
-                    // Handle other cases if needed
-                    break;
-            }
+        if (parseInt(userTypeId) == 4) {
+            let htmlTag = ''; // Initialize htmlTag
+            htmlTag += `<div class="col-sm-12 col-md-4">
+                                <label for="validationCustom12" class="form-label">Loc. LAT. <span class="text-danger">*</span></label>
+                                <input type="text" name="LAT" autocomplete="off" class="form-control" id="validationCustom12" required="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div><div class="col-sm-12 col-md-4">
+                                <label for="validationCustom13" class="form-label">Loc. LANG. <span class="text-danger">*</span></label>
+                                <input type="text" name="LANG" autocomplete="off" class="form-control" id="validationCustom13" required="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <label for="validationCustom14" class="form-label">Address Location <span class="text-danger">*</span></label>
+                                <input type="text" name="LOCATION_REMARKS" autocomplete="off" class="form-control" id="validationCustom14" required="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>`;
+            $('#addResponsiableData').append(htmlTag);
         }
     }
 
-    function get_hod() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 1,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                        <label for="validationCustom10_hod" class="form-label">Responsible HOD <span class="text-danger">*</span></label>
-                        <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_hod" required><option  hidden value="<?php echo Null ?>"> <- Selecte HOD -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
-                    });
-                }
-                htmlTag += `</select></div>`;
-                $('#addResponsiableData').append(htmlTag);
 
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_hod').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select HOD', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
 
-        })
-    };
 
-    function get_cod() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 2,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10_coord" class="form-label">Responsible COORDINATOR <span class="text-danger">*</span></label>
-                            <select class="form-select" id="validationCustom10_coord" name="RESPONSIBLE_ID" required>
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte Coordinator -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
-                    });
 
-                }
-                htmlTag += `</select></div>`;
-                $('#addResponsiableData').append(htmlTag);
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_coord').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select Coordinator', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
-        });
-
-    }
-
-    function get_mec() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 4,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10_ret" class="form-label">Responsible RETAILER <span class="text-danger">*</span></label>
-                            <select class="form-select single-select"name="RESPONSIBLE_ID" id="validationCustom10_ret" required>
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
-                    });
-
-                }
-                htmlTag += `</select></div>`;
-                $('#addResponsiableData').append(htmlTag);
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_ret').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select Retailer', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
-        });
-
-    }
-
-    function get_selExc() {
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "json",
-            data: {
-                brand_ID: $user_brand_id.val(),
-                type_ID: 3,
-            },
-            success: function(res) {
-                let htmlTag = `<div class="col-sm-12 col-md-4">
-                            <label for="validationCustom10_sale" class="form-label">Responsible SALE EXECUTIVE <span class="text-danger">*</span></label>
-                            <select class="form-select single-select" name="RESPONSIBLE_ID" id="validationCustom10_sale" required>
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte Sale Excutive -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
-                    });
-                }
-                htmlTag += `</select></div>`;
-                $('#addResponsiableData').append(htmlTag);
-                // Initialize Select2 for the appended dropdown element
-                $('#addResponsiableData').find('#validationCustom10_sale').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select Sale Excutive', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
-        });
-
-    }
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {

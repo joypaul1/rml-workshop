@@ -25,11 +25,11 @@ $number = 0;
                                             <div class="col-sm-12  col-md-4">
                                                 <label for="validationCustom06" class="form-label">User Type </label>
                                                 <select class="form-select " id="validationCustom06" name="USER_TYPE_ID">
-                                                    <option  value=""><- Select Type -></option>
+                                                    <option value=""><- Select Type -></option>
                                                     <?php
                                                     $typeRow = [];
                                                     $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
-                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID']?$_POST['USER_TYPE_ID'] : '';
+                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
                                                     $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
                                         AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
                                                     $strSQL  = @oci_parse($objConnect, $query);
@@ -37,9 +37,7 @@ $number = 0;
                                                     @oci_execute($strSQL);
                                                     while ($typeRow = @oci_fetch_assoc($strSQL)) {
                                                     ?>
-                                                        <option value="<?php echo $typeRow['ID'] ?>"
-                                                        <?php echo $USER_TYPE_ID ==$typeRow['ID']? 'Selected': ' ' ?>
-                                                        >
+                                                        <option value="<?php echo $typeRow['ID'] ?>" <?php echo $USER_TYPE_ID == $typeRow['ID'] ? 'Selected' : ' ' ?>>
                                                             <?php echo $typeRow['TITLE'] ?>
                                                         </option>
                                                     <?php } ?>
@@ -75,18 +73,20 @@ $number = 0;
 
                     ?>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
+                        <div class="table-responsives ">
+                            <table class="table table-sm table-bordered align-middle mb-0"
+                            
+                            >
                                 <thead class="table-light text-uppercase text-center ">
                                     <tr>
                                         <th>SL.</th>
                                         <th>Action</th>
                                         <th>Name | RML ID</th>
                                         <th>Mobile | Login ID</th>
-                                        <th>BRAND</th>
+                                        <!-- <th>BRAND</th> -->
                                         <th>TYPE</th>
-                                        <th>RESponsible User</th>
-                                        <th>Location of User</th>
+                                        <!-- <th>RESponsible User</th> -->
+                                        <th>Location </th>
 
                                         <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
                                             || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
@@ -100,21 +100,16 @@ $number = 0;
                                 </thead>
                                 <tbody>
                                     <?php
+                                    $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $query = "SELECT UP.ID,
                                                     UP.USER_NAME,
                                                     UP.USER_MOBILE,
-                                                    UP.RML_ID,
+                                                    UP.RML_IDENTITY_ID AS RML_ID,
                                                     UP.LAT,
                                                     UP.LANG,
                                                     UP.CREATED_DATE,
-                                                    (SELECT USER_NAME
-                                                        FROM USER_PROFILE
-                                                        WHERE ID = UP.RESPONSIBLE_ID)
-                                                        AS USER_RESPONSIBLE_NAME, 
-                                                    (SELECT TITLE
-                                                        FROM USER_BRAND
-                                                        WHERE ID = UP.USER_BRAND_ID)
-                                                        AS USER_BRAND, 
+                                                   
+                                                  
                                                     (SELECT TITLE 
                                                         FROM USER_TYPE 
                                                         WHERE ID = UP.USER_TYPE_ID) 
@@ -123,14 +118,14 @@ $number = 0;
                                             WHERE UP.USER_STATUS = '1' 
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '01705102555')";
 
-                                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] != 'HOD') {
-                                        $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
-                                        $query .= " AND RESPONSIBLE_ID = $log_user_id";
-                                    }
+                                    // if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] != 'HOD') {
+                                        // $query .= " AND RESPONSIBLE_ID = $log_user_id";
+                                    // }
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
                                         $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
                                     }
+
                                     if (isset($_POST['USER_MOBILE']) && !empty($_POST['USER_MOBILE'])) {
                                         $USER_MOBILE = $_POST['USER_MOBILE'];
                                         $query .= " AND UP.USER_MOBILE LIKE '%" . $USER_MOBILE . "%'";
@@ -140,7 +135,7 @@ $number = 0;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
-                                    
+
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
                                     ?>
@@ -157,21 +152,17 @@ $number = 0;
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
                                                 <br>
-                                                RML-ID : <?php echo $row['RML_ID']; ?>
+                                                ID : <?php echo $row['RML_ID']; ?>
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_MOBILE']; ?>
                                             </td>
 
-                                            <td>
-                                                <?php echo $row['USER_BRAND']; ?>
-                                            </td>
+                                           
                                             <td>
                                                 <?php echo $row['USER_TYPE']; ?>
                                             </td>
-                                            <td>
-                                                <?php echo $row['USER_RESPONSIBLE_NAME']; ?>
-                                            </td>
+                                          
                                             <td class="text-center">
                                                 <?php
                                                 $latitu = $row['LAT'];
@@ -215,7 +206,7 @@ $number = 0;
 
                                     <?php
                                     } ?>
-                                    <?php 
+                                    <?php
                                     //   echo $number;
                                     if ($number == 0) {
                                         echo '<tr><td colspan="9" class="text-center text-danger fw-bold">No Data Found !</td></tr>';

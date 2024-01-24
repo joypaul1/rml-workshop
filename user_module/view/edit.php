@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
     $query   = "SELECT UP.ID,
     UP.USER_NAME,
     UP.USER_MOBILE,
-    UP.RML_ID,
+    UP.RML_IDENTITY_ID as RML_ID,
     UP.PENDRIVE_ID,
     UP.USER_BRAND_ID,
     UP.USER_TYPE_ID,
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
 
 
 
-                                <div class="col-sm-12  col-md-4">
+                                <!-- <div class="col-sm-12  col-md-4">
                                     <label for="validationCustom04" class="form-label">User Brand <span class="text-danger">*</span> </label>
                                     <select class="form-select" id="validationCustom04" name="USER_BRAND_ID" required="">
                                         <option hidden value="<?php echo Null ?>"><- Select Brand -></option>
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                         <?php } ?>
                                     </select>
                                     <div class="invalid-feedback">Please select a User Brand.</div>
-                                </div>
+                                </div> -->
                                 <div class="row mt-3" id="addResponsiableData"></div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>

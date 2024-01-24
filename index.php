@@ -12,7 +12,7 @@ if (isset($_POST['login_submit'])) {
         $md5Password  = md5($v_password);
         $sql    = "SELECT 
                 UP.ID, UP.USER_NAME,UP.USER_MOBILE, 
-                UP.RML_ID, UP.USER_PASSWORD, UP.USER_BRAND_ID, UP.IMAGE_LINK,
+                UP.RML_ID, UP.USER_PASSWORD,UP.IMAGE_LINK,
                 UP.USER_TYPE_ID,
                 (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
                 FROM USER_PROFILE UP WHERE UP.USER_MOBILE ='$v_usermobile' and UP.USER_PASSWORD = '$md5Password'
@@ -20,6 +20,7 @@ if (isset($_POST['login_submit'])) {
         $strSQL = @oci_parse($objConnect, $sql);
         @oci_execute($strSQL);
         $dataRow = @oci_fetch_assoc($strSQL);
+       
         if ($dataRow) {
             unset($dataRow['USER_PASSWORD']);
 
@@ -29,8 +30,7 @@ if (isset($_POST['login_submit'])) {
             $_SESSION['rs_img_path'] = $rs_img_path;
             header('location:home/dashboard.php');
             exit;
-        }
-        else {
+        } else {
             $errorMsg = "Wrong EMP-ID or password";
         }
     }
@@ -101,15 +101,12 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                                         <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" class="row g-3">
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">USER MOBILE NUMBER</label>
-                                                <input type="text" name="user_mobile" class="form-control rounded-5"
-                                                    onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="inputEmailAddress"
-                                                    autocomplete="off" placeholder="">
+                                                <input type="text" name="user_mobile" class="form-control rounded-5" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="inputEmailAddress" autocomplete="off" placeholder="">
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Password</label>
 
-                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword" autocomplete="off"
-                                                    placeholder="">
+                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword" autocomplete="off" placeholder="">
                                             </div>
 
 
@@ -144,8 +141,8 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
     <!--Password show & hide js -->
     <script>
-        $(document).ready(function () {
-            $("#show_hide_password a").on('click', function (event) {
+        $(document).ready(function() {
+            $("#show_hide_password a").on('click', function(event) {
                 event.preventDefault();
                 if ($('#show_hide_password input').attr("type") == "text") {
                     $('#show_hide_password input').attr('type', 'password');

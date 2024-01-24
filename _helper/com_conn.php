@@ -9,6 +9,7 @@ if (!isset($_SESSION['USER_SFCM_INFO'])) {
     header("Location:" . $basePath);
     exit;
 }
+
 include_once('../_config/connoracle.php');
 
 $basePath = $_SESSION['basePath'];
