@@ -100,6 +100,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                 </thead>
                                 <tbody>
                                     <?php
+                                    $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
                                     $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $v_start_date = date('01/m/Y');
@@ -110,14 +111,14 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                     if (isset($_POST['end_date'])) {
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
-                                    // print_r($_POST);
 
                                     $query = "SELECT VA.ID, VA.VISIT_DATE, VA.TARGET_AMOUNT, 
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE, 
                                         VA.ENTRY_BY_ID,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.USER_ID) AS RETAILER_NAME
-                                        FROM VISIT_ASSIGN VA WHERE VA.RETAILER_ID = '$log_user_id'
+                                        FROM VISIT_ASSIGN VA 
+                                        WHERE VA.RETAILER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         ";
                                     if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
@@ -125,7 +126,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                         $query .= " AND ( USER_ID= $retailerID)";
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-                                    echo $query;
+                                  
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
