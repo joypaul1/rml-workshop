@@ -41,7 +41,7 @@ include_once('../../_helper/2step_com_conn.php');
                                 <select id="inputState" required name="visit_type" class="form-select text-center">
                                     <option hidden value="<?php echo null ?>"> <- Select Type Data -></option>
                                     <?php
-                                    $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
+
                                     $strSQL = oci_parse($objConnect, "SELECT ID, TITLE FROM VISIT_TYPE WHERE STATUS = 1");
                                     oci_execute($strSQL);
                                     while ($typeRow = oci_fetch_assoc($strSQL)) {
@@ -64,9 +64,24 @@ include_once('../../_helper/2step_com_conn.php');
 
 
                                 <?php
-                                $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
-                                
-                                $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  USER_TYPE_ID = 4");
+
+                                $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
+
+                                $query = "SELECT 
+                                        UP.ID, 
+                                        UP.USER_NAME, 
+                                        LISTAGG(UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
+                                        FROM 
+                                            USER_PROFILE UP
+                                        LEFT JOIN 
+                                            USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                        WHERE 
+                                            UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                            AND UP.USER_TYPE_ID = 4
+                                        GROUP BY 
+                                            UP.ID, UP.USER_NAME";
+                                $strSQL = oci_parse($objConnect, $query);
+                                // echo $query;
                                 oci_execute($strSQL);
 
                                 while ($row = oci_fetch_assoc($strSQL)) {
