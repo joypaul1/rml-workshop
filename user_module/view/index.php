@@ -78,12 +78,15 @@ $number = 0;
                                 <thead class="table-light text-uppercase text-center ">
                                     <tr>
                                         <th>SL.</th>
-                                        <th>Action</th>
+                                        <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
+                                            || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                        ) {
+                                            echo '<th>Action</th>';
+                                        }
+                                        ?>
                                         <th>Name | RML ID</th>
                                         <th>Mobile | Login ID</th>
-                                        <!-- <th>BRAND</th> -->
                                         <th>TYPE</th>
-                                        <!-- <th>RESponsible User</th> -->
                                         <th>Location </th>
 
                                         <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
@@ -98,27 +101,51 @@ $number = 0;
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
-                                    $query = "SELECT UP.ID,
+
+                                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD') || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                    ) {
+                                        $query = "SELECT UP.ID,
                                                     UP.USER_NAME,
                                                     UP.USER_MOBILE,
                                                     UP.RML_IDENTITY_ID AS RML_ID,
                                                     UP.LAT,
                                                     UP.LANG,
                                                     UP.CREATED_DATE,
-                                                   
-                                                  
-                                                    (SELECT TITLE 
-                                                        FROM USER_TYPE 
-                                                        WHERE ID = UP.USER_TYPE_ID) 
-                                                        AS USER_TYPE
+                                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE 
                                             FROM USER_PROFILE UP 
                                             WHERE UP.USER_STATUS = '1' 
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '01705102555')";
+                                    } else {
 
-                                    // if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] != 'HOD') {
-                                    // $query .= " AND RESPONSIBLE_ID = $log_user_id";
-                                    // }
+                                        $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
+                                        $query = "SELECT UP.ID,
+                                                        UP.USER_NAME,
+                                                        UP.USER_MOBILE,
+                                                        UP.RML_IDENTITY_ID AS RML_ID,
+                                                        UP.LAT,
+                                                        UP.LANG,
+                                                        UP.CREATED_DATE,
+                                                        UP.CREATED_DATE,
+                                                        (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID)
+                                                        AS USER_TYPE,
+                                                        LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID)
+                                                        AS USER_BRANDS
+                                                FROM USER_PROFILE UP
+                                                        LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) 
+                                                AND UP.USER_STATUS = '1'";
+
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (3,4,5)";
+                                        }
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'RETAILER') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (4,5,6)";
+                                        }
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'MECHANICS') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (5,6)";
+                                        }
+                                    }
+
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
                                         $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
@@ -129,7 +156,8 @@ $number = 0;
                                         $query .= " AND UP.USER_MOBILE LIKE '%" . $USER_MOBILE . "%'";
                                     }
 
-                                    $query .= " ORDER BY UP.USER_TYPE_ID";
+                                    $query .= " GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UP.USER_TYPE_ID ORDER BY UP.USER_TYPE_ID";
+
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -143,10 +171,14 @@ $number = 0;
                                                     <?php echo $number; ?>
                                                 </strong>
                                             </td>
-                                            <td class="text-center">
-                                                <a href="<?php echo $sfcmBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
-                                                <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
-                                            </td>
+                                            <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
+                                                || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                            ) { ?>
+                                                <td class="text-center">
+                                                    <a href="<?php echo $sfcmBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                    <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
+                                                </td>
+                                            <?php } ?>
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
                                                 <br>
