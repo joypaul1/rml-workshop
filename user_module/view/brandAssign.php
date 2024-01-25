@@ -1,6 +1,7 @@
 <?php
 include_once('../../_helper/2step_com_conn.php');
 $number = 0;
+$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 ?>
 
 <!--start page wrapper -->
@@ -131,31 +132,40 @@ $number = 0;
                                                 ID : <?php echo $row['RML_ID']; ?>
 
                                             </td>
-                                            <td >
+                                            <td>
                                                 <?php
-                                                $brandQuery = "SELECT TITLE, ID FROM PRODUCT_BRAND WHERE STATUS = '1' ORDER BY ID";
+                                                $USER_PROFILE_ID = $row['ID'];
+                                                $brandQuery = "SELECT PB.ID, PB.TITLE, 
+                                                CASE 
+                                                    WHEN EXISTS (
+                                                        SELECT UBS.STATUS
+                                                        FROM USER_BRAND_SETUP UBS 
+                                                        WHERE UBS.USER_PROFILE_ID = '$USER_PROFILE_ID ' 
+                                                            AND PB.ID = UBS.PRODUCT_BRAND_ID
+                                                            AND UBS.STATUS = '1'
+                                                    ) THEN 'true'
+                                                    ELSE 'false'
+                                                END AS STATUS_EXISTS
+                                                FROM PRODUCT_BRAND PB 
+                                                WHERE PB.STATUS = '1' 
+                                                ORDER BY ID";
+
                                                 $brandSQL = oci_parse($objConnect, $brandQuery);
 
                                                 oci_execute($brandSQL);
 
                                                 while ($brandRow = oci_fetch_assoc($brandSQL)) {
                                                     echo '<div class="form-check">
-                                                            <input class="form-check-input delete_check" type="checkbox" value="' . $brandRow['ID'] . '" id="checkbox_' . $brandRow['ID'] . '" >
-                                                            <label class="form-check-label" for="checkbox_' . $brandRow['ID'] . '"> ' . $brandRow['TITLE'] . ' </label>
+                                                            <input class="form-check-input delete_check"
+                                                            data-userId="' . $row['ID'] . '" type="checkbox" value="' . $brandRow['ID'] . '" id="checkbox_' . $brandRow['ID'] . $row['ID'] . '"
+                                                            ' . ($brandRow['STATUS_EXISTS'] == 'true' ? 'checked' : '') . '>
+                                                            <label class="form-check-label" for="checkbox_' . $brandRow['ID'] . $row['ID'] . '"> ' . $brandRow['TITLE'] . ' </label>
                                                         </div>';
                                                 }
                                                 ?>
                                             </td>
 
                                         </tr>
-
-
-
-
-
-
-
-
 
                                     <?php
                                     }
@@ -181,43 +191,55 @@ include_once('../../_includes/footer.php');
     //delete data processing
 
     $(document).on('click', '.delete_check', function() {
-        var id = $(this).data('id');
-        let url = $(this).data('href');
-        swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-        }).then((result) => {
-            if (result.value) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
+        var userID = $(this).attr('data-userId');
+        let url = "<?php echo ($basePath . '/user_module/action/drop_down_panel.php') ?>";
+        console.log($(this).is(":checked"));
+        if ($(this).is(":checked")) {
+            $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        userId: userID,
+                        brandAssignID: $(this).val(),
+                        status: '1'
+
+                    },
+                    dataType: 'json'
+                })
+                .done(function(response) {
+                    swal.fire('Deleted!', response.message, response.status);
+                    // location.reload(); // Reload the page
+                })
+                .fail(function() {
+                    swal.fire('Oops...', 'Something went wrong!', 'error');
                 });
+        } else {
+            $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        userId: userID,
+                        brandAssignID: $(this).val(),
+                        status: '0'
 
-                $.ajax({
-                        url: url,
-                        type: 'GET',
-                        data: {
-                            deleteID: id
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(response) {
-                        swal.fire('Deleted!', response.message, response.status);
-                        location.reload(); // Reload the page
-                    })
-                    .fail(function() {
-                        swal.fire('Oops...', 'Something went wrong!', 'error');
-                    });
-
+                    },
+                    dataType: 'json'
+                })
+                .done(function(response) {
+                    swal.fire('Deleted!', response.message, response.status);
+                    // location.reload(); // Reload the page
+                })
+                .fail(function() {
+                    swal.fire('Oops...', 'Something went wrong!', 'error');
+                });
+        }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
 
-        })
+
 
     });
 </script>
