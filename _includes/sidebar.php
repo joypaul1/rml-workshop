@@ -58,8 +58,8 @@
                         <div class="menu-title">User Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create User</a>
-                        </li>
+                        <!-- <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create User</a>
+                        </li> -->
                         <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
                         </li>
                         <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Brand Assign</a>

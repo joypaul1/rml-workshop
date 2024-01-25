@@ -65,7 +65,8 @@ include_once('../../_helper/2step_com_conn.php');
 
                                 <?php
                                 $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
-                                $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = $executiveID");
+                                
+                                $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  USER_TYPE_ID = 4");
                                 oci_execute($strSQL);
 
                                 while ($row = oci_fetch_assoc($strSQL)) {

@@ -10,16 +10,19 @@ if (isset($_POST['login_submit'])) {
         $v_usermobile = trim($_POST['user_mobile']);
         $v_password   = trim($_POST['password']);
         $md5Password  = md5($v_password);
-        $sql    = "SELECT 
-                UP.ID, UP.USER_NAME,UP.USER_MOBILE, 
-                UP.RML_IDENTITY_ID, UP.USER_PASSWORD,UP.IMAGE_LINK,
-                UP.USER_TYPE_ID,
-                (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                FROM USER_PROFILE UP WHERE UP.USER_MOBILE ='$v_usermobile' and UP.USER_PASSWORD = '$md5Password'
-                and USER_STATUS = 1";
+        $query = "SELECT UP.ID, UP.USER_NAME, UP.USER_MOBILE, 
+                    UP.RML_IDENTITY_ID, UP.USER_PASSWORD, UP.IMAGE_LINK,
+                    UP.USER_TYPE_ID,
+                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE,
+                    LISTAGG(UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
+                FROM USER_PROFILE UP
+                LEFT JOIN USER_BRAND_SETUP UBS ON UP.ID = UBS.USER_PROFILE_ID
+                WHERE UP.USER_MOBILE ='$v_usermobile' AND UP.USER_PASSWORD = '$md5Password' AND UP.USER_STATUS = 1
+                GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.USER_PASSWORD, UP.IMAGE_LINK, UP.USER_TYPE_ID";
 
 
-        $strSQL = @oci_parse($objConnect, $sql);
+
+        $strSQL = @oci_parse($objConnect, $query);
         @oci_execute($strSQL);
         $dataRow = @oci_fetch_assoc($strSQL);
 
