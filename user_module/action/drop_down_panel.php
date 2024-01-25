@@ -2,7 +2,7 @@
 session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
-$basePath   = $_SESSION['basePath'];
+$sfcmBasePath   = $_SESSION['sfcmBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];

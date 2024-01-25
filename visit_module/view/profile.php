@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
-                                            <img src="<?php echo $_SESSION['USER_SFCM_INFO']['IMAGE_LINK'] != null ? ($basePath . '/' . $_SESSION['USER_SFCM_INFO']['IMAGE_LINK']) : $basePath . '/' . "assets/images/avatars/default_user.png"; ?>"
+                                            <img src="<?php echo $_SESSION['USER_SFCM_INFO']['IMAGE_LINK'] != null ? ($sfcmBasePath . '/' . $_SESSION['USER_SFCM_INFO']['IMAGE_LINK']) : $sfcmBasePath . '/' . "assets/images/avatars/default_user.png"; ?>"
                                                 alt="user_image" class="rounded-circle p-1 bg-primary" width="110">
                                             <div class="mt-3">
                                                 <h4>
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                 <div class="card">
                                     <div class="card-body">
                                         <form method="POST"
-                                        action=" <?php echo ($basePath . '/visit_module/action/self_panel.php') ?>"
+                                        action=" <?php echo ($sfcmBasePath . '/visit_module/action/self_panel.php') ?>"
 
                                             class="row g-3" enctype="multipart/form-data" >
                                             <input type="hidden" name="actionType" value="profileUpdate">
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
                                                     <input type="file" name="user_image"
-                                                        data-default-file="<?php echo $basePath . '/' . $data['IMAGE_LINK'] ?>" class="dropify" />
+                                                        data-default-file="<?php echo $sfcmBasePath . '/' . $data['IMAGE_LINK'] ?>" class="dropify" />
                                                 </div>
                                             </div>
                                             <div class="row">

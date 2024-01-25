@@ -2,7 +2,7 @@
 session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
-$basePath   = $_SESSION['basePath'];
+$sfcmBasePath   = $_SESSION['sfcmBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
 $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP");
@@ -50,13 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
                     $imageStatus              = "Something went wrong file uploading!";
                     $_SESSION['noti_message'] = $imageStatus;
-                    echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
+                    echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/create.php'</script>";
                     exit();
                 }
             } else {
                 $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
                 $_SESSION['noti_message'] = $imageStatus;
-                echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
+                echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/create.php'</script>";
                 exit();
             }
         }
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         ];
 
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/create.php'</script>";
         exit();
     } else {
         $e                        = @oci_error($strSQL);
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$basePath}/user_module/view/create.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/create.php'</script>";
         exit();
     }
 }
@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
 
         $_SESSION['noti_message'] = $message;
 
-        echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$basePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/edit.php?id={$editId}&actionType=edit'</script>";
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'profileUpdate') {
@@ -197,19 +197,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
                             'status' => 'false',
                         ];
                         $_SESSION['noti_message'] = $message;
-                        echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+                        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
                     }
                 } else {
 
                     $imageStatus              = "Something went wrong file uploading!";
                     $_SESSION['noti_message'] = $imageStatus;
-                    echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+                    echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
                     exit();
                 }
             } else {
                 $imageStatus              = 'Sorry, only JPG, JPEG, PNG, BMP,GIF, & PDF files are allowed to upload!';
                 $_SESSION['noti_message'] = $imageStatus;
-                echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+                echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
             }
         }
     }
@@ -239,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
 
         $_SESSION['noti_message'] = $message;
 
-        echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -247,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$basePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
     }
 }
 if (($_GET["deleteID"]) && $_SERVER['REQUEST_METHOD'] === 'GET') {

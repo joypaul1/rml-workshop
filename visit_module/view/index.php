@@ -167,7 +167,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                             </td>
 
                                             <!-- <td class="text-center">
-                                                <a href="<?php echo $basePath . '/visit_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
+                                                <a href="<?php echo $sfcmBasePath . '/visit_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
                                             </td> -->
 
                                         </tr>

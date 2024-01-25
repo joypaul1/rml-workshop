@@ -95,12 +95,12 @@
 </div>
 <!--end switcher-->
 <!-- Bootstrap JS -->
-<script src="<?php echo $basePath ?>/assets/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo $sfcmBasePath ?>/assets/js/bootstrap.bundle.min.js"></script>
 <!--plugins-->
-<script src="<?php echo $basePath ?>/assets/js/jquery.min.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/simplebar/js/simplebar.min.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/metismenu/js/metisMenu.min.js"></script>
-<script src="<?php echo $basePath ?>/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+<script src="<?php echo $sfcmBasePath ?>/assets/js/jquery.min.js"></script>
+<script src="<?php echo $sfcmBasePath ?>/assets/plugins/simplebar/js/simplebar.min.js"></script>
+<script src="<?php echo $sfcmBasePath ?>/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+<script src="<?php echo $sfcmBasePath ?>/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.8/sweetalert2.min.js"
     integrity="sha512-7x7HoEikRZhV0FAORWP+hrUzl75JW/uLHBbg2kHnPdFmScpIeHY0ieUVSacjusrKrlA/RsA2tDOBvisFmKc3xw==" crossorigin="anonymous"
@@ -114,7 +114,7 @@
         }
     });
 </script>
-<script src="<?php echo $basePath ?>/assets/js/app.js"></script>
+<script src="<?php echo $sfcmBasePath ?>/assets/js/app.js"></script>
 <?php if (isset($dynamic_link_js) && count($dynamic_link_js) > 0) {
     foreach ($dynamic_link_js as $key => $linkJs) {
         echo "<script src='$linkJs'></script>";

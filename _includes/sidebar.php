@@ -28,7 +28,7 @@
             <!--navigation-->
             <ul class="metismenu" id="menu">
                 <li class="<?php echo isActive('/home/dashboard.php'); ?>">
-                    <a href="<?php echo $basePath ?>/home/dashboard.php">
+                    <a href="<?php echo $sfcmBasePath ?>/home/dashboard.php">
                         <div class="parent-icon"><i class="bx bx-home-circle"></i>
                         </div>
                         <div class="menu-title">Dashboard </div>
@@ -44,9 +44,9 @@
                         <div class="menu-title">Visit Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Visit </a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Visit </a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Visit </a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Visit </a>
                         </li>
                     </ul>
                 </li>
@@ -58,11 +58,11 @@
                         <div class="menu-title">User Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create User</a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create User</a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Brand Assign</a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Brand Assign</a>
                         </li>
                     </ul>
                 </li>
@@ -74,9 +74,9 @@
                         <div class="menu-title">Admin Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $basePath ?>/admin_module/view/user_type.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/user_type.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
                         </li>
-                        <li> <a href="<?php echo $basePath ?>/admin_module/view/visit_type.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/visit_type.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
                         </li>
                     </ul>
                 </li>

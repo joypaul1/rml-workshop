@@ -18,17 +18,17 @@ if (isset($_POST['login_submit'])) {
                 FROM USER_PROFILE UP WHERE UP.USER_MOBILE ='$v_usermobile' and UP.USER_PASSWORD = '$md5Password'
                 and USER_STATUS = 1";
 
-       
+
         $strSQL = @oci_parse($objConnect, $sql);
         @oci_execute($strSQL);
         $dataRow = @oci_fetch_assoc($strSQL);
-       
+
         if ($dataRow) {
             unset($dataRow['USER_PASSWORD']);
 
             $_SESSION['USER_SFCM_INFO']   = $dataRow;
             $_SESSION['baseUrl']     = $baseUrl;
-            $_SESSION['basePath']    = $basePath;
+            $_SESSION['sfcmBasePath']    = $sfcmBasePath;
             $_SESSION['rs_img_path'] = $rs_img_path;
             header('location:home/dashboard.php');
             exit;
@@ -39,7 +39,7 @@ if (isset($_POST['login_submit'])) {
 }
 
 if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
-    $basePath    = $_SESSION['basePath'];
+    $sfcmBasePath    = $_SESSION['sfcmBasePath'];
     $rs_img_path = $_SESSION['rs_img_path'];
     session_start();
     session_unset();
@@ -47,7 +47,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     session_write_close();
     setcookie(session_name(), '', 0, '/');
     session_regenerate_id(true);
-    header("location:" . $basePath . "/index.php");
+    header("location:" . $sfcmBasePath . "/index.php");
     exit;
 }
 

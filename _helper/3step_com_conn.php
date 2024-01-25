@@ -6,11 +6,11 @@ if (!isset($_SESSION['USER_SFCM_INFO'])) {
     $includeFilePath   = $directoryPath . '../../../config_file_path.php';
     $realIncludePath   = realpath($includeFilePath);
     require($includeFilePath);
-    header("Location:" . $basePath);
+    header("Location:" . $sfcmBasePath);
     exit;
 }
 include_once('../../../_config/connoracle.php');
-$basePath = $_SESSION['basePath'];
+$sfcmBasePath = $_SESSION['sfcmBasePath'];
 include_once('../../../_includes/header.php');
 
 if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD') {

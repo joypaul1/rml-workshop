@@ -24,7 +24,7 @@ include_once('../../_helper/2step_com_conn.php');
             ?>
             <div class="card-body">
                 <div class=" card card-body col-sm-12 col-md-9 col-xl-9 mx-auto p-4 border rounded">
-                    <form method="POST" action="<?php echo ($basePath . '/visit_module/action/self_panel.php') ?>">
+                    <form method="POST" action="<?php echo ($sfcmBasePath . '/visit_module/action/self_panel.php') ?>">
                         <div class="row justify-content-center align-items-center ">
                             <input type="hidden" name="actionType" value="create">
 

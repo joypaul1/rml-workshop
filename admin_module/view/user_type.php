@@ -57,7 +57,7 @@ $number = 0;
                                                 } ?>
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?php echo $basePath . '/admin_module/view/ut_edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                <a href="<?php echo $sfcmBasePath . '/admin_module/view/ut_edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
 
                                             </td>
 
