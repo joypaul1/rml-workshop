@@ -74,9 +74,7 @@ $number = 0;
                     ?>
                     <div class="card-body">
                         <div class="table-responsives ">
-                            <table class="table table-sm table-bordered align-middle mb-0"
-                            
-                            >
+                            <table class="table table-sm table-bordered align-middle mb-0">
                                 <thead class="table-light text-uppercase text-center ">
                                     <tr>
                                         <th>SL.</th>
@@ -119,7 +117,7 @@ $number = 0;
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '01705102555')";
 
                                     // if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] != 'HOD') {
-                                        // $query .= " AND RESPONSIBLE_ID = $log_user_id";
+                                    // $query .= " AND RESPONSIBLE_ID = $log_user_id";
                                     // }
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
                                         $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
@@ -158,18 +156,20 @@ $number = 0;
                                                 <?php echo $row['USER_MOBILE']; ?>
                                             </td>
 
-                                           
+
                                             <td>
                                                 <?php echo $row['USER_TYPE']; ?>
                                             </td>
-                                          
+
                                             <td class="text-center">
-                                                <?php
-                                                $latitu = $row['LAT'];
-                                                $lng = $row['LANG'];
-                                                $url = "http://www.google.com/maps/place/" . $latitu . "," . $lng;
-                                                ?>
-                                                <a class="btn btn-sm btn-gradient-info text-white" href="<?php echo $url; ?>" target="_blank"><i class='bx bx-map'></i></a>
+                                                <?php if (($row['USER_TYPE'] == 'RETAILER')) { ?>
+                                                    <?php
+                                                    $latitu = $row['LAT'];
+                                                    $lng = $row['LANG'];
+                                                    $url = "http://www.google.com/maps/place/" . $latitu . "," . $lng;
+                                                    ?>
+                                                    <a class="btn btn-sm btn-gradient-info text-white" href="<?php echo $url; ?>" target="_blank"><i class='bx bx-map'></i></a>
+                                                <?php } ?>
                                             </td>
 
 
