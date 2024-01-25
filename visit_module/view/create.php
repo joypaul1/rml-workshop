@@ -41,7 +41,7 @@ include_once('../../_helper/2step_com_conn.php');
                                 <select id="inputState" required name="visit_type" class="form-select text-center">
                                     <option hidden value="<?php echo null ?>"> <- Select Type Data -></option>
                                     <?php
-
+                                
                                     $strSQL = oci_parse($objConnect, "SELECT ID, TITLE FROM VISIT_TYPE WHERE STATUS = 1");
                                     oci_execute($strSQL);
                                     while ($typeRow = oci_fetch_assoc($strSQL)) {
@@ -64,9 +64,9 @@ include_once('../../_helper/2step_com_conn.php');
 
 
                                 <?php
-
+                              
                                 $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
-
+                              
                                 $query = "SELECT 
                                         UP.ID, 
                                         UP.USER_NAME, 

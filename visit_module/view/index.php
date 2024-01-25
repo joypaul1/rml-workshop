@@ -125,7 +125,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                         $query .= " AND ( USER_ID= $retailerID)";
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-
+                                    echo $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
