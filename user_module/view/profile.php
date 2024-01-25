@@ -8,13 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
     $query   = "SELECT UP.ID,
     UP.USER_NAME,
     UP.USER_MOBILE,
-    UP.RML_ID,
+    UP.RML_IDENTITY_ID AS RML_ID,
     UP.PENDRIVE_ID,
     UP.IMAGE_LINK,
-    (SELECT TITLE
-    FROM USER_BRAND
-    WHERE ID = UP.USER_BRAND_ID)
-    AS USER_BRAND, 
+    -- (SELECT TITLE
+    -- FROM USER_BRAND
+    -- WHERE ID = UP.USER_BRAND_ID)
+    -- AS USER_BRAND, 
     ( SELECT TITLE FROM     USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
     FROM USER_PROFILE UP WHERE ID = $edit_id";
     $strSQL  = @oci_parse($objConnect, $query);
@@ -62,13 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                                         </span>
                                                     </strong>
                                                 </p>
-                                                <p class="mb-1 text-start">
+                                                <!-- <p class="mb-1 text-start">
                                                     <strong><i class='bx bx-git-branch'></i> BRAND :
                                                         <span class="">
                                                             <?php echo $data['USER_BRAND'] ?>
                                                         </span>
                                                     </strong>
-                                                </p>
+                                                </p> -->
                                                 <p class="mb-1 text-start">
                                                     <strong><i class='bx bxl-jquery'></i> TYPE :
                                                         <span class=" ">
