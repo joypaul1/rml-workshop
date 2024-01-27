@@ -601,8 +601,8 @@ a {
 
 .bg-gradient-blkw {
     background: #0a0707;
-    background-image: -webkit-linear-gradient(45deg, #000000 50%, #fff 50%);
-    background-image: linear-gradient(45deg, #000000 50%, #fff 50%);
+    background-image: -webkit-linear-gradient(45deg, #000000 50%,  rgb(0, 242, 96) 50%);
+    background-image: linear-gradient(45deg, #000000 50%,  rgb(0, 242, 96) 50%);
     border: 0px solid rgba(255,255,255,.125);
 }
 

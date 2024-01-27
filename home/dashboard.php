@@ -3,10 +3,33 @@ $dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.j
 $dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js';
 $dynamic_link_js[]  = '../assets/plugins/apexcharts-bundle/js/apexcharts.min.js';
 $dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.min.js';
-// $dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.extension.js';
 $dynamic_link_js[]  = '../assets/js/index2.js';
 
 include_once('../_helper/com_conn.php');
+$user_type_brand_wise_data = [];
+// COUNT QUERY USER TYPE WISE
+$query = "SELECT b.ID, b.TITLE,
+          COUNT(USER_TYPE_ID) AS TOTAL_USER,
+          NUMBER_OF_USER(1, b.ID) AS MAHINDRA_USER,
+          NUMBER_OF_USER(2, b.ID) AS EICHER_USER
+          FROM USER_PROFILE a, USER_TYPE b
+          WHERE a.USER_STATUS = 1
+          AND a.USER_TYPE_ID = b.ID
+          GROUP BY b.ID, b.TITLE";
+
+$brandSQL = oci_parse($objConnect, $query);
+oci_execute($brandSQL);
+
+$user_type_brand_wise_data = array(); // Initialize the array
+
+while ($brandRow = oci_fetch_assoc($brandSQL)) {
+    array_push($user_type_brand_wise_data, $brandRow);
+}
+
+// print('<pre>');
+// print_r($user_type_brand_wise_data);
+// print('</pre>');
+
 ?>
 
 <!--start page wrapper -->
@@ -77,6 +100,198 @@ include_once('../_helper/com_conn.php');
             </div>
         </div><!--end row-->
 
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-primary" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                            <div class="d-flex align-items-center">
+                                <div class="tab-icon">
+                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                </div>
+                                <div class="tab-title">MAHINDRA </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
+                            <div class="d-flex align-items-center">
+                                <div class="tab-icon">
+                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                </div>
+                                <div class="tab-title">EICHER</div>
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+                <div class="tab-content py-3">
+                    <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
+                        <div class="row row-cols-1 row-cols-lg-5">
+                            <div class="col">
+                                <div class="card bg-gradient-esinto rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[0]['MAHINDRA_USER'] ?></h4>
+                                                <p class="mb-0 text-white">HOD</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class='bx bx-slider'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-dunada rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[1]['MAHINDRA_USER'] ?></h4>
+                                                <p class="mb-0 text-white">COORDINATOR</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class="bx bx-chat"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-linga rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[2]['MAHINDRA_USER'] ?></h4>
+                                                <p class="mb-0 text-white">SALE EXE.</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class="bx bx-share-alt"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-blkw rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['MAHINDRA_USER'] ?></h4>
+                                                <p class="mb-0 text-white">RETAILER</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class="bx bx-bell"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-purple rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['MAHINDRA_USER'] ?></h4>
+                                                <p class="mb-0 text-white">MECHANICS</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class='bx bxs-sort-alt'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+                        <div class="row row-cols-1 row-cols-lg-5">
+                            <div class="col">
+                                <div class="card bg-gradient-esinto rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[0]['EICHER_USER'] ?></h4>
+                                                <p class="mb-0 text-white">HOD</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class='bx bx-slider'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-dunada rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[1]['EICHER_USER'] ?></h4>
+                                                <p class="mb-0 text-white">COORDINATOR</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class="bx bx-chat"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-linga rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[2]['EICHER_USER'] ?></h4>
+                                                <p class="mb-0 text-white">SALE EXE.</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class="bx bx-share-alt"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-blkw rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['EICHER_USER'] ?></h4>
+                                                <p class="mb-0 text-white">RETAILER</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class="bx bx-bell"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card bg-gradient-purple rounded-4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="">
+                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['EICHER_USER'] ?></h4>
+                                                <p class="mb-0 text-white">MECHANICS</p>
+                                            </div>
+                                            <div class="fs-1 text-white">
+                                                <i class='bx bxs-sort-alt'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--end row-->
         <div class="row">
             <div class="col-12 col-lg-8 d-flex">
                 <div class="card rounded-4 w-100">
@@ -328,7 +543,7 @@ include_once('../_helper/com_conn.php');
                             <div>
                                 <h6 class="mb-0">Browser Statistics [DEMO DATA]</h6>
                             </div>
-                          
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -351,7 +566,7 @@ include_once('../_helper/com_conn.php');
                             <div>
                                 <h6 class="mb-0">Retailer Location [DEMO DATA]</h6>
                             </div>
-                           
+
                         </div>
                     </div>
                     <div class="card-body">
