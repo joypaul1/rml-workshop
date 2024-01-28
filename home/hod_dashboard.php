@@ -32,12 +32,12 @@
                         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-worldcup">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Orders</p>
-                                                <h4 class="my-1 text-white">200</h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <h4 class="my-1 text-white">200 </h4>
+                                                <p class="mb-0 font-10 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
                                             </div>
@@ -47,12 +47,13 @@
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-rainbow">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
+
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit</p>
                                                 <h4 class="my-1 text-white">50 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
                                             </div>
@@ -62,12 +63,13 @@
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-smile">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
+
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
                                                 <h4 class="my-1 text-white">2,00,00.00</h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
@@ -78,12 +80,13 @@
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-pinki">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
+
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Product Stock </p>
                                                 <h4 class="my-1 text-white">0 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
                                             </div>
@@ -97,12 +100,13 @@
                         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-worldcup">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
+
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Orders</p>
                                                 <h4 class="my-1 text-white">200</h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
                                             </div>
@@ -112,12 +116,13 @@
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-rainbow">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
+
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit</p>
                                                 <h4 class="my-1 text-white">50 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
                                             </div>
@@ -127,12 +132,13 @@
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-smile">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
+
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
                                                 <h4 class="my-1 text-white">2,00,00.00</h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
@@ -143,12 +149,13 @@
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-pinki">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 2% 10%;">
+
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Product Stock </p>
                                                 <h4 class="my-1 text-white">0 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                                <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
                                             </div>
@@ -166,7 +173,7 @@
             <div class="card-body">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome2" role="tab" aria-selected="true">
                             <div class="d-flex align-items-center">
                                 <div class="tab-icon">
                                     <i class='bx bxs-hand-down font-18 me-1'></i>
@@ -176,7 +183,7 @@
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
+                        <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile2" role="tab" aria-selected="false" tabindex="-1">
                             <div class="d-flex align-items-center">
                                 <div class="tab-icon">
                                     <i class='bx bxs-hand-down font-18 me-1'></i>
@@ -188,11 +195,11 @@
 
                 </ul>
                 <div class="tab-content pt-2">
-                    <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
+                    <div class="tab-pane fade active show" id="primaryhome2" role="tabpanel">
                         <div class="row row-cols-1 row-cols-lg-5">
                             <div class="col">
                                 <div class="card bg-gradient-esinto rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[0]['MAHINDRA_USER'] ?></h4>
@@ -207,7 +214,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-dunada rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[1]['MAHINDRA_USER'] ?></h4>
@@ -222,7 +229,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-linga rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[2]['MAHINDRA_USER'] ?></h4>
@@ -237,7 +244,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-blkw rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['MAHINDRA_USER'] ?></h4>
@@ -252,7 +259,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-purple rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['MAHINDRA_USER'] ?></h4>
@@ -268,11 +275,11 @@
 
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+                    <div class="tab-pane fade" id="primaryprofile2" role="tabpanel">
                         <div class="row row-cols-1 row-cols-lg-5">
                             <div class="col">
                                 <div class="card bg-gradient-esinto rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[0]['EICHER_USER'] ?></h4>
@@ -287,7 +294,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-dunada rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[1]['EICHER_USER'] ?></h4>
@@ -302,7 +309,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-linga rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[2]['EICHER_USER'] ?></h4>
@@ -317,7 +324,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-blkw rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['EICHER_USER'] ?></h4>
@@ -332,7 +339,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-gradient-purple rounded-4">
-                                    <div class="card-body">
+                                    <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['EICHER_USER'] ?></h4>
