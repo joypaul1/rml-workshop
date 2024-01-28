@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
     $LANG                   = isset($_POST['LANG']) ? $_POST['LANG'] : '';
     $LAT                    = isset($_POST['LAT']) ? $_POST['LAT'] : '';
     $LOCATION_REMARKS       = isset($_POST['LOCATION_REMARKS']) ? $_POST['LOCATION_REMARKS'] : '';
+    $DISTRICT_ID            = isset($_POST['DISTRICT_ID']) ? ($_POST['DISTRICT_ID']) : '';
+
     $filename       = null;
 
     if ($IMAGE_LINK) {
@@ -64,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
     // Prepare the SQL statement
     $query = "INSERT INTO USER_PROFILE 
-            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,LANG, LAT,LOCATION_REMARKS) 
-            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS')";
+            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,LANG, LAT,LOCATION_REMARKS,DISTRICT_ID) 
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS', '$DISTRICT_ID')";
 
 
     $strSQL = @oci_parse($objConnect, $query);
@@ -105,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     $LANG                   = isset($_POST['LANG']) ? $_POST['LANG'] : '';
     $LAT                    = isset($_POST['LAT']) ? $_POST['LAT'] : '';
     $LOCATION_REMARKS       = isset($_POST['LOCATION_REMARKS']) ? $_POST['LOCATION_REMARKS'] : '';
+    $DISTRICT_ID            = isset($_POST['DISTRICT_ID']) ? ($_POST['DISTRICT_ID']) : '';
 
 
     // Prepare the SQL statement
@@ -118,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     UPDATED_BY_ID       =  $log_user_id,
     LANG                = '$LANG',
     LAT                 = '$LAT',
+    DISTRICT_ID         = '$DISTRICT_ID',
     LOCATION_REMARKS    = '$LOCATION_REMARKS',
     UPDATED_DATE        = SYSDATE 
     WHERE ID            = $editId";

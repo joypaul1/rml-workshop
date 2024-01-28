@@ -8,6 +8,28 @@ ini_set('memory_limit', '2560M');
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 
+// PRINT_R ($_GET);
+if (isset($_GET["district_data"]  )) {
+    $query    = "SELECT ID, NAME FROM DISTRICT WHERE STATUS = 1 ORDER BY ID";
+
+    $strSQL = @oci_parse($objConnect, $query);
+    if (@oci_execute($strSQL)) {
+        $data = array();
+        while ($row = @oci_fetch_assoc($strSQL)) {
+            $data[] = $row; // Append each row to the $data array
+        }
+
+        $response['status'] = true;
+        $response['data']   = $data;
+        echo json_encode($response);
+        exit();
+    } else {
+        $response['status']  = false;
+        $response['message'] = 'Something went wrong! Please try again';
+        echo json_encode($response);
+        exit();
+    }
+}
 // print_r($_GET);
 if (isset($_GET["userId"]) && isset($_GET["brandAssignID"]) && isset($_GET["status"])) {
     $USER_PROFILE_ID = $_GET["userId"];

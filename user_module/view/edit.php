@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
     UP.IMAGE_LINK,
     UP.LAT,
     UP.LANG,
+    UP.DISTRICT_ID,
     UP.LOCATION_REMARKS
     FROM USER_PROFILE UP WHERE ID = $edit_id";
     $strSQL  = @oci_parse($objConnect, $query);
@@ -92,10 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                     </select>
                                     <div class="invalid-feedback">Please select a User Type.</div>
                                 </div>
-
-
-
-
                                 <div class="row mt-3" id="addResponsiableData"></div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
@@ -124,10 +121,11 @@ include_once('../../_includes/footer.php');
     const $LAT = "<?php echo $data['LAT'] ?>";
     const $LANG = "<?php echo $data['LANG'] ?>";
     const $LOCATION_REMARKS = "<?php echo $data['LOCATION_REMARKS'] ?>";
+    const $DISTRICTID = "<?php echo $data['DISTRICT_ID'] ?>";
+
 
     let url = "<?php echo ($sfcmBasePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
-    const $user_brand_id = $('select[name="USER_BRAND_ID"]');
 
     $('select[name="USER_TYPE_ID"]').on('change', function() {
         getVerifyData();
@@ -153,8 +151,41 @@ include_once('../../_includes/footer.php');
                                     <input type="text" name="LOCATION_REMARKS" autocomplete="off" class="form-control" id="validationCustom14" value="${$LOCATION_REMARKS}" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>`;
-            $('#addResponsiableData').append(htmlTag);
+
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "JSON",
+                data: {
+                    district_data: true,
+                },
+                success: function(res) {
+                    htmlTag += `<div class="col-sm-12 col-md-4 mt-3">
+                        <label for="validationCustom10_hod"  class="form-label"> Retailer District <span class="text-danger">*</span></label>
+                        <select class="form-select single-select" name="DISTRICT_ID" id="validationCustom10_hod" required>
+                        <option  hidden value="<?php echo Null ?>"> <- Selecte District -></option>`;
+                    if (res.status) {
+                        (res.data).forEach(element => {
+                            htmlTag += '<option value="' + element.ID + '" ' + ($DISTRICTID == element.ID ? 'selected' : '') + '> ' + element.NAME + ' </option>';
+                        });
+                    }
+                    htmlTag += `</select></div>`;
+                    $('#addResponsiableData').append(htmlTag);
+
+                    // Initialize Select2 for the appended dropdown element
+                    $('#addResponsiableData').find('#validationCustom10_hod').select2({
+                        theme: 'bootstrap4',
+                        width: '100%', // Set the width as needed
+                        placeholder: 'Select District', // Set the placeholder text
+                        allowClear: true, // Enable clearing the selection
+                    });
+                }
+
+            })
+            // $('#addResponsiableData').append(htmlTag);
         }
+
     }
 
 

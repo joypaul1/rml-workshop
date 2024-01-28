@@ -126,6 +126,37 @@ include_once('../../_includes/footer.php');
                                 <input type="text" name="LOCATION_REMARKS" autocomplete="off" class="form-control" id="validationCustom14" required="">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>`;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: "JSON",
+                data: {
+                    district_data: true,
+                },
+                success: function(res) {
+                    htmlTag += `<div class="col-sm-12 col-md-4 mt-3">
+                        <label for="validationCustom10_hod"  class="form-label"> Retailer District <span class="text-danger">*</span></label>
+                        <select class="form-select single-select" name="DISTRICT_ID" id="validationCustom10_hod" required>
+                        <option  hidden value="<?php echo Null ?>"> <- Selecte District -></option>`;
+                    if (res.status) {
+                        (res.data).forEach(element => {
+                            htmlTag += '<option value="' + element.ID + '"> ' + element.NAME + ' </option>';
+                        });
+                    }
+                    htmlTag += `</select></div>`;
+                    $('#addResponsiableData').append(htmlTag);
+                    // console.log(htmlTag);
+
+                    // Initialize Select2 for the appended dropdown element
+                    $('#addResponsiableData').find('#validationCustom10_hod').select2({
+                        theme: 'bootstrap4',
+                        width: '100%', // Set the width as needed
+                        placeholder: 'Select District', // Set the placeholder text
+                        allowClear: true, // Enable clearing the selection
+                    });
+                }
+
+            })
             $('#addResponsiableData').append(htmlTag);
         }
     }
