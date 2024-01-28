@@ -81,7 +81,7 @@ include_once('../../_helper/2step_com_conn.php');
 
                                 </div>
                                 <div class="col-12 text-center">
-                                    <button class="btn btn-primary" type="submit">Submit form</button>
+                                    <button class="btn btn-primary" type="submit">Create Data</button>
                                 </div>
                             </form>
                         </div>

@@ -66,7 +66,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="<?php echo isActive('/admin_module/view/ut_edit.php'); ?> <?php echo isActive('/admin_module/view/vt_edit.php'); ?>">
+                <li class="<?php echo isActive('/admin_module/view/ut_edit.php'); ?> <?php echo isActive('/admin_module/view/vt_edit.php'); ?> <?php echo isActive('/admin_module/view/dis_create.php'); ?>
+                <?php echo isActive('/admin_module/view/dis_edit.php'); ?>">
                     <a href="javascript:;" class="has-arrow">
 
                         <div class="parent-icon"><i class='bx bx-cog'></i>
@@ -77,6 +78,8 @@
                         <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/user_type.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
                         </li>
                         <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/visit_type.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
+                        </li>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/disctrict.php"><i class='bx bxs-arrow-to-right'></i> District Config.</a>
                         </li>
                     </ul>
                 </li>

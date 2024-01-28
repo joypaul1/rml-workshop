@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
 
                                 </div>
                                 <div class="col-12 text-center">
-                                    <button class="btn btn-primary" type="submit">Submit form</button>
+                                    <button class="btn btn-primary" type="submit">Update Data </button>
                                 </div>
                             </form>
                         </div>
