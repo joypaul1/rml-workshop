@@ -157,7 +157,6 @@ include_once('../../_includes/footer.php');
                 }
 
             })
-            $('#addResponsiableData').append(htmlTag);
         }
     }
 
