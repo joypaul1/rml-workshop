@@ -33,7 +33,7 @@ $number = 0;
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM DISTRICT WHERE STATUS = 1 ORDER BY ID";
+                                    $query = "SELECT * FROM DISTRICT ORDER BY ID";
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -59,7 +59,7 @@ $number = 0;
                                                 } ?>
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?php echo $sfcmBasePath . '/admin_module/view/ut_edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                <a href="<?php echo $sfcmBasePath . '/admin_module/view/dis_edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
 
                                             </td>
 

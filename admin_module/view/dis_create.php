@@ -10,23 +10,21 @@ include_once('../../_helper/2step_com_conn.php');
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'Create';
-                    $leftSideName  = 'Disctrict  Create';
-                    $rightSideName = 'Disctrict  List';
+                    $leftSideName  = 'Disctrict Create';
+                    $rightSideName = 'Disctrict List';
                     $routePath     = 'admin_module/view/disctrict.php';
                     include('../../_includes/com_header.php');
 
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post" action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
-                                <input type="hidden" name="actionType" value="create">
+                            <form method="post" action="<?php echo ($sfcmBasePath . '/admin_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                                <input type="hidden" name="actionType" value="dis_create">
                                 <div class="col-sm-12 col-md-4">
                                     <label for="validationCustom01" class="form-label"> District Name <span class="text-danger">*</span></label>
                                     <input type="text" autocomplete="off" name="NAME" class="form-control" id="validationCustom01" required="">
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
-                               
-                               
                                 <div class="col-12 text-center">
                                     <button class="btn btn-primary" type="submit">Submit Data</button>
                                 </div>
@@ -45,13 +43,6 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
-    
-
-
-
-
-
-
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
         'use strict'
