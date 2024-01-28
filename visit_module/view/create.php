@@ -8,7 +8,9 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 
 include_once('../../_helper/2step_com_conn.php');
-
+if( $_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD" ||  $_SESSION['USER_SFCM_INFO']['USER_TYPE']== 'COORDINATOR'){
+        
+}
 
 ?>
 
@@ -17,13 +19,12 @@ include_once('../../_helper/2step_com_conn.php');
     <div class="page-content">
         <div class="card rounded-4">
             <?php
-
             $headerType   = 'List';
-            $leftSideName = 'Visit Create or Assign For Me.';
+            $leftSideName = 'Visit Create or Assign For Me';
             include('../../_includes/com_header.php');
             ?>
             <div class="card-body">
-                <div class=" card card-body col-sm-12 col-md-9 col-xl-9 mx-auto p-4 border rounded">
+                <div class=" card card-body col-sm-12 col-md-9  col-xl-9 mx-auto p-4 border rounded">
                     <form method="POST" action="<?php echo ($sfcmBasePath . '/visit_module/action/self_panel.php') ?>">
                         <div class="row justify-content-center align-items-center ">
                             <input type="hidden" name="actionType" value="create">
@@ -41,7 +42,7 @@ include_once('../../_helper/2step_com_conn.php');
                                 <select id="inputState" required name="visit_type" class="form-select text-center">
                                     <option hidden value="<?php echo null ?>"> <- Select Type Data -></option>
                                     <?php
-                                
+
                                     $strSQL = oci_parse($objConnect, "SELECT ID, TITLE FROM VISIT_TYPE WHERE STATUS = 1");
                                     oci_execute($strSQL);
                                     while ($typeRow = oci_fetch_assoc($strSQL)) {
@@ -64,9 +65,9 @@ include_once('../../_helper/2step_com_conn.php');
 
 
                                 <?php
-                              
-                                $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
-                              
+
+                                $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
+
                                 $query = "SELECT 
                                         UP.ID, 
                                         UP.USER_NAME, 

@@ -26,79 +26,17 @@ while ($brandRow = oci_fetch_assoc($brandSQL)) {
     array_push($user_type_brand_wise_data, $brandRow);
 }
 
-// print('<pre>');
-// print_r($user_type_brand_wise_data);
-// print('</pre>');
 
 ?>
-
+<style>
+    .card{
+        margin-bottom: 0.5rem !important; 
+    }
+</style>
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-            <div class="col">
-                <div class="card rounded-4 bg-gradient-worldcup">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <p class="mb-0 text-white">Total Orders</p>
-                                <h4 class="my-1 text-white">200</h4>
-                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
-                            </div>
-                            <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card rounded-4 bg-gradient-rainbow">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <p class="mb-0 text-white">Total Visit</p>
-                                <h4 class="my-1 text-white">50 </h4>
-                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
-                            </div>
-                            <div class="fs-1 text-white"><i class='bx bxs-group'></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card rounded-4 bg-gradient-smile">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <p class="mb-0 text-white">Total Collection</p>
-                                <h4 class="my-1 text-white">2,00,00.00</h4>
-                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
-
-                            </div>
-                            <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card rounded-4 bg-gradient-pinki">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <p class="mb-0 text-white">Product Stock </p>
-                                <h4 class="my-1 text-white">0 </h4>
-                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
-                            </div>
-                            <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><!--end row-->
 
         <div class="card">
             <div class="card-body">
@@ -125,7 +63,167 @@ while ($brandRow = oci_fetch_assoc($brandSQL)) {
                     </li>
 
                 </ul>
-                <div class="tab-content py-3">
+                <div class="tab-content pt-2">
+                    <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-worldcup">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Total Orders</p>
+                                                <h4 class="my-1 text-white">200</h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-rainbow">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Total Visit</p>
+                                                <h4 class="my-1 text-white">50 </h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-group'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-smile">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Total Collection</p>
+                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-pinki">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Product Stock </p>
+                                                <h4 class="my-1 text-white">0 </h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--end row-->
+                    </div>
+                    <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-worldcup">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Total Orders</p>
+                                                <h4 class="my-1 text-white">200</h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-rainbow">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Total Visit</p>
+                                                <h4 class="my-1 text-white">50 </h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-group'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-smile">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Total Collection</p>
+                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card rounded-4 bg-gradient-pinki">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="mb-0 text-white">Product Stock </p>
+                                                <h4 class="my-1 text-white">0 </h4>
+                                                <p class="mb-0 font-13 text-white">Current Month Summary </p>
+                                            </div>
+                                            <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--end row-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-primary" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                            <div class="d-flex align-items-center">
+                                <div class="tab-icon">
+                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                </div>
+                                <div class="tab-title">MAHINDRA </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
+                            <div class="d-flex align-items-center">
+                                <div class="tab-icon">
+                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                </div>
+                                <div class="tab-title">EICHER</div>
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+                <div class="tab-content pt-2">
                     <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
                         <div class="row row-cols-1 row-cols-lg-5">
                             <div class="col">
