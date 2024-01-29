@@ -20,62 +20,62 @@ include_once('../../_helper/2step_com_conn.php');
 
         <div class="card rounded-4">
             <?php
-            $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
-            $headerType   = 'List';
-            $leftSideName = 'Set Collection Target Amount';
-            include('../../_includes/com_header.php');
+            $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+                ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+                : 0;
+            $headerType = "List";
+            $leftSideName = "Set Collection Target Amount";
+            include "../../_includes/com_header.php";
             ?>
             <div class="card card-body">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="GET">
+                <form action="<?php echo htmlspecialchars(
+                                    $_SERVER["PHP_SELF"],
+                                    ENT_QUOTES,
+                                    "UTF-8"
+                                ); ?>" method="GET">
                     <div class="row justify-content-center align-items-center">
-                        <div class="col-sm-6  col-md-3">
-                            <label for="validationCustom01" class="form-label">List of Disctrict </label>
-                            <select class="form-select single-select" id="validationCustom01" name="F_DISTRICT_ID">
-                                <option value=""><- Select Disctrict -></option>
-                                <?php
-                                $brandRow = [];
-                                $F_DISTRICT_ID = isset($_GET['F_DISTRICT_ID']) ? $_GET['F_DISTRICT_ID'] : 0;
-                                $brandquery   = "SELECT ID,NAME FROM DISTRICT WHERE  STATUS = 1 ORDER BY ID ASC";
-                                $brandSQL  = @oci_parse($objConnect, $brandquery);
-
-                                @oci_execute($brandSQL);
-                                while ($brandRow = @oci_fetch_assoc($brandSQL)) {
-                                ?>
-                                    <option value="<?php echo $brandRow['ID'] ?>" <?php echo $F_DISTRICT_ID == $brandRow['ID'] ? 'Selected' : ' ' ?>>
-                                        <?php echo $brandRow['NAME'] ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                            <div class="invalid-feedback">Please select a User Type.</div>
-                        </div>
                         <div class="col-sm-6  col-md-3">
                             <label for="validationCustom06" class="form-label">User Brand </label>
                             <select class="form-select single-select" id="validationCustom06" name="F_BRAND_ID">
                                 <option value=""><- Select Brand -></option>
                                 <?php
                                 $brandRow = [];
-                                $F_BRAND_ID = isset($_GET['F_BRAND_ID']) ? $_GET['F_BRAND_ID'] : 0;
-                                $brandquery   = "SELECT ID,TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS =1   ORDER BY ID ASC";
-                                $brandSQL  = @oci_parse($objConnect, $brandquery);
+                                $F_BRAND_ID = isset($_GET["F_BRAND_ID"])
+                                    ? $_GET["F_BRAND_ID"]
+                                    : 0;
+                                $brandquery = "SELECT ID,TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS =1   ORDER BY ID ASC";
+                                $brandSQL = @oci_parse(
+                                    $objConnect,
+                                    $brandquery
+                                );
 
                                 @oci_execute($brandSQL);
-                                while ($brandRow = @oci_fetch_assoc($brandSQL)) {
-                                ?>
-                                    <option value="<?php echo $brandRow['ID'] ?>" <?php echo $F_BRAND_ID == $brandRow['ID'] ? 'Selected' : ' ' ?>>
-                                        <?php echo $brandRow['TITLE'] ?>
+                                while (
+                                    $brandRow = @oci_fetch_assoc($brandSQL)
+                                ) { ?>
+                                    <option value="<?php echo $brandRow["ID"]; ?>" <?php echo $F_BRAND_ID ==
+                                                                                        $brandRow["ID"]
+                                                                                        ? "Selected"
+                                                                                        : " "; ?>>
+                                        <?php echo $brandRow["TITLE"]; ?>
                                     </option>
-                                <?php } ?>
+                                <?php }
+                                ?>
                             </select>
                             <div class="invalid-feedback">Please select Brand.</div>
                         </div>
                         <div class="col-sm-6  col-md-3">
                             <label>MOBILE : </label>
-                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text" value='<?php echo isset($_GET['F_USER_MOBILE']) ? $_GET['F_USER_MOBILE'] : ''; ?>' />
+                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text" value='<?php echo isset(
+                                                                                                                                                                        $_GET["F_USER_MOBILE"]
+                                                                                                                                                                    )
+                                                                                                                                                                        ? $_GET["F_USER_MOBILE"]
+                                                                                                                                                                        : ""; ?>' />
                         </div>
 
                         <div class="col-sm-6 col-md-3 d-flex gap-2">
                             <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search <i class='bx bx-file-find'></i></button>
-                            <a href="<?php echo $sfcmBasePath  ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
+                            <a href="<?php echo $sfcmBasePath; ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
                         </div>
                     </div>
                 </form>
@@ -83,27 +83,27 @@ include_once('../../_helper/2step_com_conn.php');
 
             <div class="card-body p-4 border rounded">
                 <div class="">
-                    <form method="POST" action="<?php echo ($sfcmBasePath . '/collection_module/action/self_panel.php') ?>">
+                    <form method="POST" action="<?php echo $sfcmBasePath . "/collection_module/action/self_panel.php"; ?>">
                         <div class="row justify-content-center align-items-center ">
                             <input type="hidden" name="actionType" value="create">
 
-                            <div class="col-3 text-center form-group mb-3">
+                            <div class="col-4 text-center form-group mb-3">
                                 <label>Collection Start Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker" name="date" type="text" value='<?php echo isset($_GET['date']) ? $_GET['date'] : date('d-m-Y'); ?>' />
+                                    <input required="" class="form-control text-center datepicker start_date" name="start_date" type="text" value='<?php echo date(
+                                                                                                                                                        "01-m-Y"
+                                                                                                                                                    ); ?>' />
                                 </div>
-
                             </div>
-                            <div class="col-3 text-center form-group mb-3">
+
+                            <div class="col-4 text-center form-group mb-3">
                                 <label>Collection End Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker" name="date" type="text" value='<?php echo isset($_GET['date']) ? $_GET['date'] : date('d-m-Y'); ?>' />
+                                    <input required="" class="form-control text-center datepicker end_date" name="end_date" type="text" value='<?php echo date(
+                                                                                                                                                    "t-m-Y"
+                                                                                                                                                ); ?>' />
                                 </div>
-
                             </div>
-
-
-
 
                         </div>
                         <table class="table table-bordered align-middle">
@@ -112,12 +112,14 @@ include_once('../../_helper/2step_com_conn.php');
                                 <tr>
                                     <?php
                                     @oci_execute($brandSQL);
-                                    while ($brandRow = @oci_fetch_assoc($brandSQL)) {
-                                    ?>
+                                    while (
+                                        $brandRow = @oci_fetch_assoc($brandSQL)
+                                    ) { ?>
                                         <td class="text-center text-success rounded fw-bold">
-                                            <?= $brandRow['TITLE'] ?>
+                                            <?= $brandRow["TITLE"] ?>
                                         </td>
-                                    <?php } ?>
+                                    <?php }
+                                    ?>
                                 </tr>
                                 <tr>
                                     <?php
@@ -126,11 +128,13 @@ include_once('../../_helper/2step_com_conn.php');
                                     // Flag to check if any data is found for any brand
                                     $dataFound = false;
 
-                                    while ($brandRow = @oci_fetch_assoc($brandSQL)) {
-                                        $brandID = $brandRow['ID'];
+                                    while (
+                                        $brandRow = @oci_fetch_assoc($brandSQL)
+                                    ) {
+                                        $brandID = $brandRow["ID"];
 
                                         // Fetch data for the current brand
-                                        $query = "SELECT 
+                                        $query ="SELECT 
                                                     UP.ID, 
                                                     UP.USER_NAME,
                                                     (SELECT NAME FROM DISTRICT WHERE ID = UP.DISTRICT_ID) AS DISTRICT_NAME 
@@ -142,44 +146,57 @@ include_once('../../_helper/2step_com_conn.php');
                                                         UBS.PRODUCT_BRAND_ID IN ($brandID)
                                                         AND UBS.STATUS = 1
                                                         AND UP.USER_TYPE_ID = 3";
-                                        $query .= " GROUP BY 
-                                        UP.ID, UP.DISTRICT_ID,
-                                        UP.USER_NAME";
-                                        $strSQL = oci_parse($objConnect, $query);
+                                        if (isset($_GET["F_BRAND_ID"])) {
+                                            if ($_GET["F_BRAND_ID"]) {
+                                                $query .=
+                                                    " AND UBS.PRODUCT_BRAND_ID = " .
+                                                    $_GET["F_BRAND_ID"];
+                                            }
+                                        }
+                                        if (isset($_GET["F_USER_MOBILE"])) {
+                                            if ($_GET["F_USER_MOBILE"]) {
+                                                $query .=
+                                                    " AND UP.USER_MOBILE = " .
+                                                    $_GET["F_USER_MOBILE"];
+                                            }
+                                        }
+
+                                        $strSQL = oci_parse(
+                                            $objConnect,
+                                            $query
+                                        );
                                         oci_execute($strSQL);
 
                                         // Check if any data is found for the current brand
                                         if ($row = oci_fetch_assoc($strSQL)) {
-                                            $dataFound = true;
-                                    ?>
+                                            $dataFound = true; ?>
                                             <td>
                                                 <div>
-                                                    <?php
-                                                    do {
-                                                    ?>
+                                                    <?php do { ?>
                                                         <span class="d-flex flex-rows justify-content-start align-items-center ">
                                                             <div class="col-6 form-checks ">
-                                                                <label class="form-check-label" for="flexCheckChecked_<?php echo $row['ID'] ?>">
-                                                                    <?php echo $row['USER_NAME'] ?> [ <?php echo $row['DISTRICT_NAME'] ? $row['DISTRICT_NAME'] : "-" ?> ]
+                                                                <label class="form-check-label" for="flexCheckChecked_<?php echo $row["ID"]; ?>">
+                                                                    <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"]? $row["DISTRICT_NAME"]: "-"; ?> ]
                                                                 </label>
                                                             </div>
                                                             <div class="col-6 form-checks mb-2">
-                                                                <input type="text" name="collection_amount[<?php echo $row['ID'] ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                                                <input type="text" name="collection_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                                               
                                                             </div>
                                                         </span>
-                                                    <?php
-                                                    } while ($row = oci_fetch_assoc($strSQL));
-                                                    ?>
+                                                    <?php } while (
+                                                        $row = oci_fetch_assoc(
+                                                            $strSQL
+                                                        )
+                                                    ); ?>
                                                 </div>
                                             </td>
-                                        <?php
-                                        } else {
-                                            // No data found for the current brand
-                                        ?>
-                                            <td class="text-danger fw-bold text-center">
-                                                No Sale Executive data found ! &#128542;
-                                            </td>
                                     <?php
+                                        } else {
+
+                                            echo '<td class="text-danger fw-bold text-center">
+                                            No Sale Executive data found ! &#128542;
+                                        </td>';
                                         }
                                     }
                                     ?>
@@ -190,23 +207,26 @@ include_once('../../_helper/2step_com_conn.php');
                         </table>
 
 
-
-                        <div class="form-group">
-                            <button class="form-control  btn btn-sm btn-gradient-primary mt-4" type="submit">Create Visit Assign<i class='bx bx-file-find'></i></button>
+                        <div class="d-flex justify-content-center ">
+                            <div class="">
+                                <button class="form-control  btn btn-sm btn-gradient-primary mt-4" type="submit">
+                                    Submit Target <i class='bx bx-file-find'></i></button>
+                            </div>
                         </div>
 
 
 
+
+                    </form>
                 </div>
 
-                </form>
             </div>
 
         </div>
     </div>
 
 </div>
-</div>
+
 <!--end page wrapper -->
 <?php
 include_once('../../_includes/footer_info.php');
@@ -233,12 +253,12 @@ include_once('../../_includes/footer.php');
         selectMonths: true,
         selectYears: true,
         format: 'dd-mm-yyyy', // Specify your desired date format
-        min: new Date(today.getFullYear(), today.getMonth(), today.getDate()), // Set min date
+        min: new Date(today.getFullYear(), today.getMonth(), 1), // Set min date to the first day of the current month
         onClose: function() {
             // Trigger close event if needed
         }
     });
 
     // Set the initial value to today
-    $('.datepicker').pickadate('picker').set('select', formattedToday);
+    $('.start_date').pickadate('picker').set('select', [today.getFullYear(), today.getMonth(), 1]);
 </script>
