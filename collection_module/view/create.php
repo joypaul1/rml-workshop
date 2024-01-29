@@ -155,9 +155,7 @@ include_once('../../_helper/2step_com_conn.php');
                                         }
                                         if (isset($_GET["F_USER_MOBILE"])) {
                                             if ($_GET["F_USER_MOBILE"]) {
-                                                $query .=
-                                                    " AND UP.USER_MOBILE = " .
-                                                    $_GET["F_USER_MOBILE"];
+                                                $query .= " AND UP.USER_MOBILE LIKE '%" . $_GET["F_USER_MOBILE"] . "%'";
                                             }
                                         }
 

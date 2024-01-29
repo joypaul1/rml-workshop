@@ -11,6 +11,9 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
+$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    : 0;
 ?>
 
 <!--start page wrapper -->
@@ -23,7 +26,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                 <div class="card-body">
 
                     <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <strong><i class='bx bx-filter-alt'></i> Filter Data</strong>
+                        <strong><i class='bx bx-filter-alt'></i> Filter Data </strong>
                     </button>
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
@@ -33,18 +36,29 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                                         <div class="row justify-content-center align-items-center">
                                             <div class="col-sm-4">
-                                                <label>Select Your Retailer:</label>
-                                                <select name="retailer" class="form-control single-select">
+                                                <label>Select Sales Executive:</label>
+                                                <select name="f_sales_executive" class="form-control single-select">
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
                                                     $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
-                                                    $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = :executiveID");
-                                                    oci_bind_by_name($strSQL, ":executiveID", $executiveID);
+                                                    $query = "SELECT 
+                                                    UP.ID, 
+                                                    UP.USER_NAME
+
+                                                    FROM 
+                                                        USER_PROFILE UP
+                                                    LEFT JOIN 
+                                                        USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                    WHERE 
+                                                        UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                                        AND UBS.STATUS = 1
+                                                        AND UP.USER_TYPE_ID = 3";
+                                                    $strSQL = oci_parse($objConnect,  $query);
                                                     oci_execute($strSQL);
 
                                                     while ($row = oci_fetch_assoc($strSQL)) {
                                                     ?>
-                                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['retailer']) && $_POST['retailer'] == $row['ID'] ? 'Selected' : '' ?>>
+                                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['f_sales_executive']) && $_POST['f_sales_executive'] == $row['ID'] ? 'Selected' : '' ?>>
                                                             <?php echo $row['USER_NAME'] ?>
                                                         </option>
                                                     <?php
@@ -77,9 +91,9 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
-                    $leftSideName  = 'Visit List';
-                    $rightSideName = 'Visit Create';
-                    $routePath     = 'visit_module/view/create.php';
+                    $leftSideName  = 'Collection Target List';
+                    $rightSideName = 'Collection Target Create';
+                    $routePath     = 'collection_module/view/create.php';
                     include('../../_includes/com_header.php');
 
 
@@ -91,18 +105,17 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                     <tr>
                                         <th>SL.</th>
                                         <th>Date</th>
-                                        <th>Retailer Name</th>
-                                        <th>VISIT TYPE</th>
+                                        <th>Sale Executive Name</th>
+                                        <th>Brand </th>
                                         <th>STATUS</th>
-                                        <th>USER REMARKS</th>
-
+                                        <th>Amount</th>
+                                        <!-- <th>USER REMARKS</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-                                    $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $v_start_date = date('01/m/Y');
                                     $v_end_date   = date('t/m/Y');
                                     if (isset($_POST['start_date'])) {
@@ -112,20 +125,17 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
 
-                                    $query = "SELECT VA.ID, VA.VISIT_DATE, VA.TARGET_AMOUNT, 
-                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE, 
-                                        VA.ENTRY_BY_ID,
-                                        (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
-                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.USER_ID) AS RETAILER_NAME
-                                        FROM VISIT_ASSIGN VA 
-                                        WHERE VA.RETAILER_ID = '$log_user_id'
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                        ";
-                                    if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
-                                        $retailerID = $_POST['retailer'];
-                                        $query .= " AND ( USER_ID= $retailerID)";
+                                    $query = "SELECT CA.START_DATE, CA.END_DATE,CA.TARGET_AMOUNT,
+                                    CA.STATUS,CA.REMARKS, (SELECT USER_NAME FROM USER_PROFILE UP WHERE CA.USER_ID = UP.ID) AS USER_NAME,(SELECT TITLE FROM PRODUCT_BRAND PB WHERE PB.ID = CA.BRAND_ID) AS BRAND_NAME FROM COLLECTION_ASSIGN CA WHERE CA.STATUS = 1
+                                    AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY') 
+                                    AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
+
+
+                                    if (isset($_POST['f_sales_executive']) && !empty($_POST['f_sales_executive'])) {
+                                        $executiveID = $_POST['f_sales_executive'];
+                                        $query .= " AND ( USER_ID = $executiveID)";
                                     }
-                                    $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
+                                    $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
 
                                     $strSQL = @oci_parse($objConnect, $query);
 
@@ -142,29 +152,29 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                             </td>
 
                                             <td>
-                                                <?php echo $row['VISIT_DATE']; ?>
+                                                <?php echo $row['START_DATE']; ?> TO <?php echo $row['END_DATE']; ?>
                                             </td>
                                             <td>
-                                                <?php echo $row['RETAILER_NAME']; ?>
+                                                <?php echo $row['USER_NAME']; ?>
                                             </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-gradient-primary">
-                                                    <?php echo $row['VISIT_TYPE']; ?>
+                                                    <?php echo $row['BRAND_NAME']; ?>
                                                 </button>
 
 
                                             </td>
                                             <td class="text-center">
-                                                <?php if ($row['VISIT_STATUS'] == '0') {
+                                                <?php if ($row['STATUS'] == '0') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-warning "> Pending </button>';
-                                                } else if ($row['VISIT_STATUS'] == '1') {
+                                                } else if ($row['STATUS'] == '1') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-success"> Success </button>';
-                                                } else if ($row['VISIT_STATUS'] == '2') {
+                                                } else if ($row['STATUS'] == '2') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-danger"> Failed </button>';
                                                 } ?>
                                             </td>
                                             <td>
-                                                <?php echo $row['USER_REMARKS']; ?>
+                                                <?php echo number_format($row['TARGET_AMOUNT']) ?>
                                             </td>
 
                                             <!-- <td class="text-center">
@@ -182,14 +192,13 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination round-pagination">
                                         <?php
-                                        $countQuery = "SELECT  COUNT(VA.ID) AS total
-                                                    FROM VISIT_ASSIGN VA WHERE VA.RETAILER_ID = '$log_user_id'
-                                                    AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                                    ";
+                                        $countQuery = "SELECT COUNT(CA.ID) AS total  FROM COLLECTION_ASSIGN CA WHERE CA.STATUS = 1
+                                        AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY') 
+                                        AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
                                         // check retailer data exist 
-                                        if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
-                                            $retailerID = $_POST['retailer'];
-                                            $countQuery .= " AND ( USER_ID= $retailerID)";
+                                        if (isset($_POST['f_sales_executive']) && !empty($_POST['f_sales_executive'])) {
+                                            $executiveID = $_POST['f_sales_executive'];
+                                            $query .= " AND ( USER_ID = $executiveID)";
                                         }
 
                                         $countResult = oci_parse($objConnect, $countQuery);
