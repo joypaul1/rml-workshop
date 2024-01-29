@@ -1,16 +1,16 @@
 <?php
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2.min.css';
 $dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.css';
 $dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.date.css';
-
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
+$dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
 $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.js';
 $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 
 include_once('../../_helper/2step_com_conn.php');
-// if( $_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD" ||  $_SESSION['USER_SFCM_INFO']['USER_TYPE']== 'COORDINATOR'){
 
-// }
 
 ?>
 
@@ -26,15 +26,15 @@ include_once('../../_helper/2step_com_conn.php');
             include('../../_includes/com_header.php');
             ?>
             <div class="card card-body">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="GET">
                     <div class="row justify-content-center align-items-center">
                         <div class="col-sm-6  col-md-3">
-                            <label for="validationCustom06" class="form-label">List of Disctrict </label>
-                            <select class="form-select " id="validationCustom06" name="F_DISTRICT_ID">
+                            <label for="validationCustom01" class="form-label">List of Disctrict </label>
+                            <select class="form-select single-select" id="validationCustom01" name="F_DISTRICT_ID">
                                 <option value=""><- Select Disctrict -></option>
                                 <?php
                                 $brandRow = [];
-                                $F_DISTRICT_ID = isset($_POST['F_DISTRICT_ID']) ? $_POST['F_DISTRICT_ID'] : 0;
+                                $F_DISTRICT_ID = isset($_GET['F_DISTRICT_ID']) ? $_GET['F_DISTRICT_ID'] : 0;
                                 $brandquery   = "SELECT ID,NAME FROM DISTRICT WHERE  STATUS = 1 ORDER BY ID ASC";
                                 $brandSQL  = @oci_parse($objConnect, $brandquery);
 
@@ -50,11 +50,11 @@ include_once('../../_helper/2step_com_conn.php');
                         </div>
                         <div class="col-sm-6  col-md-3">
                             <label for="validationCustom06" class="form-label">User Brand </label>
-                            <select class="form-select " id="validationCustom06" name="F_BRAND_ID">
+                            <select class="form-select single-select" id="validationCustom06" name="F_BRAND_ID">
                                 <option value=""><- Select Brand -></option>
                                 <?php
                                 $brandRow = [];
-                                $F_BRAND_ID = isset($_POST['F_BRAND_ID']) ? $_POST['F_BRAND_ID'] : 0;
+                                $F_BRAND_ID = isset($_GET['F_BRAND_ID']) ? $_GET['F_BRAND_ID'] : 0;
                                 $brandquery   = "SELECT ID,TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS =1   ORDER BY ID ASC";
                                 $brandSQL  = @oci_parse($objConnect, $brandquery);
 
@@ -70,12 +70,12 @@ include_once('../../_helper/2step_com_conn.php');
                         </div>
                         <div class="col-sm-6  col-md-3">
                             <label>MOBILE : </label>
-                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="USER_MOBILE" type="text" value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
+                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text" value='<?php echo isset($_GET['F_USER_MOBILE']) ? $_GET['F_USER_MOBILE'] : ''; ?>' />
                         </div>
 
                         <div class="col-sm-6 col-md-3 d-flex gap-2">
-                            <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                            <a href="<?php echo $sfcmBasePath  ?>/user_module/view/brandAssign.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                            <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search <i class='bx bx-file-find'></i></button>
+                            <a href="<?php echo $sfcmBasePath  ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
                         </div>
                     </div>
                 </form>
@@ -90,14 +90,14 @@ include_once('../../_helper/2step_com_conn.php');
                             <div class="col-3 text-center form-group mb-3">
                                 <label>Collection Start Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker" name="date" type="text" value='<?php echo isset($_POST['date']) ? $_POST['date'] : date('d-m-Y'); ?>' />
+                                    <input required="" class="form-control text-center datepicker" name="date" type="text" value='<?php echo isset($_GET['date']) ? $_GET['date'] : date('d-m-Y'); ?>' />
                                 </div>
 
                             </div>
                             <div class="col-3 text-center form-group mb-3">
                                 <label>Collection End Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker" name="date" type="text" value='<?php echo isset($_POST['date']) ? $_POST['date'] : date('d-m-Y'); ?>' />
+                                    <input required="" class="form-control text-center datepicker" name="date" type="text" value='<?php echo isset($_GET['date']) ? $_GET['date'] : date('d-m-Y'); ?>' />
                                 </div>
 
                             </div>
@@ -213,6 +213,15 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
+    $('.single-select').each(function(event) {
+        console.log($(this), 'ssss');
+        $(this).select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+    });
     // Get the current date
     var today = new Date();
 
