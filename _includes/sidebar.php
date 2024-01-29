@@ -36,6 +36,20 @@
                 </li>
 
 
+                <li class="<?php echo isActive('/collection_module/view/edit.php'); ?>">
+                    <a href="javascript:;" class="has-arrow">
+
+                        <div class="parent-icon"><i class='bx bx-money'></i>
+                        </div>
+                        <div class="menu-title">Collection Module</div>
+                    </a>
+                    <ul>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Collection </a>
+                        </li>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Collection </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="<?php echo isActive('/visit_module/view/edit.php'); ?>">
                     <a href="javascript:;" class="has-arrow">
 

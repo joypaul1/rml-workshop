@@ -54,7 +54,6 @@ include_once('../../_helper/2step_com_conn.php');
                                     ?>
                                 </select>
 
-
                             </div>
                             <div class="shadow-sm p-2 mb-2 bg-white rounded text-center">
 
@@ -78,6 +77,7 @@ include_once('../../_helper/2step_com_conn.php');
                                             USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                         WHERE 
                                             UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                            AND UBS.STATUS = 1
                                             AND UP.USER_TYPE_ID = 4
                                         GROUP BY 
                                             UP.ID, UP.USER_NAME";

@@ -62,7 +62,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                     </div>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="">
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
