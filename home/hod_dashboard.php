@@ -1,15 +1,29 @@
+<style>
+    .nav-link {
+        color: #4f4c4c;
+        font-weight: 600;
+    }
+
+    .nav-primary.nav-tabs .nav-link.active {
+        color: #2fb839 !important;
+        border-color: #b82fa8 #b82fa8 #fff !important;
+        background: floralwhite !important;
+        font-weight: 600 !important;
+    }
+</style>
+
 <div class="page-wrapper">
     <div class="page-content">
 
 
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="padding:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
                             <div class="d-flex align-items-center">
                                 <div class="tab-icon">
-                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                    <i class='bx bxs-hand-down  me-1'></i>
                                 </div>
                                 <div class="tab-title">MAHINDRA </div>
                             </div>
@@ -19,7 +33,7 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
                             <div class="d-flex align-items-center">
                                 <div class="tab-icon">
-                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                    <i class='bx bxs-hand-down  me-1'></i>
                                 </div>
                                 <div class="tab-title">EICHER</div>
                             </div>
@@ -170,13 +184,13 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="padding:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome2" role="tab" aria-selected="true">
                             <div class="d-flex align-items-center">
                                 <div class="tab-icon">
-                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                    <i class='bx bxs-hand-down  me-1'></i>
                                 </div>
                                 <div class="tab-title">MAHINDRA </div>
                             </div>
@@ -186,7 +200,7 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile2" role="tab" aria-selected="false" tabindex="-1">
                             <div class="d-flex align-items-center">
                                 <div class="tab-icon">
-                                    <i class='bx bxs-hand-down font-18 me-1'></i>
+                                    <i class='bx bxs-hand-down  me-1'></i>
                                 </div>
                                 <div class="tab-title">EICHER</div>
                             </div>

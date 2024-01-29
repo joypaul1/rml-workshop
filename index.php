@@ -106,12 +106,12 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                                         <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" class="row g-3">
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">USER MOBILE NUMBER</label>
-                                                <input type="text" name="user_mobile" class="form-control rounded-5" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="inputEmailAddress" autocomplete="off" placeholder="">
+                                                <input type="text" name="user_mobile" class="form-control rounded-5" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="inputEmailAddress" autocomplete="off" required  placeholder="">
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Password</label>
 
-                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword" autocomplete="off" placeholder="">
+                                                <input type="password" name="password" class="form-control rounded-5" id="inputChoosePassword"  required autocomplete="off" placeholder="">
                                             </div>
 
 
@@ -123,7 +123,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                                                 </div>
                                             </div>
                                             <div class="col-12 text-center">
-                                                <p class="mb-0">New on our platform? Contract With <strong><u>RML IT & ERP</u></strong>.</p>
+                                                <p class="mb-0">New on our platform? Contract With <strong><u>RML IT & ERP</u>.</strong></p>
                                             </div>
                                         </form>
                                     </div>
