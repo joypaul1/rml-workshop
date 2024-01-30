@@ -19,7 +19,7 @@ include_once('../../_helper/2step_com_conn.php');
                     ?>
                     <div class="card-body">
                         <div class="card">
-                            <div class="card-body border rounded ">
+                            <div class="card-body border rounded " style="background: #8fbc8f6b;">
                                 <div class="text-center">
                                     <strong class="text-danger"><u>**** Note ****</u></strong>
                                 </div>
