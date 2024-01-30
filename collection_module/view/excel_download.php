@@ -31,8 +31,10 @@ $modifyRow = [];
 while ($row = oci_fetch_assoc($strSQL)) {
 
     $modifyRow['ID'] = $row['ID'];
-    $modifyRow['BRAND_ID'] = $brand_ID;
-    $modifyRow['USER_NAME']  = $row['USER_NAME'] . '-' . $row['USER_MOBILE'];
+    $modifyRow['BRAND_ID']      = $brand_ID;
+    $modifyRow['USER_NAME']     = $row['USER_NAME'] . '-' . $row['USER_MOBILE'];
+    $modifyRow['Start_date']    = date("01-m-Y");
+    $modifyRow['end_date']    = date("t-m-Y");
 }
 
 

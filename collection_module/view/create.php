@@ -66,11 +66,8 @@ include_once('../../_helper/2step_com_conn.php');
                         </div>
                         <div class="col-sm-6  col-md-3">
                             <label>MOBILE : </label>
-                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text" value='<?php echo isset(
-                                                                                                                                                                        $_GET["F_USER_MOBILE"]
-                                                                                                                                                                    )
-                                                                                                                                                                        ? $_GET["F_USER_MOBILE"]
-                                                                                                                                                                        : ""; ?>' />
+                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text"
+                             value='<?php echo isset($_GET["F_USER_MOBILE"]) ? $_GET["F_USER_MOBILE"] : ""; ?>' />
                         </div>
 
                         <div class="col-sm-6 col-md-3 d-flex gap-2">
@@ -88,20 +85,16 @@ include_once('../../_helper/2step_com_conn.php');
                             <input type="hidden" name="actionType" value="create">
 
                             <div class="col-4 text-center form-group mb-3">
-                                <label>Collection Start Date: </label>
+                                <label> Collection Start Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker start_date" name="start_date" type="text" value='<?php echo date(
-                                                                                                                                                        "01-m-Y"
-                                                                                                                                                    ); ?>' />
+                                    <input required="" class="form-control text-center datepicker start_date" name="start_date" type="text" value='<?php echo date("01-m-Y"); ?>' />
                                 </div>
                             </div>
 
                             <div class="col-4 text-center form-group mb-3">
                                 <label>Collection End Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker end_date" name="end_date" type="text" value='<?php echo date(
-                                                                                                                                                    "t-m-Y"
-                                                                                                                                                ); ?>' />
+                                    <input required="" class="form-control text-center datepicker end_date" name="end_date" type="text" value='<?php echo date("t-m-Y"); ?>' />
                                 </div>
                             </div>
 

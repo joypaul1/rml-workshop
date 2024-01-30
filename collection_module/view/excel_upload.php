@@ -13,19 +13,30 @@ include_once('../../_helper/2step_com_conn.php');
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'Create';
-                    $leftSideName  = 'User Create';
-                    $rightSideName = 'User List';
-                    $routePath     = 'user_module/view/index.php';
+                    $leftSideName  = 'Collection Data Excel Upload';
                     include('../../_includes/com_header.php');
 
                     ?>
                     <div class="card-body">
+                        <div class="card">
+                            <div class="card-body border rounded ">
+                                <div class="text-center">
+                                    <strong class="text-danger"><u>**** Note ****</u></strong>
+                                </div>
+                                <span class="d-flex flex-column gap-1 text-danger fw-bold">
+                                    <span><i class="bx bxs-chevrons-right font-18 align-middle me-1"></i> Do Not Change/Modify USER_ID & BRAND_ID Column data.</span>
+                                    <span><i class="bx bxs-chevrons-right font-18 align-middle me-1"></i> Do Not Change Start Date & End Date format.</span>
+                                    <span><i class="bx bxs-chevrons-right font-18 align-middle me-1"></i> If any single User don't need?You can Delete that User Row.</span>
+                                </span>
+                            </div>
+                        </div>
                         <div class="p-4 border rounded">
                             <div class="col-12 text-center">
                                 <a href="excel_download.php?brand_type=1&brand_name=Mahindra" class="btn btn-gradient-primary"> Mahindra Excel File Download <i class='bx bxs-download'></i> </a>
                                 <a href="excel_download.php?brand_type=2&brand_name=Eicher" class="btn btn-gradient-success"> Eicher Excel File Download <i class='bx bxs-download'></i> </a>
 
                             </div>
+
                             <form method="post" action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation mt-2" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="actionType" value="create">
 
@@ -36,7 +47,7 @@ include_once('../../_helper/2step_com_conn.php');
                                 </div>
 
                                 <div class="col-12 text-center">
-                                    <button class="btn btn-primary" type="submit"> Upload Data </button>
+                                    <button class="btn btn-primary" type="submit"> Upload Data <i class='bx bxs-arrow-from-bottom'></i> </button>
                                 </div>
                             </form>
                         </div>
