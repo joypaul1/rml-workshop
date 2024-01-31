@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         ];
 
         $_SESSION['noti_message'] = $message;
-         echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/create.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/create.php'</script>";
         exit();
     } catch (Exception $e) {
         // An error occurred, rollback the transaction

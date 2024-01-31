@@ -7,8 +7,6 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 require_once '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-
 
 if (isset($_POST['importSubmit'])) {
 
@@ -24,37 +22,81 @@ if (isset($_POST['importSubmit'])) {
             $spreadsheet = $reader->load($_FILES['file']['tmp_name']);
             $worksheet = $spreadsheet->getActiveSheet();
             $worksheet_arr = $worksheet->toArray();
+            // Get the highest row and column numbers referenced in the worksheet
+            $highestRow = $worksheet->getHighestRow();
+            // $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
+            // $highestColumnIndex = PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+            $workingRow = 1;
 
-            // Remove header row 
             unset($worksheet_arr[0]);
 
-            foreach ($worksheet_arr as $row) {
-                $first_name = $row[0];
-                $last_name  = $row[1];
-                $email      = $row[2];
-                $phone      = $row[3];
-                $status     = $row[4];
 
-                // Check whether member already exists in the database with the same email 
-                // $prevQuery = "SELECT id FROM members WHERE email = '" . $email . "'";
-                // $prevResult = $db->query($prevQuery);
+            foreach ($worksheet_arr as $key => $row) {
+                $workingRow++;
+                if ($row[0] && $row[1] && $row[3] && $row[4] && $row[5]) {
 
-                // if ($prevResult->num_rows > 0) {
-                //     // Update member data in the database 
-                //     $db->query("UPDATE members SET first_name = '" . $first_name . "', last_name = '" . $last_name . "', email = '" . $email . "', phone = '" . $phone . "', status = '" . $status . "', modified = NOW() WHERE email = '" . $email . "'");
-                // } else {
-                //     // Insert member data in the database 
-                //     $db->query("INSERT INTO members (first_name, last_name, email, phone, status, created, modified) VALUES ('" . $first_name . "', '" . $last_name . "', '" . $email . "', '" . $phone . "', '" . $status . "', NOW(), NOW())");
-                // }
+                    $USER_ID            = $row[0];
+                    $BRAND_ID           = $row[1];
+                    $START_DATE         = $row[3];
+                    $END_DATE           = $row[4];
+                    $TARGET_AMOUNT      = $row[5];
+                    $REMARKS            = $row[6];
+
+                    $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, TARGET_AMOUNT, REMARKS,ENTRY_DATE, ENTRY_BY_ID, STATUS) 
+                    VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $TARGET_AMOUNT,'$REMARKS', SYSDATE, $log_user_id, 1)";
+                    $strSQL = oci_parse($objConnect, $query);
+
+                    // Execute the query
+                    oci_execute($strSQL);
+
+                    // Check for errors after executing each query
+                    if (oci_error($strSQL)) {
+
+                        // throw new Exception("Failed to execute query: " . oci_error($objConnect)['message']);
+                        $message = [
+                            'text'   => "Data Uploaded Successfully row : " . ($workingRow - 1) . " .Problem Create in row :" . ($workingRow) . "& Problem is : " . oci_error($objConnect)['message'],
+                            'status' => 'false',
+                        ];
+                        $_SESSION['noti_message'] = $message;
+                        echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+                        exit();
+                    }
+                }
+
+                $message = [
+                    'text'   =>  "Data Uploaded Successfully.Total row : " . ($workingRow - 1),
+                    'status' => 'true',
+                ];
+
+                $_SESSION['noti_message'] = $message;
+                echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+                exit();
             }
 
-            $qstring = '?status=succ';
+            $message = [
+                'text'   => 'Collection Target Created Successfully.',
+                'status' => 'true',
+            ];
+
+            $_SESSION['noti_message'] = $message;
+            echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+            exit();
         } else {
-            $qstring = '?status=err';
+            $message = [
+                'text'   => 'File Not Uploded Properly.',
+                'status' => 'false',
+            ];
+            $_SESSION['noti_message'] = $message;
+            echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+            exit();
         }
     } else {
-        $qstring = '?status=invalid_file';
+        $message = [
+            'text'   => 'Invalid File or File Format',
+            'status' => 'false',
+        ];
+        $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+        exit();
     }
 }
-// Redirect to the listing page 
-header("Location: index.php" . $qstring);

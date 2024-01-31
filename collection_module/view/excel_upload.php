@@ -37,12 +37,12 @@ include_once('../../_helper/2step_com_conn.php');
 
                             </div>
 
-                            <form method="post" action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation mt-2" enctype="multipart/form-data" novalidate="">
-                                <input type="hidden" name="actionType" value="create">
+                            <form method="POST" action="<?php echo ($sfcmBasePath . '/collection_module/action/uploadExcel.php') ?>" class="row g-3 needs-validation mt-2" enctype="multipart/form-data" novalidate="">
+                                <input type="hidden" name="importSubmit" value="importSubmit">
 
                                 <div class="col-12">
                                     <!-- <label for="" class="form-label">Select Collection Target Excel File</label> -->
-                                    <input type="file" name="IMAGE_LINK" class="form-control dropify" required="" data-allowed-file-extensions="xlsx xlsm xlsb xltx xltm xls xlt" />
+                                    <input type="file" name="file" class="form-control dropify" required="" data-allowed-file-extensions="xlsx xlsm xlsb xltx xltm xls xlt" />
 
                                 </div>
 
