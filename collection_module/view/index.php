@@ -104,12 +104,12 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                 <thead class="table-light text-uppercase text-center ">
                                     <tr>
                                         <th>SL.</th>
+                                        <th>ACTION</th>
                                         <th>Date</th>
                                         <th>Sale Executive Name</th>
                                         <th>Brand </th>
                                         <th>STATUS</th>
                                         <th>Amount</th>
-                                        <!-- <th>USER REMARKS</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -125,18 +125,17 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
 
-                                    $query = "SELECT CA.START_DATE, CA.END_DATE,CA.TARGET_AMOUNT,
+                                    $query = "SELECT CA.ID, CA.START_DATE, CA.END_DATE,CA.TARGET_AMOUNT,
                                     CA.STATUS,CA.REMARKS, (SELECT USER_NAME FROM USER_PROFILE UP WHERE CA.USER_ID = UP.ID) AS USER_NAME,(SELECT TITLE FROM PRODUCT_BRAND PB WHERE PB.ID = CA.BRAND_ID) AS BRAND_NAME FROM COLLECTION_ASSIGN CA WHERE CA.STATUS = 1
                                     AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY') 
                                     AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
-
 
                                     if (isset($_POST['f_sales_executive']) && !empty($_POST['f_sales_executive'])) {
                                         $executiveID = $_POST['f_sales_executive'];
                                         $query .= " AND ( USER_ID = $executiveID)";
                                     }
                                     $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-
+                                   
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -151,6 +150,10 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                                 </strong>
                                             </td>
 
+                                            <td class="text-center">
+                                                <a href="<?php echo $sfcmBasePath . '/collection_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+
+                                            </td>
                                             <td>
                                                 <?php echo $row['START_DATE']; ?> TO <?php echo $row['END_DATE']; ?>
                                             </td>
@@ -176,10 +179,6 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                             <td>
                                                 <?php echo number_format($row['TARGET_AMOUNT']) ?>
                                             </td>
-
-                                            <!-- <td class="text-center">
-                                                <a href="<?php echo $sfcmBasePath . '/collection_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
-                                            </td> -->
 
                                         </tr>
 

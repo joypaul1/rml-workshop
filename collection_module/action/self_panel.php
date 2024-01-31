@@ -5,14 +5,12 @@ require_once('../../_config/connoracle.php');
 $sfcmBasePath   = $_SESSION['sfcmBasePath'];
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
-$START_DATE                  = $_POST['start_date'];
-$END_DATE                    = $_POST['end_date'];
-$collection_amounts          = $_POST['collection_amount'];
+$START_DATE    = ($_POST['start_date']) ? date('d/m/Y', strtotime($_POST['start_date'])) : '';
+$END_DATE      = ($_POST['end_date']) ? date('d/m/Y', strtotime($_POST['end_date'])) : '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
-    // Start the transaction
-    // oci_execute(oci_parse($objConnect, 'BEGIN'));
+    $collection_amounts          = $_POST['collection_amount'];
 
     try {
         foreach ($collection_amounts as $BRAND_ID => $USER_IDs) {
@@ -32,9 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
             }
         }
 
-        // Commit the transaction
-        // oci_commit($objConnect);
-
         $message = [
             'text'   => 'Collection Target Created Successfully.',
             'status' => 'true',
@@ -44,8 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/create.php'</script>";
         exit();
     } catch (Exception $e) {
-        // An error occurred, rollback the transaction
-        // oci_rollback($objConnect);
 
         $message = [
             'text'   => htmlentities($e->getMessage(), ENT_QUOTES),
@@ -53,6 +46,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         ];
         $_SESSION['noti_message'] = $message;
         echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/create.php'</script>";
+        exit();
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit') {
+
+
+    $target_amount          = $_POST['target_amount'];
+    $edit_id                = $_POST['editId'];
+    $remarks                = $_POST['remarks'];
+    try {
+        $query = "UPDATE COLLECTION_ASSIGN 
+        SET START_DATE = TO_DATE('$START_DATE','dd/mm/yyyy'),
+            END_DATE = TO_DATE('$END_DATE','dd/mm/yyyy'),
+            TARGET_AMOUNT = $target_amount,
+            REMARKS = '$remarks'
+        WHERE ID = $edit_id";
+
+        $strSQL = oci_parse($objConnect, $query);
+
+        // Execute the query
+        oci_execute($strSQL);
+
+        // Check for errors after executing each query
+        if (oci_error($strSQL)) {
+            $e                        = @oci_error($strSQL);
+            $message                  = [
+                'text'   => htmlentities($e['message'], ENT_QUOTES),
+                'status' => 'false',
+            ];
+            $_SESSION['noti_message'] = $message;
+            echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/edit.php?id=$edit_id&actionType=edit'</script>";
+            exit();
+        }
+        $message = [
+            'text'   => 'Collection Target Updated Successfully.',
+            'status' => 'true',
+        ];
+
+        $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/edit.php?id=$edit_id&actionType=edit'</script>";
+        exit();
+    } catch (Exception $e) {
+
+        $message = [
+            'text'   => htmlentities($e->getMessage(), ENT_QUOTES),
+            'status' => 'false',
+        ];
+        $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/edit.php?id=$edit_id&actionType=edit'</script>";
         exit();
     }
 }

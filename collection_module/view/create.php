@@ -243,7 +243,7 @@ include_once('../../_includes/footer.php');
     $('.datepicker').pickadate({
         selectMonths: true,
         selectYears: true,
-        format: 'dd-mm-yyyy', // Specify your desired date format
+        format: 'dd/mm/yyyy', // Specify your desired date format
         min: new Date(today.getFullYear(), today.getMonth(), 1), // Set min date to the first day of the current month
         onClose: function() {
             // Trigger close event if needed
