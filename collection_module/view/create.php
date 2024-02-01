@@ -87,14 +87,14 @@ include_once('../../_helper/2step_com_conn.php');
                             <div class="col-4 text-center form-group mb-3">
                                 <label> Collection Start Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker start_date" name="start_date" type="text" value='<?php echo date("01-m-Y"); ?>' />
+                                    <input required="" class="form-control text-center datepicker start_date" name="start_date" type="text" value='<?php echo date("01/m/Y"); ?>' />
                                 </div>
                             </div>
 
                             <div class="col-4 text-center form-group mb-3">
                                 <label>Collection End Date: </label>
                                 <div class="input-group">
-                                    <input required="" class="form-control text-center datepicker end_date" name="end_date" type="text" value='<?php echo date("t-m-Y"); ?>' />
+                                    <input required="" class="form-control text-center datepicker end_date" name="end_date" type="text" value='<?php echo date("t/m/Y"); ?>' />
                                 </div>
                             </div>
 
@@ -225,7 +225,6 @@ include_once('../../_includes/footer.php');
 ?>
 <script>
     $('.single-select').each(function(event) {
-        console.log($(this), 'ssss');
         $(this).select2({
             theme: 'bootstrap4',
             width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
