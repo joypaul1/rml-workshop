@@ -51,8 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit') {
-
-
     $target_amount          = $_POST['target_amount'];
     $edit_id                = $_POST['editId'];
     $remarks                = $_POST['remarks'];
