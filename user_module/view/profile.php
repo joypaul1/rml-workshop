@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
     @oci_execute($strSQL);
     $data = @oci_fetch_assoc($strSQL);
 }
+
+$USER_BRANDS =  $_SESSION['USER_SFCM_INFO']['USER_BRANDS']
 ?>
 
 <!--start page wrapper -->
@@ -62,13 +64,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
                                                         </span>
                                                     </strong>
                                                 </p>
-                                                <!-- <p class="mb-1 text-start">
+                                                <p class="mb-1 text-start">
                                                     <strong><i class='bx bx-git-branch'></i> BRAND :
                                                         <span class="">
-                                                            <?php echo $data['USER_BRAND'] ?>
+                                                            <?php
+                                                            $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN ($USER_BRANDS)";
+                                                            $brandstrSQL  = @oci_parse($objConnect, $brandQuery);
+                                                            @oci_execute($brandstrSQL);
+
+                                                            while ($brandData = @oci_fetch_assoc($brandstrSQL)) {
+                                                                echo '<span class="badge rounded-pill bg-success">' . $brandData['TITLE'] . '</span> ';
+                                                            }
+
+                                                            ?>
+
                                                         </span>
                                                     </strong>
-                                                </p> -->
+                                                </p>
                                                 <p class="mb-1 text-start">
                                                     <strong><i class='bx bxl-jquery'></i> TYPE :
                                                         <span class=" ">

@@ -21,7 +21,6 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
         <div class="row">
             <div class="card rounded-4">
                 <div class="card-body">
-
                     <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         <strong><i class='bx bx-filter-alt'></i> Filter Data</strong>
                     </button>
