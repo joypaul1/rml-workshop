@@ -207,7 +207,7 @@ include_once('../../_includes/footer.php');
                     dataType: 'json'
                 })
                 .done(function(response) {
-                    swal.fire('Deleted!', response.message, response.status);
+                    swal.fire('Success!', response.message, response.status);
                     // location.reload(); // Reload the page
                 })
                 .fail(function() {
