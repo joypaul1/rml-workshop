@@ -10,9 +10,7 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 
 include_once('../../_helper/2step_com_conn.php');
-// if( $_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD" ||  $_SESSION['USER_SFCM_INFO']['USER_TYPE']== 'COORDINATOR'){
 
-// }
 
 ?>
 
