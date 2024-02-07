@@ -99,7 +99,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                                     <div class="text-center">
                                         <img src="assets/images/logo-img.png" width="200" alt="">
                                         <h5 class="mt-3 mb-0"><u> SFCM - SYSTEM </u></h5>
-                                        <p class="mb-4">Please Login Bef ore Enter The Dashboard.</p>
+                                        <p class="mb-4">Please Login Before Enter The Dashboard.</p>
                                     </div>
 
                                     <div class="form-body">
