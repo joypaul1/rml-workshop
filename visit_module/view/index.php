@@ -111,11 +111,12 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
 
-                                    $query = "SELECT VA.ID, VA.VISIT_DATE, VA.TARGET_AMOUNT, 
+                                    $query = "SELECT VA.ID, VA.VISIT_DATE,  
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE, 
                                         VA.ENTRY_BY_ID,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
-                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.USER_ID) AS RETAILER_NAME
+                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.USER_ID) AS RETAILER_NAME,
+                                        (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA 
                                         WHERE VA.RETAILER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
@@ -145,6 +146,9 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                             </td>
                                             <td>
                                                 <?php echo $row['RETAILER_NAME']; ?>
+                                                <br />
+                                                <span class="badge bg-success"><?php echo $row['RETAILER_BRAND']; ?></span></h6>
+                                                
                                             </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-gradient-primary">

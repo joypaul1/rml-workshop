@@ -49,9 +49,9 @@
                                     <div class="card-body" style="padding: 2% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Orders</p>
-                                                <h4 class="my-1 text-white">200 </h4>
-                                                <p class="mb-0 font-10 text-white">Current Month </p>
+                                                <p class="mb-0 text-white">Total Visit Plan</p>
+                                                <h4 class="my-1 text-white"> 0 </h4>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
                                             </div>
@@ -65,9 +65,9 @@
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Visit</p>
+                                                <p class="mb-0 text-white">Visit Complete</p>
                                                 <h4 class="my-1 text-white">50 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
                                             </div>
@@ -83,7 +83,7 @@
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
                                                 <h4 class="my-1 text-white">2,00,00.00</h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
 
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
@@ -98,9 +98,9 @@
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Product Stock </p>
+                                                <p class="mb-0 text-white">Total Sale </p>
                                                 <h4 class="my-1 text-white">0 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
                                             </div>
@@ -118,9 +118,9 @@
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Orders</p>
+                                                <p class="mb-0 text-white">Total Visit Plan</p>
                                                 <h4 class="my-1 text-white">200</h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
                                             </div>
@@ -134,9 +134,9 @@
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Visit</p>
-                                                <h4 class="my-1 text-white">50 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 text-white">Visit Complete</p>
+                                                <h4 class="my-1 text-white">0 </h4>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
                                             </div>
@@ -152,7 +152,7 @@
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
                                                 <h4 class="my-1 text-white">2,00,00.00</h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
 
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
@@ -167,9 +167,9 @@
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Product Stock </p>
+                                                <p class="mb-0 text-white">Total Sale </p>
                                                 <h4 class="my-1 text-white">0 </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
                                             </div>

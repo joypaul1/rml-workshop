@@ -91,7 +91,6 @@ $number = 0;
 
                                         <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
                                             || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
-                                            || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
                                         ) {
                                             echo '<th>Tree User</th>';
                                         }
@@ -136,13 +135,13 @@ $number = 0;
                                                 AND UP.USER_STATUS = '1'";
 
                                         if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
-                                            $query .= " AND UP.USER_TYPE_ID IN (3,4,5)";
+                                            $query .= " AND UP.USER_TYPE_ID IN (4,5)";
                                         }
                                         if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'RETAILER') {
-                                            $query .= " AND UP.USER_TYPE_ID IN (4,5,6)";
+                                            $query .= " AND UP.USER_TYPE_ID IN (5,6)";
                                         }
                                         if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'MECHANICS') {
-                                            $query .= " AND UP.USER_TYPE_ID IN (5,6)";
+                                            $query .= " AND UP.USER_TYPE_ID IN (6)";
                                         }
                                     }
 
@@ -220,16 +219,16 @@ $number = 0;
                                                         <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
-                                                <?php if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) { ?>
-                                                    <td class="text-center">
+                                                <?php //if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) { ?>
+                                                    <!-- <td class="text-center">
                                                         <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
-                                                    </td>
-                                                <?php }  ?>
-                                                <?php if (($row['USER_TYPE'] == 'RETAILER')) { ?>
-                                                    <td class="text-center">
+                                                    </td> -->
+                                                <?php // }  ?>
+                                                <?php //if (($row['USER_TYPE'] == 'RETAILER')) { ?>
+                                                    <!-- <td class="text-center">
                                                         <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
-                                                    </td>
-                                                <?php }  ?>
+                                                    </td> -->
+                                                <?php //}  ?>
 
                                             <?php }  ?>
 
