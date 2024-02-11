@@ -21,16 +21,35 @@ include_once('../../_helper/2step_com_conn.php');
         <div class="card rounded-4">
             <?php
             $headerType   = 'List';
-            $leftSideName = 'Visit Create or Assign For Me';
+            $leftSideName = 'Retailer Point Visit Assign Form';
             include('../../_includes/com_header.php');
             ?>
             <div class="cards rounded-4">
                 <div class="card-body">
 
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
-                        <div class="row justify-content-center align-items-center text-center">
+                        <div class="row justify-content-center align-items-center text-centers">
                             <div class="col-3">
-                                <label class="form-label">Retailer Disctrict:</label>
+                                <label class="form-label"> Retailer Brand:</label>
+                                <select name="brand_id" class="form-control 
+                                text-center single-select">
+                                    <option value="<?php echo null ?>" hidden><- Select Brand -></option>
+                                    <?php
+                                    $strSQL = oci_parse($objConnect, "SELECT ID,TITLE FROM PRODUCT_BRAND WHERE STATUS =1");
+                                    oci_execute($strSQL);
+
+                                    while ($row = oci_fetch_assoc($strSQL)) {
+                                    ?>
+                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['brand_id']) && $_POST['brand_id'] == $row['ID'] ? 'Selected' : '' ?>>
+                                            <?php echo $row['TITLE'] ?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label"> Retailer Disctrict:</label>
                                 <select name="disctrictID" class="form-control 
                                 text-center single-select">
                                     <option value="<?php echo null ?>" hidden><- Select Disctrict -></option>
@@ -52,9 +71,9 @@ include_once('../../_helper/2step_com_conn.php');
                                 <label>Retailer Name/Mobile : </label>
                                 <input class="form-control" name="USER_NAME_MOBILE" type="text" value='<?php echo isset($_POST['USER_NAME_MOBILE']) ? $_POST['USER_NAME_MOBILE'] : ''; ?>' />
                             </div>
-                            <div class="col-sm-4 d-flex gap-2">
-                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                                <a href="<?php echo $sfcmBasePath  ?>/visit_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                            <div class="col-sm-3 d-flex gap-2">
+                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data</button>
+                                <a href="<?php echo $sfcmBasePath  ?>/visit_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data</a>
                             </div>
                         </div>
                     </form>
@@ -63,11 +82,77 @@ include_once('../../_helper/2step_com_conn.php');
             <div class="card-body">
                 <div class=" card card-body col-sm-12 col-md-12  col-xl-12 mx-auto p-4 border rounded">
                     <form method="POST" action="<?php echo ($sfcmBasePath . '/visit_module/action/self_panel.php') ?>">
-                        <div class="row justify-content-center align-items-center ">
+                        <div class="row justify-content-end align-items-center ">
                             <input type="hidden" name="actionType" value="create">
 
+                            <div class="shadow-sm p-2 mb-2 bg-white rounded text-center">
+
+                                <strong class="text-primary rounded fs-6"> Please Select Your Retailer <i class='bx bx-select-multiple'></i></strong>
+
+                            </div>
+                            <div class="form-group mb-3">
+
+                                <?php
+                                $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
+                                if (isset($_POST['brand_id'])) {
+                                    if (!empty($_POST['brand_id'])) {
+                                        $USER_BRANDS = $_POST['brand_id'];
+                                    }
+                                }
+                                $query = "SELECT 
+                                            UP.ID, 
+                                            (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME, 
+                                            (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID,
+                                            UP.USER_MOBILE
+                                        FROM 
+                                            USER_PROFILE UP
+                                        LEFT JOIN 
+                                            USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                        WHERE 
+                                            UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                            AND UBS.STATUS = 1  
+                                            AND UP.USER_TYPE_ID = 4";
+                                if (isset($_POST['USER_NAME_MOBILE'])) {
+                                    if (!empty($_POST['USER_NAME_MOBILE'])) {
+                                        $searchTerm = str_replace(" ", "_", trim($_POST['USER_NAME_MOBILE']));
+                                        $query .= " AND (UP.USER_NAME LIKE '%" . $searchTerm . "%' OR UP.USER_MOBILE LIKE '%" . $searchTerm . "%')";
+                                    }
+                                }
+                                if (isset($_POST['disctrictID'])) {
+                                    if (!empty($_POST['disctrictID'])) {
+                                        $searchTerm = trim($_POST['disctrictID']);
+                                        $query .= " AND UP.DISTRICT_ID = " . $searchTerm;
+                                    }
+                                }
+                                $query .= " ORDER BY UP.USER_NAME";
+
+                                $strSQL = oci_parse($objConnect, $query);
+                                // echo $query;
+                                oci_execute($strSQL);
+
+                                while ($row = oci_fetch_assoc($strSQL)) {
+
+                                ?>
+                                    <span class="row justify-content-center">
+
+                                        <div class="col-6 form-check ">
+                                            <i class='bx bxs-chevrons-right text-success'></i>
+                                            <input class="form-check-input" name="user_id[<?php echo $row['ID'] ?>]" type="checkbox" value="<?php echo $row['ID'] ?>" id="flexCheckChecked_<?php echo $row['ID'] ?>">
+
+                                            <input type="hidden" name="user_brand_id[<?php echo $row['ID'] ?>][<?php echo $row['USER_BRAND_ID'] ?>]">
+                                            <label class="form-check-label" for="flexCheckChecked_<?php echo $row['ID'] ?>"><?php echo $row['USER_NAME'] ?></label>
+                                        </div>
+                                        <div class="col-4 form-check mb-2">
+                                            <input type="text" name="user_remarks[<?php echo $row['ID'] ?>]" placeholder="Any Remarks?" class="form-control" id="inputFirstName">
+                                        </div>
+                                    </span>
+                                <?php
+                                }
+                                ?>
+
+                            </div>
                             <div class="col-3">
-                                <label class="form-label">Select Date: </label>
+                                <label class="form-label">Select Visit Assign Date: </label>
                                 <div class="input-group">
                                     <input required="" class="form-control datepicker" name="date" type="text" value='<?php echo isset($_POST['date']) ? $_POST['date'] : date('d-m-Y'); ?>' />
                                 </div>
@@ -93,77 +178,9 @@ include_once('../../_helper/2step_com_conn.php');
 
                             </div>
 
-                            <div class="col-3">
-                                <label>MOBILE : </label>
-                                <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="USER_MOBILE" type="text" value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
-                            </div>
-                            <div class="shadow-sm p-2 mb-2 bg-white rounded text-center">
-
-                                <strong class="text-primary rounded fs-6"> Please Select Your Retailer <i class='bx bx-select-multiple'></i></strong>
-
-                            </div>
-                            <div class="form-group mb-3">
-
-                                <?php
-                                $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
-                                $query = "SELECT 
-                                            UP.ID, 
-                                            UP.USER_NAME, 
-                                            UP.USER_MOBILE
-                                        FROM 
-                                            USER_PROFILE UP
-                                        LEFT JOIN 
-                                            USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                        WHERE 
-                                            UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                            AND UBS.STATUS = 1  
-                                            AND UP.USER_TYPE_ID = 4";
-                                if (isset($_POST['USER_NAME_MOBILE'])) {
-                                    if (!empty($_POST['USER_NAME_MOBILE'])) {
-                                        $searchTerm = str_replace(" ", "_", trim($_POST['USER_NAME_MOBILE']));
-                                        $query .= " AND (UP.USER_NAME LIKE '%" . $searchTerm . "%' OR UP.USER_MOBILE LIKE '%" . $searchTerm . "%')";
-                                    }
-                                }
-                                if (isset($_POST['disctrictID'])) {
-                                    if (!empty($_POST['disctrictID'])) {
-                                        $searchTerm = trim($_POST['disctrictID']);
-                                        $query .= " AND UP.DISTRICT_ID = " . $searchTerm;
-                                    }
-                                }
-                                $query .= " GROUP BY 
-                                UP.ID, UP.USER_NAME, UP.USER_MOBILE";
-
-                                $strSQL = oci_parse($objConnect, $query);
-                                // echo $query;
-                                oci_execute($strSQL);
-
-                                while ($row = oci_fetch_assoc($strSQL)) {
-
-                                ?>
-                                    <span class="row justify-content-center">
-
-                                        <div class="col-4 form-check ">
-                                            <i class='bx bxs-chevrons-right text-success'></i>
-                                            <input class="form-check-input" name="user_id[<?php echo $row['ID'] ?>]" type="checkbox" value="<?php echo $row['ID'] ?>" id="flexCheckChecked_<?php echo $row['ID'] ?>">
-                                            <label class="form-check-label" for="flexCheckChecked_<?php echo $row['ID'] ?>"><?php echo $row['USER_NAME'] ?></label>
-                                        </div>
-                                        <div class="col-4 form-check mb-2">
-                                            <input type="text" name="user_remarks[<?php echo $row['ID'] ?>]" placeholder="Any Remarks?" class="form-control" id="inputFirstName">
-                                        </div>
-                                    </span>
-                                <?php
-                                }
-                                ?>
-
-                            </div>
-
-
-                            <div class="form-group">
-                                <button class="form-control  btn btn-sm btn-gradient-primary mt-4" type="submit">Create Visit Assign<i class='bx bx-file-find'></i></button>
-                            </div>
-
-
-
+                        </div>
+                        <div class="text-end ">
+                            <button class=" btn btn-sm btn-gradient-primary mt-4" type="submit">Create Visit Assign<i class='bx bx-file-find'></i></button>
                         </div>
 
                     </form>
