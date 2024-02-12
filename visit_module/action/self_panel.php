@@ -9,7 +9,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
     if (isset($_POST['user_id']) > 0) {
-        
+
         $USER_NAME          = $_POST['date'];
         $VISIT_TYPE_ID      = $_POST['visit_type'];
         $user_ids           = $_POST['user_id'];
@@ -17,13 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         $user_remarks       = $_POST['user_remarks'];
         $VISIT_DATE         = date('Y-m-d', strtotime($_POST['date']));
         $ENTRY_BY_ID        = $log_user_id;
-        $RETAILER_ID        = $log_user_id;
-
+       
 
         foreach ($user_ids as $key => $user_id) {
             $user_remark    = $user_remarks[$key];
             $user_brand_id  = key($user_brand_ids[$key]);
-            $query = "INSERT INTO VISIT_ASSIGN (USER_ID, VISIT_DATE, USER_REMARKS,RETAILER_ID, VISIT_TYPE_ID, ENTRY_DATE, ENTRY_BY_ID, PRODUCT_BRAND_ID) VALUES ('$user_id',TO_DATE('$VISIT_DATE','yyyy-mm-dd') , '$user_remark','$RETAILER_ID','$VISIT_TYPE_ID',SYSDATE,'$ENTRY_BY_ID', $user_brand_id)";
+            $query = "INSERT INTO VISIT_ASSIGN (USER_ID, VISIT_DATE, USER_REMARKS,RETAILER_ID, VISIT_TYPE_ID, ENTRY_DATE, ENTRY_BY_ID, PRODUCT_BRAND_ID) VALUES ('$log_user_id',TO_DATE('$VISIT_DATE','yyyy-mm-dd') , '$user_remark','$user_id','$VISIT_TYPE_ID',SYSDATE,'$ENTRY_BY_ID', $user_brand_id)";
 
             $strSQL = @oci_parse($objConnect, $query);
             // Execute the query
