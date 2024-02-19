@@ -6,8 +6,7 @@
             </div>
             <div class="search-bar flex-grow-1">
                 <div class="position-relative search-bar-box">
-                    <input type="text" class="form-control search-control" placeholder="Type to search..."> <span
-                        class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
+                    <input type="text" class="form-control search-control" placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
                     <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
                 </div>
             </div>
@@ -17,48 +16,49 @@
                         <a class="nav-link" href="#"> <i class='bx bx-search'></i>
                         </a>
                     </li>
-                    <li class="nav-item dropdown dropdown-large">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false"> <i class='bx bx-category'></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <div class="row row-cols-3 g-3 p-3">
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto bg-gradient-cosmic text-white"><i class='bx bx-group'></i>
+                    <?php if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") { ?>
+                        <li class="nav-item dropdown dropdown-large">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class='bx bx-category'></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <div class="row row-cols-3 g-3 p-3">
+                                    <div class="col text-center">
+                                        <div class="app-box mx-auto bg-gradient-cosmic text-white"><i class='bx bx-group'></i>
+                                        </div>
+                                        <div class="app-title">Visit </div>
                                     </div>
-                                    <div class="app-title">Teams</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto bg-gradient-burning text-white"><i class='bx bx-atom'></i>
+                                    <div class="col text-center">
+                                        <div class="app-box mx-auto bg-gradient-burning text-white"><i class='bx bx-atom'></i>
+                                        </div>
+                                        <div class="app-title">Collection</div>
                                     </div>
-                                    <div class="app-title">Projects</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto bg-gradient-lush text-white"><i class='bx bx-shield'></i>
+                                    <div class="col text-center">
+                                        <div class="app-box mx-auto bg-gradient-lush text-white"><i class='bx bx-shield'></i>
+                                        </div>
+                                        <div class="app-title">Order</div>
                                     </div>
-                                    <div class="app-title">Tasks</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto bg-gradient-kyoto text-dark"><i class='bx bx-notification'></i>
+                                    <div class="col text-center">
+                                        <div class="app-box mx-auto bg-gradient-kyoto text-dark"><i class='bx bx-notification'></i>
+                                        </div>
+                                        <div class="app-title">User</div>
                                     </div>
-                                    <div class="app-title">Feeds</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto bg-gradient-blues text-dark"><i class='bx bx-file'></i>
+                                    <div class="col text-center">
+                                        <div class="app-box mx-auto bg-gradient-blues text-dark"><i class='bx bx-file'></i>
+                                        </div>
+                                        <div class="app-title">Notification</div>
                                     </div>
-                                    <div class="app-title">Files</div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="app-box mx-auto bg-gradient-moonlit text-white"><i class='bx bx-filter-alt'></i>
+                                    <div class="col text-center">
+                                        <div class="app-box mx-auto bg-gradient-moonlit text-white"><i class='bx bxs-user-detail'></i>
+                                        </div>
+                                        <div class="app-title">Profile</div>
                                     </div>
-                                    <div class="app-title">Alerts</div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown dropdown-large">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false"> <span class="alert-count">7</span>
+                        </li>
+                    <?php } ?>
+
+                    <!-- <li class="nav-item dropdown dropdown-large">
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">7</span>
                             <i class='bx bx-bell'></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
@@ -174,25 +174,22 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown dropdown-large">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false"> <span class="alert-count">8</span>
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">8</span>
                             <i class='bx bx-comment'></i>
                         </a>
-                       
-                    </li>
+
+                    </li> -->
                 </ul>
             </div>
             <div class="user-box dropdown">
-                <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-                    <img src="<?php echo $_SESSION['USER_SFCM_INFO']['IMAGE_LINK'] != null ? ($sfcmBasePath . '/' . $_SESSION['USER_SFCM_INFO']['IMAGE_LINK']) : $sfcmBasePath . '/' . "assets/images/avatars/default_user.png"; ?>"
-                        class="user-img" alt="">
+                    <img src="<?php echo $_SESSION['USER_SFCM_INFO']['IMAGE_LINK'] != null ? ($sfcmBasePath . '/' . $_SESSION['USER_SFCM_INFO']['IMAGE_LINK']) : $sfcmBasePath . '/' . "assets/images/avatars/default_user.png"; ?>" class="user-img" alt="">
                     <div class="user-info ps-3">
                         <p class="user-name mb-0">
                             <?php echo $_SESSION['USER_SFCM_INFO']['USER_NAME'] ?>
                         </p>
-                        
+
                         <p class="designattion mb-0 fw-bold"><?php echo $_SESSION['USER_SFCM_INFO']['USER_TYPE'] ?></p>
                     </div>
                 </a>
@@ -201,8 +198,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item" href="<?php echo $sfcmBasePath ?>/index.php?logout_hr=true"><i
-                                class='bx bx-log-out-circle'></i><span>Logout</span></a>
+                        <a class="dropdown-item" href="<?php echo $sfcmBasePath ?>/index.php?logout_hr=true"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
                     </li>
                 </ul>
             </div>
