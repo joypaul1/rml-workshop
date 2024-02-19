@@ -169,7 +169,6 @@ $number = 0;
                                     }
 
                                     $query .= " GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UP.USER_TYPE_ID ORDER BY UP.USER_TYPE_ID";
-                                    echo $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
