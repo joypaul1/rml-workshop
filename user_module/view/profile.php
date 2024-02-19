@@ -11,10 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'profil
     UP.RML_IDENTITY_ID AS RML_ID,
     UP.PENDRIVE_ID,
     UP.IMAGE_LINK,
-    -- (SELECT TITLE
-    -- FROM USER_BRAND
-    -- WHERE ID = UP.USER_BRAND_ID)
-    -- AS USER_BRAND, 
     ( SELECT TITLE FROM     USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
     FROM USER_PROFILE UP WHERE ID = $edit_id";
     $strSQL  = @oci_parse($objConnect, $query);

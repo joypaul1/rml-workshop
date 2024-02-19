@@ -11,6 +11,7 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
+$USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
 ?>
 
 <!--start page wrapper -->
@@ -36,11 +37,11 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                                 <select name="retailer" class="form-control single-select">
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
-                                                    $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
-                                                    $strSQL = oci_parse($objConnect, "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  RESPONSIBLE_ID = :executiveID");
-                                                    oci_bind_by_name($strSQL, ":executiveID", $executiveID);
-                                                    oci_execute($strSQL);
 
+
+                                                    $strSQL = oci_parse($objConnect, "SELECT UP.ID, (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME, (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID, UP.USER_MOBILE FROM USER_PROFILE UP LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) AND UBS.STATUS = 1 AND UP.USER_TYPE_ID = 4 ORDER BY UP.USER_NAME");
+
+                                                    oci_execute($strSQL);
                                                     while ($row = oci_fetch_assoc($strSQL)) {
                                                     ?>
                                                         <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['retailer']) && $_POST['retailer'] == $row['ID'] ? 'Selected' : '' ?>>
@@ -99,7 +100,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
+
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
                                     $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $v_start_date = date('01/m/Y');
@@ -148,7 +149,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
                                                 <?php echo $row['RETAILER_NAME']; ?>
                                                 <br />
                                                 <span class="badge bg-success"><?php echo $row['RETAILER_BRAND']; ?></span></h6>
-                                                
+
                                             </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-gradient-primary">

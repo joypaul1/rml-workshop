@@ -84,7 +84,7 @@ $number = 0;
                                             echo '<th>Action</th>';
                                         }
                                         ?>
-                                        <th>Name | RML ID</th>
+                                        <th>Name | RML ID | Brands</th>
                                         <th>Mobile | Login ID</th>
                                         <th>TYPE</th>
                                         <th>Location </th>
@@ -101,7 +101,8 @@ $number = 0;
                                 <tbody>
                                     <?php
 
-                                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD') || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
+                                        //|| ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
                                     ) {
                                         $query = "SELECT UP.ID,
                                                     UP.USER_NAME,
@@ -134,6 +135,9 @@ $number = 0;
                                                 WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) 
                                                 AND UP.USER_STATUS = '1'";
 
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (3,4,5)";
+                                        }
                                         if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
                                             $query .= " AND UP.USER_TYPE_ID IN (4,5)";
                                         }
@@ -181,7 +185,21 @@ $number = 0;
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
                                                 <br>
-                                                ID : <?php echo $row['RML_ID']; ?>
+                                                ID : <?php echo $row['RML_ID']; ?>  <br>
+                                                <?php
+                                                $userBrandID = $row['USER_BRANDS'];
+                                                $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN 
+                                                ($userBrandID)";
+                                                $brandstrSQL  = @oci_parse($objConnect, $brandQuery);
+                                                @oci_execute($brandstrSQL);
+
+                                                while ($brandData = @oci_fetch_assoc($brandstrSQL)) {
+                                                    echo '<span class="badge rounded-pill bg-gradient-success">' . $brandData['TITLE'] . '</span> ';
+                                                }
+
+                                                ?>
+                                               
+                                               
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_MOBILE']; ?>
@@ -219,16 +237,20 @@ $number = 0;
                                                         <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
-                                                <?php //if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) { ?>
-                                                    <!-- <td class="text-center">
+                                                <?php //if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) { 
+                                                ?>
+                                                <!-- <td class="text-center">
                                                         <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td> -->
-                                                <?php // }  ?>
-                                                <?php //if (($row['USER_TYPE'] == 'RETAILER')) { ?>
-                                                    <!-- <td class="text-center">
+                                                <?php // }  
+                                                ?>
+                                                <?php //if (($row['USER_TYPE'] == 'RETAILER')) { 
+                                                ?>
+                                                <!-- <td class="text-center">
                                                         <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td> -->
-                                                <?php //}  ?>
+                                                <?php //}  
+                                                ?>
 
                                             <?php }  ?>
 
