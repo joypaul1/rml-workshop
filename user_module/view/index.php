@@ -67,8 +67,13 @@ $number = 0;
                     <?php
                     $headerType    = 'List';
                     $leftSideName  = 'User List';
-                    $rightSideName = 'User Create';
-                    $routePath     = 'user_module/view/create.php';
+                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
+                        || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                    ) {
+                        $rightSideName = 'User Create';
+                        $routePath     = 'user_module/view/create.php';
+                    }
+
                     include('../../_includes/com_header.php');
 
                     ?>
@@ -185,7 +190,7 @@ $number = 0;
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
                                                 <br>
-                                                ID : <?php echo $row['RML_ID']; ?>  <br>
+                                                ID : <?php echo $row['RML_ID']; ?> <br>
                                                 <?php
                                                 $userBrandID = $row['USER_BRANDS'];
                                                 $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN 
@@ -198,8 +203,8 @@ $number = 0;
                                                 }
 
                                                 ?>
-                                               
-                                               
+
+
                                             </td>
                                             <td class="text-center">
                                                 <?php echo $row['USER_MOBILE']; ?>
