@@ -116,8 +116,11 @@ $number = 0;
                                                     UP.LAT,
                                                     UP.LANG,
                                                     UP.CREATED_DATE,
-                                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE 
+                                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE ,
+                                                    LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
                                             FROM USER_PROFILE UP 
+                                            LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                            AND  UBS.STATUS = 1 
                                             WHERE UP.USER_STATUS = '1' 
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '01705102555')";
                                     } else {
@@ -136,7 +139,7 @@ $number = 0;
                                                         LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID)
                                                         AS USER_BRANDS
                                                 FROM USER_PROFILE UP
-                                                        LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                 WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) 
                                                 AND  UBS.STATUS = 1 
                                                 AND UP.USER_STATUS = '1'";
@@ -166,7 +169,7 @@ $number = 0;
                                     }
 
                                     $query .= " GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UP.USER_TYPE_ID ORDER BY UP.USER_TYPE_ID";
-                                    // echo $query;
+                                    echo $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
