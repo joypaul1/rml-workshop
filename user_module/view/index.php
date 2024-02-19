@@ -201,12 +201,12 @@ $number = 0;
                                                
                                                
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <?php echo $row['USER_MOBILE']; ?>
                                             </td>
 
 
-                                            <td>
+                                            <td class="text-center">
                                                 <?php echo $row['USER_TYPE']; ?>
                                             </td>
 
