@@ -193,7 +193,7 @@ include_once('../../_includes/footer.php');
     $(document).on('click', '.delete_check', function() {
         var userID = $(this).attr('data-userId');
         let url = "<?php echo ($sfcmBasePath . '/user_module/action/drop_down_panel.php') ?>";
-        console.log($(this).is(":checked"));
+        //console.log($(this).is(":checked"));
         if ($(this).is(":checked")) {
             $.ajax({
                     url: url,
@@ -227,7 +227,7 @@ include_once('../../_includes/footer.php');
                 })
                 .done(function(response) {
                     swal.fire('Deleted!', response.message, response.status);
-                    // location.reload(); // Reload the page
+                    location.reload(); // Reload the page
                 })
                 .fail(function() {
                     swal.fire('Oops...', 'Something went wrong!', 'error');
