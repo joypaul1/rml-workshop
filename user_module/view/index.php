@@ -122,7 +122,7 @@ $number = 0;
                                             LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                             AND  UBS.STATUS = 1 
                                             WHERE UP.USER_STATUS = '1' 
-                                            AND UP.USER_MOBILE NOT IN ('01735699133', '01705102555')";
+                                            AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
                                     } else {
 
                                         $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
@@ -175,7 +175,7 @@ $number = 0;
 
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
-                                    ?>
+                                    ?> 
                                         <tr>
                                             <td class="text-center">
                                                 <strong>

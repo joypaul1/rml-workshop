@@ -108,7 +108,6 @@ include_once('../../_includes/footer.php');
 
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
-        console.log(parseInt(userTypeId));
         $('#addResponsiableData').empty();
         if (parseInt(userTypeId) == 4) {
             let htmlTag = ''; // Initialize htmlTag
@@ -145,8 +144,6 @@ include_once('../../_includes/footer.php');
                     }
                     htmlTag += `</select></div>`;
                     $('#addResponsiableData').append(htmlTag);
-                    // console.log(htmlTag);
-
                     // Initialize Select2 for the appended dropdown element
                     $('#addResponsiableData').find('#validationCustom10_hod').select2({
                         theme: 'bootstrap4',

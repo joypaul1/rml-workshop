@@ -1,4 +1,7 @@
 <?php
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2.min.css';
+$dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
+$dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
 include_once('../../_helper/2step_com_conn.php');
 $number = 0;
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
@@ -11,7 +14,6 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
         <div class="row">
             <div class="card rounded-4">
                 <div class="card-body">
-
                     <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         <strong><i class='bx bx-filter-alt'></i> Filter Data</strong>
                     </button>
@@ -66,7 +68,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
-                    $leftSideName  = 'Brand Assign List';
+                    $leftSideName  = 'Resource Allocation List';
                     include('../../_includes/com_header.php');
                     ?>
                     <div class="card-body">
@@ -76,23 +78,25 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <tr>
                                         <th>SL.</th>
                                         <th>User info</th>
-                                        <th>Assign Brand </th>
+                                        <th>Assign Responsible ID </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $query = "SELECT UP.ID,
-                                                    UP.USER_NAME,
-                                                    UP.USER_MOBILE,
-                                                    UP.RML_IDENTITY_ID AS RML_ID,
-                                                                                                     
-                                                    (SELECT TITLE 
-                                                        FROM USER_TYPE 
-                                                        WHERE ID = UP.USER_TYPE_ID) 
-                                                        AS USER_TYPE
-                                            FROM USER_PROFILE UP 
-                                            WHERE UP.USER_STATUS = '1' 
+                                            UP.USER_NAME,
+                                            UP.USER_MOBILE,
+                                            UP.USER_TYPE_ID,
+                                            UBS.PRODUCT_BRAND_ID,
+                                            UP.RML_IDENTITY_ID AS RML_ID,
+                                            (SELECT TITLE FROM USER_TYPE WHERE ID = (UP.USER_TYPE_ID - 1) ) AS RES_USER_TYPE,
+                                            (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
+                                            FROM USER_PROFILE UP
+                                            LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                            WHERE UP.USER_STATUS = 1
+                                            AND UBS.STATUS = 1
+                                            AND UP.USER_TYPE_ID != 1
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
 
 
@@ -133,36 +137,42 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
                                             </td>
                                             <td>
-                                                <?php
-                                                $USER_PROFILE_ID = $row['ID'];
-                                                $brandQuery = "SELECT PB.ID, PB.TITLE, 
-                                                CASE 
-                                                    WHEN EXISTS (
-                                                        SELECT UBS.STATUS
-                                                        FROM USER_BRAND_SETUP UBS 
-                                                        WHERE UBS.USER_PROFILE_ID = '$USER_PROFILE_ID ' 
-                                                            AND PB.ID = UBS.PRODUCT_BRAND_ID
-                                                            AND UBS.STATUS = '1'
-                                                    ) THEN 'true'
-                                                    ELSE 'false'
-                                                END AS STATUS_EXISTS
-                                                FROM PRODUCT_BRAND PB 
-                                                WHERE PB.STATUS = '1' 
-                                                ORDER BY ID";
+                                                <form action="" method="post" class="d-flex gap-3">
+                                                    <select class="form-select text-center RESPONSIBLE_ID" id="" name="USER_RESPONSIBLE_ID">
 
-                                                $brandSQL = oci_parse($objConnect, $brandQuery);
+                                                        <option><-- Select <?php echo ucwords(strtolower($row['RES_USER_TYPE'])) ?> --></option>
+                                                        <?php
+                                                        $resRow = [];
+                                                        $currentUserBrandID = $row['PRODUCT_BRAND_ID'];
+                                                        $currentUserTypeID = $row['USER_TYPE_ID'];
+                                                        $USER_TYPE_ID = $row['USER_TYPE_ID'] ? $row['USER_TYPE_ID']  - 1 : '';
+                                                        $query = "SELECT UP.USER_NAME, UP.USER_MOBILE,UP.ID,
+                                                                (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
+                                                                    FROM USER_PROFILE UP
+                                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                                    WHERE UP.USER_STATUS = 1
+                                                                    AND UBS.STATUS = 1
+                                                                    AND UBS.PRODUCT_BRAND_ID  = '$currentUserBrandID'
+                                                                    AND UP.USER_MOBILE NOT IN ('01735699133','123456789')
+                                                                    AND UP.USER_TYPE_ID = '$USER_TYPE_ID'
+                                                                    ORDER BY UP.ID ASC";
+                                                        $strSQL2  = @oci_parse($objConnect, $query);
 
-                                                oci_execute($brandSQL);
+                                                        @oci_execute($strSQL2);
+                                                        while ($resRow = @oci_fetch_assoc($strSQL2)) {
+                                                        ?>
+                                                            <option value="<?php echo $resRow['ID'] ?>" <?php echo $USER_TYPE_ID == $resRow['ID'] ? 'Selected' : ' ' ?>>
+                                                                <?php echo $resRow['USER_NAME'] ?>
+                                                                - <?php echo $resRow['USER_MOBILE'] ?>
+                                                            </option>
+                                                        <?php }
+                                                        ?>
+                                                    </select>
+                                                    <button class="btn btn-sm btn-gradient-primary">
+                                                        <i class='bx bx-check-double'></i>
+                                                    </button>
+                                                </form>
 
-                                                while ($brandRow = oci_fetch_assoc($brandSQL)) {
-                                                    echo '<div class="form-check">
-                                                            <input class="form-check-input delete_check"
-                                                            data-userId="' . $row['ID'] . '" type="checkbox" value="' . $brandRow['ID'] . '" id="checkbox_' . $brandRow['ID'] . $row['ID'] . '"
-                                                            ' . ($brandRow['STATUS_EXISTS'] == 'true' ? 'checked' : '') . '>
-                                                            <label class="form-check-label" for="checkbox_' . $brandRow['ID'] . $row['ID'] . '"> ' . $brandRow['TITLE'] . ' </label>
-                                                        </div>';
-                                                }
-                                                ?>
                                             </td>
 
                                         </tr>
@@ -187,6 +197,18 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
+<script>
+    $('.RESPONSIBLE_ID').each(function() {
+        console.log($(this));
+        $(this).select2({
+            theme: 'bootstrap4',
+            width: '100%', // Set the width as needed
+            // Set the width as needed
+            // placeholder: 'Select Resposible ID', // Set the placeholder text
+            allowClear: true, // Enable clearing the selection
+        }).addClass("text-center");
+    });
+</script>
 <script>
     //delete data processing
 

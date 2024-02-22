@@ -44,11 +44,11 @@
                         <div class="menu-title">Collection Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Collection  </a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Collection </a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/excel_upload.php"><i class='bx bxs-arrow-to-right'></i> Excel Upload  </a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/excel_upload.php"><i class='bx bxs-arrow-to-right'></i> Excel Upload </a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Collection  </a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Collection </a>
                         </li>
                     </ul>
                 </li>
@@ -79,6 +79,8 @@
                         <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
                         </li>
                         <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Brand Assign</a>
+                        </li>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/resource_allocation.php"><i class='bx bxs-arrow-to-right'></i> Resource Allocation </a>
                         </li>
                     </ul>
                 </li>
