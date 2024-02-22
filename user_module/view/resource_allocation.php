@@ -116,7 +116,6 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 UP.RML_IDENTITY_ID,
                                                 UP.USER_TYPE_ID
                                                 ORDER BY UP.USER_TYPE_ID";
-                                                ECHO $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -140,6 +139,8 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 Type : <?php echo $row['USER_TYPE']; ?>
                                                 <br>
                                                 ID : <?php echo $row['RML_ID']; ?>
+                                                <br>
+                                                BRAND-IDs : <?php echo $row['USER_BRANDS']; ?>
 
                                             </td>
                                             <td>
@@ -152,8 +153,10 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                         $currentUserBrandID = $row['USER_BRANDS'];
                                                         $currentUserTypeID = $row['USER_TYPE_ID'];
                                                         $USER_TYPE_ID = $row['USER_TYPE_ID'] ? $row['USER_TYPE_ID']  - 1 : '';
-                                                        $query = "SELECT UP.USER_NAME, UP.USER_MOBILE,UP.ID,
-                                                                (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
+                                                        $query = "SELECT
+                                                                    UP.USER_NAME,
+                                                                    UP.USER_MOBILE,
+                                                                    UP.ID
                                                                     FROM USER_PROFILE UP
                                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                                     WHERE UP.USER_STATUS = 1
