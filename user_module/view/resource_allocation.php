@@ -83,21 +83,21 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $query = "SELECT UP.ID,
-                                            UP.USER_NAME,
-                                            UP.USER_MOBILE,
-                                            UP.USER_TYPE_ID,
-                                            UBS.PRODUCT_BRAND_ID,
-                                            UP.RML_IDENTITY_ID AS RML_ID,
-                                            (SELECT TITLE FROM USER_TYPE WHERE ID = (UP.USER_TYPE_ID - 1) ) AS RES_USER_TYPE,
-                                            (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                                            FROM USER_PROFILE UP
-                                            LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                            WHERE UP.USER_STATUS = 1
-                                            AND UBS.STATUS = 1
-                                            AND UP.USER_TYPE_ID != 1
-                                            AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
+                                                        UP.USER_NAME,
+                                                        UP.USER_MOBILE,
+                                                        UP.RML_IDENTITY_ID AS RML_ID,
+                                                        (SELECT TITLE
+                                                        FROM USER_TYPE
+                                                        WHERE ID = UP.USER_TYPE_ID)
+                                                        AS USER_TYPE,
+                                                        (SELECT TITLE FROM USER_TYPE WHERE ID = (UP.USER_TYPE_ID - 1) ) AS RES_USER_TYPE,
+                                                        LISTAGG (UBS.PRODUCT_BRAND_ID, ',')
+                                                        WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID)
+                                                        AS USER_BRANDS
+                                                FROM USER_PROFILE UP
+                                                        LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                WHERE UBS.STATUS = 1 AND UP.USER_STATUS = 1 AND UP.USER_TYPE_ID != '1'";
 
 
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
@@ -110,7 +110,13 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                         $query .= " AND UP.USER_MOBILE LIKE '%" . $USER_MOBILE . "%'";
                                     }
 
-                                    $query .= " ORDER BY UP.USER_TYPE_ID";
+                                    $query .= " GROUP BY UP.ID,
+                                                UP.USER_NAME,
+                                                UP.USER_MOBILE,
+                                                UP.RML_IDENTITY_ID,
+                                                UP.USER_TYPE_ID
+                                                ORDER BY UP.USER_TYPE_ID";
+                                                ECHO $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -143,7 +149,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                         <option><-- Select <?php echo ucwords(strtolower($row['RES_USER_TYPE'])) ?> --></option>
                                                         <?php
                                                         $resRow = [];
-                                                        $currentUserBrandID = $row['PRODUCT_BRAND_ID'];
+                                                        $currentUserBrandID = $row['USER_BRANDS'];
                                                         $currentUserTypeID = $row['USER_TYPE_ID'];
                                                         $USER_TYPE_ID = $row['USER_TYPE_ID'] ? $row['USER_TYPE_ID']  - 1 : '';
                                                         $query = "SELECT UP.USER_NAME, UP.USER_MOBILE,UP.ID,
@@ -151,8 +157,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                                     FROM USER_PROFILE UP
                                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                                     WHERE UP.USER_STATUS = 1
-                                                                    AND UBS.STATUS = 1
-                                                                    AND UBS.PRODUCT_BRAND_ID  = '$currentUserBrandID'
+                                                                    and  UBS.PRODUCT_BRAND_ID IN ($currentUserBrandID)
                                                                     AND UP.USER_MOBILE NOT IN ('01735699133','123456789')
                                                                     AND UP.USER_TYPE_ID = '$USER_TYPE_ID'
                                                                     ORDER BY UP.ID ASC";

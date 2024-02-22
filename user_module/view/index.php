@@ -127,22 +127,22 @@ $number = 0;
 
                                         $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
                                         $query = "SELECT UP.ID,
-                                                        UP.USER_NAME,
-                                                        UP.USER_MOBILE,
-                                                        UP.RML_IDENTITY_ID AS RML_ID,
-                                                        UP.LAT,
-                                                        UP.LANG,
-                                                        UP.CREATED_DATE,
-                                                        UP.CREATED_DATE,
-                                                        (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID)
-                                                        AS USER_TYPE,
-                                                        LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID)
-                                                        AS USER_BRANDS
-                                                FROM USER_PROFILE UP
-                                                LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                                WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) 
-                                                AND  UBS.STATUS = 1 
-                                                AND UP.USER_STATUS = '1'";
+                                                            UP.USER_NAME,
+                                                            UP.USER_MOBILE,
+                                                            UP.RML_IDENTITY_ID AS RML_ID,
+                                                            UP.LAT,
+                                                            UP.LANG,
+                                                            UP.CREATED_DATE,
+                                                            UP.CREATED_DATE,
+                                                            (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID)
+                                                            AS USER_TYPE,
+                                                            LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID)
+                                                            AS USER_BRANDS
+                                                    FROM USER_PROFILE UP
+                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                    WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) 
+                                                    AND  UBS.STATUS = 1 
+                                                    AND UP.USER_STATUS = '1'";
 
                                         if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR') {
                                             $query .= " AND UP.USER_TYPE_ID IN (3,4,5)";
@@ -175,7 +175,7 @@ $number = 0;
 
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
-                                    ?> 
+                                    ?>
                                         <tr>
                                             <td class="text-center">
                                                 <strong>
