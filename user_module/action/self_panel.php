@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
     $LAT                    = isset($_POST['LAT']) ? $_POST['LAT'] : '';
     $LOCATION_REMARKS       = isset($_POST['LOCATION_REMARKS']) ? $_POST['LOCATION_REMARKS'] : '';
     $DISTRICT_ID            = isset($_POST['DISTRICT_ID']) ? ($_POST['DISTRICT_ID']) : '';
+    $PLAZA_PARENT_ID        = isset($_POST['PLAZA_PARENT_ID']) ? ($_POST['PLAZA_PARENT_ID']) : '';
 
     $filename       = null;
 
@@ -67,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
     // Prepare the SQL statement
     $query = "INSERT INTO USER_PROFILE 
-            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,LANG, LAT,LOCATION_REMARKS,DISTRICT_ID) 
-            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS', '$DISTRICT_ID')";
+            (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,LANG, LAT,LOCATION_REMARKS,DISTRICT_ID, PLAZA_PARENT_ID) 
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS', '$DISTRICT_ID', $PLAZA_PARENT_ID)";
 
 
     $strSQL = @oci_parse($objConnect, $query);

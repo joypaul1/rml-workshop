@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
     UP.LAT,
     UP.LANG,
     UP.DISTRICT_ID,
+    UP.PLAZA_PARENT_ID,
     UP.LOCATION_REMARKS
     FROM USER_PROFILE UP WHERE ID = $edit_id";
     $strSQL  = @oci_parse($objConnect, $query);
@@ -93,6 +94,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                     </select>
                                     <div class="invalid-feedback">Please select a User Type.</div>
                                 </div>
+                                <div class="col-sm-12 col-md-4 PLAZA_PARENT_ID d-none">
+                                    <label for="validationCustom07" class="form-label">Plaza Retailer Type <span class="text-danger">*</span></label>
+                                    <select class="form-select " id="validationCustom07" name="PLAZA_PARENT_ID" required="">
+                                        <option hidden value="<?php echo Null ?>"><- Select Retailer Type -></option>
+                                        <?php
+                                        $typeRow = [];
+                                        $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                        $query   = "SELECT ID,TITLE FROM PLAZA_PARENT WHERE STATUS ='1'  
+                                        ORDER BY ID ASC ";
+                                        $strSQL  = @oci_parse($objConnect, $query);
+
+                                        @oci_execute($strSQL);
+                                        while ($typeRow = @oci_fetch_assoc($strSQL)) {
+                                            $selected = ($typeRow['ID'] == $data['PLAZA_PARENT_ID']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo $typeRow['ID'] ?>" <?= $selected ?>>
+                                                <?php echo $typeRow['TITLE'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a User Type.</div>
+                                </div>
                                 <div class="row mt-3" id="addResponsiableData"></div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
@@ -136,6 +159,11 @@ include_once('../../_includes/footer.php');
 
         $('#addResponsiableData').empty();
         if (parseInt(userTypeId) == 4) {
+            $('.PLAZA_PARENT_ID').removeClass('d-none');
+        } else {
+            $('.PLAZA_PARENT_ID').addClass('d-none');
+        }
+        if (parseInt(userTypeId) == 4 || parseInt(userTypeId) == 5) {
             let htmlTag = ''; // Initialize htmlTag
             htmlTag += `<div class="col-sm-12 col-md-4">
                                     <label for="validationCustom12" class="form-label">Loc. LAT. <span class="text-danger">*</span></label>

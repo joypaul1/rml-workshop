@@ -70,7 +70,27 @@ include_once('../../_helper/2step_com_conn.php');
                                     </select>
                                     <div class="invalid-feedback">Please select a User Type.</div>
                                 </div>
+                                <div class="col-sm-12 col-md-4 PLAZA_PARENT_ID d-none">
+                                    <label for="validationCustom07" class="form-label">Plaza Retailer Type <span class="text-danger">*</span></label>
+                                    <select class="form-select " id="validationCustom07" name="PLAZA_PARENT_ID" required="">
+                                        <option hidden value="<?php echo Null ?>"><- Select Retailer Type -></option>
+                                        <?php
+                                        $typeRow = [];
+                                        $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                        $query   = "SELECT ID,TITLE FROM PLAZA_PARENT WHERE STATUS ='1'  
+                                        ORDER BY ID ASC ";
+                                        $strSQL  = @oci_parse($objConnect, $query);
 
+                                        @oci_execute($strSQL);
+                                        while ($typeRow = @oci_fetch_assoc($strSQL)) {
+                                        ?>
+                                            <option value="<?php echo $typeRow['ID'] ?>">
+                                                <?php echo $typeRow['TITLE'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a User Type.</div>
+                                </div>
 
                                 <div class="row mt-3" id="addResponsiableData"></div>
 
@@ -109,7 +129,12 @@ include_once('../../_includes/footer.php');
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
         $('#addResponsiableData').empty();
-        if (parseInt(userTypeId) == 4) {
+        if(parseInt(userTypeId) == 4){
+            $('.PLAZA_PARENT_ID').removeClass('d-none');
+        }else{
+            $('.PLAZA_PARENT_ID').addClass('d-none');
+        }
+        if (parseInt(userTypeId) == 4 || parseInt(userTypeId) == 5) {
             let htmlTag = ''; // Initialize htmlTag
             htmlTag += `<div class="col-sm-12 col-md-4">
                                 <label for="validationCustom12" class="form-label">Loc. LAT. <span class="text-danger">*</span></label>
