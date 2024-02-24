@@ -65,6 +65,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                 </div>
             </div>
             <div class="">
+            <span class="d-block text-center text-danger fw-bold">[*** Only Brand Assing User List Here ***]</span>
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
@@ -72,7 +73,8 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                     include('../../_includes/com_header.php');
                     ?>
                     <div class="card-body">
-                        <div class="table-responsives ">
+                        
+                        <div class="table-responsives">
                             <table class="table table-sm table-bordered align-middle mb-0">
                                 <thead class="table-light text-uppercase text-center ">
                                     <tr>
