@@ -12,7 +12,10 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 include_once('../../_helper/2step_com_conn.php');
 
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
-
+$retailer_type  = 4;
+if (isset($_POST['retailer_type'])) {
+    $retailer_type = $_POST['retailer_type'];
+}
 ?>
 
 <!--start page wrapper -->
@@ -30,8 +33,8 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                         <div class="row justify-content-center align-items-center text-centers">
-                            <div class="col-3">
-                                <label class="form-label"> Retailer Brand:</label>
+                            <!-- <div class="col-3">
+                                <label class="form-label"> Retailer Type:</label>
                                 <select name="brand_id" class="form-control 
                                 text-center single-select">
                                     <option value="<?php echo null ?>" hidden><- Select Brand -></option>
@@ -47,6 +50,15 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <?php
                                     }
                                     ?>
+                                </select>
+                            </div> -->
+                            <div class="col-3">
+                                <label class="form-label"> Retailer Type:</label>
+                                <select name="retailer_type" class="form-control 
+                                text-center single-select">
+                                    <option value="4" selected>Plaza Retiler</option>
+                                    <option value="5"> Retiler</option>
+
                                 </select>
                             </div>
                             <div class="col-3">
@@ -94,43 +106,60 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                             <div class="form-group mb-3">
 
                                 <?php
-                                $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
-                                if (isset($_POST['brand_id'])) {
-                                    if (!empty($_POST['brand_id'])) {
-                                        $USER_BRANDS = $_POST['brand_id'];
-                                    }
+                                // $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
+                                // if (isset($_POST['brand_id'])) {
+                                //     if (!empty($_POST['brand_id'])) {
+                                //         $USER_BRANDS = $_POST['brand_id'];
+                                //     }
+                                // }
+                                if ($retailer_type == 4) {
+                                    $query =  "SELECT b.ID,a.USER_ID,b.USER_NAME,b.DISTRICT_ID
+                                    FROM USER_MANPOWER_SETUP a,USER_PROFILE b
+                                    WHERE a.USER_ID=b.ID
+                                and a.PARENT_USER_ID=" . $log_user_id;
+                                } else {
+                                    $query = "SELECT b.ID,a.USER_ID,b.USER_NAME,b.DISTRICT_ID
+                                    FROM USER_MANPOWER_SETUP a,USER_PROFILE b
+                                    WHERE a.USER_ID=b.ID
+                                    and a.PARENT_USER_ID
+                                    IN  (SELECT b.ID, a.USER_ID FROM USER_MANPOWER_SETUP a,USER_PROFILE b
+                                    WHERE a.USER_ID=b.ID
+                                    and a.PARENT_USER_ID=$log_user_id)";
                                 }
-                                $query = "SELECT
-                                            UP.ID,
-                                            (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME,
-                                            (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID,
-                                            UP.USER_MOBILE
-                                        FROM
-                                            USER_PROFILE UP
-                                        LEFT JOIN
-                                            USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                            LEFT JOIN USER_MANPOWER_SETUP UMS ON UMS.USER_ID = UP.ID
-                                        WHERE
-                                            UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                            AND UBS.STATUS = 1
-                                            AND UP.USER_TYPE_ID = 4";
-                                if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
-                                    $query .= " AND UMS.PARENT_USER_ID  =" . $log_user_id;
-                                }
+                                // ECHO $query;
+                                // $query = "SELECT
+                                //             UP.ID,
+                                //             (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME,
+                                //             (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID,
+                                //             UP.USER_MOBILE
+                                //         FROM
+                                //             USER_PROFILE UP
+                                //         LEFT JOIN
+                                //             USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                //             LEFT JOIN USER_MANPOWER_SETUP UMS ON UMS.USER_ID = UP.ID
+                                //         WHERE
+                                //             UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                //             AND UBS.STATUS = 1
+                                //             AND UP.USER_TYPE_ID = 4";
+                                // if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
+                                //     $query .= " AND UMS.PARENT_USER_ID  =" . $log_user_id;
+                                // }
 
                                 if (isset($_POST['USER_NAME_MOBILE'])) {
                                     if (!empty($_POST['USER_NAME_MOBILE'])) {
                                         $searchTerm = str_replace(" ", "_", trim($_POST['USER_NAME_MOBILE']));
-                                        $query .= " AND (UP.USER_NAME LIKE '%" . $searchTerm . "%' OR UP.USER_MOBILE LIKE '%" . $searchTerm . "%')";
+                                        $query .= " AND (b.USER_NAME LIKE '%" . $searchTerm . "%' OR b.USER_MOBILE LIKE '%" . $searchTerm . "%')";
                                     }
                                 }
                                 if (isset($_POST['disctrictID'])) {
                                     if (!empty($_POST['disctrictID'])) {
                                         $searchTerm = trim($_POST['disctrictID']);
-                                        $query .= " AND UP.DISTRICT_ID = " . $searchTerm;
+                                        $query .= " AND b.DISTRICT_ID = " . $searchTerm;
+                                        // $query .= and '' is null or b.DISTRICT_ID=
                                     }
                                 }
-                                $query .= " ORDER BY UP.USER_NAME";
+                                // $query .= " ORDER BY UP.USER_NAME";
+                                // echo  $query;
                                 $strSQL = oci_parse($objConnect, $query);
                                 oci_execute($strSQL);
 
@@ -143,7 +172,6 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                             <i class='bx bxs-chevrons-right text-success'></i>
                                             <input class="form-check-input" name="user_id[<?php echo $row['ID'] ?>]" type="checkbox" value="<?php echo $row['ID'] ?>" id="flexCheckChecked_<?php echo $row['ID'] ?>">
 
-                                            <input type="hidden" name="user_brand_id[<?php echo $row['ID'] ?>][<?php echo $row['USER_BRAND_ID'] ?>]">
                                             <label class="form-check-label" for="flexCheckChecked_<?php echo $row['ID'] ?>"><?php echo $row['USER_NAME'] ?></label>
                                         </div>
                                         <div class="col-4 form-check mb-2">
