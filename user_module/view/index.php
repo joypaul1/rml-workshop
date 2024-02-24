@@ -117,11 +117,12 @@ $number = 0;
                                                     UP.LANG,
                                                     UP.CREATED_DATE,
                                                     (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE ,
+                                                    (SELECT TITLE FROM PLAZA_PARENT WHERE ID = UP.PLAZA_PARENT_ID) AS PLAZA_PARENT_TYPE ,
                                                     LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
-                                            FROM USER_PROFILE UP 
+                                            FROM USER_PROFILE UP
                                             LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                            AND  UBS.STATUS = 1 
-                                            WHERE UP.USER_STATUS = '1' 
+                                            AND  UBS.STATUS = 1
+                                            WHERE UP.USER_STATUS = 1
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
                                     } else {
 
@@ -136,13 +137,14 @@ $number = 0;
                                                             UP.CREATED_DATE,
                                                             (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID)
                                                             AS USER_TYPE,
+                                                            (SELECT TITLE FROM PLAZA_PARENT WHERE ID = UP.PLAZA_PARENT_ID) AS PLAZA_PARENT_TYPE ,
                                                             LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID)
                                                             AS USER_BRANDS
                                                     FROM USER_PROFILE UP
                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                                    WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) 
-                                                    AND  UBS.STATUS = 1 
-                                                    AND UP.USER_STATUS = '1'";
+                                                    WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                                    AND  UBS.STATUS = 1
+                                                    AND UP.USER_STATUS = 1";
 
                                         if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR') {
                                             $query .= " AND UP.USER_TYPE_ID IN (3,4,5)";
@@ -168,7 +170,7 @@ $number = 0;
                                         $query .= " AND UP.USER_MOBILE LIKE '%" . $USER_MOBILE . "%'";
                                     }
 
-                                    $query .= " GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UP.USER_TYPE_ID ORDER BY UP.USER_TYPE_ID";
+                                    $query .= " GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UP.USER_TYPE_ID, UP.PLAZA_PARENT_ID ORDER BY UP.USER_TYPE_ID";
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -186,7 +188,7 @@ $number = 0;
                                                 || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
                                             ) { ?>
                                                 <td class="text-center">
-                                                    <a href="<?php echo $sfcmBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                    <a href="<?php echo $sfcmBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>`
                                                     <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
                                                 </td>
                                             <?php } ?>
@@ -206,16 +208,19 @@ $number = 0;
                                                 }
 
                                                 ?>
-
-
                                             </td>
                                             <td class="text-center">
                                                 <?php echo $row['USER_MOBILE']; ?>
                                             </td>
 
-
                                             <td class="text-center">
                                                 <?php echo $row['USER_TYPE']; ?>
+                                                <br />
+                                                <?php if ($row['PLAZA_PARENT_TYPE']) {
+                                                    echo ' <span class="badge rounded-pill bg-gradient-info">
+                                                    '. $row['PLAZA_PARENT_TYPE'].' </span>';
+                                                } ?>
+                                               
                                             </td>
 
                                             <td class="text-center">

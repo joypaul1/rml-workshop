@@ -11,6 +11,7 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 
 include_once('../../_helper/2step_com_conn.php');
 
+$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 ?>
 
@@ -99,19 +100,24 @@ include_once('../../_helper/2step_com_conn.php');
                                         $USER_BRANDS = $_POST['brand_id'];
                                     }
                                 }
-                                $query = "SELECT 
-                                            UP.ID, 
-                                            (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME, 
+                                $query = "SELECT
+                                            UP.ID,
+                                            (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME,
                                             (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID,
                                             UP.USER_MOBILE
-                                        FROM 
+                                        FROM
                                             USER_PROFILE UP
-                                        LEFT JOIN 
+                                        LEFT JOIN
                                             USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                        WHERE 
+                                            LEFT JOIN USER_MANPOWER_SETUP UMS ON UMS.USER_ID = UP.ID
+                                        WHERE
                                             UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                            AND UBS.STATUS = 1  
+                                            AND UBS.STATUS = 1
                                             AND UP.USER_TYPE_ID = 4";
+                                if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
+                                    $query .= " AND UMS.PARENT_USER_ID  =" . $log_user_id;
+                                }
+
                                 if (isset($_POST['USER_NAME_MOBILE'])) {
                                     if (!empty($_POST['USER_NAME_MOBILE'])) {
                                         $searchTerm = str_replace(" ", "_", trim($_POST['USER_NAME_MOBILE']));
@@ -125,9 +131,7 @@ include_once('../../_helper/2step_com_conn.php');
                                     }
                                 }
                                 $query .= " ORDER BY UP.USER_NAME";
-
                                 $strSQL = oci_parse($objConnect, $query);
-                                // echo $query;
                                 oci_execute($strSQL);
 
                                 while ($row = oci_fetch_assoc($strSQL)) {

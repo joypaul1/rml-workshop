@@ -66,8 +66,7 @@ include_once('../../_helper/2step_com_conn.php');
                         </div>
                         <div class="col-sm-6  col-md-3">
                             <label>MOBILE : </label>
-                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text"
-                             value='<?php echo isset($_GET["F_USER_MOBILE"]) ? $_GET["F_USER_MOBILE"] : ""; ?>' />
+                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text" value='<?php echo isset($_GET["F_USER_MOBILE"]) ? $_GET["F_USER_MOBILE"] : ""; ?>' />
                         </div>
 
                         <div class="col-sm-6 col-md-3 d-flex gap-2">
@@ -127,15 +126,12 @@ include_once('../../_helper/2step_com_conn.php');
                                         $brandID = $brandRow["ID"];
 
                                         // Fetch data for the current brand
-                                        $query ="SELECT 
-                                                    UP.ID, 
-                                                    UP.USER_NAME,
-                                                    (SELECT NAME FROM DISTRICT WHERE ID = UP.DISTRICT_ID) AS DISTRICT_NAME 
-                                                    FROM 
+                                        $query = "SELECT UP.ID, UP.USER_NAME, (SELECT NAME FROM DISTRICT WHERE ID = UP.DISTRICT_ID) AS DISTRICT_NAME
+                                                    FROM
                                                         USER_PROFILE UP
-                                                    LEFT JOIN 
+                                                    LEFT JOIN
                                                         USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                                    WHERE 
+                                                    WHERE
                                                         UBS.PRODUCT_BRAND_ID IN ($brandID)
                                                         AND UBS.STATUS = 1
                                                         AND UP.USER_TYPE_ID = 3";
@@ -167,12 +163,12 @@ include_once('../../_helper/2step_com_conn.php');
                                                         <span class="d-flex flex-rows justify-content-start align-items-center ">
                                                             <div class="col-6 form-checks ">
                                                                 <label class="form-check-label" for="flexCheckChecked_<?php echo $row["ID"]; ?>">
-                                                                    <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"]? $row["DISTRICT_NAME"]: "-"; ?> ]
+                                                                    <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"] ? $row["DISTRICT_NAME"] : "-"; ?> ]
                                                                 </label>
                                                             </div>
                                                             <div class="col-6 form-checks mb-2">
                                                                 <input type="text" name="collection_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                                                               
+
                                                             </div>
                                                         </span>
                                                     <?php } while (
