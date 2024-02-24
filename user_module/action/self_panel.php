@@ -110,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     $LAT                    = isset($_POST['LAT']) ? $_POST['LAT'] : '';
     $LOCATION_REMARKS       = isset($_POST['LOCATION_REMARKS']) ? $_POST['LOCATION_REMARKS'] : '';
     $DISTRICT_ID            = isset($_POST['DISTRICT_ID']) ? ($_POST['DISTRICT_ID']) : '';
+    $PLAZA_PARENT_ID        = isset($_POST['PLAZA_PARENT_ID']) ? ($_POST['PLAZA_PARENT_ID']) : '';
 
 
     // Prepare the SQL statement
@@ -125,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     LAT                 = '$LAT',
     DISTRICT_ID         = '$DISTRICT_ID',
     LOCATION_REMARKS    = '$LOCATION_REMARKS',
+    PLAZA_PARENT_ID     = '$PLAZA_PARENT_ID',
     UPDATED_DATE        = SYSDATE 
     WHERE ID            = $editId";
 
