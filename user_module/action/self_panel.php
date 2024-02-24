@@ -9,6 +9,7 @@ $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG",
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
     $USER_NAME              = $_POST['USER_NAME'];
@@ -252,6 +253,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
         ];
         $_SESSION['noti_message'] = $message;
         echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/profile.php?id={$editId}&actionType=profileEdit'</script>";
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'resource_allocation') {
+
+    $PARENT_USER_ID       = $_POST['PARENT_USER_ID'];
+    $USER_ID              = $_POST['USER_ID'];
+
+    // Prepare the SQL statement
+    $query = "MERGE INTO USER_MANPOWER_SETUP UMS
+          USING DUAL
+          ON (UMS.USER_ID = :USER_ID)
+          WHEN MATCHED THEN
+                UPDATE SET UMS.ENTRY_DATE = SYSDATE,
+                        UMS.PARENT_USER_ID = :PARENT_USER_ID,
+                        UMS.ENTRY_BY_ID = :ENTRY_BY_ID,
+                        UMS.STATUS = 1
+          WHEN NOT MATCHED THEN
+              INSERT (PARENT_USER_ID, USER_ID, ENTRY_DATE, ENTRY_BY_ID, STATUS)
+              VALUES (:PARENT_USER_ID, :USER_ID, SYSDATE, :ENTRY_BY_ID, 1)";
+
+    // Prepare the statement
+    $strSQL = oci_parse($objConnect, $query);
+
+    // Bind parameters
+    oci_bind_by_name($strSQL, ':PARENT_USER_ID', $PARENT_USER_ID);
+    oci_bind_by_name($strSQL, ':USER_ID', $USER_ID);
+    oci_bind_by_name($strSQL, ':ENTRY_BY_ID', $log_user_id);
+    // echo $query;
+
+    // die();
+    // Execute the query
+    if (oci_execute($strSQL)) {
+        $message = [
+            'text'   => 'Data Saved successfully.',
+            'status' => 'true',
+        ];
+        $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/resource_allocation.php'</script>";
+        exit();
+    } else {
+        $e                        = @oci_error($strSQL);
+        $message                  = [
+            'text'   => htmlentities($e['message'], ENT_QUOTES),
+            'status' => 'false',
+        ];
+        $_SESSION['noti_message'] = $message;
+        echo "<script> window.location.href = '{$sfcmBasePath}/user_module/view/resource_allocation.php'</script>";
+        exit();
     }
 }
 if (($_GET["deleteID"]) && $_SERVER['REQUEST_METHOD'] === 'GET') {

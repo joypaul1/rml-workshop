@@ -52,7 +52,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                                                <a href="<?php echo $sfcmBasePath  ?>/user_module/view/brandAssign.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                                                <a href="<?php echo $sfcmBasePath  ?>/user_module/view/resource_allocation.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
                                             </div>
                                         </div>
                                     </form>
@@ -86,6 +86,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     $query = "SELECT UP.ID,
                                                         UP.USER_NAME,
                                                         UP.USER_MOBILE,
+                                                        UP.USER_TYPE_ID,
                                                         UP.RML_IDENTITY_ID AS RML_ID,
                                                         (SELECT TITLE
                                                         FROM USER_TYPE
@@ -139,21 +140,24 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 Type : <?php echo $row['USER_TYPE']; ?>
                                                 <br>
                                                 ID : <?php echo $row['RML_ID']; ?>
-                                                <br>
-                                                BRAND-IDs : <?php echo $row['USER_BRANDS']; ?>
+                                                <!-- <br>
+                                                BRAND-IDs : <?php echo $row['USER_BRANDS']; ?> -->
 
                                             </td>
                                             <td>
-                                                <form action="" method="post" class="d-flex gap-3">
-                                                    <select class="form-select text-center RESPONSIBLE_ID" id="" name="USER_RESPONSIBLE_ID">
-
+                                                <form action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
+                                                    <input type="hidden" name="actionType" value="resource_allocation">
+                                                    <input type="hidden" name="USER_ID" value="<?php echo $row['ID'] ?>">
+                                                    <select class="form-select text-center RESPONSIBLE_IDs" id="" name="PARENT_USER_ID">
                                                         <option><-- Select <?php echo ucwords(strtolower($row['RES_USER_TYPE'])) ?> --></option>
                                                         <?php
                                                         $resRow = [];
+                                                        $USER_ID = $row['ID'];
                                                         $currentUserBrandID = $row['USER_BRANDS'];
                                                         $currentUserTypeID = $row['USER_TYPE_ID'];
                                                         $USER_TYPE_ID = $row['USER_TYPE_ID'] ? $row['USER_TYPE_ID']  - 1 : '';
                                                         $query = "SELECT
+                                                                    DISTINCT
                                                                     UP.USER_NAME,
                                                                     UP.USER_MOBILE,
                                                                     UP.ID
@@ -164,21 +168,31 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                                     AND UP.USER_MOBILE NOT IN ('01735699133','123456789')
                                                                     AND UP.USER_TYPE_ID = '$USER_TYPE_ID'
                                                                     ORDER BY UP.ID ASC";
+                                                        $query3 = "SELECT  PARENT_USER_ID FROM USER_MANPOWER_SETUP WHERE USER_ID = $USER_ID AND STATUS = 1";
                                                         $strSQL2  = @oci_parse($objConnect, $query);
-
+                                                        $strSQL3  = @oci_parse($objConnect, $query3);
                                                         @oci_execute($strSQL2);
+                                                        @oci_execute($strSQL3);
+                                                        $userResponsibleRow = @oci_fetch_assoc($strSQL3);
+                                                        $PARENT_USER_ID = $userResponsibleRow['PARENT_USER_ID'] ? $userResponsibleRow['PARENT_USER_ID'] : null;
+
                                                         while ($resRow = @oci_fetch_assoc($strSQL2)) {
                                                         ?>
-                                                            <option value="<?php echo $resRow['ID'] ?>" <?php echo $USER_TYPE_ID == $resRow['ID'] ? 'Selected' : ' ' ?>>
+                                                            <option value="<?php echo $resRow['ID'] ?>" <?php echo $PARENT_USER_ID == $resRow['ID'] ? 'Selected' : ' ' ?>>
                                                                 <?php echo $resRow['USER_NAME'] ?>
                                                                 - <?php echo $resRow['USER_MOBILE'] ?>
                                                             </option>
                                                         <?php }
                                                         ?>
                                                     </select>
-                                                    <button class="btn btn-sm btn-gradient-primary">
-                                                        <i class='bx bx-check-double'></i>
-                                                    </button>
+                                                    <?php if ($PARENT_USER_ID) {
+                                                        echo '<button type="submit" class="btn btn-sm btn-gradient-success"> <i class="bx bx-check-double"></i>
+                                                          </button>';
+                                                    } else {
+                                                        echo '<button type="submit" class="btn btn-sm btn-gradient-warning text-white"> <i class="bx bx-check-double"></i>
+                                                            </button>';
+                                                    } ?>
+
                                                 </form>
 
                                             </td>
@@ -215,61 +229,5 @@ include_once('../../_includes/footer.php');
             // placeholder: 'Select Resposible ID', // Set the placeholder text
             allowClear: true, // Enable clearing the selection
         }).addClass("text-center");
-    });
-</script>
-<script>
-    //delete data processing
-
-    $(document).on('click', '.delete_check', function() {
-        var userID = $(this).attr('data-userId');
-        let url = "<?php echo ($sfcmBasePath . '/user_module/action/drop_down_panel.php') ?>";
-        //console.log($(this).is(":checked"));
-        if ($(this).is(":checked")) {
-            $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        userId: userID,
-                        brandAssignID: $(this).val(),
-                        status: '1'
-
-                    },
-                    dataType: 'json'
-                })
-                .done(function(response) {
-                    swal.fire('Success!', response.message, response.status);
-                    // location.reload(); // Reload the page
-                })
-                .fail(function() {
-                    swal.fire('Oops...', 'Something went wrong!', 'error');
-                });
-        } else {
-            $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        userId: userID,
-                        brandAssignID: $(this).val(),
-                        status: '0'
-
-                    },
-                    dataType: 'json'
-                })
-                .done(function(response) {
-                    swal.fire('Deleted!', response.message, response.status);
-                    location.reload(); // Reload the page
-                })
-                .fail(function() {
-                    swal.fire('Oops...', 'Something went wrong!', 'error');
-                });
-        }
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-
-
     });
 </script>
