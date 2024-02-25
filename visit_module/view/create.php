@@ -113,18 +113,24 @@ if (isset($_POST['retailer_type'])) {
                                 //     }
                                 // }
                                 if ($retailer_type == 4) {
-                                    $query =  "SELECT b.ID,a.USER_ID,b.USER_NAME,b.DISTRICT_ID
-                                    FROM USER_MANPOWER_SETUP a,USER_PROFILE b
-                                    WHERE a.USER_ID=b.ID
-                                and a.PARENT_USER_ID=" . $log_user_id;
+                                    $query =  "SELECT UP.ID,UMP.USER_ID,UP.USER_NAME,UP.DISTRICT_ID,
+                                    (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
+                                    FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
+                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                    WHERE UMP.USER_ID=UP.ID
+                                    AND UBS.STATUS = 1
+                                    AND UMP.PARENT_USER_ID =" . $log_user_id;
                                 } else {
-                                    $query = "SELECT b.ID,a.USER_ID,b.USER_NAME,b.DISTRICT_ID
-                                    FROM USER_MANPOWER_SETUP a,USER_PROFILE b
-                                    WHERE a.USER_ID=b.ID
-                                    and a.PARENT_USER_ID
-                                    IN  (SELECT b.ID, a.USER_ID FROM USER_MANPOWER_SETUP a,USER_PROFILE b
-                                    WHERE a.USER_ID=b.ID
-                                    and a.PARENT_USER_ID=$log_user_id)";
+                                    $query = "SELECT UP.ID,UMP.USER_ID,UP.USER_NAME,UP.DISTRICT_ID,
+                                    (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
+                                    FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
+                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                    WHERE UMP.USER_ID=UP.ID
+                                    AND UBS.STATUS = 1
+                                    AND UMP.PARENT_USER_ID
+                                    IN (SELECT UMP.USER_ID FROM USER_MANPOWER_SETUP UMS,USER_PROFILE UP
+                                    WHERE UMP.USER_ID = UP.ID
+                                    AND UMP.PARENT_USER_ID=$log_user_id)";
                                 }
                                 // ECHO $query;
                                 // $query = "SELECT
@@ -148,14 +154,14 @@ if (isset($_POST['retailer_type'])) {
                                 if (isset($_POST['USER_NAME_MOBILE'])) {
                                     if (!empty($_POST['USER_NAME_MOBILE'])) {
                                         $searchTerm = str_replace(" ", "_", trim($_POST['USER_NAME_MOBILE']));
-                                        $query .= " AND (b.USER_NAME LIKE '%" . $searchTerm . "%' OR b.USER_MOBILE LIKE '%" . $searchTerm . "%')";
+                                        $query .= " AND (UP.USER_NAME LIKE '%" . $searchTerm . "%' OR UP.USER_MOBILE LIKE '%" . $searchTerm . "%')";
                                     }
                                 }
                                 if (isset($_POST['disctrictID'])) {
                                     if (!empty($_POST['disctrictID'])) {
                                         $searchTerm = trim($_POST['disctrictID']);
-                                        $query .= " AND b.DISTRICT_ID = " . $searchTerm;
-                                        // $query .= and '' is null or b.DISTRICT_ID=
+                                        $query .= " AND UP.DISTRICT_ID = " . $searchTerm;
+                                        // $query .= and '' is null or UP.DISTRICT_ID=
                                     }
                                 }
                                 // $query .= " ORDER BY UP.USER_NAME";
@@ -167,7 +173,7 @@ if (isset($_POST['retailer_type'])) {
 
                                 ?>
                                     <span class="row justify-content-center">
-
+                                        <input type="hidden" name="user_brand_id[<?php echo $row['ID'] ?>][<?php echo $row['USER_BRAND_ID'] ?>]">
                                         <div class="col-6 form-check ">
                                             <i class='bx bxs-chevrons-right text-success'></i>
                                             <input class="form-check-input" name="user_id[<?php echo $row['ID'] ?>]" type="checkbox" value="<?php echo $row['ID'] ?>" id="flexCheckChecked_<?php echo $row['ID'] ?>">
