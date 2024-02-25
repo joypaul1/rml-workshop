@@ -17,9 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         $user_remarks       = $_POST['user_remarks'];
         $VISIT_DATE         = date('Y-m-d', strtotime($_POST['date']));
         $ENTRY_BY_ID        = $log_user_id;
-       
-        // print_r($_POST);
-        // die();  
+        
         foreach ($user_ids as $key => $user_id) {
             $user_remark    = $user_remarks[$key];
             $user_brand_id  = key($user_brand_ids[$key]);

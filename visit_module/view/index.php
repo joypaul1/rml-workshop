@@ -11,7 +11,7 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
-$USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
+$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 ?>
 
 <!--start page wrapper -->
@@ -37,11 +37,19 @@ $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM
                                                 <select name="retailer" class="form-control single-select">
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
+                                                    $query = "SELECT UP.ID, UMP.USER_ID, UP.USER_NAME, UP.DISTRICT_ID
+                                                    FROM USER_MANPOWER_SETUP UMP
+                                                    INNER JOIN USER_PROFILE UP ON UMP.USER_ID = UP.ID
+                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                    WHERE UBS.STATUS = 1
+                                                    AND (UMP.PARENT_USER_ID = $log_user_id
+                                                        OR UMP.PARENT_USER_ID IN
+                                                        (SELECT UMP.USER_ID FROM USER_MANPOWER_SETUP UMS
+                                                        INNER JOIN USER_PROFILE UP ON UMS.USER_ID = UP.ID
+                                                        WHERE UMS.PARENT_USER_ID = $log_user_id))";
 
-
-                                                    $strSQL = oci_parse($objConnect, "SELECT UP.ID, (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME, (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID, UP.USER_MOBILE FROM USER_PROFILE UP LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS) AND UBS.STATUS = 1 AND UP.USER_TYPE_ID = 4 ORDER BY UP.USER_NAME");
-
-                                                    oci_execute($strSQL);
+                                                    $strSQL = @oci_parse($objConnect, $query);
+                                                    @oci_execute($strSQL);
                                                     while ($row = oci_fetch_assoc($strSQL)) {
                                                     ?>
                                                         <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['retailer']) && $_POST['retailer'] == $row['ID'] ? 'Selected' : '' ?>>
@@ -102,7 +110,7 @@ $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM
                                     <?php
 
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-                                    $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+
                                     $v_start_date = date('01/m/Y');
                                     $v_end_date   = date('t/m/Y');
                                     if (isset($_POST['start_date'])) {
@@ -112,19 +120,19 @@ $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
 
-                                    $query = "SELECT VA.ID, VA.VISIT_DATE,  
-                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE, 
+                                    $query = "SELECT VA.ID, VA.VISIT_DATE,
+                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
                                         VA.ENTRY_BY_ID,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
-                                        FROM VISIT_ASSIGN VA 
+                                        FROM VISIT_ASSIGN VA
                                         WHERE VA.USER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         ";
                                     if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
                                         $retailerID = $_POST['retailer'];
-                                        $query .= " AND ( USER_ID= $retailerID)";
+                                        $query .= " AND (VA.RETAILER_ID= $retailerID)";
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
 
@@ -193,7 +201,7 @@ $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM
                                         // check retailer data exist 
                                         if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
                                             $retailerID = $_POST['retailer'];
-                                            $countQuery .= " AND ( USER_ID= $retailerID)";
+                                            $countQuery .= " AND (VA.RETAILER_ID= $retailerID)";
                                         }
 
                                         $countResult = oci_parse($objConnect, $countQuery);
