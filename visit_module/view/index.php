@@ -116,10 +116,10 @@ $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE, 
                                         VA.ENTRY_BY_ID,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
-                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.USER_ID) AS RETAILER_NAME,
+                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA 
-                                        WHERE VA.RETAILER_ID = '$log_user_id'
+                                        WHERE VA.USER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         ";
                                     if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
