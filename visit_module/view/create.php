@@ -117,7 +117,7 @@ if (isset($_POST['retailer_type'])) {
                                     (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
                                     FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                    WHERE UMP.USER_ID=UP.ID
+                                    WHERE UMP.USER_ID = UP.ID
                                     AND UBS.STATUS = 1
                                     AND UMP.PARENT_USER_ID =" . $log_user_id;
                                 } else {

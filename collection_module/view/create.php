@@ -1,9 +1,9 @@
 <?php
 $dynamic_link_css[] = '../../assets/plugins/select2/css/select2.min.css';
-$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.css';
-$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.date.css';
 $dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
 $dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
+$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.css';
+$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.date.css';
 $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.js';
 $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
@@ -34,44 +34,44 @@ include_once('../../_helper/2step_com_conn.php');
                                     "UTF-8"
                                 ); ?>" method="GET">
                     <div class="row justify-content-center align-items-center">
-                        <div class="col-sm-6  col-md-3">
-                            <label for="validationCustom06" class="form-label">User Brand </label>
-                            <select class="form-select single-select" id="validationCustom06" name="F_BRAND_ID">
-                                <option value=""><- Select Brand -></option>
+                        <div class="col-sm-6 col-md-3">
+                            <label for="validationCustom06" class="form-label"> Sale Executive : <span class="text-danger">*</span> </label>
+                            <select class="form-select single-select" id="validationCustom06" name="F_SALE_EXECUTIVE" required>
+                                <option value="<?php echo null ?>"><- Select Sale Executive -></option>
                                 <?php
-                                $brandRow = [];
-                                $F_BRAND_ID = isset($_GET["F_BRAND_ID"])
-                                    ? $_GET["F_BRAND_ID"]
-                                    : 0;
-                                $brandquery = "SELECT ID,TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS =1   ORDER BY ID ASC";
-                                $brandSQL = @oci_parse(
-                                    $objConnect,
-                                    $brandquery
-                                );
+                                $executiveRow = [];
+                                $F_SALE_EXECUTIVE = isset($_GET["F_SALE_EXECUTIVE"]) ? $_GET["F_SALE_EXECUTIVE"] : 0;
+                                $executiveQuery = "SELECT DISTINCT UP.ID, UP.USER_NAME, UP.USER_MOBILE
+                                                FROM USER_PROFILE UP
+                                                INNER JOIN USER_MANPOWER_SETUP UMS ON UP.ID = UMS.USER_ID
+                                                LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID =UP.ID
+                                                WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                                AND UBS.STATUS = 1
+                                                AND UP.USER_TYPE_ID = 3";
 
+                                $brandSQL = @oci_parse($objConnect, $executiveQuery);
                                 @oci_execute($brandSQL);
                                 while (
-                                    $brandRow = @oci_fetch_assoc($brandSQL)
+                                    $executiveRow = @oci_fetch_assoc($brandSQL)
                                 ) { ?>
-                                    <option value="<?php echo $brandRow["ID"]; ?>" <?php echo $F_BRAND_ID ==
-                                                                                        $brandRow["ID"]
-                                                                                        ? "Selected"
-                                                                                        : " "; ?>>
-                                        <?php echo $brandRow["TITLE"]; ?>
+                                    <option value="<?php echo $executiveRow["ID"]; ?>" <?php echo $F_SALE_EXECUTIVE == $executiveRow["ID"] ? "Selected" : " "; ?>>
+                                        <?php echo $executiveRow["USER_NAME"]; ?>
                                     </option>
                                 <?php }
                                 ?>
                             </select>
                             <div class="invalid-feedback">Please select Brand.</div>
                         </div>
-                        <div class="col-sm-6  col-md-3">
-                            <label>MOBILE : </label>
-                            <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="F_USER_MOBILE" type="text" value='<?php echo isset($_GET["F_USER_MOBILE"]) ? $_GET["F_USER_MOBILE"] : ""; ?>' />
+                        <div class="col-sm-6 col-md-3">
+                            <span id="add_plazaretiler"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <span id="add_retiler"></span>
                         </div>
 
                         <div class="col-sm-6 col-md-3 d-flex gap-2">
                             <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search <i class='bx bx-file-find'></i></button>
-                            <a href="<?php echo $sfcmBasePath; ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
+                            <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
                         </div>
                     </div>
                 </form>
@@ -100,96 +100,6 @@ include_once('../../_helper/2step_com_conn.php');
                         </div>
                         <table class="table table-bordered align-middle">
                             <tbody>
-
-                                <tr>
-                                    <?php
-                                    @oci_execute($brandSQL);
-                                    while (
-                                        $brandRow = @oci_fetch_assoc($brandSQL)
-                                    ) { ?>
-                                        <td class="text-center text-success rounded fw-bold">
-                                            <?= $brandRow["TITLE"] ?>
-                                        </td>
-                                    <?php }
-                                    ?>
-                                </tr>
-                                <tr>
-                                    <?php
-                                    @oci_execute($brandSQL);
-
-                                    // Flag to check if any data is found for any brand
-                                    $dataFound = false;
-
-                                    while (
-                                        $brandRow = @oci_fetch_assoc($brandSQL)
-                                    ) {
-                                        $brandID = $brandRow["ID"];
-
-                                        // Fetch data for the current brand
-                                        $query = "SELECT UP.ID, UP.USER_NAME, (SELECT NAME FROM DISTRICT WHERE ID = UP.DISTRICT_ID) AS DISTRICT_NAME
-                                                    FROM
-                                                        USER_PROFILE UP
-                                                    LEFT JOIN
-                                                        USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                                    WHERE
-                                                        UBS.PRODUCT_BRAND_ID IN ($brandID)
-                                                        AND UBS.STATUS = 1
-                                                        AND UP.USER_TYPE_ID = 3";
-                                        if (isset($_GET["F_BRAND_ID"])) {
-                                            if ($_GET["F_BRAND_ID"]) {
-                                                $query .=
-                                                    " AND UBS.PRODUCT_BRAND_ID = " .
-                                                    $_GET["F_BRAND_ID"];
-                                            }
-                                        }
-                                        if (isset($_GET["F_USER_MOBILE"])) {
-                                            if ($_GET["F_USER_MOBILE"]) {
-                                                $query .= " AND UP.USER_MOBILE LIKE '%" . $_GET["F_USER_MOBILE"] . "%'";
-                                            }
-                                        }
-
-                                        $strSQL = oci_parse(
-                                            $objConnect,
-                                            $query
-                                        );
-                                        oci_execute($strSQL);
-
-                                        // Check if any data is found for the current brand
-                                        if ($row = oci_fetch_assoc($strSQL)) {
-                                            $dataFound = true; ?>
-                                            <td>
-                                                <div>
-                                                    <?php do { ?>
-                                                        <span class="d-flex flex-rows justify-content-start align-items-center ">
-                                                            <div class="col-6 form-checks ">
-                                                                <label class="form-check-label" for="flexCheckChecked_<?php echo $row["ID"]; ?>">
-                                                                    <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"] ? $row["DISTRICT_NAME"] : "-"; ?> ]
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-6 form-checks mb-2">
-                                                                <input type="text" name="collection_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-
-                                                            </div>
-                                                        </span>
-                                                    <?php } while (
-                                                        $row = oci_fetch_assoc(
-                                                            $strSQL
-                                                        )
-                                                    ); ?>
-                                                </div>
-                                            </td>
-                                    <?php
-                                        } else {
-
-                                            echo '<td class="text-danger fw-bold text-center">
-                                            No Sale Executive data found ! &#128542;
-                                        </td>';
-                                        }
-                                    }
-                                    ?>
-
-                                </tr>
-
                             </tbody>
                         </table>
 
@@ -220,12 +130,17 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
+    const $F_SALE_EXECUTIVE = $('select[name="F_SALE_EXECUTIVE"]');
+
+    // const $F_REATILER = $('select[name="F_REATILER"]');
+
+    const $URL = "<?php echo ($sfcmBasePath . '/collection_module/action/drop_down_panel.php') ?>";
+
     $('.single-select').each(function(event) {
         $(this).select2({
             theme: 'bootstrap4',
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            allowClear: Boolean($(this).data('allow-clear')),
+            width: '100%', // Set the width as needed
+            allowClear: true, // Enable clearing the selection
         });
     });
     // Get the current date
@@ -247,4 +162,84 @@ include_once('../../_includes/footer.php');
 
     // Set the initial value to today
     $('.start_date').pickadate('picker').set('select', [today.getFullYear(), today.getMonth(), 1]);
+
+    $('select[name="F_SALE_EXECUTIVE"]').on('change', function() {
+        getPlazaRetailerData();
+    });
+    // $('select[name="F_PLAZA_REATILER"]').on('change', function() {
+    //     getRetailerData();
+    // });
+    $(document).on('change', 'select[name="F_PLAZA_REATILER"]', function() {
+        const $F_PLAZA_REATILER = $('select[name="F_PLAZA_REATILER"]');
+        getRetailerData($F_PLAZA_REATILER.val());
+    })
+
+    function getRetailerData(plazaRetailerId) {
+        let htmlTag = ""; // Initialize htmlTag here
+        $('#add_retiler').empty('');
+        $.ajax({
+            type: "GET",
+            url: $URL,
+            dataType: "JSON",
+            data: {
+                plaza_retailer_data_id: plazaRetailerId,
+                retailer_data: true
+            },
+            success: function(res) {
+                htmlTag += `<label for="F_REATILER" class="form-label">  Retailer </label>
+                                <select class="form-select single-select" name="F_REATILER" id="F_REATILER" required>
+                            <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
+                if (res.status) {
+                    (res.data).forEach(element => {
+                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
+                    });
+                }
+                htmlTag += `</select></div>`;
+                $('#add_retiler').append(htmlTag);
+                // Initialize Select2 for the appended dropdown element
+                $('#add_retiler').find('#F_REATILER').select2({
+                    theme: 'bootstrap4',
+                    width: '100%', // Set the width as needed
+                    placeholder: 'Select Retailer', // Set the placeholder text
+                    allowClear: true, // Enable clearing the selection
+                });
+            }
+
+        });
+    }
+
+    function getPlazaRetailerData() {
+        let htmlTag = ""; // Initialize htmlTag here
+        $('#add_plazaretiler').empty('');
+        $.ajax({
+            type: "GET",
+            url: $URL,
+            dataType: "JSON",
+            data: {
+                sale_executive_id: $F_SALE_EXECUTIVE.val(),
+                retailer_plaza_data: true
+            },
+            success: function(res) {
+                htmlTag += `<label for="F_PLAZA_REATILER" class="form-label"> Plaza Retailer
+                                <span class="text-danger">*</span></label>
+                                <select class="form-select single-select" name="F_PLAZA_REATILER" id="F_PLAZA_REATILER" required>
+                            <option  hidden value="<?php echo Null ?>"> <- Selecte Plaza Retailer -></option>`;
+                if (res.status) {
+                    (res.data).forEach(element => {
+                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
+                    });
+                }
+                htmlTag += `</select></div>`;
+                $('#add_plazaretiler').append(htmlTag);
+                // Initialize Select2 for the appended dropdown element
+                $('#add_plazaretiler').find('#F_PLAZA_REATILER').select2({
+                    theme: 'bootstrap4',
+                    width: '100%', // Set the width as needed
+                    placeholder: 'Select Plaza Retailer ', // Set the placeholder text
+                    allowClear: true, // Enable clearing the selection
+                });
+            }
+
+        });
+    }
 </script>

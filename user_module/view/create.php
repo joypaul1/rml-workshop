@@ -129,9 +129,9 @@ include_once('../../_includes/footer.php');
     function getVerifyData() {
         const userTypeId = $user_type_id.val();
         $('#addResponsiableData').empty();
-        if(parseInt(userTypeId) == 4){
+        if (parseInt(userTypeId) == 4) {
             $('.PLAZA_PARENT_ID').removeClass('d-none');
-        }else{
+        } else {
             $('.PLAZA_PARENT_ID').addClass('d-none');
         }
         if (parseInt(userTypeId) == 4 || parseInt(userTypeId) == 5) {
@@ -178,7 +178,7 @@ include_once('../../_includes/footer.php');
                     });
                 }
 
-            })
+            });
         }
     }
 
