@@ -55,12 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     $remarks                = $_POST['remarks'];
     try {
         $query = "UPDATE COLLECTION_ASSIGN
-        SET START_DATE = TO_DATE('$START_DATE','dd/mm/yyyy'),
-            END_DATE = TO_DATE('$END_DATE','dd/mm/yyyy'),
+        SET START_DATE = TO_DATE('$START_DATE','dd/mm/RRRR'),
+            END_DATE = TO_DATE('$END_DATE','dd/mm/RRRR'),
             TARGET_AMOUNT = $target_amount,
             REMARKS = '$remarks'
         WHERE ID = $edit_id";
-
+        echo  $query;
         $strSQL = oci_parse($objConnect, $query);
 
         // Execute the query
