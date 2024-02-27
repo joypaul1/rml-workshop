@@ -9,11 +9,13 @@ $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 include_once('../../_helper/2step_com_conn.php');
-define('RECORDS_PER_PAGE', 10);
+define('RECORDS_PER_PAGE', 1000);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     : 0;
+$v_start_date = date('01/m/Y');
+$v_end_date   = date('t/m/Y');
 ?>
 
 <!--start page wrapper -->
@@ -35,32 +37,20 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                 <div class="accordion-body">
                                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                                         <div class="row justify-content-center align-items-center">
-                                            <!-- <div class="col-sm-4">
-                                                <label> Sales Executive:</label>
-                                                <select name="f_sales_executive" class="form-control single-select">
-                                                    <option value="<?php echo null ?>" hidden><- Select Sales Executive -></option>
-                                                    <?php
-                                                    //$executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
-                                                    $query = "SELECT DISTINCT UP.ID, UP.USER_NAME, UP.USER_MOBILE
-                                                    FROM USER_PROFILE UP
-                                                    INNER JOIN USER_MANPOWER_SETUP UMS ON UP.ID = UMS.USER_ID
-                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID =UP.ID
-                                                    WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                                    AND UBS.STATUS = 1
-                                                    AND UP.USER_TYPE_ID = 3";
-                                                    $strSQL = oci_parse($objConnect,  $query);
-                                                    oci_execute($strSQL);
+                                            <div class="col-sm-4">
+                                                <label> Retialer Type :</label>
+                                                <select name="f_retailer_type" class="form-control single-select">
+                                                    <option value="<?php echo null ?>" hidden><- Select Retialer Type -></option>
 
-                                                    while ($row = oci_fetch_assoc($strSQL)) {
-                                                    ?>
-                                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['f_sales_executive']) && $_POST['f_sales_executive'] == $row['ID'] ? 'Selected' : '' ?>>
-                                                            <?php echo $row['USER_NAME'] ?>
-                                                        </option>
-                                                    <?php
-                                                    }
-                                                    ?>
+                                                    <option value="4" <?php echo isset($_POST['f_retailer_type']) && $_POST['f_retailer_type'] == 4 ? 'Selected' : '' ?>>
+                                                        Plaza Retiler
+                                                    </option>
+                                                    <option value="5" <?php echo isset($_POST['f_retailer_type']) && $_POST['f_retailer_type'] == 5 ? 'Selected' : '' ?>>
+                                                        Retiler
+                                                    </option>
+
                                                 </select>
-                                            </div> -->
+                                            </div>
                                             <div class="col-sm-3">
                                                 <label>Start Date: </label>
                                                 <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01-m-Y'); ?>' />
@@ -110,8 +100,6 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                 <tbody>
                                     <?php
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-                                    $v_start_date = date('01/m/Y');
-                                    $v_end_date   = date('t/m/Y');
                                     if (isset($_POST['start_date'])) {
                                         $v_start_date = date("d/m/Y", strtotime($_REQUEST['start_date']));
                                     }
@@ -128,13 +116,16 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                     (SELECT TITLE
                                     FROM PRODUCT_BRAND PB
                                     WHERE PB.ID = CA.BRAND_ID)
-                                    AS BRAND_NAME
+                                    AS BRAND_NAME,
+                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
                                     FROM COLLECTION_ASSIGN CA
-                                            INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
+                                    INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
                                     WHERE  CA.BRAND_ID IN ($USER_BRANDS)
                                     AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
                                     AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
-
+                                    if (isset($_POST['f_retailer_type'])) {
+                                        $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
+                                    }
                                     $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
                                     // echo  $query;
                                     $strSQL = @oci_parse($objConnect, $query);
@@ -160,6 +151,8 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                             </td>
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
+                                                <br>
+                                                <?php echo '<span class="badge rounded-pill bg-gradient-success">' . $row['USER_TYPE'] . '</span>' ?>
                                             </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-gradient-primary">
@@ -192,13 +185,14 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination round-pagination">
                                         <?php
-                                        $countQuery = "SELECT COUNT(CA.ID) AS total  FROM COLLECTION_ASSIGN CA WHERE CA.STATUS = 1
-                                        AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY') 
+                                        $countQuery = "SELECT COUNT(CA.ID) AS total  FROM COLLECTION_ASSIGN CA
+                                        INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
+                                        WHERE CA.BRAND_ID IN ($USER_BRANDS)
+                                        AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY')
                                         AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
-                                        // check retailer data exist 
-                                        if (isset($_POST['f_sales_executive']) && !empty($_POST['f_sales_executive'])) {
-                                            $executiveID = $_POST['f_sales_executive'];
-                                            $query .= " AND ( USER_ID = $executiveID)";
+                                        // check retailer data exist
+                                        if (isset($_POST['f_retailer_type'])) {
+                                            $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
                                         }
 
                                         $countResult = oci_parse($objConnect, $countQuery);

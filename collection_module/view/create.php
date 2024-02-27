@@ -360,44 +360,44 @@ include_once('../../_includes/footer.php');
         getPlazaRetailerData();
     });
 
-    $(document).on('change', 'select[name="F_PLAZA_RETAILER"]', function() {
-        const $F_PLAZA_RETAILER = $('select[name="F_PLAZA_RETAILER"]');
-        getRetailerData($F_PLAZA_RETAILER.val());
-    })
+    // $(document).on('change', 'select[name="F_PLAZA_RETAILER"]', function() {
+    //     const $F_PLAZA_RETAILER = $('select[name="F_PLAZA_RETAILER"]');
+    //     getRetailerData($F_PLAZA_RETAILER.val());
+    // })
 
-    function getRetailerData(plazaRetailerId) {
-        let htmlTag = ""; // Initialize htmlTag here
-        $('#add_retiler').empty('');
-        $.ajax({
-            type: "GET",
-            url: $URL,
-            dataType: "JSON",
-            data: {
-                plaza_retailer_data_id: plazaRetailerId,
-                retailer_data: true
-            },
-            success: function(res) {
-                htmlTag += `<label for="F_REATILER" class="form-label"> Retailer </label>
-                                <select class="form-select single-select" name="F_REATILER" id="F_REATILER">
-                            <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
-                if (res.status) {
-                    (res.data).forEach(element => {
-                        htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
-                    });
-                }
-                htmlTag += `</select></div>`;
-                $('#add_retiler').append(htmlTag);
-                // Initialize Select2 for the appended dropdown element
-                $('#add_retiler').find('#F_REATILER').select2({
-                    theme: 'bootstrap4',
-                    width: '100%', // Set the width as needed
-                    placeholder: 'Select Retailer', // Set the placeholder text
-                    allowClear: true, // Enable clearing the selection
-                });
-            }
+    // function getRetailerData(plazaRetailerId) {
+    //     let htmlTag = ""; // Initialize htmlTag here
+    //     $('#add_retiler').empty('');
+    //     $.ajax({
+    //         type: "GET",
+    //         url: $URL,
+    //         dataType: "JSON",
+    //         data: {
+    //             plaza_retailer_data_id: plazaRetailerId,
+    //             retailer_data: true
+    //         },
+    //         success: function(res) {
+    //             htmlTag += `<label for="F_REATILER" class="form-label"> Retailer </label>
+    //                             <select class="form-select single-select" name="F_REATILER" id="F_REATILER">
+    //                         <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
+    //             if (res.status) {
+    //                 (res.data).forEach(element => {
+    //                     htmlTag += '<option value="' + element.ID + '"> ' + element.USER_NAME + ' </option>';
+    //                 });
+    //             }
+    //             htmlTag += `</select></div>`;
+    //             $('#add_retiler').append(htmlTag);
+    //             // Initialize Select2 for the appended dropdown element
+    //             $('#add_retiler').find('#F_REATILER').select2({
+    //                 theme: 'bootstrap4',
+    //                 width: '100%', // Set the width as needed
+    //                 placeholder: 'Select Retailer', // Set the placeholder text
+    //                 allowClear: true, // Enable clearing the selection
+    //             });
+    //         }
 
-        });
-    }
+    //     });
+    // }
 
     function getPlazaRetailerData() {
         let htmlTag = ""; // Initialize htmlTag here
