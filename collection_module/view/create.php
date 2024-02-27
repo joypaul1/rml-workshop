@@ -10,8 +10,12 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 
 include_once('../../_helper/2step_com_conn.php');
-
-
+$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    : 0;
+$brandquery = "SELECT ID, TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS = 1 ORDER BY ID ASC";
+$F_SALE_EXECUTIVE_ID = isset($_GET['F_SALE_EXECUTIVE']) ? $_GET['F_SALE_EXECUTIVE'] : null;
+$F_PLAZA_REATILER_ID = isset($_GET['F_PLAZA_REATILER']) ? $_GET['F_PLAZA_REATILER'] : null;
 ?>
 
 <!--start page wrapper -->
@@ -20,9 +24,7 @@ include_once('../../_helper/2step_com_conn.php');
 
         <div class="card rounded-4">
             <?php
-            $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-                ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-                : 0;
+
             $headerType = "List";
             $leftSideName = "Set Collection Target Amount";
             include "../../_includes/com_header.php";
@@ -49,10 +51,10 @@ include_once('../../_helper/2step_com_conn.php');
                                                 AND UBS.STATUS = 1
                                                 AND UP.USER_TYPE_ID = 3";
 
-                                $brandSQL = @oci_parse($objConnect, $executiveQuery);
-                                @oci_execute($brandSQL);
+                                $executiveSql = @oci_parse($objConnect, $executiveQuery);
+                                @oci_execute($executiveSql);
                                 while (
-                                    $executiveRow = @oci_fetch_assoc($brandSQL)
+                                    $executiveRow = @oci_fetch_assoc($executiveSql)
                                 ) { ?>
                                     <option value="<?php echo $executiveRow["ID"]; ?>" <?php echo $F_SALE_EXECUTIVE == $executiveRow["ID"] ? "Selected" : " "; ?>>
                                         <?php echo $executiveRow["USER_NAME"]; ?>
@@ -99,7 +101,162 @@ include_once('../../_helper/2step_com_conn.php');
 
                         </div>
                         <table class="table table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <?php
+
+                                    $brandSQL = oci_parse($objConnect, $brandquery);
+                                    oci_execute($brandSQL);
+                                    while ($brandRow = oci_fetch_assoc($brandSQL)) {
+                                    ?>
+                                        <th class="text-center text-success rounded fw-bold">
+                                            <?= $brandRow["TITLE"] ?>
+                                        </th>
+                                    <?php
+                                    }
+                                    ?>
+                                </tr>
+                            </thead>
                             <tbody>
+                                <?php if ($F_SALE_EXECUTIVE_ID && $F_PLAZA_REATILER_ID ==  null) { ?>
+                                    <tr>
+                                        <?php
+                                        @oci_execute($brandSQL);
+                                        // Flag to check if any data is found for any brand
+                                        $dataFound = false;
+
+                                        while (
+                                            $brandRow = @oci_fetch_assoc($brandSQL)
+                                        ) {
+                                            $brandID = $brandRow["ID"];
+                                            // Fetch data for the current brand
+                                            $query = "SELECT UP.ID,UP.USER_NAME,UP.USER_MOBILE, (SELECT NAME FROM DISTRICT WHERE ID = UP.DISTRICT_ID) AS DISTRICT_NAME,
+                                            (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
+                                            FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
+                                            LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                            WHERE UMP.USER_ID = UP.ID
+                                            AND UBS.STATUS = 1
+                                            AND UBS.PRODUCT_BRAND_ID IN ($brandID)
+                                            AND UMP.PARENT_USER_ID = $F_SALE_EXECUTIVE_ID";
+
+                                            // if (isset($_GET["F_BRAND_ID"])) {
+                                            //     if ($_GET["F_BRAND_ID"]) {
+                                            //         $query .=
+                                            //             " AND UBS.PRODUCT_BRAND_ID = " .
+                                            //             $_GET["F_BRAND_ID"];
+                                            //     }
+                                            // }
+                                            // if (isset($_GET["F_USER_MOBILE"])) {
+                                            //     if ($_GET["F_USER_MOBILE"]) {
+                                            //         $query .= " AND UP.USER_MOBILE LIKE '%" . $_GET["F_USER_MOBILE"] . "%'";
+                                            //     }
+                                            // }
+
+                                            $strSQL = oci_parse(
+                                                $objConnect,
+                                                $query
+                                            );
+                                            oci_execute($strSQL);
+
+                                            // Check if any data is found for the current brand
+                                            if ($row = oci_fetch_assoc($strSQL)) {
+                                                $dataFound = true; ?>
+                                                <td>
+                                                    <div>
+                                                        <?php do { ?>
+                                                            <span class="d-flex flex-rows justify-content-start align-items-center ">
+                                                                <div class="col-6 form-checks ">
+                                                                    <label class="form-check-label" for="flexCheckChecked_<?php echo $row["ID"]; ?>">
+                                                                        <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"] ? $row["DISTRICT_NAME"] : "-"; ?> ]
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-6 form-checks mb-2">
+                                                                    <input type="text" required name="collection_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+
+                                                                </div>
+                                                            </span>
+                                                        <?php } while (
+                                                            $row = @oci_fetch_assoc(
+                                                                $strSQL
+                                                            )
+                                                        ); ?>
+                                                    </div>
+                                                </td>
+                                        <?php
+                                            } else {
+
+                                                echo '<td class="text-danger fw-bold text-center">
+                                            No Sale Executive data found ! &#128542;
+                                        </td>';
+                                            }
+                                        }
+                                        ?>
+
+                                    </tr>
+                                <?php } ?>
+                                <?php if ($F_PLAZA_REATILER_ID) { ?>
+                                    <tr>
+                                        <?php
+                                        @oci_execute($brandSQL);
+                                        // Flag to check if any data is found for any brand
+                                        $dataFound = false;
+
+                                        while (
+                                            $brandRow = @oci_fetch_assoc($brandSQL)
+                                        ) {
+                                            $brandID = $brandRow["ID"];
+                                            // Fetch data for the current brand
+                                            $query = "SELECT UP.ID,UP.USER_NAME,UP.USER_MOBILE, (SELECT NAME FROM DISTRICT WHERE ID = UP.DISTRICT_ID) AS DISTRICT_NAME,
+                                            (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
+                                            FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
+                                            LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                            WHERE UMP.USER_ID = UP.ID
+                                            AND UBS.STATUS = 1
+                                            AND UBS.PRODUCT_BRAND_ID IN ($brandID)
+                                            AND UMP.PARENT_USER_ID = $F_PLAZA_REATILER_ID";
+
+                                            $strSQL = oci_parse(
+                                                $objConnect,
+                                                $query
+                                            );
+                                            oci_execute($strSQL);
+
+                                            // Check if any data is found for the current brand
+                                            if ($row = oci_fetch_assoc($strSQL)) {
+                                                $dataFound = true; ?>
+                                                <td>
+                                                    <div>
+                                                        <?php do { ?>
+                                                            <span class="d-flex flex-rows justify-content-start align-items-center ">
+                                                                <div class="col-6 form-checks ">
+                                                                    <label class="form-check-label" for="flexCheckChecked_<?php echo $row["ID"]; ?>">
+                                                                        <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"] ? $row["DISTRICT_NAME"] : "-"; ?> ]
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-6 form-checks mb-2">
+                                                                    <input type="text" required name="collection_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+
+                                                                </div>
+                                                            </span>
+                                                        <?php } while (
+                                                            $row = @oci_fetch_assoc(
+                                                                $strSQL
+                                                            )
+                                                        ); ?>
+                                                    </div>
+                                                </td>
+                                        <?php
+                                            } else {
+
+                                                echo '<td class="text-danger fw-bold text-center">
+                                            No Sale Executive data found ! &#128542;
+                                        </td>';
+                                            }
+                                        }
+                                        ?>
+
+                                    </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
 
@@ -187,7 +344,7 @@ include_once('../../_includes/footer.php');
             },
             success: function(res) {
                 htmlTag += `<label for="F_REATILER" class="form-label">  Retailer </label>
-                                <select class="form-select single-select" name="F_REATILER" id="F_REATILER" required>
+                                <select class="form-select single-select" name="F_REATILER" id="F_REATILER">
                             <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
                 if (res.status) {
                     (res.data).forEach(element => {
@@ -221,8 +378,8 @@ include_once('../../_includes/footer.php');
             },
             success: function(res) {
                 htmlTag += `<label for="F_PLAZA_REATILER" class="form-label"> Plaza Retailer
-                                <span class="text-danger">*</span></label>
-                                <select class="form-select single-select" name="F_PLAZA_REATILER" id="F_PLAZA_REATILER" required>
+                                </label>
+                                <select class="form-select single-select" name="F_PLAZA_REATILER" id="F_PLAZA_REATILER">
                             <option  hidden value="<?php echo Null ?>"> <- Selecte Plaza Retailer -></option>`;
                 if (res.status) {
                     (res.data).forEach(element => {

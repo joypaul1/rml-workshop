@@ -65,7 +65,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                 </div>
             </div>
             <div class="">
-            <span class="d-block text-center text-danger fw-bold">[*** Only Brand Assign User List Here ***]</span>
+                <span class="d-block text-center text-danger fw-bold">[*** Only Brand Assign User List Here ***]</span>
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
@@ -73,7 +73,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                     include('../../_includes/com_header.php');
                     ?>
                     <div class="card-body">
-                        
+
                         <div class="table-responsives">
                             <table class="table table-sm table-bordered align-middle mb-0">
                                 <thead class="table-light text-uppercase text-center ">
@@ -142,8 +142,20 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 Type : <?php echo $row['USER_TYPE']; ?>
                                                 <br>
                                                 ID : <?php echo $row['RML_ID']; ?>
-                                                <!-- <br>
-                                                BRAND-IDs : <?php echo $row['USER_BRANDS']; ?> -->
+                                                <br>
+                                                Brand :
+                                                <?php
+                                                $userBrandID = $row['USER_BRANDS'];
+                                                $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN 
+                                                ($userBrandID)";
+                                                $brandstrSQL  = @oci_parse($objConnect, $brandQuery);
+                                                @oci_execute($brandstrSQL);
+
+                                                while ($brandData = @oci_fetch_assoc($brandstrSQL)) {
+                                                    echo '<span class="badge rounded-pill bg-gradient-success">' . $brandData['TITLE'] . '</span> ';
+                                                }
+
+                                                ?>
 
                                             </td>
                                             <td>
