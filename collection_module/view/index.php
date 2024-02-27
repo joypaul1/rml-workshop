@@ -41,18 +41,18 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
                                                     $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
-                                                    $query = "SELECT 
-                                                    UP.ID, 
+                                                    $query = "SELECT
+                                                    UP.ID,
                                                     UP.USER_NAME
-
-                                                    FROM 
+                                                    FROM
                                                         USER_PROFILE UP
-                                                    LEFT JOIN 
+                                                    LEFT JOIN
                                                         USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                                    WHERE 
+                                                    WHERE
                                                         UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
                                                         AND UBS.STATUS = 1
-                                                        AND UP.USER_TYPE_ID = 3";
+                                                        AND UP.USER_TYPE_ID = 3
+                                                        ";
                                                     $strSQL = oci_parse($objConnect,  $query);
                                                     oci_execute($strSQL);
 
@@ -114,7 +114,6 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
                                     $v_start_date = date('01/m/Y');
                                     $v_end_date   = date('t/m/Y');
@@ -124,18 +123,31 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                     if (isset($_POST['end_date'])) {
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
-
-                                    $query = "SELECT CA.ID, CA.START_DATE, CA.END_DATE,CA.TARGET_AMOUNT,
-                                    CA.STATUS,CA.REMARKS, (SELECT USER_NAME FROM USER_PROFILE UP WHERE CA.USER_ID = UP.ID) AS USER_NAME,(SELECT TITLE FROM PRODUCT_BRAND PB WHERE PB.ID = CA.BRAND_ID) AS BRAND_NAME FROM COLLECTION_ASSIGN CA WHERE CA.STATUS = 1
-                                    AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY') 
-                                    AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
+                                    // echo $v_start_date;
+                                    // echo $v_end_date;
+                                    $query = "SELECT CA.ID,
+                                    CA.START_DATE,
+                                    CA.END_DATE,
+                                    CA.TARGET_AMOUNT,
+                                    CA.STATUS,
+                                    CA.REMARKS,
+                                    UP.USER_NAME,
+                                    (SELECT TITLE
+                                    FROM PRODUCT_BRAND PB
+                                    WHERE PB.ID = CA.BRAND_ID)
+                                    AS BRAND_NAME
+                                    FROM COLLECTION_ASSIGN CA
+                                            INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
+                                    WHERE  CA.BRAND_ID IN ($USER_BRANDS)
+                                    AND TRUNC (CA.START_DATE) >= TO_DATE ('02/01/2024', 'DD/MM/YYYY')
+                                    AND TRUNC (CA.END_DATE) <= TO_DATE ('29/02/2024', 'DD/MM/YYYY')";
 
                                     if (isset($_POST['f_sales_executive']) && !empty($_POST['f_sales_executive'])) {
                                         $executiveID = $_POST['f_sales_executive'];
                                         $query .= " AND ( USER_ID = $executiveID)";
                                     }
                                     $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-                                   
+                                    // echo  $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -169,7 +181,7 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                             </td>
                                             <td class="text-center">
                                                 <?php if ($row['STATUS'] == '0') {
-                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-warning "> Pending </button>';
+                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-warning text-white"> Pending </button>';
                                                 } else if ($row['STATUS'] == '1') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-success"> Success </button>';
                                                 } else if ($row['STATUS'] == '2') {

@@ -15,7 +15,8 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     : 0;
 $brandquery = "SELECT ID, TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS = 1 ORDER BY ID ASC";
 $F_SALE_EXECUTIVE_ID = isset($_GET['F_SALE_EXECUTIVE']) ? $_GET['F_SALE_EXECUTIVE'] : null;
-$F_PLAZA_REATILER_ID = isset($_GET['F_PLAZA_REATILER']) ? $_GET['F_PLAZA_REATILER'] : null;
+$F_PLAZA_RETAILER_ID = isset($_GET['F_PLAZA_RETAILER']) ? $_GET['F_PLAZA_RETAILER'] : null;
+$F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
 ?>
 
 <!--start page wrapper -->
@@ -118,7 +119,7 @@ $F_PLAZA_REATILER_ID = isset($_GET['F_PLAZA_REATILER']) ? $_GET['F_PLAZA_REATILE
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if ($F_SALE_EXECUTIVE_ID && $F_PLAZA_REATILER_ID ==  null) { ?>
+                                <?php if ($F_SALE_EXECUTIVE_ID && $F_PLAZA_RETAILER_ID ==  null) { ?>
                                     <tr>
                                         <?php
                                         @oci_execute($brandSQL);
@@ -194,7 +195,7 @@ $F_PLAZA_REATILER_ID = isset($_GET['F_PLAZA_REATILER']) ? $_GET['F_PLAZA_REATILE
 
                                     </tr>
                                 <?php } ?>
-                                <?php if ($F_PLAZA_REATILER_ID) { ?>
+                                <?php if ($F_PLAZA_RETAILER_ID) { ?>
                                     <tr>
                                         <?php
                                         @oci_execute($brandSQL);
@@ -213,7 +214,7 @@ $F_PLAZA_REATILER_ID = isset($_GET['F_PLAZA_REATILER']) ? $_GET['F_PLAZA_REATILE
                                             WHERE UMP.USER_ID = UP.ID
                                             AND UBS.STATUS = 1
                                             AND UBS.PRODUCT_BRAND_ID IN ($brandID)
-                                            AND UMP.PARENT_USER_ID = $F_PLAZA_REATILER_ID";
+                                            AND UMP.PARENT_USER_ID = $F_PLAZA_RETAILER_ID";
 
                                             $strSQL = oci_parse(
                                                 $objConnect,
@@ -267,10 +268,6 @@ $F_PLAZA_REATILER_ID = isset($_GET['F_PLAZA_REATILER']) ? $_GET['F_PLAZA_REATILE
                                     Submit Target <i class='bx bx-file-find'></i></button>
                             </div>
                         </div>
-
-
-
-
                     </form>
                 </div>
 
@@ -287,11 +284,50 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
+    const $URL = "<?php echo ($sfcmBasePath . '/collection_module/action/drop_down_panel.php') ?>";
     const $F_SALE_EXECUTIVE = $('select[name="F_SALE_EXECUTIVE"]');
+    const $F_PLAZA_RETAILER_ID = "<?php echo $F_PLAZA_RETAILER_ID ? $F_PLAZA_RETAILER_ID : null ?>";
+
+    if ($F_PLAZA_RETAILER_ID) {
+        let htmlTag = ""; // Initialize htmlTag here
+        // getPlazaRetailerData();
+        $('#add_plazaretiler').empty('');
+        $('#add_retiler').empty('');
+        $.ajax({
+            type: "GET",
+            url: $URL,
+            dataType: "JSON",
+            data: {
+                sale_executive_id: $F_SALE_EXECUTIVE.val(),
+                retailer_plaza_data: true
+            },
+            success: function(res) {
+                var htmlTag = ''; // Initialize htmlTag variable
+                htmlTag += `<label for="F_PLAZA_RETAILER" class="form-label"> Plaza Retailer
+                        </label>
+                        <select class="form-select single-select" name="F_PLAZA_RETAILER" id="F_PLAZA_RETAILER">
+                    <option hidden value="<?php echo Null ?>"> <- Select Plaza Retailer -></option>`;
+                if (res.status) {
+                    (res.data).forEach(element => {
+                        htmlTag += '<option value="' + element.ID + '"' + ($F_PLAZA_RETAILER_ID == element.ID ? "selected" : "") + ' > ' + element.USER_NAME + ' </option>';
+                    });
+
+                }
+                htmlTag += `</select></div>`;
+                $('#add_plazaretiler').append(htmlTag);
+                // Initialize Select2 for the appended dropdown element
+                $('#add_plazaretiler').find('#F_PLAZA_RETAILER').select2({
+                    theme: 'bootstrap4',
+                    width: '100%', // Set the width as needed
+                    placeholder: 'Select Plaza Retailer', // Set the placeholder text
+                    allowClear: true, // Enable clearing the selection
+                });
+            }
+        });
+    }
 
     // const $F_REATILER = $('select[name="F_REATILER"]');
 
-    const $URL = "<?php echo ($sfcmBasePath . '/collection_module/action/drop_down_panel.php') ?>";
 
     $('.single-select').each(function(event) {
         $(this).select2({
@@ -323,12 +359,10 @@ include_once('../../_includes/footer.php');
     $('select[name="F_SALE_EXECUTIVE"]').on('change', function() {
         getPlazaRetailerData();
     });
-    // $('select[name="F_PLAZA_REATILER"]').on('change', function() {
-    //     getRetailerData();
-    // });
-    $(document).on('change', 'select[name="F_PLAZA_REATILER"]', function() {
-        const $F_PLAZA_REATILER = $('select[name="F_PLAZA_REATILER"]');
-        getRetailerData($F_PLAZA_REATILER.val());
+
+    $(document).on('change', 'select[name="F_PLAZA_RETAILER"]', function() {
+        const $F_PLAZA_RETAILER = $('select[name="F_PLAZA_RETAILER"]');
+        getRetailerData($F_PLAZA_RETAILER.val());
     })
 
     function getRetailerData(plazaRetailerId) {
@@ -343,7 +377,7 @@ include_once('../../_includes/footer.php');
                 retailer_data: true
             },
             success: function(res) {
-                htmlTag += `<label for="F_REATILER" class="form-label">  Retailer </label>
+                htmlTag += `<label for="F_REATILER" class="form-label"> Retailer </label>
                                 <select class="form-select single-select" name="F_REATILER" id="F_REATILER">
                             <option  hidden value="<?php echo Null ?>"> <- Selecte Retailer -></option>`;
                 if (res.status) {
@@ -368,6 +402,7 @@ include_once('../../_includes/footer.php');
     function getPlazaRetailerData() {
         let htmlTag = ""; // Initialize htmlTag here
         $('#add_plazaretiler').empty('');
+        $('#add_retiler').empty('');
         $.ajax({
             type: "GET",
             url: $URL,
@@ -377,9 +412,9 @@ include_once('../../_includes/footer.php');
                 retailer_plaza_data: true
             },
             success: function(res) {
-                htmlTag += `<label for="F_PLAZA_REATILER" class="form-label"> Plaza Retailer
+                htmlTag += `<label for="F_PLAZA_RETAILER" class="form-label"> Plaza Retailer
                                 </label>
-                                <select class="form-select single-select" name="F_PLAZA_REATILER" id="F_PLAZA_REATILER">
+                                <select class="form-select single-select" name="F_PLAZA_RETAILER" id="F_PLAZA_RETAILER">
                             <option  hidden value="<?php echo Null ?>"> <- Selecte Plaza Retailer -></option>`;
                 if (res.status) {
                     (res.data).forEach(element => {
@@ -389,7 +424,7 @@ include_once('../../_includes/footer.php');
                 htmlTag += `</select></div>`;
                 $('#add_plazaretiler').append(htmlTag);
                 // Initialize Select2 for the appended dropdown element
-                $('#add_plazaretiler').find('#F_PLAZA_REATILER').select2({
+                $('#add_plazaretiler').find('#F_PLAZA_RETAILER').select2({
                     theme: 'bootstrap4',
                     width: '100%', // Set the width as needed
                     placeholder: 'Select Plaza Retailer ', // Set the placeholder text
