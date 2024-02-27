@@ -35,24 +35,19 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                 <div class="accordion-body">
                                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                                         <div class="row justify-content-center align-items-center">
-                                            <div class="col-sm-4">
-                                                <label>Select Sales Executive:</label>
+                                            <!-- <div class="col-sm-4">
+                                                <label> Sales Executive:</label>
                                                 <select name="f_sales_executive" class="form-control single-select">
-                                                    <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
+                                                    <option value="<?php echo null ?>" hidden><- Select Sales Executive -></option>
                                                     <?php
-                                                    $executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
-                                                    $query = "SELECT
-                                                    UP.ID,
-                                                    UP.USER_NAME
-                                                    FROM
-                                                        USER_PROFILE UP
-                                                    LEFT JOIN
-                                                        USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                                    WHERE
-                                                        UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                                        AND UBS.STATUS = 1
-                                                        AND UP.USER_TYPE_ID = 3
-                                                        ";
+                                                    //$executiveID = $_SESSION['USER_SFCM_INFO']['ID'];
+                                                    $query = "SELECT DISTINCT UP.ID, UP.USER_NAME, UP.USER_MOBILE
+                                                    FROM USER_PROFILE UP
+                                                    INNER JOIN USER_MANPOWER_SETUP UMS ON UP.ID = UMS.USER_ID
+                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID =UP.ID
+                                                    WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                                    AND UBS.STATUS = 1
+                                                    AND UP.USER_TYPE_ID = 3";
                                                     $strSQL = oci_parse($objConnect,  $query);
                                                     oci_execute($strSQL);
 
@@ -65,7 +60,7 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                                     }
                                                     ?>
                                                 </select>
-                                            </div>
+                                            </div> -->
                                             <div class="col-sm-3">
                                                 <label>Start Date: </label>
                                                 <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01-m-Y'); ?>' />
@@ -106,7 +101,7 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                         <th>SL.</th>
                                         <th>ACTION</th>
                                         <th>Date</th>
-                                        <th>Sale Executive Name</th>
+                                        <th>Retailer Name</th>
                                         <th>Brand </th>
                                         <th>STATUS</th>
                                         <th>Amount</th>
@@ -123,8 +118,6 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                     if (isset($_POST['end_date'])) {
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
-                                    // echo $v_start_date;
-                                    // echo $v_end_date;
                                     $query = "SELECT CA.ID,
                                     CA.START_DATE,
                                     CA.END_DATE,
@@ -139,13 +132,9 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                     FROM COLLECTION_ASSIGN CA
                                             INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
                                     WHERE  CA.BRAND_ID IN ($USER_BRANDS)
-                                    AND TRUNC (CA.START_DATE) >= TO_DATE ('02/01/2024', 'DD/MM/YYYY')
-                                    AND TRUNC (CA.END_DATE) <= TO_DATE ('29/02/2024', 'DD/MM/YYYY')";
+                                    AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+                                    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
 
-                                    if (isset($_POST['f_sales_executive']) && !empty($_POST['f_sales_executive'])) {
-                                        $executiveID = $_POST['f_sales_executive'];
-                                        $query .= " AND ( USER_ID = $executiveID)";
-                                    }
                                     $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
                                     // echo  $query;
                                     $strSQL = @oci_parse($objConnect, $query);
