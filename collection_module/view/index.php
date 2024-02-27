@@ -9,7 +9,7 @@ $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 include_once('../../_helper/2step_com_conn.php');
-define('RECORDS_PER_PAGE', 1000);
+define('RECORDS_PER_PAGE', 50);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
