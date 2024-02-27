@@ -84,8 +84,9 @@ $v_end_date   = date('t/m/Y');
 
                     ?>
                     <div class="card-body">
+
                         <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
+                            <table class="table table-bordered align-middle mb-0" id="downloadData">
                                 <thead class="table-light text-uppercase text-center ">
                                     <tr>
                                         <th>SL.</th>
@@ -206,13 +207,16 @@ $v_end_date   = date('t/m/Y');
                                             echo "<li class='page-item $activeClass'><a class='page-link' href='index.php?page=$i'>$i</a></li>";
                                         }
 
-
                                         ?>
 
 
                                     </ul>
                                 </nav>
                             </div>
+                            <span class="d-block text-end">
+                                <a class="btn btn-sm btn-gradient-info" onclick="exportF(this)">
+                                    Export To Excel <i class='bx bxs-cloud-download'></i> </a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -240,4 +244,23 @@ include_once('../../_includes/footer.php');
         selectYears: true,
         format: 'dd-mm-yyyy' // Specify your desired date format
     });
+
+    function exportF(elem) {
+        var table = document.getElementById("downloadData");
+        var html = table.outerHTML;
+        var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
+
+        // Get today's date
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = today.getFullYear();
+        var currentDate = yyyy + '-' + mm + '-' + dd;
+
+        // Modify download attribute to include today's date in the file name
+        var fileName = "Collection_Target_List_" + currentDate + ".xls";
+        elem.setAttribute("href", url);
+        elem.setAttribute("download", fileName); // Choose the file name
+        return false;
+    }
 </script>
