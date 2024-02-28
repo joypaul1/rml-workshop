@@ -12,12 +12,13 @@
     }
 </style>
 
+
 <div class="page-wrapper">
     <div class="page-content">
 
 
         <div class="card">
-            <div class="card-body" style="padding:0 1%">
+            <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
@@ -184,7 +185,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-body" style="padding:0 1%">
+            <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome2" role="tab" aria-selected="true">
@@ -381,72 +382,35 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Top Retailer [DEMO DATA]</h6>
+                                <h6 class="mb-0">Coordinator List </h6>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="categories-list">
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/01.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-cosmic" role="progressbar" style="width: 75%"></div>
+                            <?php
+                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                            WHERE A.USER_ID=B.ID
+                            AND PARENT_USER_ID=$log_user_id";
+                            $coordinatorSQL = oci_parse($objConnect, $cooquery);
+                            @oci_execute($coordinatorSQL);
+                            while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
+                            ?>
+                                <div class="d-flex align-items-center justify-content-between gap-3">
+                                    <div class="">
+                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-2">
+                                            <?php echo $coodinatorRow['USER_NAME'] ?>
+                                            <br>
+                                            <?php echo $coodinatorRow['USER_MOBILE'] ?>
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/02.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/03.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/04.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-kyoto" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/05.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-blues" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
+                                <hr>
+                            <?php } ?>
 
                         </div>
                     </div>
@@ -457,72 +421,35 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Top Sale Executive [DEMO DATA]</h6>
+                                <h6 class="mb-0"> Sale Executive List</h6>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="categories-list">
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/01.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-cosmic" role="progressbar" style="width: 75%"></div>
+                            <?php
+                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                            WHERE A.USER_ID=B.ID
+                            AND PARENT_USER_ID=$log_user_id";
+                            $coordinatorSQL = oci_parse($objConnect, $cooquery);
+                            @oci_execute($coordinatorSQL);
+                            while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
+                            ?>
+                                <div class="d-flex align-items-center justify-content-between gap-3">
+                                    <div class="">
+                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-2">
+                                            <?php echo $coodinatorRow['USER_NAME'] ?>
+                                            <br>
+                                            <?php echo $coodinatorRow['USER_MOBILE'] ?>
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/02.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/03.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/04.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-kyoto" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/05.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-blues" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
+                                <hr>
+                            <?php } ?>
 
                         </div>
                     </div>

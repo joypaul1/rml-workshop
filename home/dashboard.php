@@ -6,6 +6,7 @@ $dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.min.js';
 $dynamic_link_js[]  = '../assets/js/index2.js';
 
 include_once('../_helper/com_conn.php');
+$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 $user_type_brand_wise_data = [];
 // COUNT QUERY USER TYPE WISE
 $query = "SELECT b.ID, b.TITLE,
