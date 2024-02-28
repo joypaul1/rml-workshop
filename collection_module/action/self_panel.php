@@ -60,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
             TARGET_AMOUNT = $target_amount,
             REMARKS = '$remarks'
         WHERE ID = $edit_id";
-        echo  $query;
         $strSQL = oci_parse($objConnect, $query);
 
         // Execute the query

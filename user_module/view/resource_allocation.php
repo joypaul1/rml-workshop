@@ -65,7 +65,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                 </div>
             </div>
             <div class="">
-                <span class="d-block text-center text-danger fw-bold">[*** Only Brand Assign User List Here ***]</span>
+                <span class="d-block text-center text-danger fw-bold">[*** Only Cost Center Assign User List Here ***]</span>
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';

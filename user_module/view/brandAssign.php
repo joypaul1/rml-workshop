@@ -66,7 +66,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
-                    $leftSideName  = 'Brand Assign List';
+                    $leftSideName  = 'Cost Center Assign List';
                     include('../../_includes/com_header.php');
                     ?>
                     <div class="card-body">

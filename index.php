@@ -28,7 +28,6 @@ if (isset($_POST['login_submit'])) {
 
         if ($dataRow) {
             unset($dataRow['USER_PASSWORD']);
-
             $_SESSION['USER_SFCM_INFO']   = $dataRow;
             $_SESSION['baseUrl']     = $baseUrl;
             $_SESSION['sfcmBasePath']    = $sfcmBasePath;
