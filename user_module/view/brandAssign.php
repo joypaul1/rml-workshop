@@ -76,7 +76,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <tr>
                                         <th>SL.</th>
                                         <th>User info</th>
-                                        <th>Assign Brand </th>
+                                        <th>Assign Cost Center </th>
                                     </tr>
                                 </thead>
                                 <tbody>
