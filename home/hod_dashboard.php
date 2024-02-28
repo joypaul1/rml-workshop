@@ -262,7 +262,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['MAHINDRA_USER'] ?></h4>
-                                                <p class="mb-0 text-white">RETAILER</p>
+                                                <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class="bx bx-bell"></i>
@@ -277,7 +277,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['MAHINDRA_USER'] ?></h4>
-                                                <p class="mb-0 text-white">MECHANICS</p>
+                                                <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class='bx bxs-sort-alt'></i>
@@ -342,7 +342,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['EICHER_USER'] ?></h4>
-                                                <p class="mb-0 text-white">RETAILER</p>
+                                                <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class="bx bx-bell"></i>
@@ -357,7 +357,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['EICHER_USER'] ?></h4>
-                                                <p class="mb-0 text-white">MECHANICS</p>
+                                                <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class='bx bxs-sort-alt'></i>
