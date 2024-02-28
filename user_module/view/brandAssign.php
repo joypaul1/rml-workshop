@@ -45,7 +45,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 <div class="invalid-feedback">Please select a User Type.</div>
                                             </div>
                                             <div class="col-sm-3">
-                                                <label>MOBILE : </label>
+                                                <label>MOBILE / LOGIN ID: </label>
                                                 <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="USER_MOBILE" type="text" value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
