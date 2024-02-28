@@ -376,36 +376,6 @@
 
         <!--end row-->
         <div class="row">
-            <div class="col-12 col-lg-8 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-cente">
-                            <div>
-                                <h6 class="mb-0">Collection Overview [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                        <div id="chart1"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Monthly Orders [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                        <div id="chart2"></div>
-                    </div>
-                </div>
-            </div>
-        </div><!--end row-->
-
-
-        <div class="row">
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
                     <div class="card-header">
@@ -561,6 +531,37 @@
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
                     <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <h6 class="mb-0">Monthly Orders [DEMO DATA]</h6>
+                            </div>
+
+                        </div>
+                        <div id="chart2"></div>
+                    </div>
+                </div>
+            </div>
+        </div><!--end row-->
+
+
+        <div class="row">
+
+            <div class="col-12 col-lg-8 d-flex">
+                <div class="card rounded-4 w-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-cente">
+                            <div>
+                                <h6 class="mb-0">Collection Overview [DEMO DATA]</h6>
+                            </div>
+
+                        </div>
+                        <div id="chart1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 d-flex">
+                <div class="card rounded-4 w-100">
+                    <div class="card-body">
                         <ul class="nav nav-pills nav-fill mb-3">
                             <li class="nav-item">
                                 <a class="nav-link rounded-5" data-bs-toggle="pill" href="#primary-pills-home">Monthly</a>
@@ -618,7 +619,7 @@
             </div>
         </div><!--end row-->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
                     <div class="card-header">
@@ -674,7 +675,8 @@
                 </div>
             </div>
 
-        </div><!--end row-->
+        </div> -->
+        <!--end row-->
 
         <div class="row">
             <div class="col-12">
