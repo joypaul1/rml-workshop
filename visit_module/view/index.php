@@ -119,8 +119,34 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     if (isset($_POST['end_date'])) {
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
-
-                                    $query = "SELECT VA.ID, VA.VISIT_DATE,
+                                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
+                                        $query = "SELECT VA.ID, VA.VISIT_DATE,
+                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
+                                        VA.ENTRY_BY_ID,
+                                        (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
+                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
+                                        (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
+                                        FROM VISIT_ASSIGN VA
+                                        WHERE VA.USER_ID  IN (SELECT B.ID
+                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                                            WHERE A.USER_ID = B.ID
+                                            AND PARENT_USER_ID IN
+                                            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID = $log_user_id))
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
+                                        ";
+                                    } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
+                                        $query = "SELECT VA.ID, VA.VISIT_DATE,
+                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
+                                        VA.ENTRY_BY_ID,
+                                        (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
+                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
+                                        (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
+                                        FROM VISIT_ASSIGN VA
+                                        WHERE VA.USER_ID  IN
+                                        (SELECT B.ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID='$log_user_id')
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY') ";
+                                    } else {
+                                        $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
                                         VA.ENTRY_BY_ID,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
@@ -130,6 +156,8 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                         WHERE VA.USER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         ";
+                                    }
+
                                     if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
                                         $retailerID = $_POST['retailer'];
                                         $query .= " AND (VA.RETAILER_ID= $retailerID)";
@@ -194,27 +222,27 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination round-pagination">
                                         <?php
-                                        $countQuery = "SELECT  COUNT(VA.ID) AS total
-                                                    FROM VISIT_ASSIGN VA WHERE VA.USER_ID = '$log_user_id'
-                                                    AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                                    ";
-                                    
-                                        // check retailer data exist 
-                                        if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
-                                            $retailerID = $_POST['retailer'];
-                                            $countQuery .= " AND (VA.RETAILER_ID= $retailerID)";
-                                        }
+                                        // $countQuery = "SELECT  COUNT(VA.ID) AS total
+                                        //             FROM VISIT_ASSIGN VA WHERE VA.USER_ID = '$log_user_id'
+                                        //             AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
+                                        //             ";
 
-                                        $countResult = oci_parse($objConnect, $countQuery);
-                                        oci_execute($countResult);
-                                        $countData = oci_fetch_assoc($countResult);
-                                        $totalRecords = $countData['TOTAL'];
+                                        // // check retailer data exist 
+                                        // if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
+                                        //     $retailerID = $_POST['retailer'];
+                                        //     $countQuery .= " AND (VA.RETAILER_ID= $retailerID)";
+                                        // }
+
+                                        // $countResult = oci_parse($objConnect, $countQuery);
+                                        // oci_execute($countResult);
+                                        // $countData = oci_fetch_assoc($countResult);
+                                        // $totalRecords = $countData['TOTAL'];
 
 
-                                        for ($i = 1; $i <= ceil($totalRecords / RECORDS_PER_PAGE); $i++) {
-                                            $activeClass = ($i == $currentPage) ? 'active' : '';
-                                            echo "<li class='page-item $activeClass'><a class='page-link' href='index.php?page=$i'>$i</a></li>";
-                                        }
+                                        // for ($i = 1; $i <= ceil($totalRecords / RECORDS_PER_PAGE); $i++) {
+                                        //     $activeClass = ($i == $currentPage) ? 'active' : '';
+                                        //     echo "<li class='page-item $activeClass'><a class='page-link' href='index.php?page=$i'>$i</a></li>";
+                                        // }
 
 
                                         ?>

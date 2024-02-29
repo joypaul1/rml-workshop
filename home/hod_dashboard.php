@@ -439,11 +439,11 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                             <?php
                             $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
                                             FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                                            WHERE A.USER_ID=B.ID
+                                            WHERE A.USER_ID = B.ID
                                             AND PARENT_USER_ID IN
                                             (
                                             SELECT A.USER_ID
-                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                                            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                             WHERE A.USER_ID=B.ID
                                             AND PARENT_USER_ID = $log_user_id
                                             ) FETCH FIRST 8 ROWS ONLY";
