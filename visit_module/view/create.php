@@ -12,9 +12,11 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 include_once('../../_helper/2step_com_conn.php');
 
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
-$retailer_type  = 4;
+
 if (isset($_POST['retailer_type'])) {
     $retailer_type = $_POST['retailer_type'];
+} else {
+    $retailer_type  = 4;
 }
 ?>
 
@@ -33,31 +35,12 @@ if (isset($_POST['retailer_type'])) {
 
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                         <div class="row justify-content-center align-items-center text-centers">
-                            <!-- <div class="col-3">
-                                <label class="form-label"> Retailer Type:</label>
-                                <select name="brand_id" class="form-control 
-                                text-center single-select">
-                                    <option value="<?php echo null ?>" hidden><- Select Brand -></option>
-                                    <?php
-                                    $strSQL = oci_parse($objConnect, "SELECT ID,TITLE FROM PRODUCT_BRAND WHERE STATUS =1");
-                                    oci_execute($strSQL);
-
-                                    while ($row = oci_fetch_assoc($strSQL)) {
-                                    ?>
-                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['brand_id']) && $_POST['brand_id'] == $row['ID'] ? 'Selected' : '' ?>>
-                                            <?php echo $row['TITLE'] ?>
-                                        </option>
-                                    <?php
-                                    }
-                                    ?>
-                                </select>
-                            </div> -->
                             <div class="col-3">
                                 <label class="form-label"> Retailer Type:</label>
                                 <select name="retailer_type" class="form-control 
                                 text-center single-select">
-                                    <option value="4" selected>Plaza Retiler</option>
-                                    <option value="5"> Retiler</option>
+                                    <option value="4" <?php echo isset($retailer_type) && $retailer_type == 4 ? 'Selected' : '' ?>> Plaza Retiler </option>
+                                    <option value="5" <?php echo isset($retailer_type) && $retailer_type == 5 ? 'Selected' : '' ?>> Retiler</option>
 
                                 </select>
                             </div>
@@ -106,50 +89,26 @@ if (isset($_POST['retailer_type'])) {
                             <div class="form-group mb-3">
 
                                 <?php
-                                // $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] ? $_SESSION['USER_SFCM_INFO']['USER_BRANDS'] : 0;
-                                // if (isset($_POST['brand_id'])) {
-                                //     if (!empty($_POST['brand_id'])) {
-                                //         $USER_BRANDS = $_POST['brand_id'];
-                                //     }
-                                // }
                                 if ($retailer_type == 4) {
                                     $query =  "SELECT UP.ID,UMP.USER_ID,UP.USER_NAME,UP.DISTRICT_ID,
                                     (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
-                                    FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
-                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                    WHERE UMP.USER_ID = UP.ID
+                                    FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP,  USER_BRAND_SETUP UBS
+                                    WHERE UBS.USER_PROFILE_ID = UP.ID
+                                    AND  UMP.USER_ID = UP.ID
                                     AND UBS.STATUS = 1
                                     AND UMP.PARENT_USER_ID =" . $log_user_id;
                                 } else {
                                     $query = "SELECT UP.ID,UMP.USER_ID,UP.USER_NAME,UP.DISTRICT_ID,
                                     (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
-                                    FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
-                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                    WHERE UMP.USER_ID=UP.ID
+                                    FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP,USER_BRAND_SETUP UBS
+                                    WHERE UBS.USER_PROFILE_ID = UP.ID 
+                                    AND UMP.USER_ID=UP.ID
                                     AND UBS.STATUS = 1
                                     AND UMP.PARENT_USER_ID
-                                    IN (SELECT UMP.USER_ID FROM USER_MANPOWER_SETUP UMS,USER_PROFILE UP
-                                    WHERE UMP.USER_ID = UP.ID
-                                    AND UMP.PARENT_USER_ID=$log_user_id)";
+                                    IN (SELECT A.USER_ID
+                                    FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                    WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = $log_user_id)";
                                 }
-                                // ECHO $query;
-                                // $query = "SELECT
-                                //             UP.ID,
-                                //             (UP.USER_NAME || ' ['||(SELECT TITLE FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) || ']') USER_NAME,
-                                //             (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID,
-                                //             UP.USER_MOBILE
-                                //         FROM
-                                //             USER_PROFILE UP
-                                //         LEFT JOIN
-                                //             USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                //             LEFT JOIN USER_MANPOWER_SETUP UMS ON UMS.USER_ID = UP.ID
-                                //         WHERE
-                                //             UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                //             AND UBS.STATUS = 1
-                                //             AND UP.USER_TYPE_ID = 4";
-                                // if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
-                                //     $query .= " AND UMS.PARENT_USER_ID  =" . $log_user_id;
-                                // }
 
                                 if (isset($_POST['USER_NAME_MOBILE'])) {
                                     if (!empty($_POST['USER_NAME_MOBILE'])) {
@@ -161,14 +120,10 @@ if (isset($_POST['retailer_type'])) {
                                     if (!empty($_POST['disctrictID'])) {
                                         $searchTerm = trim($_POST['disctrictID']);
                                         $query .= " AND UP.DISTRICT_ID = " . $searchTerm;
-                                        // $query .= and '' is null or UP.DISTRICT_ID=
                                     }
                                 }
-                                // $query .= " ORDER BY UP.USER_NAME";
-                                // echo  $query;
                                 $strSQL = oci_parse($objConnect, $query);
                                 oci_execute($strSQL);
-
                                 while ($row = oci_fetch_assoc($strSQL)) {
 
                                 ?>
