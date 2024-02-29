@@ -168,7 +168,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                             </td>
                                             <td class="text-center">
                                                 <?php if ($row['VISIT_STATUS'] == '0') {
-                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-warning "> Pending </button>';
+                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-warning text-white "> Pending </button>';
                                                 } else if ($row['VISIT_STATUS'] == '1') {
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-success"> Success </button>';
                                                 } else if ($row['VISIT_STATUS'] == '2') {
