@@ -12,12 +12,59 @@
     }
 </style>
 
+<?php
+$START_DATE = date("01/m/Y");
+$END_DATE = date("t/m/Y");
+
+
+// VISIT PLAN QUERY START
+$totalvisitQuery = "SELECT (SELECT COUNT (ID)
+FROM VISIT_ASSIGN
+WHERE USER_ID = '$log_user_id'
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('01/02/2024','DD/MM/YYYY')
+    AND TO_DATE ('$END_DATE', 'DD/MM/YYYY')
+    AND PRODUCT_BRAND_ID = 1)
+AS TOTAL_VISIT_OF_MAHINDRA,
+(SELECT COUNT (ID)
+FROM VISIT_ASSIGN
+WHERE USER_ID = '$log_user_id'
+    AND VISIT_STATUS = 1
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('01/02/2024',  'DD/MM/YYYY')
+    AND TO_DATE ('29/02/2024','DD/MM/YYYY')
+    AND PRODUCT_BRAND_ID = 1)
+AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA,
+(SELECT COUNT (ID)
+FROM VISIT_ASSIGN
+WHERE USER_ID = '$log_user_id'
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('01/02/2024','DD/MM/YYYY')
+    AND TO_DATE ('$END_DATE', 'DD/MM/YYYY')
+    AND PRODUCT_BRAND_ID = 2)
+AS TOTAL_VISIT_OF_EICHER,
+(SELECT COUNT (ID)
+FROM VISIT_ASSIGN
+WHERE USER_ID = '$log_user_id'
+    AND VISIT_STATUS = 1
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$START_DATE', 'DD/MM/YYYY')
+    AND TO_DATE ('$END_DATE', 'DD/MM/YYYY')
+    AND PRODUCT_BRAND_ID = 2)
+AS TOTAL_COMPLETE_VISIT_OF_EICHER
+FROM DUAL";
+
+
+$totalvisitSQL = @oci_parse($objConnect, $totalvisitQuery);
+@oci_execute($totalvisitSQL);
+$visit_plan_month_wise_data = array(); // Initialize the array
+while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
+    array_push($visit_plan_month_wise_data, $totalvisitRow);
+}
+// VISIT PLAN QUERY END
+
+?>
+
 <div class="page-wrapper">
     <div class="page-content">
-
-
         <div class="card">
-            <div class="card-body" style="padding:0 1%">
+            <div class="card-body">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
@@ -50,7 +97,9 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit Plan</p>
-                                                <h4 class="my-1 text-white"> 0 </h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_VISIT_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_VISIT_OF_MAHINDRA'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
@@ -66,7 +115,9 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Visit Complete</p>
-                                                <h4 class="my-1 text-white">50 </h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_COMPLETE_VISIT_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_COMPLETE_VISIT_OF_MAHINDRA'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
@@ -119,7 +170,9 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit Plan</p>
-                                                <h4 class="my-1 text-white">200</h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_VISIT_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_VISIT_OF_EICHER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
@@ -135,7 +188,10 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Visit Complete</p>
-                                                <h4 class="my-1 text-white">0 </h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_COMPLETE_VISIT_OF_EICHER']) ?
+                                                        $visit_plan_month_wise_data[0]['TOTAL_COMPLETE_VISIT_OF_EICHER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
@@ -184,7 +240,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-body" style="padding:0 1%">
+            <div class="card-body">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome2" role="tab" aria-selected="true">
@@ -405,7 +461,7 @@
         </div>end row-->
 
 
-       <!-- <div class="row">
+        <!-- <div class="row">
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
                     <div class="card-header">
