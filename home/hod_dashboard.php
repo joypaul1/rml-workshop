@@ -12,7 +12,11 @@
     }
 </style>
 
-
+<?php
+$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    : 0;
+?>
 <div class="page-wrapper">
     <div class="page-content">
 
@@ -429,9 +433,23 @@
                     <div class="card-body">
                         <div class="categories-list">
                             <?php
-                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                            WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID=$log_user_id";
+                            // $cooquery = "SELECT DISTINCT UP.IMAGE_LINK, UP.USER_NAME, UP.USER_MOBILE
+                            // FROM USER_PROFILE UP
+                            // INNER JOIN USER_MANPOWER_SETUP UMS ON UP.ID = UMS.USER_ID
+                            // LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID =UP.ID
+                            // WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                            // AND UBS.STATUS = 1
+                            // AND UP.USER_TYPE_ID = 3  FETCH FIRST 8 ROWS ONLY";
+                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
+                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                                            WHERE A.USER_ID=B.ID
+                                            AND PARENT_USER_ID IN
+                                            (
+                                            SELECT A.USER_ID
+                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                                            WHERE A.USER_ID=B.ID
+                                            AND PARENT_USER_ID = $log_user_id
+                                            ) FETCH FIRST 8 ROWS ONLY";
                             $coordinatorSQL = oci_parse($objConnect, $cooquery);
                             @oci_execute($coordinatorSQL);
                             while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
