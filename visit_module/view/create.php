@@ -39,8 +39,8 @@ if (isset($_POST['retailer_type'])) {
                                 <label class="form-label"> Retailer Type:</label>
                                 <select name="retailer_type" class="form-control 
                                 text-center single-select">
-                                    <option value="4" <?php echo isset($retailer_type) && $retailer_type == 4 ? 'Selected' : '' ?>> Plaza Retiler </option>
-                                    <option value="5" <?php echo isset($retailer_type) && $retailer_type == 5 ? 'Selected' : '' ?>> Retiler</option>
+                                    <option value="4" <?php echo isset($retailer_type) && $retailer_type == 4 ? 'Selected' : '' ?>> Plaza Retailer </option>
+                                    <option value="5" <?php echo isset($retailer_type) && $retailer_type == 5 ? 'Selected' : '' ?>> Retailer</option>
 
                                 </select>
                             </div>
