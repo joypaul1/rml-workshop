@@ -1,8 +1,6 @@
 <?php
 include_once('../../_helper/2step_com_conn.php');
 $number = 0;
-
-$USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
 ?>
 
 <!--start page wrapper -->
@@ -121,34 +119,45 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                                     (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE ,
                                                     (SELECT TITLE FROM PLAZA_PARENT WHERE ID = UP.PLAZA_PARENT_ID) AS PLAZA_PARENT_TYPE ,
                                                     LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
-                                            FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
-                                            WHERE  UBS.USER_PROFILE_ID = UP.ID 
-                                            AND UP.ID = UMS.USER_ID
-                                            AND    UBS.STATUS = 1
-                                            AND     UP.USER_STATUS = 1
-                                            AND UMS.PARENT_ID = $USER_LOGIN_ID
+                                            FROM USER_PROFILE UP
+                                            LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                            AND  UBS.STATUS = 1
+                                            WHERE UP.USER_STATUS = 1
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
                                     } else {
 
+                                        $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
                                         $query = "SELECT UP.ID,
-                                                    UP.USER_NAME,
-                                                    UP.USER_MOBILE,
-                                                    UP.RML_IDENTITY_ID AS RML_ID,
-                                                    UP.LAT,
-                                                    UP.LANG,
-                                                    UP.CREATED_DATE,
-                                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE ,
-                                                    (SELECT TITLE FROM PLAZA_PARENT WHERE ID = UP.PLAZA_PARENT_ID) AS PLAZA_PARENT_TYPE ,
-                                                    LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
-                                            FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
-                                            WHERE  UBS.USER_PROFILE_ID = UP.ID 
-                                            AND UP.ID = UMS.USER_ID
-                                            AND    UBS.STATUS = 1
-                                            AND     UP.USER_STATUS = 1
-                                            AND UMS.PARENT_ID = $USER_LOGIN_ID
-                                            AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
+                                                            UP.USER_NAME,
+                                                            UP.USER_MOBILE,
+                                                            UP.RML_IDENTITY_ID AS RML_ID,
+                                                            UP.LAT,
+                                                            UP.LANG,
+                                                            UP.CREATED_DATE,
+                                                            UP.CREATED_DATE,
+                                                            (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID)
+                                                            AS USER_TYPE,
+                                                            (SELECT TITLE FROM PLAZA_PARENT WHERE ID = UP.PLAZA_PARENT_ID) AS PLAZA_PARENT_TYPE ,
+                                                            LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID)
+                                                            AS USER_BRANDS
+                                                    FROM USER_PROFILE UP
+                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                    WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                                    AND  UBS.STATUS = 1
+                                                    AND UP.USER_STATUS = 1";
 
-                                      
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (3,4,5)";
+                                        }
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (4,5)";
+                                        }
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'RETAILER') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (5,6)";
+                                        }
+                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'MECHANICS') {
+                                            $query .= " AND UP.USER_TYPE_ID IN (6)";
+                                        }
                                     }
 
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {

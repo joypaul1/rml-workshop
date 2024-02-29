@@ -124,10 +124,10 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                             FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
                                             WHERE  UBS.USER_PROFILE_ID = UP.ID 
                                             AND UP.ID = UMS.USER_ID
-                                            AND    UBS.STATUS = 1
-                                            AND     UP.USER_STATUS = 1
-                                            AND UMS.PARENT_ID = $USER_LOGIN_ID
-                                            AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
+                                            AND UBS.STATUS = 1
+                                            AND UP.USER_STATUS = 1
+                                            --AND UMS.PARENT_USER_ID = $USER_LOGIN_ID
+                                           ";
                                     } else {
 
                                         $query = "SELECT UP.ID,
@@ -145,8 +145,8 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                             AND UP.ID = UMS.USER_ID
                                             AND    UBS.STATUS = 1
                                             AND     UP.USER_STATUS = 1
-                                            AND UMS.PARENT_USER_ID = $USER_LOGIN_ID
-                                            AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
+                                            --AND UMS.PARENT_USER_ID = $USER_LOGIN_ID
+                                            ";
 
                                       
                                     }
@@ -154,6 +154,8 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
                                         $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
+                                    }else{
+                                        $query .= " AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
                                     }
 
                                     if (isset($_POST['USER_MOBILE']) && !empty($_POST['USER_MOBILE'])) {
