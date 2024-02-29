@@ -145,7 +145,7 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                             AND UP.ID = UMS.USER_ID
                                             AND    UBS.STATUS = 1
                                             AND     UP.USER_STATUS = 1
-                                            AND UMS.PARENT_USER_ID = $USER_LOGIN_ID
+                                            AND UMS.PARENT_ID = $USER_LOGIN_ID
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
 
                                       
@@ -162,7 +162,6 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                     }
 
                                     $query .= " GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UP.USER_TYPE_ID, UP.PLAZA_PARENT_ID ORDER BY UP.USER_TYPE_ID";
-                                    // ECHO $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
