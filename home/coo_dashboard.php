@@ -403,7 +403,11 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                             ?>
                                 <div class="d-flex align-items-center justify-content-between gap-3">
                                     <div class="">
-                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                        <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
+                                            echo '<img src="' . $sfcmBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . ' class="product-img-2" alt="no_image">';
+                                        } else {
+                                            echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="no_image" class="product-img-2">';
+                                        } ?>
                                     </div>
                                     <div class="flex-grow-1">
                                         <p class="mb-2">
@@ -449,7 +453,11 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                             ?>
                                 <div class="d-flex align-items-center justify-content-between gap-3">
                                     <div class="">
-                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                        <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
+                                            echo '<img src="' . $sfcmBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . ' class="product-img-2" alt="no_image">';
+                                        } else {
+                                            echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="no_image" class="product-img-2">';
+                                        } ?>
                                     </div>
                                     <div class="flex-grow-1">
                                         <p class="mb-2">
@@ -468,6 +476,61 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
             </div>
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <h6 class="mb-0"> Retailer List</h6>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body" style="height:380px; overflow: auto;">
+                        <div class="categories-list">
+                            <?php
+                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
+                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                            WHERE A.USER_ID=B.ID
+                            AND PARENT_USER_ID IN
+                            (SELECT USER_ID
+                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                            WHERE A.USER_ID=B.ID
+                            AND PARENT_USER_ID IN
+                            (
+                            SELECT A.USER_ID
+                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                            WHERE A.USER_ID=B.ID
+                            AND PARENT_USER_ID= '$log_user_id'
+                            )
+                            ) FETCH FIRST 8 ROWS ONLY";
+                            $coordinatorSQL = oci_parse($objConnect, $cooquery);
+                            @oci_execute($coordinatorSQL);
+                            while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
+                            ?>
+                                <div class="d-flex align-items-center justify-content-between gap-3">
+                                    <div class="">
+                                        <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
+                                            echo '<img src="' . $sfcmBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . ' class="product-img-2" alt="no_image">';
+                                        } else {
+                                            echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="no_image" class="product-img-2">';
+                                        } ?>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-2">
+                                            <?php echo $coodinatorRow['USER_NAME'] ?>
+                                            <br>
+                                            <?php echo $coodinatorRow['USER_MOBILE'] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                            <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-12 col-lg-4 d-flex">
+                <div class="card rounded-4 w-100">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div>
@@ -478,7 +541,7 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                         <div id="chart2"></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div><!--end row-->
 
 

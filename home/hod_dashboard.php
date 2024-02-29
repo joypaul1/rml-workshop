@@ -403,7 +403,11 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                             ?>
                                 <div class="d-flex align-items-center justify-content-between gap-3">
                                     <div class="">
-                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                        <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
+                                            echo '<img src="' . $sfcmBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . ' class="product-img-2" alt="no_image">';
+                                        } else {
+                                            echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="no_image" class="product-img-2">';
+                                        } ?>
                                     </div>
                                     <div class="flex-grow-1">
                                         <p class="mb-2">
@@ -433,13 +437,6 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                     <div class="card-body" style="height:380px; overflow: auto;">
                         <div class="categories-list">
                             <?php
-                            // $cooquery = "SELECT DISTINCT UP.IMAGE_LINK, UP.USER_NAME, UP.USER_MOBILE
-                            // FROM USER_PROFILE UP
-                            // INNER JOIN USER_MANPOWER_SETUP UMS ON UP.ID = UMS.USER_ID
-                            // LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID =UP.ID
-                            // WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                            // AND UBS.STATUS = 1
-                            // AND UP.USER_TYPE_ID = 3  FETCH FIRST 8 ROWS ONLY";
                             $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
                                             FROM USER_MANPOWER_SETUP A,USER_PROFILE B
                                             WHERE A.USER_ID=B.ID
@@ -456,7 +453,11 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                             ?>
                                 <div class="d-flex align-items-center justify-content-between gap-3">
                                     <div class="">
-                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                        <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
+                                            echo '<img src="' . $sfcmBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . ' class="product-img-2" alt="no_image">';
+                                        } else {
+                                            echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="no_image" class="product-img-2">';
+                                        } ?>
                                     </div>
                                     <div class="flex-grow-1">
                                         <p class="mb-2">
