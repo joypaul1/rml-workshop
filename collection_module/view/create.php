@@ -32,11 +32,7 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
             include "../../_includes/com_header.php";
             ?>
             <div class="card card-body">
-                <form action="<?php echo htmlspecialchars(
-                                    $_SERVER["PHP_SELF"],
-                                    ENT_QUOTES,
-                                    "UTF-8"
-                                ); ?>" method="GET">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"], ENT_QUOTES, "UTF-8"); ?>" method="GET">
                     <div class="row justify-content-center align-items-center">
                         <div class="col-sm-6 col-md-3">
                             <label for="validationCustom06" class="form-label"> Sale Executive : <span class="text-danger">*</span> </label>

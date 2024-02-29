@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         foreach ($user_ids as $key => $user_id) {
             $user_remark    = $user_remarks[$key];
             $user_brand_id  = key($user_brand_ids[$key]);
-            $query = "INSERT INTO VISIT_ASSIGN (USER_ID, VISIT_DATE, USER_REMARKS,RETAILER_ID, VISIT_TYPE_ID, ENTRY_DATE, ENTRY_BY_ID, PRODUCT_BRAND_ID) VALUES ('$log_user_id',TO_DATE('$VISIT_DATE','yyyy-mm-dd') , '$user_remark','$user_id','$VISIT_TYPE_ID',SYSDATE,'$ENTRY_BY_ID', $user_brand_id)";
+            $query = "INSERT INTO VISIT_ASSIGN (USER_ID, VISIT_DATE, USER_REMARKS,RETAILER_ID, VISIT_TYPE_ID, ENTRY_DATE, ENTRY_BY_ID, PRODUCT_BRAND_ID, VISIT_STATUS) VALUES ('$log_user_id',TO_DATE('$VISIT_DATE','yyyy-mm-dd') , '$user_remark','$user_id','$VISIT_TYPE_ID',SYSDATE,'$ENTRY_BY_ID', $user_brand_id,0)";
 
             $strSQL = @oci_parse($objConnect, $query);
             // Execute the query
