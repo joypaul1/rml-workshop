@@ -13,10 +13,12 @@ include_once('../../_helper/2step_com_conn.php');
 $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     : 0;
+$USER_LOGIN_ID =  $_SESSION["USER_SFCM_INFO"]["ID"];
 $brandquery = "SELECT ID, TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS = 1 ORDER BY ID ASC";
 $F_SALE_EXECUTIVE_ID = isset($_GET['F_SALE_EXECUTIVE']) ? $_GET['F_SALE_EXECUTIVE'] : null;
 $F_PLAZA_RETAILER_ID = isset($_GET['F_PLAZA_RETAILER']) ? $_GET['F_PLAZA_RETAILER'] : null;
 $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
+
 ?>
 
 <!--start page wrapper -->
@@ -25,7 +27,6 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
 
         <div class="card rounded-4">
             <?php
-
             $headerType = "List";
             $leftSideName = "Set Collection Target Amount";
             include "../../_includes/com_header.php";
@@ -45,13 +46,13 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                 $executiveRow = [];
                                 $F_SALE_EXECUTIVE = isset($_GET["F_SALE_EXECUTIVE"]) ? $_GET["F_SALE_EXECUTIVE"] : 0;
                                 $executiveQuery = "SELECT DISTINCT UP.ID, UP.USER_NAME, UP.USER_MOBILE
-                                                FROM USER_PROFILE UP
-                                                INNER JOIN USER_MANPOWER_SETUP UMS ON UP.ID = UMS.USER_ID
-                                                LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID =UP.ID
-                                                WHERE UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                                AND UBS.STATUS = 1
-                                                AND UP.USER_TYPE_ID = 3";
+                                                    FROM USER_PROFILE UP, USER_MANPOWER_SETUP UMS
+                                                    WHERE UP.ID = UMS.USER_ID
+                                                    AND  UP.USER_TYPE_ID = 3";
 
+                                if ($_SESSION["USER_SFCM_INFO"]["USER_TYPE"] == "COORDINATOR") {
+                                    $executiveQuery .= " AND UMS.USER_ID = UP.ID AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
+                                }
                                 $executiveSql = @oci_parse($objConnect, $executiveQuery);
                                 @oci_execute($executiveSql);
                                 while (
