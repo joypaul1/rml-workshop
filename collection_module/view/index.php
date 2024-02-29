@@ -148,17 +148,16 @@ $v_end_date   = date('t/m/Y');
                                             UNION ALL
                                             SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE
                                                 A.USER_ID = B.ID
-                                                AND PARENT_USER_ID IN (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID = B.ID
-                                                    AND PARENT_USER_ID IN ( SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$USER_LOGIN_ID'
+                                                AND PARENT_USER_ID IN
+                                                (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID = B.ID  AND PARENT_USER_ID IN
+                                                    (SELECT A.USER_ID USER_MANPOWER_SETUP A, USER_PROFILE B  WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$USER_LOGIN_ID'
                                                     )
                                                 )
                                             )
                                         )
                                         AND UP.ID = CA.USER_ID
                                         AND TRUNC (CA.START_DATE) >= TO_DATE ('01/02/2024', 'DD/MM/YYYY')
-                                        AND TRUNC (CA.END_DATE) <= TO_DATE ('29/02/2024', 'DD/MM/YYYY')
-                                      ";
+                                        AND TRUNC (CA.END_DATE) <= TO_DATE ('29/02/2024', 'DD/MM/YYYY')";
                                     } else {
                                         $query =  "SELECT
                                         CA.ID,
