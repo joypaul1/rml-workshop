@@ -391,12 +391,12 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
 
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="height:380px; overflow: auto;">
                         <div class="categories-list">
                             <?php
                             $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
                             WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID=$log_user_id";
+                            AND PARENT_USER_ID=$log_user_id FETCH FIRST 8 ROWS ONLY";
                             $coordinatorSQL = oci_parse($objConnect, $cooquery);
                             @oci_execute($coordinatorSQL);
                             while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
@@ -430,7 +430,7 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
 
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="height:380px; overflow: auto;">
                         <div class="categories-list">
                             <?php
                             // $cooquery = "SELECT DISTINCT UP.IMAGE_LINK, UP.USER_NAME, UP.USER_MOBILE
