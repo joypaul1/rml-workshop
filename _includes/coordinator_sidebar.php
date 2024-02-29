@@ -62,8 +62,8 @@
                         <div class="menu-title">Visit Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Visit </a>
-                        </li>
+                        <!-- <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Visit </a>
+                        </li> -->
                         <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Visit </a>
                         </li>
                     </ul>
