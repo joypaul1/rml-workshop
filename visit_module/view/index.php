@@ -37,16 +37,48 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 <select name="retailer" class="form-control single-select">
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
-                                                    $query = "SELECT UP.ID, UMP.USER_ID, UP.USER_NAME, UP.DISTRICT_ID
+                                                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
+                                                        $query = "SELECT  DISTINCT
+                                                        (SELECT DISTINCT UP.USER_NAME
+                                                         FROM USER_PROFILE UP
+                                                         WHERE UP.ID = VA.RETAILER_ID) AS USER_NAME,
+                                                        (SELECT DISTINCT UP.ID
+                                                         FROM USER_PROFILE UP
+                                                         WHERE UP.ID = VA.RETAILER_ID) AS ID
+                                                    FROM 
+                                                        VISIT_ASSIGN VA
+                                                    WHERE 
+                                                        VA.USER_ID IN (
+                                                            SELECT DISTINCT B.ID
+                                                            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                                            WHERE A.USER_ID = B.ID
+                                                            AND PARENT_USER_ID IN (
+                                                                SELECT DISTINCT A.USER_ID
+                                                                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                                                WHERE A.USER_ID = B.ID 
+                                                                AND PARENT_USER_ID = '$log_user_id'
+                                                            )
+                                                        )";
+                                                    } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
+                                                        $query = "SELECT DISTINCT UP.ID, UP.USER_NAME
+                                                                    FROM VISIT_ASSIGN VA, USER_PROFILE UP
+                                                                    WHERE VA.USER_ID IN (
+                                                                        SELECT A.USER_ID
+                                                                        FROM USER_MANPOWER_SETUP A
+                                                                        WHERE   A.PARENT_USER_ID = '$log_user_id'
+                                                                    ) AND UP.ID = VA.USER_ID";
+                                                    } else {
+                                                        $query = "SELECT UP.ID, UMP.USER_ID, UP.USER_NAME
                                                     FROM USER_MANPOWER_SETUP UMP
                                                     INNER JOIN USER_PROFILE UP ON UMP.USER_ID = UP.ID
                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                     WHERE UBS.STATUS = 1
-                                                    AND (UMP.PARENT_USER_ID = $log_user_id
+                                                    AND (UMP.PARENT_USER_ID = '$log_user_id'
                                                         OR UMP.PARENT_USER_ID IN
                                                         (SELECT UMP.USER_ID FROM USER_MANPOWER_SETUP UMS
                                                         INNER JOIN USER_PROFILE UP ON UMS.USER_ID = UP.ID
-                                                        WHERE UMS.PARENT_USER_ID = $log_user_id))";
+                                                        WHERE UMS.PARENT_USER_ID = '$log_user_id'))";
+                                                    }
 
                                                     $strSQL = @oci_parse($objConnect, $query);
                                                     @oci_execute($strSQL);
