@@ -14,6 +14,7 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     : 0;
+$USER_LOGIN_ID = $_SESSION["USER_SFCM_INFO"]["ID"];
 $v_start_date = date('01/m/Y');
 $v_end_date   = date('t/m/Y');
 ?>
@@ -75,6 +76,7 @@ $v_end_date   = date('t/m/Y');
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
+                    // ECHO $USER_LOGIN_ID ;
                     $headerType    = 'List';
                     $leftSideName  = 'Collection Target List';
                     $rightSideName = 'Collection Target Create';
@@ -107,7 +109,30 @@ $v_end_date   = date('t/m/Y');
                                     if (isset($_POST['end_date'])) {
                                         $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
                                     }
-                                    $query = "SELECT CA.ID,
+                                    // $query = "SELECT CA.ID,
+                                    // CA.START_DATE,
+                                    // CA.END_DATE,
+                                    // CA.TARGET_AMOUNT,
+                                    // CA.STATUS,
+                                    // CA.REMARKS,
+                                    // UP.USER_NAME,
+                                    // (SELECT TITLE
+                                    // FROM PRODUCT_BRAND PB
+                                    // WHERE PB.ID = CA.BRAND_ID)
+                                    // AS BRAND_NAME,
+                                    // (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
+                                    // FROM COLLECTION_ASSIGN CA
+                                    // INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
+                                    // WHERE  CA.BRAND_ID IN ($USER_BRANDS)
+                                    // AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+                                    // AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
+                                    // if (isset($_POST['f_retailer_type'])) {
+                                    //     $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
+                                    // }
+                                    // $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
+                                    // echo  $query;
+                                    $query =  "SELECT
+                                    CA.ID,
                                     CA.START_DATE,
                                     CA.END_DATE,
                                     CA.TARGET_AMOUNT,
@@ -119,16 +144,27 @@ $v_end_date   = date('t/m/Y');
                                     WHERE PB.ID = CA.BRAND_ID)
                                     AS BRAND_NAME,
                                     (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                                    FROM COLLECTION_ASSIGN CA
-                                    INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
-                                    WHERE  CA.BRAND_ID IN ($USER_BRANDS)
+                                    FROM COLLECTION_ASSIGN  CA,USER_PROFILE UP WHERE CA.USER_ID IN (SELECT ID USER_ID
+                                    FROM (SELECT B.ID
+                                        FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                        WHERE A.USER_ID = B.ID
+                                        AND PARENT_USER_ID IN
+                                        (SELECT USER_ID
+                                        FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                        WHERE A.USER_ID = B.ID
+                                        AND PARENT_USER_ID IN
+                                        (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,  USER_PROFILE B
+                                        WHERE A.USER_ID = B.ID  AND PARENT_USER_ID = '$USER_LOGIN_ID'))
+                                    UNION ALL
+                                        SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                        (SELECT A.USER_ID
+                                        FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$USER_LOGIN_ID')))
+                                    AND UP.ID = CA.USER_ID
                                     AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
                                     AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
-                                    if (isset($_POST['f_retailer_type'])) {
-                                        $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
-                                    }
-                                    $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-                                    echo  $query;
+                                    // echo  $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -240,10 +276,11 @@ include_once('../../_includes/footer.php');
     });
 
     $('.datepicker').pickadate({
-        selectMonths: true,
-        selectYears: true,
+        selectMonths: true, // Enable month selection
+        selectYears: false, // Disable year selection
         format: 'dd-mm-yyyy' // Specify your desired date format
     });
+
 
     function exportF(elem) {
         var table = document.getElementById("downloadData");

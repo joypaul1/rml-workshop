@@ -67,7 +67,7 @@ $number = 0;
                                     <?php
                                     }
                                     if ($number == 0) {
-                                        echo '<tr><td colspan="9" class="text-center text-danger fw-bold">No Data Found !</td></tr>';
+                                        echo '<tr><td colspan="9" class="text-center text-danger fw-bold"> !</td></tr>';
                                     } ?>
                                 </tbody>
                             </table>
