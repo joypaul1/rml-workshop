@@ -8,21 +8,20 @@ $dynamic_link_js[]  = '../assets/js/index2.js';
 include_once('../_helper/com_conn.php');
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 $user_type_brand_wise_data = [];
+
 // COUNT QUERY USER TYPE WISE
-$query = "SELECT b.ID, b.TITLE,
+$query = "SELECT UT.ID, UT.TITLE,
           COUNT(USER_TYPE_ID) AS TOTAL_USER,
-          NUMBER_OF_USER(1, b.ID) AS MAHINDRA_USER,
-          NUMBER_OF_USER(2, b.ID) AS EICHER_USER
-          FROM USER_PROFILE a, USER_TYPE b
-          WHERE a.USER_STATUS = 1
-          AND a.USER_TYPE_ID = b.ID
-          GROUP BY b.ID, b.TITLE";
+          NUMBER_OF_USER(1, UT.ID) AS MAHINDRA_USER,
+          NUMBER_OF_USER(2, UT.ID) AS EICHER_USER
+          FROM USER_PROFILE UP, USER_TYPE UT
+          WHERE UP.USER_STATUS = 1
+          AND UP.USER_TYPE_ID = UT.ID
+          GROUP BY UT.ID, UT.TITLE";
 
 $brandSQL = oci_parse($objConnect, $query);
 oci_execute($brandSQL);
-
 $user_type_brand_wise_data = array(); // Initialize the array
-
 while ($brandRow = oci_fetch_assoc($brandSQL)) {
     array_push($user_type_brand_wise_data, $brandRow);
 }

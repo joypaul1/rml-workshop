@@ -12,12 +12,17 @@
     }
 </style>
 
+<?php
+$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    : 0;
+?>
 <div class="page-wrapper">
     <div class="page-content">
 
 
         <div class="card">
-            <div class="card-body" style="padding:0 1%">
+            <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
@@ -184,7 +189,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-body" style="padding:0 1%">
+            <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome2" role="tab" aria-selected="true">
@@ -262,7 +267,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['MAHINDRA_USER'] ?></h4>
-                                                <p class="mb-0 text-white">RETAILER</p>
+                                                <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class="bx bx-bell"></i>
@@ -277,7 +282,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['MAHINDRA_USER'] ?></h4>
-                                                <p class="mb-0 text-white">MECHANICS</p>
+                                                <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class='bx bxs-sort-alt'></i>
@@ -342,7 +347,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['EICHER_USER'] ?></h4>
-                                                <p class="mb-0 text-white">RETAILER</p>
+                                                <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class="bx bx-bell"></i>
@@ -357,7 +362,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
                                                 <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['EICHER_USER'] ?></h4>
-                                                <p class="mb-0 text-white">MECHANICS</p>
+                                                <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
                                                 <i class='bx bxs-sort-alt'></i>
@@ -376,16 +381,88 @@
 
         <!--end row-->
         <div class="row">
-            <div class="col-12 col-lg-8 d-flex">
+            <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-cente">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Collection Overview [DEMO DATA]</h6>
+                                <h6 class="mb-0">Sale Executive List </h6>
                             </div>
 
                         </div>
-                        <div id="chart1"></div>
+                    </div>
+                    <div class="card-body" style="height:380px; overflow: auto;">
+                        <div class="categories-list">
+                            <?php
+                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                            WHERE A.USER_ID=B.ID
+                            AND PARENT_USER_ID=$log_user_id FETCH FIRST 8 ROWS ONLY";
+                            $coordinatorSQL = oci_parse($objConnect, $cooquery);
+                            @oci_execute($coordinatorSQL);
+                            while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
+                            ?>
+                                <div class="d-flex align-items-center justify-content-between gap-3">
+                                    <div class="">
+                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-2">
+                                            <?php echo $coodinatorRow['USER_NAME'] ?>
+                                            <br>
+                                            <?php echo $coodinatorRow['USER_MOBILE'] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                            <?php } ?>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 d-flex">
+                <div class="card rounded-4 w-100">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <h6 class="mb-0"> Plaza Retailer List</h6>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body" style="height:380px; overflow: auto;">
+                        <div class="categories-list">
+                            <?php
+                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
+                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                                            WHERE A.USER_ID=B.ID
+                                            AND PARENT_USER_ID IN
+                                            (
+                                            SELECT A.USER_ID
+                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+                                            WHERE A.USER_ID=B.ID
+                                            AND PARENT_USER_ID = $log_user_id
+                                            ) FETCH FIRST 8 ROWS ONLY";
+                            $coordinatorSQL = oci_parse($objConnect, $cooquery);
+                            @oci_execute($coordinatorSQL);
+                            while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
+                            ?>
+                                <div class="d-flex align-items-center justify-content-between gap-3">
+                                    <div class="">
+                                        <img src="<?php echo $sfcmBasePath . '/' . $coodinatorRow['IMAGE_LINK'] ?>" class="product-img-2" alt="img">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-2">
+                                            <?php echo $coodinatorRow['USER_NAME'] ?>
+                                            <br>
+                                            <?php echo $coodinatorRow['USER_MOBILE'] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                            <?php } ?>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -406,155 +483,17 @@
 
 
         <div class="row">
-            <div class="col-12 col-lg-4 d-flex">
+
+            <div class="col-12 col-lg-8 d-flex">
                 <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Top Retailer [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                    </div>
                     <div class="card-body">
-                        <div class="categories-list">
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/01.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-cosmic" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/02.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/03.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/04.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-kyoto" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/05.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-blues" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-cente">
                             <div>
-                                <h6 class="mb-0">Top Sale Executive [DEMO DATA]</h6>
+                                <h6 class="mb-0">Collection Overview [DEMO DATA]</h6>
                             </div>
 
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="categories-list">
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/01.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-cosmic" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/02.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/03.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/04.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-kyoto" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/05.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-blues" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
+                        <div id="chart1"></div>
                     </div>
                 </div>
             </div>
@@ -618,7 +557,7 @@
             </div>
         </div><!--end row-->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
                     <div class="card-header">
@@ -674,7 +613,8 @@
                 </div>
             </div>
 
-        </div><!--end row-->
+        </div> -->
+        <!--end row-->
 
         <div class="row">
             <div class="col-12">

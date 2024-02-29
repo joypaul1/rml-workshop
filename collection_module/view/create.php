@@ -137,19 +137,6 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                             AND UBS.PRODUCT_BRAND_ID IN ($brandID)
                                             AND UMP.PARENT_USER_ID = $F_SALE_EXECUTIVE_ID";
 
-                                            // if (isset($_GET["F_BRAND_ID"])) {
-                                            //     if ($_GET["F_BRAND_ID"]) {
-                                            //         $query .=
-                                            //             " AND UBS.PRODUCT_BRAND_ID = " .
-                                            //             $_GET["F_BRAND_ID"];
-                                            //     }
-                                            // }
-                                            // if (isset($_GET["F_USER_MOBILE"])) {
-                                            //     if ($_GET["F_USER_MOBILE"]) {
-                                            //         $query .= " AND UP.USER_MOBILE LIKE '%" . $_GET["F_USER_MOBILE"] . "%'";
-                                            //     }
-                                            // }
-
                                             $strSQL = oci_parse(
                                                 $objConnect,
                                                 $query

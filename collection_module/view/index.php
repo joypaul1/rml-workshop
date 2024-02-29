@@ -128,7 +128,7 @@ $v_end_date   = date('t/m/Y');
                                         $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
                                     }
                                     $query .= " ORDER BY CA.START_DATE ASC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-                                    // echo  $query;
+                                    echo  $query;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);

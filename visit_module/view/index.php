@@ -195,9 +195,10 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <ul class="pagination round-pagination">
                                         <?php
                                         $countQuery = "SELECT  COUNT(VA.ID) AS total
-                                                    FROM VISIT_ASSIGN VA WHERE VA.RETAILER_ID = '$log_user_id'
+                                                    FROM VISIT_ASSIGN VA WHERE VA.USER_ID = '$log_user_id'
                                                     AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                                     ";
+                                    
                                         // check retailer data exist 
                                         if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
                                             $retailerID = $_POST['retailer'];

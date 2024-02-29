@@ -44,11 +44,13 @@
                         <div class="menu-title">Collection Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Collection </a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Assign Collection </a>
+                        </li>
+
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of  Assign  </a>
+
                         </li>
                         <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/excel_upload.php"><i class='bx bxs-arrow-to-right'></i> Excel Upload </a>
-                        </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Collection </a>
                         </li>
                     </ul>
                 </li>
@@ -100,7 +102,7 @@
                         <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/plaza_retailer_type.php"><i class='bx bxs-arrow-to-right'></i> Plaza Retailer Type </a>
                         </li>
                         <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/disctrict.php"><i class='bx bxs-arrow-to-right'></i> Districts Name Config.</a>
-                        </li> 
+                        </li>
                     </ul>
                 </li>
 
