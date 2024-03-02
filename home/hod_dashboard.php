@@ -18,34 +18,178 @@ $v_end_date = date("t/m/Y");
 
 //visit row
 $totalvisitQuery = "SELECT
-     (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
-     FROM VISIT_ASSIGN VA WHERE PRODUCT_BRAND_ID = 1 AND  VA.USER_ID IN
-         (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-         (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,
-         USER_PROFILE B WHERE  A.USER_ID = B.ID
-         AND PARENT_USER_ID = $log_user_id))
-         AND TRUNC (VA.VISIT_DATE)
-         BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
- GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_MAHINDRA,
- /*  TOTAL_VISIT_OF_MAHINDRA */
- (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
- FROM VISIT_ASSIGN VA
- WHERE PRODUCT_BRAND_ID = 2 AND  VA.USER_ID IN
-     (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-     WHERE A.USER_ID = B.ID
-     AND PARENT_USER_ID IN
-         (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,
-         USER_PROFILE B WHERE A.USER_ID = B.ID
-         AND PARENT_USER_ID = $log_user_id))
-         AND TRUNC (VA.VISIT_DATE)
-         BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
-GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_EICHER
+    /* START TOTAL_VISIT_OF_MAHINDRA */
+    (
+        SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_MAHINDRA
+        FROM VISIT_ASSIGN VA
+        WHERE PRODUCT_BRAND_ID = 1
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_VISIT_OF_MAHINDRA,
+    /* END TOTAL_VISIT_OF_MAHINDRA */
+
+    /* START TOTAL_VISIT_OF_EICHER */
+    (
+        SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_EICHER
+        FROM VISIT_ASSIGN VA
+        WHERE PRODUCT_BRAND_ID = 2
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_VISIT_OF_EICHER,
+    /* END TOTAL_VISIT_OF_EICHER */
+
+    /* START TOTAL_COMPLETE_VISIT_OF_MAHINDRA */
+    (
+        SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA
+        FROM VISIT_ASSIGN VA
+        WHERE VA.VISIT_STATUS = 1
+        AND PRODUCT_BRAND_ID = 1
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA,
+    /* END TOTAL_COMPLETE_VISIT_OF_MAHINDRA */
+
+    /* START TOTAL_COMPLETE_VISIT_OF_EICHER */
+    (
+        SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_COMPLETE_VISIT_OF_EICHER
+        FROM VISIT_ASSIGN VA
+        WHERE VA.VISIT_STATUS = 1
+        AND PRODUCT_BRAND_ID = 2
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_COMPLETE_VISIT_OF_EICHER,
+    /* END TOTAL_COMPLETE_VISIT_OF_EICHER */
+
+    /* START TOTAL_COLLECTION_OF_MAHINDRA */
+    (
+        SELECT NVL(SUM(VA.COLLECTION_AMOUNT_COLLECTED), 0) AS TOTAL_COLLECTION_OF_MAHINDRA
+        FROM VISIT_ASSIGN VA
+        WHERE PRODUCT_BRAND_ID = 1
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_COLLECTION_OF_MAHINDRA,
+    /* END TOTAL_COLLECTION_OF_MAHINDRA */
+
+    /* START TOTAL_COLLECTION_OF_EICHER */
+    (
+        SELECT NVL(SUM(VA.COLLECTION_AMOUNT_COLLECTED), 0) AS TOTAL_COLLECTION_OF_EICHER
+        FROM VISIT_ASSIGN VA
+        WHERE PRODUCT_BRAND_ID = 2
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_COLLECTION_OF_EICHER,
+    /* END TOTAL_COLLECTION_OF_EICHER */
+
+    /* START TOTAL_SALES_OF_MAHINDRA */
+    (
+        SELECT NVL(SUM(VA.SALES_AMOUNT_COLLECTED), 0) AS TOTAL_SALES_OF_MAHINDRA
+        FROM VISIT_ASSIGN VA
+        WHERE PRODUCT_BRAND_ID = 1
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_SALES_OF_MAHINDRA,
+    /* END TOTAL_SALES_OF_MAHINDRA */
+
+    /* START TOTAL_SALES_OF_EICHER */
+    (
+        SELECT NVL(SUM(VA.SALES_AMOUNT_COLLECTED), 0) AS TOTAL_SALES_OF_EICHER
+        FROM VISIT_ASSIGN VA
+        WHERE PRODUCT_BRAND_ID = 2
+        AND VA.USER_ID IN (
+            SELECT B.ID
+            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN (
+                SELECT A.USER_ID
+                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID
+                AND PARENT_USER_ID = $log_user_id
+            )
+        )
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
+        GROUP BY VA.VISIT_DATE
+    ) AS TOTAL_SALES_OF_EICHER
+    /* END TOTAL_SALES_OF_EICHER */
 
 FROM DUAL";
-ECHO $totalvisitQuery;
+echo $totalvisitQuery;
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
@@ -89,8 +233,10 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 2% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Orders</p>
-                                                <h4 class="my-1 text-white">0 </h4>
+                                                <p class="mb-0 text-white">Total Visit Plan </p>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_MAHINDRA'] ? $visitRow['TOTAL_VISIT_OF_MAHINDRA'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
@@ -102,12 +248,11 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-rainbow">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Visit</p>
+                                                <p class="mb-0 text-white"> Visit Complete </p>
                                                 <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_MAHINDRA'] ? $visitRow['TOTAL_VISIT_OF_MAHINDRA'] : 0) ?>
+                                                    <?php print_r($visitRow['TOTAL_COMPLETE_VISIT_OF_MAHINDRA'] ? $visitRow['TOTAL_COMPLETE_VISIT_OF_MAHINDRA'] : 0) ?>
                                                 </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
@@ -124,7 +269,9 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">0</h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_COLLECTION_OF_MAHINDRA'] ? $visitRow['TOTAL_COLLECTION_OF_MAHINDRA'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
@@ -140,8 +287,10 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Product Stock </p>
-                                                <h4 class="my-1 text-white">0 </h4>
+                                                <p class="mb-0 text-white">Total Sale </p>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_SALES_OF_MAHINDRA'] ? $visitRow['TOTAL_SALES_OF_MAHINDRA'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
@@ -160,8 +309,10 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Orders</p>
-                                                <h4 class="my-1 text-white">0</h4>
+                                                <p class="mb-0 text-white">Total Visit Plan </p>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_EICHER'] ? $visitRow['TOTAL_VISIT_OF_EICHER'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
@@ -176,9 +327,9 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Visit</p>
+                                                <p class="mb-0 text-white">Visit Complete </p>
                                                 <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_EICHER'] ? $visitRow['TOTAL_VISIT_OF_EICHER'] : 0) ?>
+                                                    <?php print_r($visitRow['TOTAL_COMPLETE_VISIT_OF_EICHER'] ? $visitRow['TOTAL_COMPLETE_VISIT_OF_EICHER'] : 0) ?>
                                                 </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
@@ -195,7 +346,9 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">0</h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_COLLECTION_OF_EICHER'] ? $visitRow['TOTAL_COLLECTION_OF_EICHER'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
@@ -211,8 +364,10 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Product Stock </p>
-                                                <h4 class="my-1 text-white">0 </h4>
+                                                <p class="mb-0 text-white">Total Sale </p>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_SALES_OF_EICHER'] ? $visitRow['TOTAL_SALES_OF_EICHER'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>

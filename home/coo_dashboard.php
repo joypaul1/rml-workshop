@@ -20,6 +20,7 @@ $v_end_date = date("t/m/Y");
 //Start total visit row
 $totalvisitQuery = "SELECT
 (
+    /* Start TOTAL_VISIT_OF_MAHINDRA */
     SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_MAHINDRA
     FROM VISIT_ASSIGN VA
     WHERE PRODUCT_BRAND_ID = 1
@@ -30,6 +31,8 @@ $totalvisitQuery = "SELECT
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_v_end_date', 'DD/MM/YYYY')
 ) AS TOTAL_VISIT_OF_MAHINDRA,
+    /* End TOTAL_VISIT_OF_MAHINDRA */
+    /* Start TOTAL_VISIT_OF_EICHER */
 (
     SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_EICHER
     FROM VISIT_ASSIGN VA
@@ -40,7 +43,9 @@ $totalvisitQuery = "SELECT
             WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$log_user_id'
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_v_end_date', 'DD/MM/YYYY')
-) AS TOTAL_VISIT_OF_EICHER
+) AS TOTAL_VISIT_OF_EICHER,
+    /* End TOTAL_VISIT_OF_EICHER */
+
 FROM DUAL";
 
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
@@ -91,7 +96,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 2% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Orders</p>
+                                                <p class="mb-0 text-white">Total Visit Plan</p>
                                                 <h4 class="my-1 text-white">0 </h4>
                                                 <p class="mb-0 font-10 text-white">Current Month </p>
                                             </div>
@@ -107,7 +112,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Visit</p>
+                                                <p class="mb-0 text-white">Visit Complete</p>
                                                 <h4 class="my-1 text-white">
                                                     <?php print_r($visitRow['TOTAL_VISIT_OF_MAHINDRA'] ? $visitRow['TOTAL_VISIT_OF_MAHINDRA'] : 0) ?>
                                                 </h4>
@@ -142,7 +147,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Product Stock </p>
+                                                <p class="mb-0 text-white">Total Sale </p>
                                                 <h4 class="my-1 text-white">0 </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
@@ -162,7 +167,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Orders</p>
+                                                <p class="mb-0 text-white">Total Visit Plan</p>
                                                 <h4 class="my-1 text-white">0</h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
@@ -178,7 +183,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Visit</p>
+                                                <p class="mb-0 text-white">Visit Complete</p>
                                                 <h4 class="my-1 text-white">
                                                     <?php print_r($visitRow['TOTAL_VISIT_OF_EICHER'] ? $visitRow['TOTAL_VISIT_OF_EICHER'] : 0) ?>
                                                 </h4>
@@ -213,7 +218,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Product Stock </p>
+                                                <p class="mb-0 text-white">Total Sale </p>
                                                 <h4 class="my-1 text-white">0 </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
