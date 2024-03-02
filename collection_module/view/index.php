@@ -203,7 +203,7 @@ $v_end_date   = date('t/m/Y');
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <div class="d-flex justify-content-center mt-3">
+                            <!-- <div class="d-flex justify-content-center mt-3">
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination round-pagination">
                                         <?php
@@ -231,8 +231,8 @@ $v_end_date   = date('t/m/Y');
                                         ?>
                                     </ul>
                                 </nav>
-                            </div>
-                            <span class="d-block text-end">
+                            </div> -->
+                            <span class="d-block text-end mt-3">
                                 <a class="btn btn-sm btn-gradient-info" onclick="exportF(this)">
                                     Export To Excel <i class='bx bxs-cloud-download'></i> </a>
                             </span>
