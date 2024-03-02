@@ -93,7 +93,7 @@ print_r($visitRow);
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Orders</p>
-                                                <h4 class="my-1 text-white">200 </h4>
+                                                <h4 class="my-1 text-white">0 </h4>
                                                 <p class="mb-0 font-10 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
@@ -127,7 +127,7 @@ print_r($visitRow);
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <h4 class="my-1 text-white">0</h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
@@ -198,7 +198,7 @@ print_r($visitRow);
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <h4 class="my-1 text-white">0</h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
@@ -739,7 +739,7 @@ print_r($visitRow);
                                         <td><img src="assets/images/products/04.png" class="product-img-2" alt="product img"></td>
                                         <td>#8543765</td>
                                         <td><span class="btn btn-outline-success btn-sm px-4 rounded-5 w-100">Paid</span></td>
-                                        <td>$1200.00</td>
+                                        <td>$10.00</td>
                                         <td>14 Feb 2020</td>
                                         <td>
                                             <div class="progress" style="height: 6px;">
