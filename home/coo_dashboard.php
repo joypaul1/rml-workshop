@@ -14,11 +14,11 @@
 
 <?php
 
-$v_start_date = date('m/Y');
-$v_end_date   = date('m/Y');
+$v_start_date = date("01/m/Y");
+$v_end_date = date("t/m/Y");
 
-//visit row
-$totalvisitQuery = "SELECT 
+//Start total visit row
+$totalvisitQuery = "SELECT
 (
     SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_MAHINDRA
     FROM VISIT_ASSIGN VA
@@ -28,7 +28,7 @@ $totalvisitQuery = "SELECT
             FROM USER_MANPOWER_SETUP A, USER_PROFILE B
             WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$log_user_id'
         )
-        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'MM/YYYY') AND TO_DATE('$v_end_date', 'MM/YYYY')
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_v_end_date', 'DD/MM/YYYY')
 ) AS TOTAL_VISIT_OF_MAHINDRA,
 (
     SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_EICHER
@@ -39,7 +39,7 @@ $totalvisitQuery = "SELECT
             FROM USER_MANPOWER_SETUP A, USER_PROFILE B
             WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$log_user_id'
         )
-        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'MM/YYYY') AND TO_DATE('$v_end_date', 'MM/YYYY')
+        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_v_end_date', 'DD/MM/YYYY')
 ) AS TOTAL_VISIT_OF_EICHER
 FROM DUAL";
 
@@ -47,7 +47,11 @@ $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
 
-// end visit row
+// End total visit row
+
+// Start visit collection queries
+
+//End visit collection queries 
 
 ?>
 <div class="page-wrapper">

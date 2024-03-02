@@ -13,44 +13,74 @@
 </style>
 
 <?php
-$START_DATE = date("01/m/Y");
-$END_DATE = date("t/m/Y");
+$v_start_date = date("01/m/Y");
+$v_end_date = date("t/m/Y");
 
 
 // VISIT PLAN QUERY START
 $totalvisitQuery = "SELECT (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
 WHERE USER_ID = '$log_user_id'
-    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$START_DATE','DD/MM/YYYY')
-    AND TO_DATE ('$END_DATE', 'DD/MM/YYYY')
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date','DD/MM/YYYY')
+    AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
     AND PRODUCT_BRAND_ID = 1)
 AS TOTAL_VISIT_OF_MAHINDRA,
 (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
 WHERE USER_ID = '$log_user_id'
     AND VISIT_STATUS = 1
-    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$START_DATE',  'DD/MM/YYYY')
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date',  'DD/MM/YYYY')
     AND TO_DATE ('29/02/2024','DD/MM/YYYY')
     AND PRODUCT_BRAND_ID = 1)
 AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA,
 (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
 WHERE USER_ID = '$log_user_id'
-    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$START_DATE','DD/MM/YYYY')
-    AND TO_DATE ('$END_DATE', 'DD/MM/YYYY')
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date','DD/MM/YYYY')
+    AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
     AND PRODUCT_BRAND_ID = 2)
 AS TOTAL_VISIT_OF_EICHER,
 (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
 WHERE USER_ID = '$log_user_id'
     AND VISIT_STATUS = 1
-    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$START_DATE', 'DD/MM/YYYY')
-    AND TO_DATE ('$END_DATE', 'DD/MM/YYYY')
+    AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+    AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
     AND PRODUCT_BRAND_ID = 2)
-AS TOTAL_COMPLETE_VISIT_OF_EICHER
+AS TOTAL_COMPLETE_VISIT_OF_EICHER,
+--COLLECTION_AMOUNT_COLLECTED--
+(SELECT SUM(COLLECTION_AMOUNT_COLLECTED)
+        FROM VISIT_ASSIGN
+        WHERE USER_ID = '$log_user_id'
+        AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+        AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+               AND PRODUCT_BRAND_ID = 1)
+          AS TOTAL_COLLECTION_OF_MAHINDRA,
+(SELECT SUM(COLLECTION_AMOUNT_COLLECTED)
+        FROM VISIT_ASSIGN
+        WHERE USER_ID = '$log_user_id'
+        AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+        AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+               AND PRODUCT_BRAND_ID = 2)
+          AS TOTAL_COLLECTION_OF_EICHER,
+          -- SALES_AMOUNT_COLLECTED --
+(SELECT SUM(SALES_AMOUNT_COLLECTED)
+        FROM VISIT_ASSIGN
+        WHERE USER_ID = '$log_user_id'
+        AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+        AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+               AND PRODUCT_BRAND_ID = 1)
+          AS TOTAL_SALES_OF_MAHINDRA,
+(SELECT SUM(SALES_AMOUNT_COLLECTED)
+        FROM VISIT_ASSIGN
+        WHERE USER_ID = '$log_user_id'
+        AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+        AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+               AND PRODUCT_BRAND_ID = 2)
+          AS TOTAL_SALES_OF_EICHER
 FROM DUAL";
 
-
+echo $totalvisitQuery;
 $totalvisitSQL = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($totalvisitSQL);
 $visit_plan_month_wise_data = array(); // Initialize the array
@@ -133,7 +163,9 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
 
                                             </div>
@@ -150,7 +182,9 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Sale </p>
-                                                <h4 class="my-1 text-white">0 </h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
@@ -207,7 +241,9 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_EICHER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
 
                                             </div>
@@ -224,7 +260,9 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Sale </p>
-                                                <h4 class="my-1 text-white">0 </h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>

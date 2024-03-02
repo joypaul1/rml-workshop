@@ -13,8 +13,8 @@
 </style>
 
 <?php
-$v_start_date = date('m/Y');
-$v_end_date   = date('m/Y');
+$v_start_date = date("01/m/Y");
+$v_end_date = date("t/m/Y");
 
 //visit row
 $totalvisitQuery = "SELECT
@@ -26,8 +26,8 @@ $totalvisitQuery = "SELECT
          USER_PROFILE B WHERE  A.USER_ID = B.ID
          AND PARENT_USER_ID = $log_user_id))
          AND TRUNC (VA.VISIT_DATE)
-         BETWEEN TO_DATE ('$v_start_date', 'MM/YYYY')
-         AND TO_DATE ('$v_end_date','MM/YYYY')
+         BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
  GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_MAHINDRA,
  (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
  FROM VISIT_ASSIGN VA
@@ -39,8 +39,8 @@ $totalvisitQuery = "SELECT
          USER_PROFILE B WHERE A.USER_ID = B.ID
          AND PARENT_USER_ID = $log_user_id))
          AND TRUNC (VA.VISIT_DATE)
-         BETWEEN TO_DATE ('$v_start_date', 'MM/YYYY')
-         AND TO_DATE ('$v_end_date','MM/YYYY')
+         BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
  GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_EICHER FROM DUAL";
 
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
@@ -53,8 +53,6 @@ $visitRow = @oci_fetch_assoc($strSQL2);
 
 <div class="page-wrapper">
     <div class="page-content">
-
-
         <div class="card">
             <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">

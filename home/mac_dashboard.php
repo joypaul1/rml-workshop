@@ -82,7 +82,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <h4 class="my-1 text-white">0</h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
@@ -151,7 +151,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">2,00,00.00</h4>
+                                                <h4 class="my-1 text-white">0</h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
 
                                             </div>
