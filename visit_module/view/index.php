@@ -18,6 +18,8 @@ include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+$v_start_date = date('m/Y');
+$v_end_date   = date('m/Y');
 ?>
 <style type="text/css">
     .ui-datepicker-calendar {
@@ -104,11 +106,11 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
                                             <div class="col-sm-3">
                                                 <label>Start Date: </label>
-                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('m-Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('m/Y'); ?>' />
                                             </div>
                                             <div class="col-sm-3">
                                                 <label>End Date: </label>
-                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('m-Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('m/Y'); ?>' />
                                             </div>
                                             <div class="col-sm-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
@@ -126,6 +128,13 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
+
+                    if (isset($_POST['start_date'])) {
+                        $v_start_date = $_POST['start_date'];
+                    }
+                    if (isset($_POST['end_date'])) {
+                        $v_end_date = $_POST['end_date'];
+                    }
                     $headerType    = 'List';
                     $leftSideName  = 'Visit List';
                     $rightSideName = 'Visit Create';
@@ -136,8 +145,11 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                     ?>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
-                                <thead class="table-light text-uppercase text-center ">
+                            <table class="table table-bordered align-middle mb-0" id="downloadData">
+                                <thead class="table-light text-uppercase text-center">
+                                    <tr>
+                                        <th colspan="6">Start Date : <?php echo $v_start_date ?> - End Date : <?php echo $v_end_date ?></th>
+                                    </tr>
                                     <tr>
                                         <th>SL.</th>
                                         <th>Date</th>
@@ -152,14 +164,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <?php
 
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-                                    $v_start_date = date('m/Y');
-                                    $v_end_date   = date('m/Y');
-                                    if (isset($_POST['start_date'])) {
-                                        $v_start_date = $_POST['start_date'];
-                                    }
-                                    if (isset($_POST['end_date'])) {
-                                        $v_end_date = $_POST['end_date'];
-                                    }
+
                                     if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
@@ -258,7 +263,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
                                 </tbody>
                             </table>
-                            <div class="d-flex justify-content-center mt-3">
+                            <!-- <div class="d-flex justify-content-center mt-3">
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination round-pagination">
                                         <?php
@@ -290,7 +295,11 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
                                     </ul>
                                 </nav>
-                            </div>
+                            </div> -->
+                            <span class="d-block text-end mt-3">
+                                <a class="btn btn-sm btn-gradient-info" onclick="exportF(this)">
+                                    Export To Excel <i class='bx bxs-cloud-download'></i> </a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -321,4 +330,23 @@ include_once('../../_includes/footer.php');
         showButtonPanel: true,
         autoclose: true
     });
+
+    function exportF(elem) {
+        var table = document.getElementById("downloadData");
+        var html = table.outerHTML;
+        var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
+
+        // Get today's date
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = today.getFullYear();
+        var currentDate = yyyy + '-' + mm + '-' + dd;
+
+        // Modify download attribute to include today's date in the file name
+        var fileName = "visit_List_" + currentDate + ".xls";
+        elem.setAttribute("href", url);
+        elem.setAttribute("download", fileName); // Choose the file name
+        return false;
+    }
 </script>

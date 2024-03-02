@@ -48,11 +48,11 @@ $v_end_date   = date('t/m/Y');
                                             </div>
                                             <div class="col-sm-3">
                                                 <label>Start Date: </label>
-                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01-m-Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01/m/Y'); ?>' />
                                             </div>
                                             <div class="col-sm-3">
                                                 <label>End Date: </label>
-                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('t-m-Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('t/m/Y'); ?>' />
                                             </div>
                                             <div class="col-sm-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
@@ -68,7 +68,12 @@ $v_end_date   = date('t/m/Y');
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
-                    // ECHO $USER_LOGIN_ID ;
+                    if (isset($_POST['start_date'])) {
+                        $v_start_date  = $_REQUEST['start_date'];
+                    }
+                    if (isset($_POST['end_date'])) {
+                        $v_end_date = $_REQUEST['end_date'];
+                    }
                     $headerType    = 'List';
                     $leftSideName  = 'Collection Target List';
                     $rightSideName = 'Collection Target Create';
@@ -81,6 +86,7 @@ $v_end_date   = date('t/m/Y');
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0" id="downloadData">
                                 <thead class="table-light text-uppercase text-center ">
+                                    <th colspan="6">Start Date : <?php echo $v_start_date ?> - End Date : <?php echo $v_end_date ?></th>
                                     <tr>
                                         <th>SL.</th>
                                         <th>ACTION</th>
@@ -94,12 +100,6 @@ $v_end_date   = date('t/m/Y');
                                 <tbody>
                                     <?php
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-                                    if (isset($_POST['start_date'])) {
-                                        $v_start_date = date("d/m/Y", strtotime($_REQUEST['start_date']));
-                                    }
-                                    if (isset($_POST['end_date'])) {
-                                        $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
-                                    }
                                     if ($_SESSION["USER_SFCM_INFO"]["USER_TYPE"] == "HOD") {
                                         $query = "SELECT CA.ID,
                                             CA.START_DATE,
@@ -112,64 +112,50 @@ $v_end_date   = date('t/m/Y');
                                             AS BRAND_NAME,
                                             (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
                                         FROM COLLECTION_ASSIGN CA JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
-                                        WHERE     CA.USER_ID IN
-                                        (SELECT ID AS USER_ID
-                                            FROM (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                    WHERE  A.USER_ID = B.ID AND PARENT_USER_ID IN
-                                                                (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                                WHERE A.USER_ID = B.ID
-                                                                        AND PARENT_USER_ID IN
-                                                                        (SELECT USER_ID FROM USER_MANPOWER_SETUP
-                                                                            A, USER_PROFILE B
-                                                                            WHERE  A.USER_ID = B.ID
-                                                                            AND PARENT_USER_ID IN
-                                                                            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,
-                                                                            USER_PROFILE B
-                                                                            WHERE A.USER_ID =B.ID
-                                                                            AND PARENT_USER_ID='$USER_LOGIN_ID')))
-                                                UNION ALL
+                                        WHERE CA.USER_ID IN
+                                            (SELECT ID AS USER_ID FROM (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B  WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                            (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                            WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                            (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                            WHERE  A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                            WHERE A.USER_ID =B.ID AND PARENT_USER_ID='$USER_LOGIN_ID')))
+                                        UNION ALL
                                                 SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                WHERE     A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                                WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                     (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-                                                            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID
-                                                            AND A.PARENT_USER_ID = '$USER_LOGIN_ID'))))
-                                AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-                                AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
+                                                    WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = '$USER_LOGIN_ID'))))
+                                        AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+                                        AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     } else {
                                         $query =  "SELECT
-                                CA.ID,
-                                CA.START_DATE,
-                                CA.END_DATE,
-                                CA.TARGET_AMOUNT,
-                                CA.STATUS,
-                                CA.REMARKS,
-                                UP.USER_NAME,
-                                (SELECT TITLE
-                                FROM PRODUCT_BRAND PB
-                                WHERE PB.ID = CA.BRAND_ID)
-                                AS BRAND_NAME,
-                                (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
-                                FROM COLLECTION_ASSIGN  CA,USER_PROFILE UP WHERE CA.USER_ID IN
-                                (SELECT ID AS USER_ID FROM (SELECT B.ID
-                                      FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                      WHERE A.USER_ID = B.ID
-                                      AND PARENT_USER_ID IN
-                                      (SELECT USER_ID
-                                      FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                      WHERE A.USER_ID = B.ID
-                                      AND PARENT_USER_ID IN
-                                      (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,  USER_PROFILE B
-                                      WHERE A.USER_ID = B.ID  AND PARENT_USER_ID = '$USER_LOGIN_ID'))
-                                  UNION ALL
-                                      SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                      WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-                                      (SELECT A.USER_ID
-                                      FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                      WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$USER_LOGIN_ID')))
-                                  AND UP.ID = CA.USER_ID
-                                  AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-                                  AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
+                                                    CA.ID,
+                                                    CA.START_DATE,
+                                                    CA.END_DATE,
+                                                    CA.TARGET_AMOUNT,
+                                                    CA.STATUS,
+                                                    CA.REMARKS,
+                                                    UP.USER_NAME,
+                                                    (SELECT TITLE
+                                                    FROM PRODUCT_BRAND PB
+                                                    WHERE PB.ID = CA.BRAND_ID)
+                                                    AS BRAND_NAME,
+                                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE
+                                                    FROM COLLECTION_ASSIGN  CA,USER_PROFILE UP WHERE CA.USER_ID IN
+                                                    (SELECT ID AS USER_ID FROM (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                                        (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                                        (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,  USER_PROFILE B
+                                                        WHERE A.USER_ID = B.ID  AND PARENT_USER_ID = '$USER_LOGIN_ID'))
+                                                    UNION ALL
+                                                        SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                                                        (SELECT A.USER_ID
+                                                        FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$USER_LOGIN_ID')))
+                                                    AND UP.ID = CA.USER_ID
+                                                    AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     }
 
                                     $strSQL = @oci_parse($objConnect, $query);
@@ -222,10 +208,10 @@ $v_end_date   = date('t/m/Y');
                                     <ul class="pagination round-pagination">
                                         <?php
                                         $countQuery = "SELECT COUNT(CA.ID) AS total  FROM COLLECTION_ASSIGN CA
-                                 INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
-                                 WHERE CA.BRAND_ID IN ($USER_BRANDS)
-                                 AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY')
-                                 AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
+                                                        INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
+                                                        WHERE CA.BRAND_ID IN ($USER_BRANDS)
+                                                        AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY')
+                                                        AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
                                         // check retailer data exist
                                         if (isset($_POST['f_retailer_type'])) {
                                             $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
@@ -275,7 +261,7 @@ include_once('../../_includes/footer.php');
     $('.datepicker').pickadate({
         selectMonths: true, // Enable month selection
         selectYears: false, // Disable year selection
-        format: 'dd-mm-yyyy' // Specify your desired date format
+        format: 'dd/mm/yyyy' // Specify your desired date format
     });
 
 
