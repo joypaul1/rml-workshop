@@ -13,10 +13,48 @@
 </style>
 
 <?php
+$v_start_date = date('m/Y');
+$v_end_date   = date('m/Y');
+
 $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     : 0;
+
+//visit row
+$visitQuery = "SELECT
+     (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
+     FROM VISIT_ASSIGN VA WHERE PRODUCT_BRAND_ID = 1 AND  VA.USER_ID IN
+         (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+         (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,
+         USER_PROFILE B WHERE  A.USER_ID = B.ID
+         AND PARENT_USER_ID = $log_user_id))
+         AND TRUNC (VA.VISIT_DATE)
+         BETWEEN TO_DATE ('$v_start_date', 'MM/YYYY')
+         AND TO_DATE ('$v_end_date','MM/YYYY')
+ GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_MAHINDRA,
+ (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
+ FROM VISIT_ASSIGN VA
+ WHERE PRODUCT_BRAND_ID = 2 AND  VA.USER_ID IN
+     (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+     WHERE A.USER_ID = B.ID
+     AND PARENT_USER_ID IN
+         (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,
+         USER_PROFILE B WHERE A.USER_ID = B.ID
+         AND PARENT_USER_ID = $log_user_id))
+         AND TRUNC (VA.VISIT_DATE)
+         BETWEEN TO_DATE ('$v_start_date', 'MM/YYYY')
+         AND TO_DATE ('$v_end_date','MM/YYYY')
+ GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_EICHER FROM DUAL";
+
+$strSQL2 = @oci_parse($objConnect, $visitQuery);
+@oci_execute($strSQL2);
+$visitRow = @oci_fetch_assoc($strSQL2);
+print_r($visitRow);
+// end visit row
+
 ?>
+
 <div class="page-wrapper">
     <div class="page-content">
 
@@ -71,7 +109,9 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit</p>
-                                                <h4 class="my-1 text-white">50 </h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_MAHINDRA'] ? $visitRow['TOTAL_VISIT_OF_MAHINDRA'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
@@ -124,7 +164,7 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Orders</p>
-                                                <h4 class="my-1 text-white">200</h4>
+                                                <h4 class="my-1 text-white">0</h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
@@ -140,7 +180,9 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit</p>
-                                                <h4 class="my-1 text-white">50 </h4>
+                                                <h4 class="my-1 text-white">
+                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_EICHER'] ? $visitRow['TOTAL_VISIT_OF_EICHER'] : 0) ?>
+                                                </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-group'></i>
@@ -525,7 +567,7 @@ $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
                                 <hr>
                                 <div class="d-flex align-items-center justify-content-center gap-3">
                                     <div>
-                                        <h3 class="mb-0">$ 9845.43</h3>
+                                        <h3 class="mb-0">$ 9$log_user_id5.43</h3>
                                         <p class="mb-0">+3% Since Last Week</p>
                                     </div>
                                     <div class="fs-1">
