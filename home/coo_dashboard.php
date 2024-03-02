@@ -18,7 +18,7 @@ $v_start_date = date('m/Y');
 $v_end_date   = date('m/Y');
 
 //visit row
-$visitQuery = "SELECT 
+$totalvisitQuery = "SELECT 
 (
     SELECT NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_MAHINDRA
     FROM VISIT_ASSIGN VA
@@ -43,7 +43,7 @@ $visitQuery = "SELECT
 ) AS TOTAL_VISIT_OF_EICHER
 FROM DUAL";
 
-$strSQL2 = @oci_parse($objConnect, $visitQuery);
+$strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
 

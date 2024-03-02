@@ -17,7 +17,7 @@ $v_start_date = date('m/Y');
 $v_end_date   = date('m/Y');
 
 //visit row
-$visitQuery = "SELECT
+$totalvisitQuery = "SELECT
      (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
      FROM VISIT_ASSIGN VA WHERE PRODUCT_BRAND_ID = 1 AND  VA.USER_ID IN
          (SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
@@ -43,7 +43,7 @@ $visitQuery = "SELECT
          AND TO_DATE ('$v_end_date','MM/YYYY')
  GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_EICHER FROM DUAL";
 
-$strSQL2 = @oci_parse($objConnect, $visitQuery);
+$strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
 
