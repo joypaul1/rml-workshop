@@ -1,19 +1,29 @@
 <?php
 $dynamic_link_css[] = '../../assets/plugins/select2/css/select2.min.css';
-$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.css';
-$dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.date.css';
+// $dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.css';
+// $dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.date.css';
 $dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
 $dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
-$dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.js';
-$dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
-$dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
-$dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
+// $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.js';
+// $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
+
+$dynamic_link_js[]  = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js';
+$dynamic_link_css[]  = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css';
+$dynamic_link_css[]  = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css';
+$dynamic_link_js[]  = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js';
+// $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
+// $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
+
 include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 ?>
-
+<style type="text/css">
+    .ui-datepicker-calendar {
+        display: none;
+    }
+</style>
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
@@ -40,14 +50,13 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                     if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
                                                         $query = "SELECT  DISTINCT
                                                         (SELECT DISTINCT UP.USER_NAME
-                                                         FROM USER_PROFILE UP
-                                                         WHERE UP.ID = VA.RETAILER_ID) AS USER_NAME,
+                                                        FROM USER_PROFILE UP
+                                                        WHERE UP.ID = VA.RETAILER_ID) AS USER_NAME,
                                                         (SELECT DISTINCT UP.ID
-                                                         FROM USER_PROFILE UP
-                                                         WHERE UP.ID = VA.RETAILER_ID) AS ID
-                                                    FROM 
-                                                        VISIT_ASSIGN VA
-                                                    WHERE 
+                                                        FROM USER_PROFILE UP
+                                                        WHERE UP.ID = VA.RETAILER_ID) AS ID
+                                                    FROM VISIT_ASSIGN VA
+                                                    WHERE
                                                         VA.USER_ID IN (
                                                             SELECT DISTINCT B.ID
                                                             FROM USER_MANPOWER_SETUP A, USER_PROFILE B
@@ -55,7 +64,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                             AND PARENT_USER_ID IN (
                                                                 SELECT DISTINCT A.USER_ID
                                                                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                                WHERE A.USER_ID = B.ID 
+                                                                WHERE A.USER_ID = B.ID
                                                                 AND PARENT_USER_ID = '$log_user_id'
                                                             )
                                                         )";
@@ -92,13 +101,14 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                     ?>
                                                 </select>
                                             </div>
+
                                             <div class="col-sm-3">
                                                 <label>Start Date: </label>
-                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('01-m-Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('m-Y'); ?>' />
                                             </div>
                                             <div class="col-sm-3">
                                                 <label>End Date: </label>
-                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('t-m-Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('m-Y'); ?>' />
                                             </div>
                                             <div class="col-sm-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
@@ -142,14 +152,13 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <?php
 
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-
-                                    $v_start_date = date('01/m/Y');
-                                    $v_end_date   = date('t/m/Y');
+                                    $v_start_date = date('m/Y');
+                                    $v_end_date   = date('m/Y');
                                     if (isset($_POST['start_date'])) {
-                                        $v_start_date = date("d/m/Y", strtotime($_REQUEST['start_date']));
+                                        $v_start_date = $_POST['start_date'];
                                     }
                                     if (isset($_POST['end_date'])) {
-                                        $v_end_date = date("d/m/Y", strtotime($_REQUEST['end_date']));
+                                        $v_end_date = $_POST['end_date'];
                                     }
                                     if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
@@ -164,8 +173,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                             WHERE A.USER_ID = B.ID
                                             AND PARENT_USER_ID IN
                                             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID = $log_user_id))
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                        ";
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','MM/YYYY') AND TO_DATE('$v_end_date','MM/YYYY')";
                                     } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
@@ -176,7 +184,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                         FROM VISIT_ASSIGN VA
                                         WHERE VA.USER_ID  IN
                                         (SELECT B.ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID='$log_user_id')
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY') ";
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','MM/YYYY') AND TO_DATE('$v_end_date','MM/YYYY')";
                                     } else {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
@@ -186,15 +194,15 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA
                                         WHERE VA.USER_ID = '$log_user_id'
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                        ";
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','MM/YYYY') AND TO_DATE('$v_end_date','MM/YYYY')";
                                     }
 
                                     if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
                                         $retailerID = $_POST['retailer'];
                                         $query .= " AND (VA.RETAILER_ID= $retailerID)";
                                     }
-                                    $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
+                                    $query .= " ORDER BY VA.VISIT_DATE DESC";
+                                    // $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
 
                                     $strSQL = @oci_parse($objConnect, $query);
 
@@ -305,9 +313,12 @@ include_once('../../_includes/footer.php');
         allowClear: Boolean($(this).data('allow-clear')),
     });
 
-    $('.datepicker').pickadate({
-        selectMonths: true,
-        selectYears: true,
-        format: 'dd-mm-yyyy' // Specify your desired date format
+    $('.datepicker').datepicker({
+        format: 'mm/yyyy',
+        minViewMode: 'months',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        autoclose: true
     });
 </script>
