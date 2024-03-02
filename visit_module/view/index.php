@@ -137,8 +137,10 @@ $v_end_date   = date('m/Y');
                     }
                     $headerType    = 'List';
                     $leftSideName  = 'Visit List';
-                    $rightSideName = 'Visit Create';
-                    $routePath     = 'visit_module/view/create.php';
+                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "SALE EXECUTIVE") {
+                        $rightSideName = 'Visit Create';
+                        $routePath     = 'visit_module/view/create.php';
+                    }
                     include('../../_includes/com_header.php');
 
 
@@ -208,7 +210,7 @@ $v_end_date   = date('m/Y');
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC";
                                     // $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-                                   // ECHO $query ;
+                                    // ECHO $query ;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
