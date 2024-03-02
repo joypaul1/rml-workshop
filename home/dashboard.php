@@ -7,6 +7,9 @@ $dynamic_link_js[]  = '../assets/js/index2.js';
 
 include_once('../_helper/com_conn.php');
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
+    : 0;
 $user_type_brand_wise_data = [];
 
 // COUNT QUERY USER TYPE WISE

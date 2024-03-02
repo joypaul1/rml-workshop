@@ -16,10 +16,6 @@
 $v_start_date = date('m/Y');
 $v_end_date   = date('m/Y');
 
-$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    : 0;
-
 //visit row
 $visitQuery = "SELECT
      (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
@@ -50,7 +46,7 @@ $visitQuery = "SELECT
 $strSQL2 = @oci_parse($objConnect, $visitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
-print_r($visitRow);
+
 // end visit row
 
 ?>
