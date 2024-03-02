@@ -29,6 +29,7 @@ $totalvisitQuery = "SELECT
          BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
          AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
  GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_MAHINDRA,
+ /*  TOTAL_VISIT_OF_MAHINDRA */
  (SELECT NVL (COUNT (VA.ID), 0) AS TOTAL_VISIT
  FROM VISIT_ASSIGN VA
  WHERE PRODUCT_BRAND_ID = 2 AND  VA.USER_ID IN
@@ -41,8 +42,10 @@ $totalvisitQuery = "SELECT
          AND TRUNC (VA.VISIT_DATE)
          BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
          AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
- GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_EICHER FROM DUAL";
+GROUP BY VA.VISIT_DATE) AS TOTAL_VISIT_OF_EICHER
 
+FROM DUAL";
+ECHO $totalvisitQuery;
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
