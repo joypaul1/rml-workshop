@@ -18,8 +18,8 @@ include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
-$v_start_date = date('m/Y');
-$v_end_date   = date('m/Y');
+$v_start_date = date('d/m/Y');
+$v_end_date   = date('d/m/Y');
 ?>
 <style type="text/css">
     .ui-datepicker-calendar {
@@ -106,11 +106,11 @@ $v_end_date   = date('m/Y');
 
                                             <div class="col-sm-3">
                                                 <label>Start Date: </label>
-                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('m/Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="start_date" type="text" value='<?php echo isset($_POST['start_date']) ? $_POST['start_date'] : date('d/m/Y'); ?>' />
                                             </div>
                                             <div class="col-sm-3">
                                                 <label>End Date: </label>
-                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('m/Y'); ?>' />
+                                                <input required="" class="form-control datepicker" name="end_date" type="text" value='<?php echo isset($_POST['end_date']) ? $_POST['end_date'] : date('d/m/Y'); ?>' />
                                             </div>
                                             <div class="col-sm-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
@@ -180,7 +180,7 @@ $v_end_date   = date('m/Y');
                                             WHERE A.USER_ID = B.ID
                                             AND PARENT_USER_ID IN
                                             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID = $log_user_id))
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','MM/YYYY') AND TO_DATE('$v_end_date','MM/YYYY')";
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
@@ -191,7 +191,7 @@ $v_end_date   = date('m/Y');
                                         FROM VISIT_ASSIGN VA
                                         WHERE VA.USER_ID  IN
                                         (SELECT B.ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID='$log_user_id')
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','MM/YYYY') AND TO_DATE('$v_end_date','MM/YYYY')";
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     } else {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
@@ -201,7 +201,7 @@ $v_end_date   = date('m/Y');
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA
                                         WHERE VA.USER_ID = '$log_user_id'
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','MM/YYYY') AND TO_DATE('$v_end_date','MM/YYYY')";
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     }
 
                                     if (isset($_POST['retailer']) && !empty($_POST['retailer'])) {
@@ -210,7 +210,6 @@ $v_end_date   = date('m/Y');
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC";
                                     // $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
-                                    // ECHO $query ;
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -325,11 +324,11 @@ include_once('../../_includes/footer.php');
     });
 
     $('.datepicker').datepicker({
-        format: 'mm/yyyy',
-        minViewMode: 'months',
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
+        format: 'dd/mm/yyyy',
+        // minViewMode: 'months',
+        // changeMonth: true,
+        // changeYear: true,
+        // showButtonPanel: true,
         autoclose: true
     });
 
