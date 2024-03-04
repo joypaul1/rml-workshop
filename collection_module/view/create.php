@@ -149,15 +149,17 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                                 <td>
                                                     <div>
                                                         <?php do { ?>
-                                                            <span class="d-flex flex-rows justify-content-start align-items-center ">
+                                                            <span class="d-flex flex-rows justify-content-start align-items-center gap-2">
                                                                 <div class="col-6 form-checks ">
                                                                     <label class="form-check-label" for="flexCheckChecked_<?php echo $row["ID"]; ?>">
                                                                         <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"] ? $row["DISTRICT_NAME"] : "-"; ?> ]
                                                                     </label>
                                                                 </div>
-                                                                <div class="col-6 form-checks mb-2">
-                                                                    <input type="text" required name="collection_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-
+                                                                <div class="col-3 form-checks mb-2">
+                                                                    <input type="text" required name="collection_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Target Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                                                </div>
+                                                                <div class="col-3 form-checks mb-2">
+                                                                    <input type="text" required name="sale_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Sale Target Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                                                 </div>
                                                             </span>
                                                         <?php } while (
@@ -182,8 +184,7 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                 <?php if ($F_PLAZA_RETAILER_ID) { ?>
                                     <tr>
                                         <?php
-                                        @oci_execute($brandSQL);
-                                        // Flag to check if any data is found for any brand
+                                        @oci_execute($brandSQL); // Flag to check if any data is found for any brand
                                         $dataFound = false;
 
                                         while (
@@ -212,17 +213,17 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                                 <td>
                                                     <div>
                                                         <?php do { ?>
-                                                            <span class="d-flex flex-rows justify-content-start align-items-center ">
+                                                            <span class="d-flex flex-rows justify-content-start align-items-center gap-2">
                                                                 <div class="col-6 form-checks ">
                                                                     <label class="form-check-label" for="flexCheckChecked_<?php echo $row["ID"]; ?>">
                                                                         <?php echo $row["USER_NAME"]; ?> [ <?php echo $row["DISTRICT_NAME"] ? $row["DISTRICT_NAME"] : "-"; ?> ]
                                                                     </label>
                                                                 </div>
                                                                 <div class="col-3 form-checks mb-2">
-                                                                    <input type="text" required name="collection_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                                                    <input type="text" required name="collection_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Target Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                                                 </div>
                                                                 <div class="col-3 form-checks mb-2">
-                                                                    <input type="text" required name="collection_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                                                    <input type="text" required name="sale_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Sale Target Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                                                 </div>
                                                             </span>
                                                         <?php } while (

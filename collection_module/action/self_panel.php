@@ -9,16 +9,28 @@ $END_DATE      = $_POST['end_date'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
-    $collection_amounts          = $_POST['collection_target_amount'];
-
+    $collection_target_amounts   = $_POST['collection_target_amount'];
+    $sale_target_amounts         = $_POST['sale_target_amount'];
     try {
-        foreach ($collection_amounts as $BRAND_ID => $USER_IDs) {
+        foreach ($collection_target_amounts as $BRAND_ID => $USER_IDs) {
             foreach ($USER_IDs as $USER_ID => $COLLECTON_TARGET_AMOUNT) {
-                $COLLECTON_TARGET_AMOUNT = $COLLECTON_TARGET_AMOUNT ? $COLLECTON_TARGET_AMOUNT : 0;
-                $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, COLLECTON_TARGET_AMOUNT, ENTRY_DATE, ENTRY_BY_ID, STATUS)
-                        VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $COLLECTON_TARGET_AMOUNT, SYSDATE, $log_user_id, 0)";
-                $strSQL = oci_parse($objConnect, $query);
 
+                $COLLECTON_TARGET_AMOUNT = $COLLECTON_TARGET_AMOUNT ? $COLLECTON_TARGET_AMOUNT : 0;
+                $SALES_TARGET_AMOUNT = $sale_target_amounts[$BRAND_ID][$USER_ID] ? $sale_target_amounts[$BRAND_ID][$USER_ID] : 0;
+                $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, COLLECTON_TARGET_AMOUNT, SALES_TARGET_AMOUNT, ENTRY_DATE, ENTRY_BY_ID, STATUS)
+                VALUES (
+                    $USER_ID,
+                    TO_DATE('$START_DATE','dd/mm/yyyy'),
+                    TO_DATE('$END_DATE','dd/mm/yyyy'),
+                    $BRAND_ID,
+                    $COLLECTON_TARGET_AMOUNT,
+                    $SALES_TARGET_AMOUNT,
+                    SYSDATE,
+                    $log_user_id,
+                    0
+                )";
+
+                $strSQL = oci_parse($objConnect, $query);
                 // Execute the query
                 oci_execute($strSQL);
 
@@ -50,14 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit') {
-    $target_amount          = $_POST['target_amount'];
+    $collection_target_amount          = $_POST['collection_target_amount'];
+    $sale_target_amount                = $_POST['sale_target_amount'];
     $edit_id                = $_POST['editId'];
     $remarks                = $_POST['remarks'];
     try {
-        $query = "UPDATE COLLECTION_ASSIGN
-        SET START_DATE = TO_DATE('$START_DATE','dd/mm/RRRR'),
+        $query = "UPDATE COLLECTION_ASSIGN SET START_DATE = TO_DATE('$START_DATE','dd/mm/RRRR'),
             END_DATE = TO_DATE('$END_DATE','dd/mm/RRRR'),
-            COLLECTON_TARGET_AMOUNT = $target_amount,
+            COLLECTON_TARGET_AMOUNT = $collection_target_amount,
+            SALES_TARGET_AMOUNT = $sale_target_amount,
             REMARKS = '$remarks'
         WHERE ID = $edit_id";
         $strSQL = oci_parse($objConnect, $query);

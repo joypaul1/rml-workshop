@@ -285,7 +285,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                 </div>
             </div>
         </div>
-        <div class="card">
+        <!-- <div class="card">
             <div class="card-body">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -474,7 +474,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
 
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!--end row-->
         <!--<div class="row">
@@ -796,34 +796,73 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsiveS">
                             <table class="table table-sm table-bordered align-middle mb-0  table-hover">
                                 <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
                                         <th>SL.</th>
                                         <th>RETAILER NAME </th>
-                                        <th>DATE </th>
                                         <th>SALES AMOUNT</th>
+                                        <th>SALES TARGET</th>
+                                        <th>RATE (%)</th>
                                         <th>COLLECTION AMOUNT</th>
-                                        <th>TARGET AMOUNT</th>
+                                        <th>COLLECTION TARGET</th>
                                         <th>RATE (%)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sucessQuery = "SELECT  VA.ID, VA.VISIT_DATE,
-                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
-                                        VA.ENTRY_BY_ID,VA.SALES_AMOUNT_COLLECTED,VA.COLLECTION_AMOUNT_COLLECTED,
-                                        NVL(CA.COLLECTON_TARGET_AMOUNT, 0) AS COLLECTON_TARGET_AMOUNT,
-                                        (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
-                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
-                                        (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
-                                        FROM VISIT_ASSIGN VA , COLLECTION_ASSIGN CA
-                                        WHERE VA.RETAILER_ID = CA.USER_ID AND VA.USER_ID = '$log_user_id'
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                        AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
-                                    // echo $sucessQuery;
-                                    $strSQL = @oci_parse($objConnect, $sucessQuery);
+                                    $TGVSAC_QUERY = "SELECT
+                                                        A.ID,
+                                                        A.USER_NAME,
+                                                        (
+                                                            SELECT TITLE
+                                                            FROM USER_TYPE
+                                                            WHERE ID = A.USER_TYPE_ID
+                                                        ) AS USER_TYPE,
+                                                        TOTAL_VISTITED_COLLECTION(
+                                                            A.ID,
+                                                            TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                            TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                            'SALES'
+                                                        ) AS SALES_AMOUNT,
+                                                        TOTAL_VISTITED_COLLECTION(
+                                                            A.ID,
+                                                            TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                            TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                            'COLLECTION'
+                                                        ) AS COLLECTION_AMOUNT,
+                                                        TOTAL_TARGET_ASSIGN(
+                                                            A.ID,
+                                                            TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                            TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                            'SALES'
+                                                        ) AS SALES_TARGET,
+                                                        TOTAL_TARGET_ASSIGN(
+                                                            A.ID,
+                                                            TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                            TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                            'COLLECTION'
+                                                        ) AS COLLECTION_TARGET
+                                                    FROM
+                                                        USER_PROFILE A,
+                                                        (
+                                                            SELECT USER_ID
+                                                            FROM USER_MANPOWER_SETUP
+                                                            WHERE PARENT_USER_ID = '$log_user_id'
+                                                            UNION ALL
+                                                            SELECT USER_ID
+                                                            FROM USER_MANPOWER_SETUP
+                                                            WHERE PARENT_USER_ID IN (
+                                                                SELECT USER_ID
+                                                                FROM USER_MANPOWER_SETUP
+                                                                WHERE PARENT_USER_ID = '$log_user_id'
+                                                            )
+                                                        ) B
+                                                    WHERE
+                                                        A.ID = B.USER_ID";
+                                    // echo $TGVSAC_QUERY;
+                                    $strSQL = @oci_parse($objConnect, $TGVSAC_QUERY);
 
                                     @oci_execute($strSQL);
                                     $number = 0;
@@ -832,24 +871,41 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     ?>
                                         <tr class="table-info">
                                             <td><?= $number ?></td>
-                                            <td><?= $sucessRow['RETAILER_NAME'] ?></td>
-                                            <td><?= $sucessRow['VISIT_DATE'] ?></td>
-                                            <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED'], 2) ?></td>
-                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED'], 2) ?></td>
-                                            <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT'], 2) ?></td>
+                                            <td><?= $sucessRow['USER_NAME'] ?></td>
+                                            <td><?= number_format($sucessRow['SALES_AMOUNT']) ?></td>
+                                            <td><?= number_format($sucessRow['SALES_TARGET']) ?></td>
                                             <?php
                                             $percentageRate = 0;
                                             if (
-                                                isset($sucessRow['COLLECTON_TARGET_AMOUNT'], $sucessRow['COLLECTION_AMOUNT_COLLECTED']) &&
-                                                !empty($sucessRow['COLLECTON_TARGET_AMOUNT']) && !empty($sucessRow['COLLECTION_AMOUNT_COLLECTED'])
+                                                isset($sucessRow['SALES_AMOUNT'], $sucessRow['SALES_AMOUNT']) &&
+                                                !empty($sucessRow['SALES_AMOUNT']) && !empty($sucessRow['SALES_AMOUNT'])
                                             ) {
-                                                $percentageRate = round(($sucessRow['COLLECTION_AMOUNT_COLLECTED'] / $sucessRow['COLLECTON_TARGET_AMOUNT']) * 100);
+                                                $percentageRate = round(($sucessRow['SALES_AMOUNT'] / $sucessRow['SALES_TARGET']) * 100);
+                                            }
+
+                                            ?>
+                                            <td class="text-center">
+                                                <?= $percentageRate ?>%
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%'  ?>"></div>
+                                                </div>
+                                            </td>
+                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT']) ?></td>
+                                            <td><?= number_format($sucessRow['COLLECTION_TARGET']) ?></td>
+                                            <?php
+                                            $percentageRate2 = 0;
+                                            if (
+                                                isset($sucessRow['COLLECTION_AMOUNT'], $sucessRow['COLLECTION_TARGET']) &&
+                                                !empty($sucessRow['COLLECTION_AMOUNT']) && !empty($sucessRow['COLLECTION_TARGET'])
+                                            ) {
+                                                $percentageRate2 = round(($sucessRow['COLLECTION_AMOUNT'] / $sucessRow['COLLECTION_TARGET']) * 100);
                                             }
 
                                             ?>
                                             <td>
+                                                <?= $percentageRate2 ?>%
                                                 <div class="progress" style="height: 6px;">
-                                                    <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%'  ?>"></div>
+                                                    <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate2 . '%'  ?>"></div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -890,7 +946,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         <th>RETAILER NAME </th>
                                         <th>DATE </th>
                                         <th>ENTRY REMARKS</th>
-                                        <th>SALES AMOUNT	</th>
+                                        <th>SALES AMOUNT </th>
                                         <th>COLLECTION AMOUNT</th>
                                         <th>VISITED REMARKS</th>
                                         <!-- <th>RATE (%)</th> -->
@@ -923,11 +979,11 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
                                             <td><?= $sucessRow['USER_REMARKS'] ?></td>
 
-                                            <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED'], 2) ?></td>
-                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED'], 2) ?></td>
+                                            <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
+                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
                                             <td><?= $sucessRow['AFTER_VISIT_REMARKS'] ?></td>
 
-                                            <!-- <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT'], 2) ?></td> -->
+                                            <!-- <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT']) ?></td> -->
                                             <?php
                                             // $percentageRate = 0;
                                             // if (
