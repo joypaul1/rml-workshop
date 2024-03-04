@@ -16,46 +16,48 @@
                         <a class="nav-link" href="#"> <i class='bx bx-search'></i>
                         </a>
                     </li>
-                    <?php if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") { ?>
-                        <li class="nav-item dropdown dropdown-large">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class='bx bx-category'></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <div class="row row-cols-3 g-3 p-3">
-                                    <div class="col text-center">
-                                        <div class="app-box mx-auto bg-gradient-cosmic text-white"><i class='bx bx-group'></i>
-                                        </div>
-                                        <div class="app-title">Visit </div>
+                    <?php //if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") { 
+                    ?>
+                    <li class="nav-item dropdown dropdown-large">
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class='bx bx-category'></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <div class="row row-cols-3 g-3 p-3">
+                                <a href="#" class="col text-center" id="dlAppsApk">
+                                    <div class="app-box mx-auto bg-gradient-cosmic text-white "><i class='bx bx-cloud-download'></i>
                                     </div>
-                                    <div class="col text-center">
-                                        <div class="app-box mx-auto bg-gradient-burning text-white"><i class='bx bx-atom'></i>
-                                        </div>
-                                        <div class="app-title">Collection</div>
+                                    <div class="app-title">APPS </div>
+                                </a>
+                                <div class="col text-center">
+                                    <div class="app-box mx-auto bg-gradient-burning text-white"><i class='bx bx-atom'></i>
                                     </div>
-                                    <div class="col text-center">
-                                        <div class="app-box mx-auto bg-gradient-lush text-white"><i class='bx bx-shield'></i>
-                                        </div>
-                                        <div class="app-title">Order</div>
+                                    <div class="app-title">Collection</div>
+                                </div>
+                                <div class="col text-center">
+                                    <div class="app-box mx-auto bg-gradient-lush text-white"><i class='bx bx-shield'></i>
                                     </div>
-                                    <div class="col text-center">
-                                        <div class="app-box mx-auto bg-gradient-kyoto text-dark"><i class='bx bx-notification'></i>
-                                        </div>
-                                        <div class="app-title">User</div>
+                                    <div class="app-title">Sale </div>
+                                </div>
+                                <div class="col text-center">
+                                    <div class="app-box mx-auto bg-gradient-kyoto text-dark"><i class='bx bx-notification'></i>
                                     </div>
-                                    <div class="col text-center">
-                                        <div class="app-box mx-auto bg-gradient-blues text-dark"><i class='bx bx-file'></i>
-                                        </div>
-                                        <div class="app-title">Notification</div>
+                                    <div class="app-title">User</div>
+                                </div>
+                                <div class="col text-center">
+                                    <div class="app-box mx-auto bg-gradient-blues text-dark"><i class='bx bx-file'></i>
                                     </div>
-                                    <div class="col text-center">
-                                        <div class="app-box mx-auto bg-gradient-moonlit text-white"><i class='bx bxs-user-detail'></i>
-                                        </div>
-                                        <div class="app-title">Profile</div>
+                                    <div class="app-title">Notification</div>
+                                </div>
+                                <div class="col text-center">
+                                    <div class="app-box mx-auto bg-gradient-moonlit text-white"><i class='bx bxs-user-detail'></i>
                                     </div>
+                                    <div class="app-title">Profile</div>
                                 </div>
                             </div>
-                        </li>
-                    <?php } ?>
+                        </div>
+                    </li>
+                    <?php //} 
+                    ?>
 
                     <!-- <li class="nav-item dropdown dropdown-large">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">7</span>
@@ -206,3 +208,14 @@
     </div>
 </header>
 <!--end header -->
+<script>
+    document.getElementById("dlAppsApk").addEventListener("click", function() {
+        var fileUrl = "<?php echo $sfcmBasePath . '/cl_7.apk' ?>";
+        var link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = 'workshop_apps'; // Specify the filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+</script>
