@@ -167,7 +167,7 @@ include_once('../../_helper/2step_com_conn.php');
                                                                 </label>
                                                             </div>
                                                             <div class="col-6 form-checks mb-2">
-                                                                <input type="text" required name="collection_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                                                <input type="text" required name="collection_target_amount[<?= $brandID ?>][<?php echo $row["ID"]; ?>]" placeholder="Collection Amount..." class="form-control" id="" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
 
                                                             </div>
                                                         </span>

@@ -9,7 +9,7 @@ $END_DATE      = $_POST['end_date'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
-    $collection_amounts          = $_POST['collection_amount'];
+    $collection_amounts          = $_POST['collection_target_amount'];
 
     try {
         foreach ($collection_amounts as $BRAND_ID => $USER_IDs) {
