@@ -1,18 +1,12 @@
 <?php
 $dynamic_link_css[] = '../../assets/plugins/select2/css/select2.min.css';
-// $dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.css';
-// $dynamic_link_css[] = '../../assets/plugins/datetimepicker/css/classic.date.css';
 $dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
 $dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
-// $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.js';
-// $dynamic_link_js[]  = '../../assets/plugins/datetimepicker/js/picker.date.js';
 
 $dynamic_link_js[]  = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js';
 $dynamic_link_css[]  = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css';
 $dynamic_link_css[]  = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css';
 $dynamic_link_js[]  = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js';
-// $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js';
-// $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 
 include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
@@ -335,7 +329,11 @@ include_once('../../_includes/footer.php');
     function exportF(elem) {
         var table = document.getElementById("downloadData");
         var html = table.outerHTML;
-        var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
+        var utf8BOM = "\uFEFF"; // Byte Order Mark (BOM) for UTF-8
+        var blob = new Blob([utf8BOM + html], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        });
+        var url = URL.createObjectURL(blob);
 
         // Get today's date
         var today = new Date();
@@ -345,9 +343,10 @@ include_once('../../_includes/footer.php');
         var currentDate = yyyy + '-' + mm + '-' + dd;
 
         // Modify download attribute to include today's date in the file name
-        var fileName = "visit_List_" + currentDate + ".xls";
+        var fileName = "visit_List_" + currentDate + ".xlsx";
         elem.setAttribute("href", url);
         elem.setAttribute("download", fileName); // Choose the file name
+
         return false;
     }
 </script>

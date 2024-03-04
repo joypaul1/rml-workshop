@@ -10,6 +10,10 @@
         background: floralwhite !important;
         font-weight: 600 !important;
     }
+
+    .progress {
+        --bs-progress-bg: #ffffff;
+    }
 </style>
 
 <?php
@@ -774,120 +778,94 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
 
         </div>end row-->
 
-        <!--<div class="row">
+        <div class="row">
             <div class="col-12">
                 <div class="card rounded-4">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div>
-                                <h6 class="mb-0">Recent Orders [DEMO DATA]</h6>
+                                <!-- <h6 class="mb-0">Complete Visit List </h6> -->
+                                <h6 class="mb-0 border-success">
+                                    <strong class="text-success">
+                                        <i class="bx bx-flag text-info"></i>
+                                        Visit Schedule List of
+                                        <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
+                                    </strong>
+                                </h6>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table align-middle mb-0">
-                                <thead class="table-light">
+                            <table class="table table-sm table-bordered align-middle mb-0  table-hover">
+                                <!-- <thead class="table-primary text-center"> -->
+                                <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Photo</th>
-                                        <th>Product ID</th>
-                                        <th>Status</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                        <th>Shipping</th>
+                                        <th>SL.</th>
+                                        <th>RETAILER NAME </th>
+                                        <th>DATE </th>
+                                        <th>SALES AMOUNT</th>
+                                        <th>COLLECTION AMOUNT</th>
+                                        <th>TARGET AMOUNT</th>
+                                        <th>RATE (%)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Iphone 5</td>
-                                        <td><img src="assets/images/products/01.png" class="product-img-2" alt="product img"></td>
-                                        <td>#9405822</td>
-                                        <td><span class="btn btn-outline-success btn-sm px-4 rounded-5 w-100">Completed</span></td>
-                                        <td>$1250.00</td>
-                                        <td>03 Feb 2020</td>
-                                        <td>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 100%"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $sucessQuery = "SELECT  VA.ID, VA.VISIT_DATE,
+                                        VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
+                                        VA.ENTRY_BY_ID,VA.SALES_AMOUNT_COLLECTED,VA.COLLECTION_AMOUNT_COLLECTED,
+                                        NVL(CA.TARGET_AMOUNT, 0) AS TARGET_AMOUNT,
+                                        (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
+                                        (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
+                                        (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
+                                        FROM VISIT_ASSIGN VA , COLLECTION_ASSIGN CA
+                                        WHERE VA.RETAILER_ID = CA.USER_ID AND VA.USER_ID = '$log_user_id'
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
+                                        AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
+                                    // echo $sucessQuery;
+                                    $strSQL = @oci_parse($objConnect, $sucessQuery);
 
-                                    <tr>
-                                        <td>Earphone GL</td>
-                                        <td><img src="assets/images/products/02.png" class="product-img-2" alt="product img"></td>
-                                        <td>#8304620</td>
-                                        <td><span class="btn btn-outline-warning btn-sm px-4 rounded-5 w-100">Pending</span></td>
-                                        <td>$1500.00</td>
-                                        <td>05 Feb 2020</td>
-                                        <td>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-blooker" role="progressbar" style="width: 60%"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @oci_execute($strSQL);
+                                    $number = 0;
+                                    while ($sucessRow = @oci_fetch_assoc($strSQL)) {
+                                        $number++;
+                                    ?>
+                                        <tr class="table-info">
+                                            <td><?= $number ?></td>
+                                            <td><?= $sucessRow['RETAILER_NAME'] ?></td>
+                                            <td><?= $sucessRow['VISIT_DATE'] ?></td>
+                                            <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED'], 2) ?></td>
+                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED'], 2) ?></td>
+                                            <td><?= number_format($sucessRow['TARGET_AMOUNT'], 2) ?></td>
+                                            <?php
+                                            $percentageRate = 0;
+                                            if (
+                                                isset($sucessRow['TARGET_AMOUNT'], $sucessRow['COLLECTION_AMOUNT_COLLECTED']) &&
+                                                !empty($sucessRow['TARGET_AMOUNT']) && !empty($sucessRow['COLLECTION_AMOUNT_COLLECTED'])
+                                            ) {
+                                                $percentageRate = round(($sucessRow['COLLECTION_AMOUNT_COLLECTED'] / $sucessRow['TARGET_AMOUNT']) * 100);
+                                            }
 
-                                    <tr>
-                                        <td>HD Hand Camera</td>
-                                        <td><img src="assets/images/products/03.png" class="product-img-2" alt="product img"></td>
-                                        <td>#4736890</td>
-                                        <td><span class="btn btn-outline-danger btn-sm px-4 rounded-5 w-100">Failed</span></td>
-                                        <td>$1400.00</td>
-                                        <td>06 Feb 2020</td>
-                                        <td>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-bloody" role="progressbar" style="width: 70%"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            ?>
+                                            <td>
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%'  ?>"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
 
-                                    <tr>
-                                        <td>Clasic Shoes</td>
-                                        <td><img src="assets/images/products/04.png" class="product-img-2" alt="product img"></td>
-                                        <td>#8543765</td>
-                                        <td><span class="btn btn-outline-success btn-sm px-4 rounded-5 w-100">Paid</span></td>
-                                        <td>$1200.00</td>
-                                        <td>14 Feb 2020</td>
-                                        <td>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 100%"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sitting Chair</td>
-                                        <td><img src="assets/images/products/06.png" class="product-img-2" alt="product img"></td>
-                                        <td>#9629240</td>
-                                        <td><span class="btn btn-outline-warning btn-sm px-4 rounded-5 w-100">Pending</span></td>
-                                        <td>$1500.00</td>
-                                        <td>18 Feb 2020</td>
-                                        <td>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-blooker" role="progressbar" style="width: 60%"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Hand Watch</td>
-                                        <td><img src="assets/images/products/05.png" class="product-img-2" alt="product img"></td>
-                                        <td>#8506790</td>
-                                        <td><span class="btn btn-outline-danger btn-sm px-4 rounded-5 w-100">Failed</span></td>
-                                        <td>$1800.00</td>
-                                        <td>21 Feb 2020</td>
-                                        <td>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-bloody" role="progressbar" style="width: 40%"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>end row-->
+        </div>
+        <!-- end row-->
 
     </div>
 </div>
