@@ -97,7 +97,7 @@
                         </li> -->
                         <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/visit_type.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/disctrict.php"><i class='bx bxs-arrow-to-right'></i> Districts Name Config.</a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/district.php"><i class='bx bxs-arrow-to-right'></i> Districts Name Config.</a>
                         </li>
                     </ul>
                 </li>

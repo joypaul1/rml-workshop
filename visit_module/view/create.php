@@ -45,17 +45,17 @@ if (isset($_POST['retailer_type'])) {
                                 </select>
                             </div>
                             <div class="col-3">
-                                <label class="form-label"> Retailer Disctrict:</label>
-                                <select name="disctrictID" class="form-control 
+                                <label class="form-label"> Retailer District:</label>
+                                <select name="districtID" class="form-control 
                                 text-center single-select">
-                                    <option value="<?php echo null ?>" hidden><- Select Disctrict -></option>
+                                    <option value="<?php echo null ?>" hidden><- Select District -></option>
                                     <?php
                                     $strSQL = oci_parse($objConnect, "SELECT ID,NAME FROM DISTRICT WHERE STATUS =1");
                                     oci_execute($strSQL);
 
                                     while ($row = oci_fetch_assoc($strSQL)) {
                                     ?>
-                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['disctrictID']) && $_POST['disctrictID'] == $row['ID'] ? 'Selected' : '' ?>>
+                                        <option value="<?php echo $row['ID'] ?>" <?php echo isset($_POST['districtID']) && $_POST['districtID'] == $row['ID'] ? 'Selected' : '' ?>>
                                             <?php echo $row['NAME'] ?>
                                         </option>
                                     <?php
@@ -116,9 +116,9 @@ if (isset($_POST['retailer_type'])) {
                                         $query .= " AND (UP.USER_NAME LIKE '%" . $searchTerm . "%' OR UP.USER_MOBILE LIKE '%" . $searchTerm . "%')";
                                     }
                                 }
-                                if (isset($_POST['disctrictID'])) {
-                                    if (!empty($_POST['disctrictID'])) {
-                                        $searchTerm = trim($_POST['disctrictID']);
+                                if (isset($_POST['districtID'])) {
+                                    if (!empty($_POST['districtID'])) {
+                                        $searchTerm = trim($_POST['districtID']);
                                         $query .= " AND UP.DISTRICT_ID = " . $searchTerm;
                                     }
                                 }

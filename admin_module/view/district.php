@@ -14,8 +14,8 @@ $number = 0;
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'List';
-                    $leftSideName  = 'Disctrict List';
-                    $rightSideName  = 'Disctrict Create';
+                    $leftSideName  = 'District List';
+                    $rightSideName  = 'District Create';
                     $routePath     = 'admin_module/view/dis_create.php';
                     include('../../_includes/com_header.php');
 

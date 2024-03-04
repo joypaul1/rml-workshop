@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                     <?php
                     $headerType    = 'Edit';
                     $leftSideName  = 'District Edit';
-                    $rightSideName = 'Disctrict List';
-                    $routePath     = 'admin_module/view/disctrict.php';
+                    $rightSideName = 'District List';
+                    $routePath     = 'admin_module/view/district.php';
                     include('../../_includes/com_header.php');
 
                     ?>

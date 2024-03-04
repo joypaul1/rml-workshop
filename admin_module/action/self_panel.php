@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'dis_creat
             'status' => 'true',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/disctrict.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/district.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'dis_edit'
         ];
 
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/disctrict.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/district.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [

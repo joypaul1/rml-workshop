@@ -10,9 +10,9 @@ include_once('../../_helper/2step_com_conn.php');
                 <div class="card rounded-4">
                     <?php
                     $headerType    = 'Create';
-                    $leftSideName  = 'Disctrict Create';
-                    $rightSideName = 'Disctrict List';
-                    $routePath     = 'admin_module/view/disctrict.php';
+                    $leftSideName  = 'District Create';
+                    $rightSideName = 'District List';
+                    $routePath     = 'admin_module/view/district.php';
                     include('../../_includes/com_header.php');
 
                     ?>
