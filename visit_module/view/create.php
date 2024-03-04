@@ -173,7 +173,7 @@ if (isset($_POST['retailer_type'])) {
 
                         </div>
                         <div class="text-end ">
-                            <button class=" btn btn-sm btn-gradient-primary mt-4" type="submit">Create Visit Assign<i class='bx bx-file-find'></i></button>
+                            <button class=" btn btn-sm btn-gradient-primary mt-4" type="submit">Create Schedule Assign<i class='bx bx-file-find'></i></button>
                         </div>
 
                     </form>
