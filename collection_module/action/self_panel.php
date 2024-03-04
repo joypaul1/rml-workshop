@@ -13,10 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 
     try {
         foreach ($collection_amounts as $BRAND_ID => $USER_IDs) {
-            foreach ($USER_IDs as $USER_ID => $TARGET_AMOUNT) {
-                $TARGET_AMOUNT = $TARGET_AMOUNT ? $TARGET_AMOUNT : 0;
-                $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, TARGET_AMOUNT, ENTRY_DATE, ENTRY_BY_ID, STATUS)
-                        VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $TARGET_AMOUNT, SYSDATE, $log_user_id, 0)";
+            foreach ($USER_IDs as $USER_ID => $COLLECTON_TARGET_AMOUNT) {
+                $COLLECTON_TARGET_AMOUNT = $COLLECTON_TARGET_AMOUNT ? $COLLECTON_TARGET_AMOUNT : 0;
+                $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, COLLECTON_TARGET_AMOUNT, ENTRY_DATE, ENTRY_BY_ID, STATUS)
+                        VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $COLLECTON_TARGET_AMOUNT, SYSDATE, $log_user_id, 0)";
                 $strSQL = oci_parse($objConnect, $query);
 
                 // Execute the query
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
         $query = "UPDATE COLLECTION_ASSIGN
         SET START_DATE = TO_DATE('$START_DATE','dd/mm/RRRR'),
             END_DATE = TO_DATE('$END_DATE','dd/mm/RRRR'),
-            TARGET_AMOUNT = $target_amount,
+            COLLECTON_TARGET_AMOUNT = $target_amount,
             REMARKS = '$remarks'
         WHERE ID = $edit_id";
         $strSQL = oci_parse($objConnect, $query);

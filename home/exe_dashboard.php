@@ -814,7 +814,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     $sucessQuery = "SELECT  VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
                                         VA.ENTRY_BY_ID,VA.SALES_AMOUNT_COLLECTED,VA.COLLECTION_AMOUNT_COLLECTED,
-                                        NVL(CA.TARGET_AMOUNT, 0) AS TARGET_AMOUNT,
+                                        NVL(CA.COLLECTON_TARGET_AMOUNT, 0) AS COLLECTON_TARGET_AMOUNT,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
@@ -836,14 +836,14 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
                                             <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED'], 2) ?></td>
                                             <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED'], 2) ?></td>
-                                            <td><?= number_format($sucessRow['TARGET_AMOUNT'], 2) ?></td>
+                                            <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT'], 2) ?></td>
                                             <?php
                                             $percentageRate = 0;
                                             if (
-                                                isset($sucessRow['TARGET_AMOUNT'], $sucessRow['COLLECTION_AMOUNT_COLLECTED']) &&
-                                                !empty($sucessRow['TARGET_AMOUNT']) && !empty($sucessRow['COLLECTION_AMOUNT_COLLECTED'])
+                                                isset($sucessRow['COLLECTON_TARGET_AMOUNT'], $sucessRow['COLLECTION_AMOUNT_COLLECTED']) &&
+                                                !empty($sucessRow['COLLECTON_TARGET_AMOUNT']) && !empty($sucessRow['COLLECTION_AMOUNT_COLLECTED'])
                                             ) {
-                                                $percentageRate = round(($sucessRow['COLLECTION_AMOUNT_COLLECTED'] / $sucessRow['TARGET_AMOUNT']) * 100);
+                                                $percentageRate = round(($sucessRow['COLLECTION_AMOUNT_COLLECTED'] / $sucessRow['COLLECTON_TARGET_AMOUNT']) * 100);
                                             }
 
                                             ?>
@@ -901,7 +901,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     $sucessQuery = "SELECT  VA.ID, VA.VISIT_DATE,VA.AFTER_VISIT_REMARKS,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
                                         VA.ENTRY_BY_ID,VA.SALES_AMOUNT_COLLECTED,VA.COLLECTION_AMOUNT_COLLECTED,
-                                        NVL(CA.TARGET_AMOUNT, 0) AS TARGET_AMOUNT,
+                                        NVL(CA.COLLECTON_TARGET_AMOUNT, 0) AS COLLECTON_TARGET_AMOUNT,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
@@ -927,14 +927,14 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED'], 2) ?></td>
                                             <td><?= $sucessRow['AFTER_VISIT_REMARKS'] ?></td>
 
-                                            <!-- <td><?= number_format($sucessRow['TARGET_AMOUNT'], 2) ?></td> -->
+                                            <!-- <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT'], 2) ?></td> -->
                                             <?php
                                             // $percentageRate = 0;
                                             // if (
-                                            //     isset($sucessRow['TARGET_AMOUNT'], $sucessRow['COLLECTION_AMOUNT_COLLECTED']) &&
-                                            //     !empty($sucessRow['TARGET_AMOUNT']) && !empty($sucessRow['COLLECTION_AMOUNT_COLLECTED'])
+                                            //     isset($sucessRow['COLLECTON_TARGET_AMOUNT'], $sucessRow['COLLECTION_AMOUNT_COLLECTED']) &&
+                                            //     !empty($sucessRow['COLLECTON_TARGET_AMOUNT']) && !empty($sucessRow['COLLECTION_AMOUNT_COLLECTED'])
                                             // ) {
-                                            //     $percentageRate = round(($sucessRow['COLLECTION_AMOUNT_COLLECTED'] / $sucessRow['TARGET_AMOUNT']) * 100);
+                                            //     $percentageRate = round(($sucessRow['COLLECTION_AMOUNT_COLLECTED'] / $sucessRow['COLLECTON_TARGET_AMOUNT']) * 100);
                                             // }
 
                                             ?>

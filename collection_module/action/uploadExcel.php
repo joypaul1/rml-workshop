@@ -39,11 +39,11 @@ if (isset($_POST['importSubmit'])) {
                     $BRAND_ID           = $row[1];
                     $START_DATE         = $row[3];
                     $END_DATE           = $row[4];
-                    $TARGET_AMOUNT      = $row[5];
+                    $COLLECTON_TARGET_AMOUNT      = $row[5];
                     $REMARKS            = $row[6];
 
-                    $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, TARGET_AMOUNT, REMARKS,ENTRY_DATE, ENTRY_BY_ID, STATUS) 
-                    VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $TARGET_AMOUNT,'$REMARKS', SYSDATE, $log_user_id, 1)";
+                    $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, COLLECTON_TARGET_AMOUNT, REMARKS,ENTRY_DATE, ENTRY_BY_ID, STATUS) 
+                    VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $COLLECTON_TARGET_AMOUNT,'$REMARKS', SYSDATE, $log_user_id, 1)";
                     $strSQL = oci_parse($objConnect, $query);
 
                     // Execute the query

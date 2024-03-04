@@ -13,7 +13,7 @@ include_once('../../_helper/2step_com_conn.php');
 $data = [];
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit') {
     $edit_id = trim($_GET["id"]);
-    $query   = "SELECT CA.ID, CA.START_DATE, CA.END_DATE,CA.TARGET_AMOUNT,
+    $query   = "SELECT CA.ID, CA.START_DATE, CA.END_DATE,CA.COLLECTON_TARGET_AMOUNT,
     CA.STATUS,CA.REMARKS, (SELECT USER_NAME FROM USER_PROFILE UP WHERE CA.USER_ID = UP.ID) AS USER_NAME,(SELECT TITLE FROM PRODUCT_BRAND PB WHERE PB.ID = CA.BRAND_ID) AS BRAND_NAME FROM COLLECTION_ASSIGN CA
     WHERE ID = $edit_id";
     $strSQL  = @oci_parse($objConnect, $query);
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                 </div>
                                 <div class="col-4 text-center form-group mb-3">
                                     <label for="validationCustom01" class="form-label">Target Amount <span class="text-danger">*</span></label>
-                                    <input type="text" name="target_amount" autocomplete="off" class="form-control" id="validationCustom01" value="<?php echo $data['TARGET_AMOUNT'] ?>" required>
+                                    <input type="text" name="target_amount" autocomplete="off" class="form-control" id="validationCustom01" value="<?php echo $data['COLLECTON_TARGET_AMOUNT'] ?>" required>
                                     <div class="valid-feedback">Looks good!</div>
                                 </div>
                                 <div class="col-6 text-center form-group mb-3">

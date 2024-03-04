@@ -40,7 +40,7 @@ while ($row = oci_fetch_assoc($strSQL)) {
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
-$headers = ['USER_ID', 'BRAND_ID', 'USER_INFO', 'START_DATE', 'END_DATE', 'TARGET_AMOUNT', 'REMARKS'];
+$headers = ['USER_ID', 'BRAND_ID', 'USER_INFO', 'START_DATE', 'END_DATE', 'COLLECTON_TARGET_AMOUNT', 'REMARKS'];
 
 // Set headers in the first row
 $sheet->fromArray([$headers], null, 'A1');

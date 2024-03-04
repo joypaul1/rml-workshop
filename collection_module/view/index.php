@@ -104,7 +104,7 @@ $v_end_date   = date('t/m/Y');
                                         $query = "SELECT CA.ID,
                                             CA.START_DATE,
                                             CA.END_DATE,
-                                            CA.TARGET_AMOUNT,
+                                            CA.COLLECTON_TARGET_AMOUNT,
                                             CA.STATUS,
                                             CA.REMARKS,
                                             UP.USER_NAME,
@@ -133,7 +133,7 @@ $v_end_date   = date('t/m/Y');
                                                     CA.ID,
                                                     CA.START_DATE,
                                                     CA.END_DATE,
-                                                    CA.TARGET_AMOUNT,
+                                                    CA.COLLECTON_TARGET_AMOUNT,
                                                     CA.STATUS,
                                                     CA.REMARKS,
                                                     UP.USER_NAME,
@@ -197,7 +197,7 @@ $v_end_date   = date('t/m/Y');
                                                 } ?>
                                             </td>
                                             <td>
-                                                <?php echo number_format($row['TARGET_AMOUNT']) ?>
+                                                <?php echo number_format($row['COLLECTON_TARGET_AMOUNT']) ?>
                                             </td>
                                         </tr>
                                     <?php } ?>
