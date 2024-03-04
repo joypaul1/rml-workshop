@@ -27,7 +27,7 @@ if (isset($_POST['retailer_type'])) {
         <div class="card rounded-4">
             <?php
             $headerType   = 'List';
-            $leftSideName = 'Retailer Point Visit Assign Form';
+            $leftSideName = 'Retailer Point Visit Schedule Form  ';
             include('../../_includes/com_header.php');
             ?>
             <div class="cards rounded-4">
