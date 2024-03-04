@@ -26,7 +26,7 @@
                                 <a href="#" class="col text-center" id="dlAppsApk">
                                     <div class="app-box mx-auto bg-gradient-cosmic text-white "><i class='bx bx-cloud-download'></i>
                                     </div>
-                                    <div class="app-title">APPS </div>
+                                    <div class="app-title"> APPS </div>
                                 </a>
                                 <div class="col text-center">
                                     <div class="app-box mx-auto bg-gradient-burning text-white"><i class='bx bx-atom'></i>
