@@ -576,12 +576,9 @@ $visitRow = @oci_fetch_assoc($strSQL2);
         <div class="row">
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Coordinator List </h6>
-                            </div>
-
+                    <div class="card-header" style="background-color: #3b005c;">
+                        <div class="text-center ">
+                            <h6 class="mb-0 fw-bold text-white">Coordinator List</h6>
                         </div>
                     </div>
                     <div class="card-body" style="height:380px; overflow: auto;">
@@ -619,12 +616,9 @@ $visitRow = @oci_fetch_assoc($strSQL2);
             </div>
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0"> Sale Executive List</h6>
-                            </div>
-
+                    <div class="card-header" style="background-color: #3b005c;">
+                        <div class="text-center ">
+                            <h6 class="mb-0 fw-bold text-white">Sale Executive List </h6>
                         </div>
                     </div>
                     <div class="card-body" style="height:380px; overflow: auto;">
