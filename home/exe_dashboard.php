@@ -802,11 +802,12 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     <tr>
                                         <th>SL.</th>
                                         <th>RETAILER NAME </th>
-                                        <th>SALES AMOUNT</th>
-                                        <th>SALES TARGET</th>
+                                        <th>TYPE </th>
+                                        <th>SA. AMT. </th>
+                                        <th>SA. TAR.</th>
                                         <th>RATE (%)</th>
-                                        <th>COLLECTION AMOUNT</th>
-                                        <th>COLLECTION TARGET</th>
+                                        <th>COL. AMT.</th>
+                                        <th>COL. TAR.</th>
                                         <th>RATE (%)</th>
                                     </tr>
                                 </thead>
@@ -871,7 +872,8 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     ?>
                                         <tr class="table-info">
                                             <td><?= $number ?></td>
-                                            <td><?= $sucessRow['USER_NAME'] ?></td>
+                                            <td> <?= $sucessRow['USER_NAME'] ?></td>
+                                            <td class="text-center"><span class="badge bg-success"> <?= $sucessRow['USER_TYPE'] ?></span></td>
                                             <td><?= number_format($sucessRow['SALES_AMOUNT']) ?></td>
                                             <td><?= number_format($sucessRow['SALES_TARGET']) ?></td>
                                             <?php
@@ -946,7 +948,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         <th>RETAILER NAME </th>
                                         <th>DATE </th>
                                         <th>ENTRY REMARKS</th>
-                                        <th>SALES AMOUNT </th>
+                                        <th>S. AMT. </th>
                                         <th>COLLECTION AMOUNT</th>
                                         <th>VISITED REMARKS</th>
                                     </tr>
@@ -976,10 +978,12 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <td><?= $number ?></td>
                                             <td><?= $sucessRow['RETAILER_NAME'] ?></td>
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
-                                            <td><?= $sucessRow['USER_REMARKS'] ?></td>
+                                            <td><?php echo mb_strlen($sucessRow['USER_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['USER_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['USER_REMARKS']; ?></td>
+
                                             <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
                                             <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
-                                            <td><?= $sucessRow['AFTER_VISIT_REMARKS'] ?></td>
+                                            <td><?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['USER_REMARKS']; ?></td>
+
 
                                             <!-- <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT']) ?></td> -->
                                             <?php
