@@ -606,7 +606,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                 <div class="d-flex align-items-center justify-content-between gap-3">
                                     <div class="">
                                         <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
-                                            echo '<img src="' . $sfcmBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . ' class="product-img-2" alt="no_image">';
+                                            echo '<img src="' . $sfcmBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . '" class="product-img-2" alt="no_image">';
                                         } else {
                                             echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="no_image" class="product-img-2">';
                                         } ?>

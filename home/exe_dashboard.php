@@ -267,8 +267,8 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Sale </p>
-                                                <h4 class="my-1 text-white">
+                                                <p class="mb-0 text-white"> Total Sale </p>
+                                                <h4 class="my-1 tex t-white">
                                                     <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER'] : 0 ?>
                                                 </h4>
                                                 <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
@@ -797,7 +797,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                     </div>
                     <div class="card-body">
                         <div class="table-responsiveS">
-                            <table class="table table-sm table-bordered align-middle mb-0  table-hover">
+                            <table class="table table-sm table-bordered align-middle mb-0 table-hover">
                                 <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
                                         <th>SL.</th>
@@ -949,7 +949,6 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         <th>SALES AMOUNT </th>
                                         <th>COLLECTION AMOUNT</th>
                                         <th>VISITED REMARKS</th>
-                                        <!-- <th>RATE (%)</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -978,7 +977,6 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <td><?= $sucessRow['RETAILER_NAME'] ?></td>
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
                                             <td><?= $sucessRow['USER_REMARKS'] ?></td>
-
                                             <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
                                             <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
                                             <td><?= $sucessRow['AFTER_VISIT_REMARKS'] ?></td>
