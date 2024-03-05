@@ -20,25 +20,20 @@ $sale_executive_all_retailer_ids = [];
 $sale_executive_all_retailer_ids_str  = '0';
 // sale_executive_all_retailer_query
 $sale_executive_all_retailer_query = "SELECT A.USER_ID
-FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-WHERE     A.USER_ID = B.ID
-     AND PARENT_USER_ID IN
-            (SELECT A.USER_ID
-               FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-              WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id)
+FROM USER_MANPOWER_SETUP A,
+USER_PROFILE B
+WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id)
 UNION
 SELECT B.ID
 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-WHERE     A.USER_ID = B.ID
-     AND PARENT_USER_ID IN
-            (SELECT USER_ID
-               FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-              WHERE     A.USER_ID = B.ID
-                    AND PARENT_USER_ID IN
-                           (SELECT A.USER_ID
-                              FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                             WHERE     A.USER_ID = B.ID
-                                   AND PARENT_USER_ID = $log_user_id))";
+WHERE A.USER_ID = B.ID
+    AND PARENT_USER_ID IN
+        (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id))";
 $strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
 @oci_execute($strSQL3);
 

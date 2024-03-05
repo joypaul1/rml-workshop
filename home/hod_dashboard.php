@@ -15,7 +15,39 @@
 <?php
 $v_start_date = date("01/m/Y");
 $v_end_date = date("t/m/Y");
+$sale_executive_all_retailer_ids = [];
+$sale_executive_all_retailer_ids_str  = '0';
+// sale_executive_all_retailer_query
+$sale_executive_all_retailer_query = "SELECT A.USER_ID
+    FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+    WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+        (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id)";
 
+$sale_executive_all_retailer_query .= " UNION ALL ";
+
+$sale_executive_all_retailer_query .= "SELECT B.ID
+    FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+    WHERE A.USER_ID = B.ID
+        AND PARENT_USER_ID IN
+            (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id))";
+
+
+
+// echo $sale_executive_all_retailer_query;
+$strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
+@oci_execute($strSQL3);
+
+while ($row = oci_fetch_assoc($strSQL3)) {
+    $sale_executive_all_retailer_ids[] = $row['USER_ID'];
+}
+if (count($sale_executive_all_retailer_ids) > 0) {
+    $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
+}
+// ECHO $sale_executive_all_retailer_ids_str;
 //visit row
 $totalvisitQuery = "SELECT
     /* START TOTAL_VISIT_OF_MAHINDRA */
@@ -188,11 +220,10 @@ $totalvisitQuery = "SELECT
     /* END TOTAL_SALES_OF_EICHER */
 
 FROM DUAL";
-// echo $totalvisitQuery;
+echo $totalvisitQuery;
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
-
 // end visit row
 
 ?>
@@ -378,6 +409,123 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                         </div><!--end row-->
                     </div>
 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card rounded-4">
+                    <div class="card-header" style="background: #3b005c;">
+                        <div class="d-flex align-items-center">
+                            <h6 class="mb-0 border-success">
+                                <strong class="text-white">
+                                    <i class="bx bx-flag "></i>
+                                    TARGET VS ACHIVEMENT
+                                    <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
+                                </strong>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsiveS">
+                            <table class="table table-sm table-bordered align-middle mb-0 table-hover">
+                                <thead class="bg-gradient-info text-center text-white fw-bold">
+                                    <tr>
+                                        <th>SL.</th>
+                                        <th>RETAILER NAME </th>
+                                        <th>TYPE </th>
+                                        <th>SA. AMT. </th>
+                                        <th>SA. TAR.</th>
+                                        <th>RATE (%)</th>
+                                        <th>COL. AMT.</th>
+                                        <th>COL. TAR.</th>
+                                        <th>RATE (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $TGVSAC_QUERY = "SELECT A.ID,
+                                                    A.USER_NAME,
+                                                    (SELECT TITLE
+                                                    FROM USER_TYPE
+                                                    WHERE ID = A.USER_TYPE_ID) AS USER_TYPE,
+                                                    TOTAL_VISTITED_COLLECTION(A.ID,
+                                                        TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                        TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                        'SALES') AS SALES_AMOUNT,
+                                                    TOTAL_VISTITED_COLLECTION(A.ID,
+                                                        TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                        TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                        'COLLECTION') AS COLLECTION_AMOUNT,
+                                                    TOTAL_TARGET_ASSIGN(A.ID,
+                                                        TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                        TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                        'SALES') AS SALES_TARGET,
+                                                    TOTAL_TARGET_ASSIGN(A.ID,
+                                                        TO_DATE('$v_start_date', 'DD/MM/YYYY'),
+                                                        TO_DATE('$v_end_date', 'DD/MM/YYYY'),
+                                                        'COLLECTION') AS COLLECTION_TARGET
+                                                FROM USER_PROFILE A,
+                                                    (SELECT USER_ID
+                                                    FROM USER_MANPOWER_SETUP
+                                                    WHERE PARENT_USER_ID = $log_user_id
+                                                    UNION ALL
+                                                    SELECT USER_ID
+                                                    FROM USER_MANPOWER_SETUP
+                                                    WHERE PARENT_USER_ID IN
+                                                        ($sale_executive_all_retailer_ids_str)) B
+                                                WHERE A.ID = B.USER_ID";
+                                    $strSQL = @oci_parse($objConnect, $TGVSAC_QUERY);
+                                    @oci_execute($strSQL);
+                                    $number = 0;
+                                    while ($sucessRow = @oci_fetch_assoc($strSQL)) {
+                                        $number++;
+                                    ?>
+                                        <tr class="table-info">
+                                            <td><?= $number ?></td>
+                                            <td><?= $sucessRow['USER_NAME'] ?></td>
+                                            <td class="text-center"><span class="badge bg-success"><?= $sucessRow['USER_TYPE'] ?></span></td>
+                                            <td><?= number_format($sucessRow['SALES_AMOUNT']) ?></td>
+                                            <td><?= number_format($sucessRow['SALES_TARGET']) ?></td>
+                                            <?php
+                                            $percentageRate = 0;
+                                            if (
+                                                isset($sucessRow['SALES_AMOUNT'], $sucessRow['SALES_AMOUNT']) &&
+                                                !empty($sucessRow['SALES_AMOUNT']) && !empty($sucessRow['SALES_AMOUNT'])
+                                            ) {
+                                                $percentageRate = round(($sucessRow['SALES_AMOUNT'] / $sucessRow['SALES_TARGET']) * 100);
+                                            }
+                                            ?>
+                                            <td class="text-center">
+                                                <?= $percentageRate ?>%
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%' ?>"></div>
+                                                </div>
+                                            </td>
+                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT']) ?></td>
+                                            <td><?= number_format($sucessRow['COLLECTION_TARGET']) ?></td>
+                                            <?php
+                                            $percentageRate2 = 0;
+                                            if (
+                                                isset($sucessRow['COLLECTION_AMOUNT'], $sucessRow['COLLECTION_TARGET']) &&
+                                                !empty($sucessRow['COLLECTION_AMOUNT']) && !empty($sucessRow['COLLECTION_TARGET'])
+                                            ) {
+                                                $percentageRate2 = round(($sucessRow['COLLECTION_AMOUNT'] / $sucessRow['COLLECTION_TARGET']) * 100);
+                                            }
+                                            ?>
+                                            <td>
+                                                <?= $percentageRate2 ?>%
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate2 . '%' ?>"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
