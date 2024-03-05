@@ -343,7 +343,7 @@ include_once('../../_includes/footer.php');
         var currentDate = yyyy + '-' + mm + '-' + dd;
 
         // Modify download attribute to include today's date in the file name
-        var fileName = "visit_List_" + currentDate + ".xlsx";
+        var fileName = "visit_List_" + currentDate + ".xls";
         elem.setAttribute("href", url);
         elem.setAttribute("download", fileName); // Choose the file name
 
