@@ -86,7 +86,7 @@ $v_end_date   = date('t/m/Y');
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0" id="downloadData">
                                 <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
-                                    <th colspan="6">Start Date : <?php echo $v_start_date ?> - End Date : <?php echo $v_end_date ?></th>
+                                    <th colspan="7">Start Date : <?php echo $v_start_date ?> - End Date : <?php echo $v_end_date ?></th>
                                     <tr>
                                         <th>SL.</th>
                                         <th>ACTION</th>
