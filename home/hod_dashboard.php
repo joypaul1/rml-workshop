@@ -825,7 +825,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table align-middle mb-0">
-                                <thead class="table-light">
+                                <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
                                     <tr>
                                         <th>Product</th>
                                         <th>Photo</th>

@@ -23,7 +23,7 @@ $number = 0;
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0">
-                                <thead class="table-light text-uppercase text-center ">
+                                <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
                                     <tr>
                                         <th>SL.</th>
                                         <th>TITLE</th>

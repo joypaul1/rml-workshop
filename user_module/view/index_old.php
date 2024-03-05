@@ -80,7 +80,7 @@ $number = 0;
                     <div class="card-body">
                         <div class="table-responsives ">
                             <table class="table table-sm table-bordered align-middle mb-0">
-                                <thead class="table-light text-uppercase text-center ">
+                                <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
                                     <tr>
                                         <th>SL.</th>
                                         <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
@@ -218,9 +218,9 @@ $number = 0;
                                                 <br />
                                                 <?php if ($row['PLAZA_PARENT_TYPE']) {
                                                     echo ' <span class="badge rounded-pill bg-gradient-info">
-                                                    '. $row['PLAZA_PARENT_TYPE'].' </span>';
+                                                    ' . $row['PLAZA_PARENT_TYPE'] . ' </span>';
                                                 } ?>
-                                               
+
                                             </td>
 
                                             <td class="text-center">

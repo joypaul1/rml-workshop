@@ -142,7 +142,7 @@ $v_end_date   = date('d/m/Y');
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0" id="downloadData">
-                                <thead class="table-light text-uppercase text-center">
+                                <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
                                     <tr>
                                         <th colspan="6">Start Date : <?php echo $v_start_date ?> - End Date : <?php echo $v_end_date ?></th>
                                     </tr>

@@ -11,7 +11,7 @@ include_once('../../_helper/2step_com_conn.php');
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
-                    $headerType    = 'List';// or Edit
+                    $headerType    = 'List'; // or Edit
                     $leftSideName  = 'User List';
                     $rightSideName = 'User Create';
                     $routePath     = 'leave_module/view/self_panel/create.php'; // path name for redirect
@@ -21,7 +21,7 @@ include_once('../../_helper/2step_com_conn.php');
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0">
-                                <thead class="table-light text-uppercase text-center ">
+                                <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
                                     <tr>
                                         <th>SL.</th>
                                         <th>Action</th>
@@ -33,9 +33,9 @@ include_once('../../_helper/2step_com_conn.php');
                                         <th>CREATED DATE</th>
                                     </tr>
                                 </thead>
-                               <tbody>
+                                <tbody>
 
-                               </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>

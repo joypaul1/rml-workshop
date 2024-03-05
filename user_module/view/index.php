@@ -82,8 +82,8 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                     <div class="card-body">
                         <div class="table-responsives ">
                             <table class="table table-sm table-bordered align-middle mb-0">
-                                <thead class="table-light text-uppercase text-center ">
-                                    <tr>
+                                <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
+                                    <tr >
                                         <th>SL.</th>
                                         <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
                                             || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
@@ -185,10 +185,10 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
                                                 <br>
-                                                ID : <?php echo $row['RML_ID']; ?> <br>
+                                                TRACK ID : <?php echo $row['RML_ID']; ?> <br>
                                                 <?php
                                                 $userBrandID = $row['USER_BRANDS'];
-                                                $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN 
+                                                $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN
                                                 ($userBrandID)";
                                                 $brandstrSQL  = @oci_parse($objConnect, $brandQuery);
                                                 @oci_execute($brandstrSQL);
@@ -265,7 +265,7 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <?php
                                     //   echo $number;
                                     if ($number == 0) {
-                                        echo '<tr><td colspan="9" class="text-center text-danger fw-bold"> !</td></tr>';
+                                        echo '<tr><td colspan="9" class="text-center text-danger fw-bold"> NO DATA FOUND !</td></tr>';
                                     } ?>
                                 </tbody>
                             </table>

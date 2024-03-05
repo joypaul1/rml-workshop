@@ -76,7 +76,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
                         <div class="table-responsives">
                             <table class="table table-sm table-bordered align-middle mb-0">
-                                <thead class="table-light text-uppercase text-center ">
+                                <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
                                     <tr>
                                         <th>SL.</th>
                                         <th>User info</th>
