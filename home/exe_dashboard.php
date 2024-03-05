@@ -781,18 +781,15 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
         <div class="row">
             <div class="col-12">
                 <div class="card rounded-4">
-                    <div class="card-header">
+                    <div class="card-header" style="background: #3b005c;">
                         <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0 border-success">
-                                    <strong class="text-success">
-                                        <i class="bx bx-flag text-info"></i>
-                                        TARGET VS ACHIVEMENT
-                                        <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
-                                    </strong>
-                                </h6>
-                            </div>
-
+                            <h6 class="mb-0 border-success">
+                                <strong class="text-white">
+                                    <i class="bx bx-flag "></i>
+                                    TARGET VS ACHIVEMENT
+                                    <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
+                                </strong>
+                            </h6>
                         </div>
                     </div>
                     <div class="card-body">
@@ -925,18 +922,15 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
         <div class="row">
             <div class="col-12">
                 <div class="card rounded-4">
-                    <div class="card-header">
+                    <div class="card-header" style="background: #3b005c;">
                         <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0 border-success">
-                                    <strong class="text-success">
-                                        <i class="bx bx-flag text-info"></i>
-                                        Visit Schedule List of
-                                        <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
-                                    </strong>
-                                </h6>
-                            </div>
-
+                            <h6 class="mb-0 border-success">
+                                <strong class="text-white">
+                                    <i class="bx bx-flag "></i>
+                                    Visit Schedule List of
+                                    <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
+                                </strong>
+                            </h6>
                         </div>
                     </div>
                     <div class="card-body">
