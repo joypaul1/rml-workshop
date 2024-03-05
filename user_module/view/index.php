@@ -178,7 +178,7 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
                                             ) { ?>
                                                 <td class="text-center">
-                                                    <a href="<?php echo $sfcmBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>`
+                                                    <a href="<?php echo $sfcmBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
                                                     <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
                                                 </td>
                                             <?php } ?>
@@ -210,11 +210,10 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                                     echo ' <span class="badge rounded-pill bg-gradient-info">
                                                     '. $row['PLAZA_PARENT_TYPE'].' </span>';
                                                 } ?>
-                                               
                                             </td>
 
                                             <td class="text-center">
-                                                <?php if (($row['USER_TYPE'] == 'RETAILER')) { ?>
+                                                <?php if (($row['USER_TYPE'] == 'RETAILER') || ($row['USER_TYPE'] == 'PLAZA RETAILER') ) { ?>
                                                     <?php
                                                     $latitu = $row['LAT'];
                                                     $lng = $row['LANG'];
