@@ -13,6 +13,7 @@
 </style>
 
 <?php
+$dynamic_link_js[]  = '../assets/js/index2.js';
 $v_start_date = date("01/m/Y");
 $v_end_date = date("t/m/Y");
 $sale_executive_all_retailer_ids = [];
@@ -811,13 +812,12 @@ $visitRow = @oci_fetch_assoc($strSQL2);
             </div>
             <div class="col-12 col-lg-4 d-flex">
                 <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Monthly Orders [DEMO DATA]</h6>
-                            </div>
-
+                    <div class="card-header" style="background-color: #3b005c;">
+                        <div class="text-center ">
+                            <h6 class="mb-0 fw-bold text-white">Monthly Orders [DEMO DATA]</h6>
                         </div>
+                    </div>
+                    <div class="card-body">
                         <div id="chart2"></div>
                     </div>
                 </div>
