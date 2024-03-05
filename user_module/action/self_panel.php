@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
                     }  // end delet previous image
                     // update image  link
                     $query = "UPDATE USER_PROFILE SET IMAGE_LINK = '$filename' WHERE ID = $editId";
-
+                    $_SESSION['USER_SFCM_INFO']['IMAGE_LINK'] = $filename;
                     $strSQL = @oci_parse($objConnect, $query);
                     if (@oci_execute($strSQL)) {
                     } else {
@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
         USER_NAME       = '$USER_NAME'
         WHERE ID        = $editId";
     }
-
+    $_SESSION['USER_SFCM_INFO']['USER_NAME'] = $USER_NAME;
     $strSQL = @oci_parse($objConnect, $query);
 
     // Execute the query
