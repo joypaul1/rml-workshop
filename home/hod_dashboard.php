@@ -35,7 +35,6 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
     ) AS TOTAL_VISIT_OF_MAHINDRA,
     /* END TOTAL_VISIT_OF_MAHINDRA */
 
@@ -56,7 +55,7 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
+       
     ) AS TOTAL_VISIT_OF_EICHER,
     /* END TOTAL_VISIT_OF_EICHER */
 
@@ -78,7 +77,7 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
+       
     ) AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA,
     /* END TOTAL_COMPLETE_VISIT_OF_MAHINDRA */
 
@@ -100,7 +99,7 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
+       
     ) AS TOTAL_COMPLETE_VISIT_OF_EICHER,
     /* END TOTAL_COMPLETE_VISIT_OF_EICHER */
 
@@ -121,7 +120,7 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
+       
     ) AS TOTAL_COLLECTION_OF_MAHINDRA,
     /* END TOTAL_COLLECTION_OF_MAHINDRA */
 
@@ -142,7 +141,7 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
+       
     ) AS TOTAL_COLLECTION_OF_EICHER,
     /* END TOTAL_COLLECTION_OF_EICHER */
 
@@ -163,7 +162,7 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
+       
     ) AS TOTAL_SALES_OF_MAHINDRA,
     /* END TOTAL_SALES_OF_MAHINDRA */
 
@@ -184,12 +183,12 @@ $totalvisitQuery = "SELECT
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-        GROUP BY VA.VISIT_DATE
+       
     ) AS TOTAL_SALES_OF_EICHER
     /* END TOTAL_SALES_OF_EICHER */
 
 FROM DUAL";
-// echo $totalvisitQuery;
+echo $totalvisitQuery;
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);

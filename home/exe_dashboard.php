@@ -17,6 +17,7 @@
 </style>
 
 <?php
+$dynamic_link_js[]  = '../assets/js/executive.js';
 $v_start_date = date("01/m/Y");
 $v_end_date = date("t/m/Y");
 
@@ -285,6 +286,43 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                 </div>
             </div>
         </div>
+        <!-- <div class="row">
+            <div class="col-12 col-lg-4 d-flex">
+                <div class="card rounded-4 w-100">
+                    <div class="card-body">
+                        <ul class="nav nav-pills nav-fill mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link active rounded-5" data-bs-toggle="pill" href="#primary-pills-profile"> COLLECTION ACHIVEMENT </a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content">
+
+                            <div class="tab-pane fade show active" id="primary-pills-profile">
+                                <div id="chart4"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 d-flex">
+                <div class="card rounded-4 w-100">
+                    <div class="card-body">
+                        <ul class="nav nav-pills nav-fill mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link active rounded-5" data-bs-toggle="pill" href="#primary-pills-contact">SALES ACHIVEMENT</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="primary-pills-contact">
+                                <div id="chart5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
         <!-- <div class="card">
             <div class="card-body">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
@@ -477,306 +515,6 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
         </div> -->
 
         <!--end row-->
-        <!--<div class="row">
-            <div class="col-12 col-lg-8 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-cente">
-                            <div>
-                                <h6 class="mb-0">Collection Overview [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                        <div id="chart1"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Monthly Orders [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                        <div id="chart2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>end row-->
-
-
-        <!-- <div class="row">
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Top Retailer [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="categories-list">
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/01.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-cosmic" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/02.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/03.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/04.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-kyoto" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/05.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-blues" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Top Sale Executive [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="categories-list">
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/01.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-cosmic" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/02.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/03.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-quepal" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/04.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-kyoto" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="">
-                                    <img src="assets/images/products/05.png" class="product-img-2" alt="product img">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-2">Mobiles <span class="float-end">75%</span></p>
-                                    <div class="progress" style="height: 4px;">
-                                        <div class="progress-bar bg-gradient-blues" role="progressbar" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <ul class="nav nav-pills nav-fill mb-3">
-                            <li class="nav-item">
-                                <a class="nav-link rounded-5" data-bs-toggle="pill" href="#primary-pills-home">Monthly</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active rounded-5" data-bs-toggle="pill" href="#primary-pills-profile">Weekly</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link rounded-5" data-bs-toggle="pill" href="#primary-pills-contact">Daily</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade" id="primary-pills-home">
-                                <div id="chart3"></div>
-                                <hr>
-                                <div class="d-flex align-items-center justify-content-center gap-3">
-                                    <div>
-                                        <h3 class="mb-0">$ 9845.43</h3>
-                                        <p class="mb-0">+3% Since Last Week</p>
-                                    </div>
-                                    <div class="fs-1">
-                                        <i class="lni lni-arrow-up"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade show active" id="primary-pills-profile">
-                                <div id="chart4"></div>
-                                <hr>
-                                <div class="d-flex align-items-center justify-content-center gap-3">
-                                    <div>
-                                        <h3 class="mb-0">$ 45,245.37</h3>
-                                        <p class="mb-0">+4% Since Last Month</p>
-                                    </div>
-                                    <div class="fs-1">
-                                        <i class="lni lni-arrow-up"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="primary-pills-contact">
-                                <div id="chart5"></div>
-                                <hr>
-                                <div class="d-flex align-items-center justify-content-center gap-3">
-                                    <div>
-                                        <h3 class="mb-0">$ 7395.23</h3>
-                                        <p class="mb-0">+4% Since Tomorrow</p>
-                                    </div>
-                                    <div class="fs-1">
-                                        <i class="lni lni-arrow-up"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>end row-->
-
-        <!--<div class="row">
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Browser Statistics [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="chart6"></div>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center border-top">Chrome <span class="badge bg-danger rounded-pill">10</span>
-                        </li>
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Opera <span class="badge bg-primary rounded-pill">65</span>
-                        </li>
-                        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Firefox <span class="badge bg-warning text-dark rounded-pill">14</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-12 col-lg-8 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Retailer Location [DEMO DATA]</h6>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="geographic-map-2" style="height: 280px;"></div>
-                    </div>
-                    <table class="table table-borderless align-items-center">
-                        <tbody>
-                            <tr>
-                                <td><i class="bx bxs-circle me-2" style="color: #5a52db;"></i> Russia</td>
-                                <td>18 %</td>
-                                <td><i class="bx bxs-circle me-2" style="color: #f09c15;"></i> Australia</td>
-                                <td>14.2 %</td>
-                            </tr>
-                            <tr>
-                                <td><i class="bx bxs-circle me-2" style="color: #b659ff;"></i> India</td>
-                                <td>15 %</td>
-                                <td><i class="bx bxs-circle me-2" style="color: #2ccc72;"></i> United States</td>
-                                <td>11.6 %</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>end row-->
 
         <div class="row">
             <div class="col-12">
