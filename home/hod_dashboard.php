@@ -37,7 +37,7 @@ $sale_executive_all_retailer_query .= "SELECT B.ID
 
 
 
-// echo $sale_executive_all_retailer_query;
+
 $strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
 @oci_execute($strSQL3);
 
@@ -47,7 +47,7 @@ while ($row = oci_fetch_assoc($strSQL3)) {
 if (count($sale_executive_all_retailer_ids) > 0) {
     $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
 }
-// ECHO $sale_executive_all_retailer_ids_str;
+
 //visit row
 $totalvisitQuery = "SELECT
     /* START TOTAL_VISIT_OF_MAHINDRA */
@@ -220,7 +220,7 @@ $totalvisitQuery = "SELECT
     /* END TOTAL_SALES_OF_EICHER */
 
 FROM DUAL";
-echo $totalvisitQuery;
+// echo $totalvisitQuery;
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
 $visitRow = @oci_fetch_assoc($strSQL2);
