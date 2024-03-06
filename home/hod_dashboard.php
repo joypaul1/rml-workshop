@@ -475,7 +475,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                                     FROM USER_MANPOWER_SETUP
                                                     WHERE PARENT_USER_ID IN
                                                         ($sale_executive_all_retailer_ids_str)) B
-                                                WHERE A.ID = B.USER_ID";
+                                                WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
                                     $strSQL = @oci_parse($objConnect, $TGVSAC_QUERY);
                                     @oci_execute($strSQL);
                                     $number = 0;
@@ -814,7 +814,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                 <div class="card rounded-4 w-100">
                     <div class="card-header" style="background-color: #3b005c;">
                         <div class="text-center ">
-                            <h6 class="mb-0 fw-bold text-white">Monthly Orders [DEMO DATA]</h6>
+                            <h6 class="mb-0 fw-bold text-white"> Monthly Orders [DEMO DATA]</h6>
                         </div>
                     </div>
                     <div class="card-body">

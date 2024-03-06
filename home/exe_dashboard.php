@@ -18,8 +18,8 @@
 
 <?php
 $dynamic_link_js[]  = '../assets/js/executive.js';
-$v_start_date = date("01/m/Y");
-$v_end_date = date("t/m/Y");
+$v_start_date   = date("01/m/Y");
+$v_end_date     = date("t/m/Y");
 
 
 // VISIT PLAN QUERY START
