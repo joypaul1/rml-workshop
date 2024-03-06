@@ -13,7 +13,7 @@
 </style>
 
 <?php
-$dynamic_link_js[]  = '../assets/js/index2.js';
+$dynamic_link_js[]  = '../assets/js/hod.js';
 $v_start_date = date("01/m/Y");
 $v_end_date = date("t/m/Y");
 $sale_executive_all_retailer_ids = [];

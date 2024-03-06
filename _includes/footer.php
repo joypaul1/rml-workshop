@@ -102,19 +102,52 @@
 <script src="<?php echo $sfcmBasePath ?>/assets/plugins/metismenu/js/metisMenu.min.js"></script>
 <script src="<?php echo $sfcmBasePath ?>/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.8/sweetalert2.min.js"
-    integrity="sha512-7x7HoEikRZhV0FAORWP+hrUzl75JW/uLHBbg2kHnPdFmScpIeHY0ieUVSacjusrKrlA/RsA2tDOBvisFmKc3xw==" crossorigin="anonymous"
-    referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.8/sweetalert2.min.js" integrity="sha512-7x7HoEikRZhV0FAORWP+hrUzl75JW/uLHBbg2kHnPdFmScpIeHY0ieUVSacjusrKrlA/RsA2tDOBvisFmKc3xw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!--app JS-->
-
+<script src="<?php echo $sfcmBasePath ?>/assets/js/app.js"></script>
 <script>
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    // function showTime() {
+    //     // to get current time/ date.
+    //     var date = new Date();
+    //     // to get the current hour
+    //     var h = date.getHours();
+    //     // to get the current minutes
+    //     var m = date.getMinutes();
+    //     //to get the current second
+    //     var s = date.getSeconds();
+    //     // AM, PM setting
+    //     var session = "AM";
+
+    //     //conditions for times behavior
+    //     if (h == 0) {
+    //         h = 12;
+    //     }
+    //     if (h >= 12) {
+    //         session = "PM";
+    //     }
+
+    //     if (h > 12) {
+    //         h = h - 12;
+    //     }
+    //     m = m < 10 ? (m = "0" + m) : m;
+    //     s = s < 10 ? (s = "0" + s) : s;
+
+    //     //putting time in one variable
+    //     var time = h + ":" + m + ":" + s + " " + session;
+    //     //putting time in our div
+    //     $("#clock").html(time);
+    //     //to change time in every seconds
+    //     setTimeout(showTime, 1000);
+    // }
+    // showTime();
 </script>
-<script src="<?php echo $sfcmBasePath ?>/assets/js/app.js"></script>
+
 <?php if (isset($dynamic_link_js) && count($dynamic_link_js) > 0) {
     foreach ($dynamic_link_js as $key => $linkJs) {
         echo "<script src='$linkJs'></script>";

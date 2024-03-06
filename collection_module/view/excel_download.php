@@ -14,11 +14,11 @@ $fileName = $_GET['brand_name'] . "_" . date("Y-m-d") . '.xlsx'; // Set the desi
 $dataSource  = [];
 $brand_ID = $_GET['brand_type'];
 $query = "SELECT UP.ID, UP.USER_NAME, UP.USER_MOBILE
-        FROM 
+        FROM
             USER_PROFILE UP
-        LEFT JOIN 
+        LEFT JOIN
             USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-        WHERE 
+        WHERE
             UBS.PRODUCT_BRAND_ID IN ($brand_ID)
             AND UBS.STATUS = 1
             AND UP.USER_TYPE_ID = 3";

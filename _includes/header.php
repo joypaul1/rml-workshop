@@ -12,6 +12,9 @@
     <!--favicon-->
     <link rel="icon" href="<?php echo $sfcmBasePath ?>/assets/images/favicon-32x32.png" type="image/png">
     <!--plugins-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
     <link href="<?php echo $sfcmBasePath ?>/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
     <link href="<?php echo $sfcmBasePath ?>/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet">
     <link href="<?php echo $sfcmBasePath ?>/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
@@ -27,7 +30,7 @@
     <link href="<?php echo $sfcmBasePath ?>/assets/css/icons.css" rel="stylesheet">
     <!-- Theme Style CSS -->
     <!-- <link rel="stylesheet" href="<?php echo $sfcmBasePath ?>/assets/css/dark-theme.css"> -->
-    <!-- <link rel="stylesheet" href="<?php echo $sfcmBasePath ?>/assets/css/semi-dark.css"> -->
+    <!-- <link rel="stylesheet" href="<?php echo $sfcmBasePath ?>   /assets/css/semi-dark.css"> -->
     <link rel="stylesheet" href="<?php echo $sfcmBasePath ?>/assets/css/header-colors.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 

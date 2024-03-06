@@ -2089,9 +2089,9 @@ input.search-control-2::placeholder {
 .user-box {
 	display: flex;
 	align-items: center;
-	height: 60px;
-	border-left: 1px solid #f0f0f0;
-	margin-left: 1rem
+	/* height: 60px; */
+	/* border-left: 1px solid #f0f0f0; */
+	/* margin-left: 1rem */
 }
 
 .dropdown-large {

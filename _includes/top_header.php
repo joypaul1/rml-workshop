@@ -1,4 +1,5 @@
 <!--start header -->
+
 <header>
     <div class="topbar d-flex align-items-center">
         <nav class="navbar navbar-expand">
@@ -187,7 +188,20 @@
                     </li> -->
                 </ul>
             </div>
-            <div class="user-box dropdown">
+            <!-- <div class="user-box" style="margin: 1rem;    border-right: 1px solid white;">
+                <div class="d-flex justify-content-center align-items-center nav-link" >
+                    <div class="clock" id="clock" style="
+                        font-family: 'Black Ops One', system-ui;
+                        font-weight: 400;
+                        font-style: normal;
+                        width: 100px;
+                        border-radius: 5px;
+                    "> </div>
+
+                </div>
+
+            </div> -->
+            <div class=" user-box dropdown">
                 <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                     <img src="<?php echo $_SESSION['USER_SFCM_INFO']['IMAGE_LINK'] != null ? ($sfcmBasePath . '/' . $_SESSION['USER_SFCM_INFO']['IMAGE_LINK']) : $sfcmBasePath . '/' . "assets/images/avatars/default_user.png"; ?>" class="user-img" alt="">

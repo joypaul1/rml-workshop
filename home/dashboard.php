@@ -1,6 +1,6 @@
 <?php
-$dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js';
-$dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js';
+// $dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js';
+// $dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js';
 $dynamic_link_js[]  = '../assets/plugins/apexcharts-bundle/js/apexcharts.min.js';
 $dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.min.js';
 
