@@ -111,6 +111,10 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    $(function() {
+        $('[data-bs-toggle="popover"]').popover();
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    })
 
     // function showTime() {
     //     // to get current time/ date.
@@ -165,6 +169,7 @@ if (!empty($_SESSION['noti_message'])) {
     unset($_SESSION['noti_message']);
 }
 ?>
+
 </body>
 
 </html>

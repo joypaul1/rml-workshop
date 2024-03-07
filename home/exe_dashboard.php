@@ -710,29 +710,19 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <td><?= $number ?></td>
                                             <td><?= $sucessRow['RETAILER_NAME'] ?></td>
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
-                                            <td><?php echo mb_strlen($sucessRow['USER_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['USER_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['USER_REMARKS']; ?></td>
+                                            <td>
+                                                <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['USER_REMARKS']; ?>">
+                                                    <?php echo mb_strlen($sucessRow['USER_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['USER_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['USER_REMARKS']; ?>
+                                                </span>
+                                            </td>
 
                                             <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
                                             <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
-                                            <td><?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['AFTER_VISIT_REMARKS']; ?></td>
-
-
-                                            <!-- <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT']) ?></td> -->
-                                            <?php
-                                            // $percentageRate = 0;
-                                            // if (
-                                            //     isset($sucessRow['COLLECTON_TARGET_AMOUNT'], $sucessRow['COLLECTION_AMOUNT_COLLECTED']) &&
-                                            //     !empty($sucessRow['COLLECTON_TARGET_AMOUNT']) && !empty($sucessRow['COLLECTION_AMOUNT_COLLECTED'])
-                                            // ) {
-                                            //     $percentageRate = round(($sucessRow['COLLECTION_AMOUNT_COLLECTED'] / $sucessRow['COLLECTON_TARGET_AMOUNT']) * 100);
-                                            // }
-
-                                            ?>
-                                            <!-- <td>
-                                                <div class="progress" style="height: 6px;">
-                                                    <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%'  ?>"></div>
-                                                </div>
-                                            </td> -->
+                                            <td>
+                                                <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['AFTER_VISIT_REMARKS']; ?>">
+                                                    <?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['AFTER_VISIT_REMARKS']; ?>
+                                                </span>
+                                            </td>
                                         </tr>
                                     <?php } ?>
 
