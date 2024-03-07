@@ -14,13 +14,13 @@ $user_type_brand_wise_data = [];
 
 // COUNT QUERY USER TYPE WISE
 $query = "SELECT UT.ID, UT.TITLE,
-          COUNT(USER_TYPE_ID) AS TOTAL_USER,
-          NUMBER_OF_USER(1, UT.ID) AS MAHINDRA_USER,
-          NUMBER_OF_USER(2, UT.ID) AS EICHER_USER
-          FROM USER_PROFILE UP, USER_TYPE UT
-          WHERE UP.USER_STATUS = 1
-          AND UP.USER_TYPE_ID = UT.ID
-          GROUP BY UT.ID, UT.TITLE";
+        COUNT(USER_TYPE_ID) AS TOTAL_USER,
+        NUMBER_OF_USER(1, UT.ID) AS MAHINDRA_USER,
+        NUMBER_OF_USER(2, UT.ID) AS EICHER_USER
+        FROM USER_PROFILE UP, USER_TYPE UT
+        WHERE UP.USER_STATUS = 1
+        AND UP.USER_TYPE_ID = UT.ID
+        GROUP BY UT.ID, UT.TITLE";
 
 $brandSQL = oci_parse($objConnect, $query);
 oci_execute($brandSQL);

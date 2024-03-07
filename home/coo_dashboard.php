@@ -906,7 +906,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                         <th>DATE </th>
                                         <th>ENTRY REMARKS</th>
                                         <th>S. AMT. </th>
-                                        <th>COLLECTION AMOUNT</th>
+                                        <th>COL. AMT.</th>
                                         <th>VISITED REMARKS</th>
                                     </tr>
                                 </thead>
