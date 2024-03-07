@@ -714,7 +714,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
 
                                             <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
                                             <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
-                                            <td><?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['USER_REMARKS']; ?></td>
+                                            <td><?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['AFTER_VISIT_REMARKS']; ?></td>
 
 
                                             <!-- <td><?= number_format($sucessRow['COLLECTON_TARGET_AMOUNT']) ?></td> -->
