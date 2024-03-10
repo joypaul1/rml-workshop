@@ -126,7 +126,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 UP.RML_IDENTITY_ID,
                                                 UP.USER_TYPE_ID
                                                 ORDER BY UP.USER_TYPE_ID";
-                                    
+
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -163,7 +163,6 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 while ($brandData = @oci_fetch_assoc($brandstrSQL)) {
                                                     echo '<span class="badge rounded-pill bg-gradient-success">' . $brandData['TITLE'] . '</span> ';
                                                 }
-
                                                 ?>
 
                                             </td>
@@ -192,7 +191,8 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                                     FROM USER_PROFILE UP
                                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                                     WHERE UP.USER_STATUS = 1
-                                                                    and  UBS.PRODUCT_BRAND_ID IN (1)
+                                                                    AND  UBS.PRODUCT_BRAND_ID IN (1)
+                                                                    AND UBS.STATUS = 1
                                                                     AND UP.USER_TYPE_ID = '$USER_TYPE_ID'
                                                                     ORDER BY UP.ID ASC";
                                                             $query3 = "SELECT  PARENT_USER_ID FROM USER_MANPOWER_SETUP WHERE USER_ID = $USER_ID AND STATUS = 1  AND BRAND_ID = 1";
@@ -249,7 +249,8 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                                     FROM USER_PROFILE UP
                                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                                     WHERE UP.USER_STATUS = 1
-                                                                    and  UBS.PRODUCT_BRAND_ID IN (2)
+                                                                    AND  UBS.PRODUCT_BRAND_ID IN (2)
+                                                                    AND UBS.STATUS = 1
                                                                     AND UP.USER_TYPE_ID = '$USER_TYPE_ID'
                                                                     ORDER BY UP.ID ASC";
                                                             $query3 = "SELECT  PARENT_USER_ID FROM USER_MANPOWER_SETUP WHERE USER_ID = $USER_ID AND STATUS = 1 AND BRAND_ID = 2";

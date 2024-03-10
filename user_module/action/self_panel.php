@@ -262,19 +262,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'reso
 
     $PARENT_USER_ID       = $_POST['PARENT_USER_ID'];
     $USER_ID              = $_POST['USER_ID'];
+    $BRAND_ID             = $_POST['BRAND_ID'];
 
     // Prepare the SQL statement
     $query = "MERGE INTO USER_MANPOWER_SETUP UMS
           USING DUAL
-          ON (UMS.USER_ID = :USER_ID)
+          ON (UMS.USER_ID = :USER_ID AND UMS.BRAND_ID = :BRAND_ID) 
           WHEN MATCHED THEN
                 UPDATE SET UMS.ENTRY_DATE = SYSDATE,
                         UMS.PARENT_USER_ID = :PARENT_USER_ID,
                         UMS.ENTRY_BY_ID = :ENTRY_BY_ID,
                         UMS.STATUS = 1
           WHEN NOT MATCHED THEN
-              INSERT (PARENT_USER_ID, USER_ID, ENTRY_DATE, ENTRY_BY_ID, STATUS)
-              VALUES (:PARENT_USER_ID, :USER_ID, SYSDATE, :ENTRY_BY_ID, 1)";
+              INSERT (PARENT_USER_ID, USER_ID, ENTRY_DATE, ENTRY_BY_ID, STATUS, BRAND_ID)
+              VALUES (:PARENT_USER_ID, :USER_ID, SYSDATE, :ENTRY_BY_ID, 1, :BRAND_ID)";
 
     // Prepare the statement
     $strSQL = oci_parse($objConnect, $query);
@@ -283,6 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'reso
     oci_bind_by_name($strSQL, ':PARENT_USER_ID', $PARENT_USER_ID);
     oci_bind_by_name($strSQL, ':USER_ID', $USER_ID);
     oci_bind_by_name($strSQL, ':ENTRY_BY_ID', $log_user_id);
+    oci_bind_by_name($strSQL, ':BRAND_ID', $BRAND_ID);
     // echo $query;
 
     // die();
