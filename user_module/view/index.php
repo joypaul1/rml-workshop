@@ -124,9 +124,7 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                             WHERE  UBS.USER_PROFILE_ID = UP.ID
                                             AND UP.ID = UMS.USER_ID
                                             AND UBS.STATUS = 1
-                                            AND UP.USER_STATUS = 1
-                                            --AND UMS.PARENT_USER_ID = $USER_LOGIN_ID
-                                           ";
+                                            AND UP.USER_STATUS = 1";
                                     } else {
 
                                         $query = "SELECT UP.ID,

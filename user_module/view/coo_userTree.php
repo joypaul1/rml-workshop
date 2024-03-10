@@ -7,21 +7,24 @@ $coodinoatorData = array();
 $selfData = array();
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $userID = $_GET['id'];
-    //Self Data
+    //Self Data 
     $query    = "SELECT ID, USER_NAME FROM USER_PROFILE WHERE  ID = $userID";
     $strSQL = @oci_parse($objConnect, $query);
     if (@oci_execute($strSQL)) {
         $selfData = @oci_fetch_assoc($strSQL);
     }
-    //END Self Data
+    //END Self Data 
     // coodinoatorData
-    $query2    = "SELECT ID, USER_NAME FROM USER_PROFILE WHERE USER_TYPE_ID = 5 AND RESPONSIBLE_ID = $userID";
+    $query2    = "SELECT B.ID,B.USER_NAME FROM USER_MANPOWER_SETUP A,USER_PROFILE B
+    WHERE A.USER_ID=B.ID AND A.PARENT_USER_ID='$userID'";
+    // $query2    = "SELECT ID, USER_NAME FROM USER_PROFILE WHERE USER_TYPE_ID = 2 AND RESPONSIBLE_ID = $userID";
     $strSQL = @oci_parse($objConnect, $query2);
     if (@oci_execute($strSQL)) {
         while ($row = @oci_fetch_assoc($strSQL)) {
             $coodinoatorData[] = $row; // Append each row to the $data array
         }
     }
+    // print_r($coodinoatorData);
     //end coodinoatorData
 }
 $sfcmBasePath    = $_SESSION['sfcmBasePath'];
@@ -46,8 +49,8 @@ $sfcmBasePath    = $_SESSION['sfcmBasePath'];
     <!-- Bootstrap CSS -->
     <link href="<?php echo $sfcmBasePath ?>/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo $sfcmBasePath ?>/assets/css/bootstrap-extended.css" rel="stylesheet">
-    <link href="../../../css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link href="<?php echo $sfcmBasePath ?>/assets/css/app.css" rel="stylesheet">
+    <!-- <link href="../../../css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> -->
+    <!-- <link href="<?php echo $sfcmBasePath ?>/assets/css/app.css" rel="stylesheet"> -->
     <link href="<?php echo $sfcmBasePath ?>/assets/css/icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.3/css/jquery.orgchart.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -74,6 +77,10 @@ $sfcmBasePath    = $_SESSION['sfcmBasePath'];
 
     .orgchart td>.down {
         background-color: #aaa;
+    }
+
+    .orgchart .first-level .title {
+        background-color: red;
     }
 
     .orgchart .middle-level .title {
@@ -124,7 +131,8 @@ $sfcmBasePath    = $_SESSION['sfcmBasePath'];
     }
 </style>
 
-<body class="bg-tree">
+<body class="bg-tree ">
+
     <!--wrapper-->
     <div class="wrapper">
         <div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
@@ -136,12 +144,14 @@ $sfcmBasePath    = $_SESSION['sfcmBasePath'];
                                 <h5 class="card-title text-white">
                                     User Member Tree for <?php echo $_SESSION['USER_SFCM_INFO']['USER_NAME'] ?>
                                     <span><i class="fa fa-sort-amount-asc text-info" aria-hidden="true"></i></span>
+
                                 </h5>
+
                             </div>
                         </div>
                         <div class="card rounded-4">
                             <div class="card-bodys">
-                                <div class="borders p-4 rounded-4">
+                                <div class="borders p-3 rounded-4">
                                     <div id="chart-container"></div>
 
                                 </div>
@@ -162,53 +172,81 @@ $sfcmBasePath    = $_SESSION['sfcmBasePath'];
     <!--Password show & hide js -->
 
     <!--app JS-->
-    <script src="assets/js/app.js"></script>
+    <!-- <script src="assets/js/app.js"></script> -->
     <script>
         var selfData = <?php echo json_encode($selfData); ?>;
         var coodinoatorData = <?php echo json_encode($coodinoatorData); ?>;
 
-        var buildHierarchy = function(data) {
-            var hierarchy = {
-                name: selfData.USER_NAME,
-                title: "Retailer",
-                className: "frontend1",
-                children: [],
-            };
+        (function($) {
+            $(function() {
+                var hierarchy = {
+                    name: selfData.USER_NAME,
+                    title: "COORDINATOR",
+                    className: "middle-level",
+                    children: []
+                };
+                var saleExecutivePromises = [];
 
-            var coordinatorPromises = [];
+                for (var i = 0; i < coodinoatorData.length; i++) {
+                    (function(userData) {
+                        var parentChild = {
+                            name: userData.USER_NAME,
+                            title: "Sale Executive",
+                            className: "product-dept",
+                            children: []
+                        };
+                        hierarchy.children.push(parentChild);
 
-            for (var i = 0; i < data.length; i++) {
-                (function(userData) {
-                    var parentChild = {
-                        name: userData.USER_NAME,
-                        title: "Retailer",
-                        className: "pipeline1",
-                        children: []
-                    };
-                    hierarchy.children.push(parentChild);
+                        var saleExecutivePromise = new Promise(function(resolve, reject) {
+                            $.ajax({
+                                type: "GET",
+                                url: "<?php echo ($sfcmBasePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                data: {
+                                    sale_executive: userData.ID,
+                                    plaza_retailer: true
+                                },
+                                dataType: "JSON",
+                                success: function(plazaRetailerRes) {
+                                    var executivePromises = [];
 
+                                    for (var j = 0; j < plazaRetailerRes.data.length; j++) {
+                                        (function(plazaRetailerData) {
+                                            var child = {
+                                                name: plazaRetailerData.USER_NAME,
+                                                title: "Plaza-Retailer",
+                                                className: "frontend1",
+                                                children: []
+                                            };
+                                            parentChild.children.push(child);
+                                        })(plazaRetailerRes.data[j]);
+                                    }
 
-                })(data[i]);
-            }
+                                    Promise.all(executivePromises).then(function() {
+                                        resolve(); // Resolve the saleExecutivePromise after all children are pushed
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    reject(error); // Reject promise if AJAX request fails
+                                }
+                            });
+                        });
 
-            Promise.all(coordinatorPromises).then(function() {
-                // Re-render org chart after adding all children
-                $("#chart-container").empty().orgchart({
-                    data: hierarchy,
-                    nodeContent: "title"
+                        saleExecutivePromises.push(saleExecutivePromise);
+                    })(coodinoatorData[i]);
+                }
+
+                Promise.all(saleExecutivePromises).then(function() {
+                    // Re-render org chart after adding all children
+                    var oc = $("#chart-container").orgchart({
+                        data: hierarchy,
+                        depth: 10,
+                        nodeContent: "title"
+                    });
+                }).catch(function(error) {
+                    console.error('Error fetching data:', error);
                 });
             });
-
-            return hierarchy;
-        };
-
-        // ... (remaining code)
-
-
-
-        $(function() {
-            var chartData = buildHierarchy(coodinoatorData);
-        });
+        })(jQuery);
     </script>
 
 
