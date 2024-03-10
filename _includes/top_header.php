@@ -228,7 +228,7 @@
 <!--end header -->
 <script>
     document.getElementById("dlAppsApk").addEventListener("click", function() {
-        var fileUrl = "<?php echo $sfcmBasePath . '/cl_7.apk' ?>";
+        var fileUrl = "<?php echo $sfcmBasePath . '/hr.apk' ?>";
         var link = document.createElement('a');
         link.href = fileUrl;
         link.download = 'workshop_apps'; // Specify the filename
