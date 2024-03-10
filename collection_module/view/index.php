@@ -86,7 +86,7 @@ $v_end_date   = date('t/m/Y');
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0" id="downloadData">
                                 <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
-                                    <th colspan="7">Start Date : <?php echo $v_start_date ?> - End Date : <?php echo $v_end_date ?></th>
+                                    <th colspan="8">Start Date : <?php echo $v_start_date ?> - End Date : <?php echo $v_end_date ?></th>
                                     <tr>
                                         <th>SL.</th>
                                         <th>ACTION</th>
@@ -94,7 +94,8 @@ $v_end_date   = date('t/m/Y');
                                         <th>Retailer Name</th>
                                         <th>Brand </th>
                                         <th>STATUS</th>
-                                        <th>Amount</th>
+                                        <th>COL. AMT.</th>
+                                        <th>SL. AMT.</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -105,6 +106,7 @@ $v_end_date   = date('t/m/Y');
                                             CA.START_DATE,
                                             CA.END_DATE,
                                             CA.COLLECTON_TARGET_AMOUNT,
+                                            CA.SALES_TARGET_AMOUNT,
                                             CA.STATUS,
                                             CA.REMARKS,
                                             UP.USER_NAME,
@@ -134,6 +136,7 @@ $v_end_date   = date('t/m/Y');
                                                     CA.START_DATE,
                                                     CA.END_DATE,
                                                     CA.COLLECTON_TARGET_AMOUNT,
+                                                    CA.SALES_TARGET_AMOUNT,
                                                     CA.STATUS,
                                                     CA.REMARKS,
                                                     UP.USER_NAME,
@@ -199,6 +202,9 @@ $v_end_date   = date('t/m/Y');
                                             <td>
                                                 <?php echo number_format($row['COLLECTON_TARGET_AMOUNT']) ?>
                                             </td>
+                                            <td>
+                                                <?php echo number_format($row['SALES_TARGET_AMOUNT']) ?>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -207,26 +213,26 @@ $v_end_date   = date('t/m/Y');
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination round-pagination">
                                         <?php
-                                        $countQuery = "SELECT COUNT(CA.ID) AS total  FROM COLLECTION_ASSIGN CA
-                                                        INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
-                                                        WHERE CA.BRAND_ID IN ($USER_BRANDS)
-                                                        AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY')
-                                                        AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
+                                        //$countQuery = "SELECT COUNT(CA.ID) AS total  FROM COLLECTION_ASSIGN CA
+                                                        // INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
+                                                        // WHERE CA.BRAND_ID IN ($USER_BRANDS)
+                                                        // AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY')
+                                                        // AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
                                         // check retailer data exist
-                                        if (isset($_POST['f_retailer_type'])) {
-                                            $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
-                                        }
+                                        //if (isset($_POST['f_retailer_type'])) {
+                                            //$query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
+                                        //}
 
-                                        $countResult = oci_parse($objConnect, $countQuery);
-                                        oci_execute($countResult);
-                                        $countData = oci_fetch_assoc($countResult);
-                                        $totalRecords = $countData['TOTAL'];
+                                        // $countResult = oci_parse($objConnect, $countQuery);
+                                        // oci_execute($countResult);
+                                        // $countData = oci_fetch_assoc($countResult);
+                                        // $totalRecords = $countData['TOTAL'];
 
 
-                                        for ($i = 1; $i <= ceil($totalRecords / RECORDS_PER_PAGE); $i++) {
-                                            $activeClass = ($i == $currentPage) ? 'active' : '';
-                                            echo "<li class='page-item $activeClass'><a class='page-link' href='index.php?page=$i'>$i</a></li>";
-                                        }
+                                        // for ($i = 1; $i <= ceil($totalRecords / RECORDS_PER_PAGE); $i++) {
+                                        //     $activeClass = ($i == $currentPage) ? 'active' : '';
+                                        //     echo "<li class='page-item $activeClass'><a class='page-link' href='index.php?page=$i'>$i</a></li>";
+                                        // }
 
                                         ?>
                                     </ul>

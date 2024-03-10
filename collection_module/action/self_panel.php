@@ -7,6 +7,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 $START_DATE    = $_POST['start_date'];
 $END_DATE      = $_POST['end_date'];
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
 
     $collection_target_amounts   = $_POST['collection_target_amount'];
@@ -14,10 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
     try {
         foreach ($collection_target_amounts as $BRAND_ID => $USER_IDs) {
             foreach ($USER_IDs as $USER_ID => $COLLECTON_TARGET_AMOUNT) {
-
-                $COLLECTON_TARGET_AMOUNT = $COLLECTON_TARGET_AMOUNT ? $COLLECTON_TARGET_AMOUNT : 0;
-                $SALES_TARGET_AMOUNT = $sale_target_amounts[$BRAND_ID][$USER_ID] ? $sale_target_amounts[$BRAND_ID][$USER_ID] : 0;
-                $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, COLLECTON_TARGET_AMOUNT, SALES_TARGET_AMOUNT, ENTRY_DATE, ENTRY_BY_ID, STATUS)
+                if ($COLLECTON_TARGET_AMOUNT > 0) {
+                    $COLLECTON_TARGET_AMOUNT = $COLLECTON_TARGET_AMOUNT ? $COLLECTON_TARGET_AMOUNT : 0;
+                    $SALES_TARGET_AMOUNT = $sale_target_amounts[$BRAND_ID][$USER_ID] ? $sale_target_amounts[$BRAND_ID][$USER_ID] : 0;
+                    $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, COLLECTON_TARGET_AMOUNT, SALES_TARGET_AMOUNT, ENTRY_DATE, ENTRY_BY_ID, STATUS)
                 VALUES (
                     $USER_ID,
                     TO_DATE('$START_DATE','dd/mm/yyyy'),
@@ -30,13 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
                     0
                 )";
 
-                $strSQL = oci_parse($objConnect, $query);
-                // Execute the query
-                oci_execute($strSQL);
+                    $strSQL = oci_parse($objConnect, $query);
+                    // Execute the query
+                    oci_execute($strSQL);
 
-                // Check for errors after executing each query
-                if (oci_error($strSQL)) {
-                    throw new Exception("Failed to execute query: " . oci_error($objConnect)['message']);
+                    // Check for errors after executing each query
+                    if (oci_error($strSQL)) {
+                        throw new Exception("Failed to execute query: " . oci_error($objConnect)['message']);
+                    }
                 }
             }
         }
@@ -62,10 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit') {
-    $collection_target_amount          = $_POST['collection_target_amount'];
-    $sale_target_amount                = $_POST['sale_target_amount'];
-    $edit_id                = $_POST['editId'];
-    $remarks                = $_POST['remarks'];
+    $collection_target_amount           = $_POST['collection_target_amount'];
+    $sale_target_amount                 = $_POST['sale_target_amount'];
+    $edit_id                            = $_POST['editId'];
+    $remarks                            = $_POST['remarks'];
     try {
         $query = "UPDATE COLLECTION_ASSIGN SET START_DATE = TO_DATE('$START_DATE','dd/mm/RRRR'),
             END_DATE = TO_DATE('$END_DATE','dd/mm/RRRR'),

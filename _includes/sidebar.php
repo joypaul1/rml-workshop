@@ -1,14 +1,19 @@
 <body>
 
     <?php
-    $v_active      = 'mm-active';
-    $v_active_open = 'mm-active';
+    // $v_active      = 'mm-active';
+    // $v_active_open = 'mm-active';
     $currentUrl    = $_SERVER['REQUEST_URI'];
+  
     function isActive($url)
     {
+        // $url = parse_url($url);
+        // echo $url;
         global $currentUrl;
         return strpos($currentUrl, $url) !== false ? 'mm-active' : '';
     }
+    // echo isActive('collection_module/view/create.php');
+    // die();
     ?>
     <!--wrapper-->
     <div class="wrapper">
@@ -36,7 +41,8 @@
                 </li>
 
 
-                <li class="<?php echo isActive('/collection_module/view/edit.php'); ?>">
+                <li class="<?php echo isActive('/collection_module/view/create.php'); ?>
+                <?php echo isActive('/collection_module/view/edit.php'); ?>">
                     <a href="javascript:;" class="has-arrow">
 
                         <div class="parent-icon"><i class='bx bx-money'></i>
@@ -47,7 +53,7 @@
                         <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Assign Collection </a>
                         </li>
 
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of  Assign  </a>
+                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Assign </a>
 
                         </li>
                         <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/excel_upload.php"><i class='bx bxs-arrow-to-right'></i> Excel Upload </a>
@@ -59,25 +65,20 @@
 
                         <div class="parent-icon"><i class='bx bx-group'></i>
                         </div>
-                        <div class="menu-title">Visit  Plan Module</div>
+                        <div class="menu-title">Visit Plan Module</div>
                     </a>
                     <ul>
-                        <!-- <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create Schedule </a>
-                        </li> -->
                         <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Schedule </a>
                         </li>
                     </ul>
                 </li>
                 <li class="<?php echo isActive('/user_module/view/edit.php'); ?>">
                     <a href="javascript:;" class="has-arrow">
-
                         <div class="parent-icon"><i class='bx bx-group'></i>
                         </div>
                         <div class="menu-title">User Module</div>
                     </a>
                     <ul>
-                        <!-- <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Create User</a>
-                        </li> -->
                         <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
                         </li>
                         <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Cost Center Assign</a>
