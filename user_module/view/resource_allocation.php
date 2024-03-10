@@ -80,9 +80,15 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                     <tr>
                                         <th>SL.</th>
                                         <th>User info</th>
-                                        <th>Assign Responsible ID </th>
+                                        <th colspan="2">Assign Responsible ID</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2"></th>
+                                        <th>MAHINDRA</th>
+                                        <th>EICHER</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     <?php
                                     $query = "SELECT UP.ID,
@@ -103,6 +109,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 WHERE UBS.STATUS = 1 AND UP.USER_STATUS = 1 AND UP.USER_TYPE_ID != '1'";
 
 
+
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
                                         $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
@@ -119,6 +126,7 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 UP.RML_IDENTITY_ID,
                                                 UP.USER_TYPE_ID
                                                 ORDER BY UP.USER_TYPE_ID";
+                                    
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
@@ -136,7 +144,6 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                             <td>
                                                 <?php echo $row['USER_NAME']; ?>
                                                 <br>
-
                                                 Mobile : <?php echo $row['USER_MOBILE']; ?>
                                                 <br>
                                                 Type : <?php echo $row['USER_TYPE']; ?>
@@ -145,9 +152,11 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 <br>
                                                 Brand :
                                                 <?php
+                                                $userBrandID = null;
                                                 $userBrandID = $row['USER_BRANDS'];
-                                                $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN 
-                                                ($userBrandID)";
+                                                $brandQuery  = "SELECT PB.TITLE FROM PRODUCT_BRAND PB WHERE  PB.ID IN
+                                                ($userBrandID) AND PB.STATUS = 1";
+
                                                 $brandstrSQL  = @oci_parse($objConnect, $brandQuery);
                                                 @oci_execute($brandstrSQL);
 
@@ -159,18 +168,23 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 
                                             </td>
                                             <td>
-                                                <form action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
-                                                    <input type="hidden" name="actionType" value="resource_allocation">
-                                                    <input type="hidden" name="USER_ID" value="<?php echo $row['ID'] ?>">
-                                                    <select class="form-select text-center RESPONSIBLE_IDs" id="" name="PARENT_USER_ID">
-                                                        <option><-- Select <?php echo ucwords(strtolower($row['RES_USER_TYPE'])) ?> --></option>
-                                                        <?php
-                                                        $resRow = [];
-                                                        $USER_ID = $row['ID'];
-                                                        $currentUserBrandID = $row['USER_BRANDS'];
-                                                        $currentUserTypeID = $row['USER_TYPE_ID'];
-                                                        $USER_TYPE_ID = $row['USER_TYPE_ID'] ? $row['USER_TYPE_ID']  - 1 : '';
-                                                        $query = "SELECT
+                                                <?php
+                                                $userBrandID =  explode(',', $userBrandID);
+                                                if (in_array(1, $userBrandID)) {
+                                                ?>
+                                                    <form action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
+                                                        <input type="hidden" name="actionType" value="resource_allocation">
+                                                        <input type="hidden" name="USER_ID" value="<?php echo $row['ID'] ?>">
+                                                        <input type="hidden" name="BRAND_ID" value="1">
+                                                        <select class="form-select text-center RESPONSIBLE_IDs" id="" name="PARENT_USER_ID">
+                                                            <option><-- Select <?php echo ucwords(strtolower($row['RES_USER_TYPE'])) ?> --></option>
+                                                            <?php
+                                                            $resRow = [];
+                                                            $USER_ID = $row['ID'];
+                                                            $currentUserBrandID = $row['USER_BRANDS'];
+                                                            $currentUserTypeID = $row['USER_TYPE_ID'];
+                                                            $USER_TYPE_ID = $row['USER_TYPE_ID'] ? $row['USER_TYPE_ID']  - 1 : '';
+                                                            $query = "SELECT
                                                                     DISTINCT
                                                                     UP.USER_NAME,
                                                                     UP.USER_MOBILE,
@@ -178,36 +192,93 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                                     FROM USER_PROFILE UP
                                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                                     WHERE UP.USER_STATUS = 1
-                                                                    and  UBS.PRODUCT_BRAND_ID IN ($currentUserBrandID)
-                                                                    AND UP.USER_MOBILE NOT IN ('01735699133','123456789')
+                                                                    and  UBS.PRODUCT_BRAND_ID IN (1)
                                                                     AND UP.USER_TYPE_ID = '$USER_TYPE_ID'
                                                                     ORDER BY UP.ID ASC";
-                                                        $query3 = "SELECT  PARENT_USER_ID FROM USER_MANPOWER_SETUP WHERE USER_ID = $USER_ID AND STATUS = 1";
-                                                        $strSQL2  = @oci_parse($objConnect, $query);
-                                                        $strSQL3  = @oci_parse($objConnect, $query3);
-                                                        @oci_execute($strSQL2);
-                                                        @oci_execute($strSQL3);
-                                                        $userResponsibleRow = @oci_fetch_assoc($strSQL3);
-                                                        $PARENT_USER_ID = $userResponsibleRow['PARENT_USER_ID'] ? $userResponsibleRow['PARENT_USER_ID'] : null;
+                                                            $query3 = "SELECT  PARENT_USER_ID FROM USER_MANPOWER_SETUP WHERE USER_ID = $USER_ID AND STATUS = 1  AND BRAND_ID = 1";
+                                                            echo $query3;
+                                                            $strSQL2  = @oci_parse($objConnect, $query);
+                                                            $strSQL3  = @oci_parse($objConnect, $query3);
+                                                            @oci_execute($strSQL2);
+                                                            @oci_execute($strSQL3);
+                                                            $userResponsibleRow = @oci_fetch_assoc($strSQL3);
+                                                            $PARENT_USER_ID = $userResponsibleRow['PARENT_USER_ID'] ? $userResponsibleRow['PARENT_USER_ID'] : null;
 
-                                                        while ($resRow = @oci_fetch_assoc($strSQL2)) {
-                                                        ?>
-                                                            <option value="<?php echo $resRow['ID'] ?>" <?php echo $PARENT_USER_ID == $resRow['ID'] ? 'Selected' : ' ' ?>>
-                                                                <?php echo $resRow['USER_NAME'] ?>
-                                                                - <?php echo $resRow['USER_MOBILE'] ?>
-                                                            </option>
-                                                        <?php }
-                                                        ?>
-                                                    </select>
-                                                    <?php if ($PARENT_USER_ID) {
-                                                        echo '<button type="submit" class="btn btn-sm btn-gradient-success"> <i class="bx bx-check-double"></i>
-                                                          </button>';
-                                                    } else {
-                                                        echo '<button type="submit" class="btn btn-sm btn-gradient-warning text-white"> <i class="bx bx-check-double"></i>
+                                                            while ($resRow = @oci_fetch_assoc($strSQL2)) {
+                                                            ?>
+                                                                <option value="<?php echo $resRow['ID'] ?>" <?php echo $PARENT_USER_ID == $resRow['ID'] ? 'Selected' : ' ' ?>>
+                                                                    <?php echo $resRow['USER_NAME'] ?>
+                                                                    - <?php echo $resRow['USER_MOBILE'] ?>
+                                                                </option>
+                                                            <?php }
+                                                            ?>
+                                                        </select>
+                                                        <?php if ($PARENT_USER_ID) {
+                                                            echo '<button type="submit" class="btn btn-sm btn-gradient-success"> <i class="bx bx-check-double"></i></button>';
+                                                        } else {
+                                                            echo '<button type="submit" class="btn btn-sm btn-gradient-warning text-white"> <i class="bx bx-check-double"></i>
                                                             </button>';
-                                                    } ?>
+                                                        } ?>
 
-                                                </form>
+                                                    </form>
+                                                <?php }
+                                                ?>
+
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if (in_array(2, $userBrandID)) {
+                                                ?>
+                                                    <form action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
+                                                        <input type="hidden" name="actionType" value="resource_allocation">
+                                                        <input type="hidden" name="USER_ID" value="<?php echo $row['ID'] ?>">
+                                                        <input type="hidden" name="BRAND_ID" value="2">
+                                                        <select class="form-select text-center RESPONSIBLE_IDs" id="" name="PARENT_USER_ID">
+                                                            <option><-- Select <?php echo ucwords(strtolower($row['RES_USER_TYPE'])) ?> --></option>
+                                                            <?php
+                                                            $resRow = [];
+                                                            $USER_ID = $row['ID'];
+                                                            $currentUserBrandID = $row['USER_BRANDS'];
+                                                            $currentUserTypeID = $row['USER_TYPE_ID'];
+                                                            $USER_TYPE_ID = $row['USER_TYPE_ID'] ? $row['USER_TYPE_ID']  - 1 : '';
+                                                            $query = "SELECT
+                                                                    DISTINCT
+                                                                    UP.USER_NAME,
+                                                                    UP.USER_MOBILE,
+                                                                    UP.ID
+                                                                    FROM USER_PROFILE UP
+                                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                                    WHERE UP.USER_STATUS = 1
+                                                                    and  UBS.PRODUCT_BRAND_ID IN (2)
+                                                                    AND UP.USER_TYPE_ID = '$USER_TYPE_ID'
+                                                                    ORDER BY UP.ID ASC";
+                                                            $query3 = "SELECT  PARENT_USER_ID FROM USER_MANPOWER_SETUP WHERE USER_ID = $USER_ID AND STATUS = 1 AND BRAND_ID = 2";
+                                                            $strSQL2  = @oci_parse($objConnect, $query);
+                                                            $strSQL3  = @oci_parse($objConnect, $query3);
+                                                            @oci_execute($strSQL2);
+                                                            @oci_execute($strSQL3);
+                                                            $userResponsibleRow = @oci_fetch_assoc($strSQL3);
+                                                            $PARENT_USER_ID = $userResponsibleRow['PARENT_USER_ID'] ? $userResponsibleRow['PARENT_USER_ID'] : null;
+
+                                                            while ($resRow = @oci_fetch_assoc($strSQL2)) {
+                                                            ?>
+                                                                <option value="<?php echo $resRow['ID'] ?>" <?php echo $PARENT_USER_ID == $resRow['ID'] ? 'Selected' : ' ' ?>>
+                                                                    <?php echo $resRow['USER_NAME'] ?>
+                                                                    - <?php echo $resRow['USER_MOBILE'] ?>
+                                                                </option>
+                                                            <?php }
+                                                            ?>
+                                                        </select>
+                                                        <?php if ($PARENT_USER_ID) {
+                                                            echo '<button type="submit" class="btn btn-sm btn-gradient-success"> <i class="bx bx-check-double"></i></button>';
+                                                        } else {
+                                                            echo '<button type="submit" class="btn btn-sm btn-gradient-warning text-white"> <i class="bx bx-check-double"></i>
+                                                            </button>';
+                                                        } ?>
+
+                                                    </form>
+                                                <?php }
+                                                ?>
 
                                             </td>
 

@@ -86,14 +86,12 @@ $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
                                                     UP.USER_NAME,
                                                     UP.USER_MOBILE,
                                                     UP.RML_IDENTITY_ID AS RML_ID,
-                                                                                                     
-                                                    (SELECT TITLE 
-                                                        FROM USER_TYPE 
-                                                        WHERE ID = UP.USER_TYPE_ID) 
-                                                        AS USER_TYPE
-                                            FROM USER_PROFILE UP 
-                                            WHERE UP.USER_STATUS = '1' 
-                                            AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
+                                                    (SELECT TITLE
+                                                    FROM USER_TYPE
+                                                    WHERE ID = UP.USER_TYPE_ID)
+                                                    AS USER_TYPE
+                                            FROM USER_PROFILE UP
+                                            WHERE UP.USER_STATUS = '1'";
 
 
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
