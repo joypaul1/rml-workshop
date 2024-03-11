@@ -89,7 +89,7 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         AS TOTAL_SALES_OF_EICHER
 FROM DUAL";
 
-echo $totalvisitQuery;
+// echo $totalvisitQuery;
 $totalvisitSQL = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($totalvisitSQL);
 $visit_plan_month_wise_data = array(); // Initialize the array
