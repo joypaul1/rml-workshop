@@ -698,7 +698,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         WHERE VA.RETAILER_ID = CA.USER_ID AND VA.USER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
-                                    echo $sucessQuery;
+                                    // echo $sucessQuery;
                                     $strSQL = @oci_parse($objConnect, $sucessQuery);
 
                                     @oci_execute($strSQL);
