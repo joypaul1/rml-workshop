@@ -203,7 +203,7 @@ $v_end_date   = date('d/m/Y');
                                         $query .= " AND (VA.RETAILER_ID= $retailerID)";
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC";
-                                  
+
                                     // $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
                                     $strSQL = @oci_parse($objConnect, $query);
 

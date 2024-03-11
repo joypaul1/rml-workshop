@@ -915,14 +915,13 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                     $sucessQuery = "SELECT  VA.ID, VA.VISIT_DATE,VA.AFTER_VISIT_REMARKS,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
                                         VA.ENTRY_BY_ID,VA.SALES_AMOUNT_COLLECTED,VA.COLLECTION_AMOUNT_COLLECTED,
-                                        NVL(CA.COLLECTON_TARGET_AMOUNT, 0) AS COLLECTON_TARGET_AMOUNT,
                                         (SELECT VT.TITLE FROM VISIT_TYPE VT WHERE VT.ID = VA.VISIT_TYPE_ID) AS VISIT_TYPE,
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
-                                        FROM VISIT_ASSIGN VA , COLLECTION_ASSIGN CA
-                                        WHERE VA.RETAILER_ID = CA.USER_ID AND VA.RETAILER_ID IN ($sale_executive_all_retailer_ids_str)
-                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
-                                        AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
+                                        FROM VISIT_ASSIGN VA
+                                        WHERE   VA.RETAILER_ID IN ($sale_executive_all_retailer_ids_str)
+                                        AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
+                                    // echo  $sucessQuery;
                                     $strSQL = @oci_parse($objConnect, $sucessQuery);
 
                                     @oci_execute($strSQL);
@@ -932,7 +931,10 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                     ?>
                                         <tr class="table-info">
                                             <td><?= $number ?></td>
-                                            <td><?= $sucessRow['RETAILER_NAME'] ?></td>
+                                            <td><?= $sucessRow['RETAILER_NAME'] ?>
+                                                </br>
+                                                <span class="badge bg-success"><?= $sucessRow['RETAILER_BRAND'] ?></span>
+                                            </td>
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
                                             <td>
                                                 <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['USER_REMARKS']; ?>">
