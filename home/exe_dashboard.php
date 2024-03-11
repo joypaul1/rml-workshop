@@ -702,6 +702,12 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
 
 
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>00</td>
+                                        <td>00</td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
