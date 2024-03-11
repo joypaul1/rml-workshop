@@ -36,7 +36,7 @@ FROM VISIT_ASSIGN
 WHERE USER_ID = '$log_user_id'
     AND VISIT_STATUS = 1
     AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date',  'DD/MM/YYYY')
-    AND TO_DATE ('29/02/2024','DD/MM/YYYY')
+    AND TO_DATE ('$v_end_date','DD/MM/YYYY')
     AND PRODUCT_BRAND_ID = 1)
 AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA,
 /*  TOTAL_VISIT */
@@ -89,7 +89,7 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         AS TOTAL_SALES_OF_EICHER
 FROM DUAL";
 
-// echo $totalvisitQuery;
+echo $totalvisitQuery;
 $totalvisitSQL = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($totalvisitSQL);
 $visit_plan_month_wise_data = array(); // Initialize the array
@@ -698,7 +698,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         WHERE VA.RETAILER_ID = CA.USER_ID AND VA.USER_ID = '$log_user_id'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
-                                    // echo $sucessQuery;
+                                    echo $sucessQuery;
                                     $strSQL = @oci_parse($objConnect, $sucessQuery);
 
                                     @oci_execute($strSQL);
