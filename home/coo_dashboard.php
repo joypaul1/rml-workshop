@@ -207,7 +207,7 @@ $totalvisitQuery = "SELECT
         VISIT_ASSIGN VA
     WHERE
         VA.VISIT_STATUS = 1
-        AND VA.PRODUCT_BRAND_ID = 1
+        AND VA.PRODUCT_BRAND_ID = 2
         AND VA.USER_ID IN (
             SELECT
                 B.ID
