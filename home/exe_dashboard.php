@@ -89,7 +89,7 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         AND PRODUCT_BRAND_ID = 2)
         AS TOTAL_COLLECTION_OF_EICHER,
         /* TOTAL_COLLECTION_OF_EICHER */
-        /* TOTAL_COLLECTON_TARGET_OF_EICHER */
+        /* TOTAL_COLLECTION_TARGET_OF_EICHER */
 (SELECT SUM(COLLECTON_TARGET_AMOUNT)
         FROM COLLECTION_ASSIGN CA WHERE  TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2
@@ -102,8 +102,8 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
          WHERE PARENT_USER_ID IN (SELECT USER_ID
                                     FROM USER_MANPOWER_SETUP
                                    WHERE PARENT_USER_ID = '$log_user_id')))
-        AS TOTAL_COLLECTON_TARGET_OF_EICHER,
-        /* TOTAL_COLLECTON_TARGET_OF_EICHER */
+        AS TOTAL_COLLECTION_TARGET_OF_EICHER,
+        /* TOTAL_COLLECTION_TARGET_OF_EICHER */
         /* TOTAL_SALES_OF_MAHINDRA */
 (SELECT SUM(SALES_AMOUNT_COLLECTED)
         FROM VISIT_ASSIGN
@@ -637,8 +637,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                 <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
                                         <th>SL.</th>
-                                        <th>RETAILER NAME </th>
-                                        <!-- <th>TYPE </th> -->
+                                        <th>RETAILER NAME & TYPE</th>
                                         <th>SA. AMT. </th>
                                         <th>SA. TAR.</th>
                                         <th>RATE (%)</th>
@@ -698,7 +697,6 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                         ) B
                                                     WHERE
                                                         A.ID = B.USER_ID";
-                                    // echo $TGVSAC_QUERY;
                                     $strSQL = @oci_parse($objConnect, $TGVSAC_QUERY);
 
                                     @oci_execute($strSQL);
@@ -760,7 +758,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             $TOTAL_SALES_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA'] : 0;
                                             $TOTAL_SALES_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER'] : 0;
                                             echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER)) . '</span>';
+                                            text-decoration-style: double;">' . number_format(($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER)) . '</span>';
                                             ?>
                                         </td>
                                         <td class="text-end">
@@ -768,17 +766,24 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             $TOTAL_SALES_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_MAHINDRA'] : 0;
                                             $TOTAL_SALES_TARGET_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_EICHER'] : 0;
                                             echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER)) . '</span>';
+                                            text-decoration-style: double;">' . number_format(($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER)) . '</span>';
                                             ?>
                                         </td>
-                                        <td></td>
+                                        <td class="text-center">
+                                            <?php
+                                            $totalSales = ($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER);
+                                            $totalSaleTarget = ($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER);
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . round(($totalSales / $totalSaleTarget) / 100) . '%' . '</span>';
+                                            ?>
+                                        </td>
 
                                         <td class="text-end">
                                             <?php
                                             $TOTAL_COLLECTION_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA'] : 0;
                                             $TOTAL_COLLECTION_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_EICHER'] : 0;
                                             echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
+                                            text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
                                             ?>
                                         </td>
                                         <td class="text-end">
@@ -786,10 +791,17 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             $TOTAL_COLLECTION_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_MAHINDRA'] : 0;
                                             $TOTAL_COLLECTION_TARGET_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_EICHER'] : 0;
                                             echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER)) . '</span>';
+                                            text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER)) . '</span>';
                                             ?>
                                         </td>
-                                        <!-- <td class="text-end"></td> -->
+                                        <td class="text-center">
+                                            <?php
+                                            $totalCollection = ($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER);
+                                            $totalCollectionTarget = ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER);
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . round(($totalCollection / $totalCollectionTarget) / 100) . '%' . '</span>';
+                                            ?>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -819,7 +831,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                 <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
                                         <th>SL.</th>
-                                        <th>RETAILER NAME </th>
+                                        <th>RETAILER NAME & COST CENTER </th>
                                         <th>DATE </th>
                                         <th>ENTRY REMARKS</th>
                                         <th>S. AMT. </th>
@@ -849,7 +861,15 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <td><?= $number ?></td>
                                             <td><?= $sucessRow['RETAILER_NAME'] ?>
                                                 </br>
-                                                <span class="badge bg-success"><?= $sucessRow['RETAILER_BRAND'] ?></span>
+                                                <span class="badge bg-success">
+                                                    <i class='bx bx-map-pin'></i>
+                                                    <?= $sucessRow['RETAILER_BRAND'] ?>
+                                                    </br>
+                                                    <span class="badge bg-success">
+                                                        <i class='bx bx-map-pin'></i>
+                                                        <?= $sucessRow['RETAILER_BRAND'] ?>
+                                                    </span>
+                                                </span>
                                             </td>
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
                                             <td>
