@@ -68,7 +68,16 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         /* TOTAL_COLLECTION_TARGET_OF_MAHINDRA */
 (SELECT SUM(COLLECTON_TARGET_AMOUNT)
     FROM COLLECTION_ASSIGN CA WHERE  TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 1)
+    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 1
+    AND  CA.USER_ID IN    (SELECT USER_ID
+          FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID = '$log_user_id'
+        UNION ALL
+        SELECT USER_ID
+          FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID IN (SELECT USER_ID
+                                    FROM USER_MANPOWER_SETUP
+                                   WHERE PARENT_USER_ID = '$log_user_id')))
     AS TOTAL_COLLECTION_TARGET_OF_MAHINDRA,
         /* TOTAL_COLLECTION_TARGET_OF_MAHINDRA */
         /* TOTAL_COLLECTION_OF_EICHER */
@@ -83,7 +92,16 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         /* TOTAL_COLLECTON_TARGET_OF_EICHER */
 (SELECT SUM(COLLECTON_TARGET_AMOUNT)
         FROM COLLECTION_ASSIGN CA WHERE  TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-        AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2)
+        AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2
+        AND  CA.USER_ID IN    (SELECT USER_ID
+          FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID = '$log_user_id'
+        UNION ALL
+        SELECT USER_ID
+          FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID IN (SELECT USER_ID
+                                    FROM USER_MANPOWER_SETUP
+                                   WHERE PARENT_USER_ID = '$log_user_id')))
         AS TOTAL_COLLECTON_TARGET_OF_EICHER,
         /* TOTAL_COLLECTON_TARGET_OF_EICHER */
         /* TOTAL_SALES_OF_MAHINDRA */
@@ -98,7 +116,16 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         /* TOTAL_SALES_TARGET_OF_MAHINDRA */
 (SELECT SUM(SALES_TARGET_AMOUNT)
     FROM COLLECTION_ASSIGN CA WHERE  TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 1)
+    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 1
+    AND  CA.USER_ID IN    (SELECT USER_ID
+          FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID = '$log_user_id'
+        UNION ALL
+        SELECT USER_ID
+          FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID IN (SELECT USER_ID
+                                    FROM USER_MANPOWER_SETUP
+                                   WHERE PARENT_USER_ID = '$log_user_id')))
     AS TOTAL_SALES_TARGET_OF_MAHINDRA,
         /* TOTAL_SALES_TARGET_OF_MAHINDRA */
         /* TOTAL_SALES_OF_EICHER */
@@ -113,8 +140,16 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         /* TOTAL_SALES_TARGET_OF_EICHER */
 (SELECT SUM(SALES_TARGET_AMOUNT)
         FROM COLLECTION_ASSIGN CA WHERE  TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
-        AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2)
-        AS TOTAL_SALES_TARGET_OF_EICHER,
+        AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2
+        AND  CA.USER_ID IN    (SELECT USER_ID
+          FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID = '$log_user_id'
+        UNION ALL
+        SELECT USER_ID
+        FROM USER_MANPOWER_SETUP
+         WHERE PARENT_USER_ID IN (SELECT USER_ID FROM USER_MANPOWER_SETUP
+            WHERE PARENT_USER_ID = '$log_user_id')))
+        AS TOTAL_SALES_TARGET_OF_EICHER
         /* TOTAL_SALES_TARGET_OF_EICHER */
 FROM DUAL";
 
@@ -168,7 +203,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                 <h4 class="my-1 text-white">
                                                     <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_VISIT_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_VISIT_OF_MAHINDRA'] : 0 ?>
                                                 </h4>
-                                                <p class="mb-0 font-10 text-white"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
+                                                <p class="mb-0 font-10 text-white text"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
                                             </div>
@@ -205,6 +240,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                     <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA']) ? number_format($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA']) : 0 ?>
                                                 </h6>
 
+
                                             </div>
                                             <div>
                                                 <p class="mb-0 text-white">Target</p>
@@ -213,11 +249,13 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                 </h6>
 
                                             </div>
-
-                                            <!-- <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
-                                            </div> -->
                                         </div>
-                                        <p class="mb-0 font-10 text-white text-center"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bx-collection' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -240,9 +278,11 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                 </h6>
                                             </div>
                                         </div>
-                                        <p class="mb-0 font-10 text-white text-center"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
-                                        <!-- <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
-                                        </div> -->
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bxs-cart-add' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -305,7 +345,12 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                 </h6>
                                             </div>
                                         </div>
-                                        <p class="mb-0 font-10 text-white text-center"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bx-collection' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+                                        </p>
+
                                     </div>
                                 </div>
                             </div>
@@ -328,7 +373,11 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                 </h6>
                                             </div>
                                         </div>
-                                        <p class="mb-0 font-10 text-white text-center"> As of <?php echo date('F') ?> <?php echo date('Y') ?> </p>
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bxs-cart-add' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -589,7 +638,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     <tr>
                                         <th>SL.</th>
                                         <th>RETAILER NAME </th>
-                                        <th>TYPE </th>
+                                        <!-- <th>TYPE </th> -->
                                         <th>SA. AMT. </th>
                                         <th>SA. TAR.</th>
                                         <th>RATE (%)</th>
@@ -659,10 +708,12 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     ?>
                                         <tr class="table-info">
                                             <td><?= $number ?></td>
-                                            <td> <?= $sucessRow['USER_NAME'] ?></td>
-                                            <td class="text-center"><span class="badge bg-success"> <?= $sucessRow['USER_TYPE'] ?></span></td>
-                                            <td><?= number_format($sucessRow['SALES_AMOUNT']) ?></td>
-                                            <td><?= number_format($sucessRow['SALES_TARGET']) ?></td>
+                                            <td> <?= $sucessRow['USER_NAME'] ?>
+                                                <br>
+                                                <span class="badge bg-success"><i class='bx bx-log-in-circle'></i> <?= $sucessRow['USER_TYPE'] ?></span>
+                                            </td>
+                                            <td class="text-end"><?= number_format($sucessRow['SALES_AMOUNT']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['SALES_TARGET']) ?></td>
                                             <?php
                                             $percentageRate = 0;
                                             if (
@@ -679,8 +730,8 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                     <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%'  ?>"></div>
                                                 </div>
                                             </td>
-                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT']) ?></td>
-                                            <td><?= number_format($sucessRow['COLLECTION_TARGET']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['COLLECTION_AMOUNT']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['COLLECTION_TARGET']) ?></td>
                                             <?php
                                             $percentageRate2 = 0;
                                             if (
@@ -691,7 +742,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             }
 
                                             ?>
-                                            <td>
+                                            <td class="text-center">
                                                 <?= $percentageRate2 ?>%
                                                 <div class="progress" style="height: 6px;">
                                                     <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate2 . '%'  ?>"></div>
@@ -704,8 +755,41 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td>00</td>
-                                        <td>00</td>
+                                        <td class="text-end" colspan="3">
+                                            <?php
+                                            $TOTAL_SALES_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA'] : 0;
+                                            $TOTAL_SALES_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <td class="text-end">
+                                            <?php
+                                            $TOTAL_SALES_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_MAHINDRA'] : 0;
+                                            $TOTAL_SALES_TARGET_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_TARGET_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <td></td>
+
+                                        <td class="text-end">
+                                            <?php
+                                            $TOTAL_COLLECTION_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA'] : 0;
+                                            $TOTAL_COLLECTION_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <td class="text-end">
+                                            <?php
+                                            $TOTAL_COLLECTION_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_MAHINDRA'] : 0;
+                                            $TOTAL_COLLECTION_TARGET_OF_EICHER = isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(floatval($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <!-- <td class="text-end"></td> -->
                                     </tr>
                                 </tfoot>
                             </table>
@@ -774,8 +858,8 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                 </span>
                                             </td>
 
-                                            <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
-                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
                                             <td>
                                                 <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['AFTER_VISIT_REMARKS']; ?>">
                                                     <?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['AFTER_VISIT_REMARKS']; ?>
