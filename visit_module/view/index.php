@@ -14,6 +14,9 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 
 $v_start_date = date('d/m/Y');
 $v_end_date   = date('d/m/Y');
+
+$sale_executive_all_retailer_ids_str  = '0';
+
 $sale_executive_all_retailer_query = "SELECT A.USER_ID
 FROM USER_MANPOWER_SETUP A,
 USER_PROFILE B
