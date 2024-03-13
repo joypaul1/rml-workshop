@@ -10,9 +10,7 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js';
 
 include_once('../../_helper/2step_com_conn.php');
-$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    : 0;
+
 
 $brandquery = "SELECT ID, TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS = 1 ORDER BY ID ASC";
 $F_SALE_EXECUTIVE_ID = isset($_GET['F_SALE_EXECUTIVE']) ? $_GET['F_SALE_EXECUTIVE'] : null;
@@ -47,7 +45,7 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                                     AND  UP.USER_TYPE_ID = 3";
 
                                 if ($_SESSION["USER_SFCM_INFO"]["USER_TYPE"] == "COORDINATOR") {
-                                    $executiveQuery .= " AND UMS.USER_ID = UP.ID AND UMS.PARENT_USER_ID = $log_user_id";
+                                    $executiveQuery .= " AND UMS.USER_ID = UP.ID AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
                                 }
                                 $executiveSql = @oci_parse($objConnect, $executiveQuery);
                                 @oci_execute($executiveSql);

@@ -11,9 +11,7 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 50);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
-$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    : 0;
+
 $v_start_date = date('01/m/Y');
 $v_end_date   = date('t/m/Y');
 ?>
@@ -120,13 +118,13 @@ $v_end_date   = date('t/m/Y');
                                             (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                             WHERE  A.USER_ID = B.ID AND PARENT_USER_ID IN
                                             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                            WHERE A.USER_ID =B.ID AND PARENT_USER_ID='$log_user_id')))
+                                            WHERE A.USER_ID =B.ID AND PARENT_USER_ID='$USER_LOGIN_ID')))
                                         UNION ALL
                                                 SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                 WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                     (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                     WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-                                                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = '$log_user_id'))))
+                                                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = '$USER_LOGIN_ID'))))
                                         AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
                                         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     } else {
@@ -149,13 +147,13 @@ $v_end_date   = date('t/m/Y');
                                                         (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                         (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,  USER_PROFILE B
-                                                        WHERE A.USER_ID = B.ID  AND PARENT_USER_ID = '$log_user_id'))
+                                                        WHERE A.USER_ID = B.ID  AND PARENT_USER_ID = '$USER_LOGIN_ID'))
                                                     UNION ALL
                                                         SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                         (SELECT A.USER_ID
                                                         FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$log_user_id')))
+                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$USER_LOGIN_ID')))
                                                     AND UP.ID = CA.USER_ID
                                                     AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     }

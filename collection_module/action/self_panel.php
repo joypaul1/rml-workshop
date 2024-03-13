@@ -3,7 +3,7 @@ session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
 $sfcmBasePath   = $_SESSION['sfcmBasePath'];
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_LOGIN_ID   = $_SESSION['USER_SFCM_INFO']['ID'];
 $START_DATE    = $_POST['start_date'];
 $END_DATE      = $_POST['end_date'];
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
                     $COLLECTON_TARGET_AMOUNT,
                     $SALES_TARGET_AMOUNT,
                     SYSDATE,
-                    $log_user_id,
+                    $USER_LOGIN_ID,
                     0
                 )";
 

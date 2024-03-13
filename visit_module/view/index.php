@@ -19,7 +19,7 @@ FROM USER_MANPOWER_SETUP A,
 USER_PROFILE B
 WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
     (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id)
+    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)
 UNION
 SELECT B.ID
 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
@@ -28,7 +28,7 @@ WHERE A.USER_ID = B.ID
         (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id))";
+            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
 $strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
 @oci_execute($strSQL3);
 
@@ -85,7 +85,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                                 SELECT DISTINCT A.USER_ID
                                                                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                                 WHERE A.USER_ID = B.ID
-                                                                AND PARENT_USER_ID = '$log_user_id'
+                                                                AND PARENT_USER_ID = '$USER_LOGIN_ID'
                                                             )
                                                         )";
                                                     } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
@@ -98,11 +98,11 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                                     INNER JOIN USER_PROFILE UP ON UMP.USER_ID = UP.ID
                                                                     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                                     WHERE UBS.STATUS = 1
-                                                                AND (UMP.PARENT_USER_ID = '$log_user_id'
+                                                                AND (UMP.PARENT_USER_ID = '$USER_LOGIN_ID'
                                                                     OR UMP.PARENT_USER_ID IN
                                                                     (SELECT UMP.USER_ID FROM USER_MANPOWER_SETUP UMS
                                                                     INNER JOIN USER_PROFILE UP ON UMS.USER_ID = UP.ID
-                                                                    WHERE UMS.PARENT_USER_ID = '$log_user_id'))";
+                                                                    WHERE UMS.PARENT_USER_ID = '$USER_LOGIN_ID'))";
                                                     }
 
                                                     $strSQL = @oci_parse($objConnect, $query);
@@ -193,7 +193,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                             FROM USER_MANPOWER_SETUP A,USER_PROFILE B
                                             WHERE A.USER_ID = B.ID
                                             AND PARENT_USER_ID IN
-                                            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID = $log_user_id))
+                                            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
@@ -204,7 +204,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA
                                         WHERE VA.USER_ID  IN
-                                        (SELECT B.ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID='$log_user_id')
+                                        (SELECT B.ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID='$USER_LOGIN_ID')
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     } else {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
@@ -214,7 +214,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA
-                                        WHERE VA.USER_ID = '$log_user_id'
+                                        WHERE VA.USER_ID = '$USER_LOGIN_ID'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     }
 
@@ -281,7 +281,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                     <ul class="pagination round-pagination">
                                         <?php
                                         // $countQuery = "SELECT  COUNT(VA.ID) AS total
-                                        //             FROM VISIT_ASSIGN VA WHERE VA.USER_ID = '$log_user_id'
+                                        //             FROM VISIT_ASSIGN VA WHERE VA.USER_ID = '$USER_LOGIN_ID'
                                         //             AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')
                                         //             ";
 

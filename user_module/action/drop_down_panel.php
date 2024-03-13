@@ -5,7 +5,7 @@ require_once('../../_config/connoracle.php');
 $sfcmBasePath   = $_SESSION['sfcmBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_LOGIN_ID   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 
 // PRINT_R ($_GET);
@@ -51,7 +51,7 @@ if (isset($_GET["userId"]) && isset($_GET["brandAssignID"]) && isset($_GET["stat
             $updatequery    = "UPDATE USER_BRAND_SETUP
             SET 
                    ENTRY_DATE       = SYSDATE,
-                   ENTRY_BY         = '$log_user_id' ,
+                   ENTRY_BY         = '$USER_LOGIN_ID' ,
                    STATUS           = '$STATUS'
             WHERE  USER_PROFILE_ID               = '$USER_PROFILE_ID' AND PRODUCT_BRAND_ID = '$PRODUCT_BRAND_ID'";
             $updatestrSQL = @oci_parse($objConnect, $updatequery);
@@ -73,7 +73,7 @@ if (isset($_GET["userId"]) && isset($_GET["brandAssignID"]) && isset($_GET["stat
                 '$USER_PROFILE_ID',
                 '$PRODUCT_BRAND_ID',
                 SYSDATE,
-                '$log_user_id',
+                '$USER_LOGIN_ID',
                 '$STATUS' )";
             $insertquerystrSQL = @oci_parse($objConnect, $insertquery);
             if (@oci_execute($insertquerystrSQL)) {

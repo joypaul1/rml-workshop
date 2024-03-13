@@ -25,7 +25,7 @@ $v_end_date     = date("t/m/Y");
 // VISIT PLAN QUERY START
 $totalvisitQuery = "SELECT (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
-WHERE USER_ID = '$log_user_id'
+WHERE USER_ID = '$USER_LOGIN_ID'
     AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date','DD/MM/YYYY')
     AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
     AND PRODUCT_BRAND_ID = 1)
@@ -33,7 +33,7 @@ AS TOTAL_VISIT_OF_MAHINDRA,
 /*  TOTAL_COMPLETE_VISIT */
 (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
-WHERE USER_ID = '$log_user_id'
+WHERE USER_ID = '$USER_LOGIN_ID'
     AND VISIT_STATUS = 1
     AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date',  'DD/MM/YYYY')
     AND TO_DATE ('$v_end_date','DD/MM/YYYY')
@@ -42,7 +42,7 @@ AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA,
 /*  TOTAL_VISIT */
 (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
-WHERE USER_ID = '$log_user_id'
+WHERE USER_ID = '$USER_LOGIN_ID'
     AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date','DD/MM/YYYY')
     AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
     AND PRODUCT_BRAND_ID = 2)
@@ -50,7 +50,7 @@ AS TOTAL_VISIT_OF_EICHER,
 /*  COMPLETE_VISIT */
 (SELECT COUNT (ID)
 FROM VISIT_ASSIGN
-WHERE USER_ID = '$log_user_id'
+WHERE USER_ID = '$USER_LOGIN_ID'
     AND VISIT_STATUS = 1
     AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
     AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
@@ -60,7 +60,7 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
 /*  COLLECTION_AMOUNT_COLLECTED */
 (SELECT SUM(COLLECTION_AMOUNT_COLLECTED)
         FROM VISIT_ASSIGN
-        WHERE USER_ID = '$log_user_id'
+        WHERE USER_ID = '$USER_LOGIN_ID'
         AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
         AND PRODUCT_BRAND_ID = 1)
@@ -71,19 +71,19 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
     AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 1
     AND  CA.USER_ID IN    (SELECT USER_ID
           FROM USER_MANPOWER_SETUP
-         WHERE PARENT_USER_ID = '$log_user_id'
+         WHERE PARENT_USER_ID = '$USER_LOGIN_ID'
         UNION ALL
         SELECT USER_ID
           FROM USER_MANPOWER_SETUP
          WHERE PARENT_USER_ID IN (SELECT USER_ID
                                     FROM USER_MANPOWER_SETUP
-                                   WHERE PARENT_USER_ID = '$log_user_id')))
+                                   WHERE PARENT_USER_ID = '$USER_LOGIN_ID')))
     AS TOTAL_COLLECTION_TARGET_OF_MAHINDRA,
         /* TOTAL_COLLECTION_TARGET_OF_MAHINDRA */
         /* TOTAL_COLLECTION_OF_EICHER */
 (SELECT SUM(COLLECTION_AMOUNT_COLLECTED)
         FROM VISIT_ASSIGN
-        WHERE USER_ID = '$log_user_id'
+        WHERE USER_ID = '$USER_LOGIN_ID'
         AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
         AND PRODUCT_BRAND_ID = 2)
@@ -95,19 +95,19 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2
         AND  CA.USER_ID IN    (SELECT USER_ID
         FROM USER_MANPOWER_SETUP
-        WHERE PARENT_USER_ID = '$log_user_id'
+        WHERE PARENT_USER_ID = '$USER_LOGIN_ID'
         UNION ALL
         SELECT USER_ID
         FROM USER_MANPOWER_SETUP
         WHERE PARENT_USER_ID IN (SELECT USER_ID
         FROM USER_MANPOWER_SETUP
-        WHERE PARENT_USER_ID = '$log_user_id')))
+        WHERE PARENT_USER_ID = '$USER_LOGIN_ID')))
         AS TOTAL_COLLECTION_TARGET_OF_EICHER,
         /* TOTAL_COLLECTION_TARGET_OF_EICHER */
         /* TOTAL_SALES_OF_MAHINDRA */
 (SELECT SUM(SALES_AMOUNT_COLLECTED)
         FROM VISIT_ASSIGN
-        WHERE USER_ID = '$log_user_id'
+        WHERE USER_ID = '$USER_LOGIN_ID'
         AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
         AND PRODUCT_BRAND_ID = 1)
@@ -119,19 +119,19 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
     AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 1
     AND  CA.USER_ID IN    (SELECT USER_ID
           FROM USER_MANPOWER_SETUP
-         WHERE PARENT_USER_ID = '$log_user_id'
+         WHERE PARENT_USER_ID = '$USER_LOGIN_ID'
         UNION ALL
         SELECT USER_ID
           FROM USER_MANPOWER_SETUP
          WHERE PARENT_USER_ID IN (SELECT USER_ID
                                     FROM USER_MANPOWER_SETUP
-                                   WHERE PARENT_USER_ID = '$log_user_id')))
+                                   WHERE PARENT_USER_ID = '$USER_LOGIN_ID')))
     AS TOTAL_SALES_TARGET_OF_MAHINDRA,
         /* TOTAL_SALES_TARGET_OF_MAHINDRA */
         /* TOTAL_SALES_OF_EICHER */
 (SELECT SUM(SALES_AMOUNT_COLLECTED)
         FROM VISIT_ASSIGN
-        WHERE USER_ID = '$log_user_id'
+        WHERE USER_ID = '$USER_LOGIN_ID'
         AND TRUNC (VISIT_DATE) BETWEEN TO_DATE ('$v_start_date', 'DD/MM/YYYY')
         AND TO_DATE ('$v_end_date', 'DD/MM/YYYY')
         AND PRODUCT_BRAND_ID = 2)
@@ -143,12 +143,12 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2
         AND  CA.USER_ID IN    (SELECT USER_ID
           FROM USER_MANPOWER_SETUP
-         WHERE PARENT_USER_ID = '$log_user_id'
+         WHERE PARENT_USER_ID = '$USER_LOGIN_ID'
         UNION ALL
         SELECT USER_ID
         FROM USER_MANPOWER_SETUP
          WHERE PARENT_USER_ID IN (SELECT USER_ID FROM USER_MANPOWER_SETUP
-            WHERE PARENT_USER_ID = '$log_user_id')))
+            WHERE PARENT_USER_ID = '$USER_LOGIN_ID')))
         AS TOTAL_SALES_TARGET_OF_EICHER
         /* TOTAL_SALES_TARGET_OF_EICHER */
 FROM DUAL";
@@ -674,14 +674,14 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                         (
                                                             SELECT USER_ID
                                                             FROM USER_MANPOWER_SETUP
-                                                            WHERE PARENT_USER_ID = '$log_user_id'
+                                                            WHERE PARENT_USER_ID = '$USER_LOGIN_ID'
                                                             UNION ALL
                                                             SELECT USER_ID
                                                             FROM USER_MANPOWER_SETUP
                                                             WHERE PARENT_USER_ID IN (
                                                                 SELECT USER_ID
                                                                 FROM USER_MANPOWER_SETUP
-                                                                WHERE PARENT_USER_ID = '$log_user_id'
+                                                                WHERE PARENT_USER_ID = '$USER_LOGIN_ID'
                                                             )
                                                         ) B
                                                     WHERE
@@ -837,7 +837,7 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA
-                                        WHERE  VA.USER_ID = '$log_user_id'
+                                        WHERE  VA.USER_ID = '$USER_LOGIN_ID'
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     $strSQL = @oci_parse($objConnect, $sucessQuery);
 

@@ -3,7 +3,7 @@ session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
 $sfcmBasePath   = $_SESSION['sfcmBasePath'];
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_LOGIN_ID   = $_SESSION['USER_SFCM_INFO']['ID'];
 require_once '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -43,7 +43,7 @@ if (isset($_POST['importSubmit'])) {
                     $REMARKS            = $row[6];
 
                     $query = "INSERT INTO COLLECTION_ASSIGN (USER_ID, START_DATE, END_DATE, BRAND_ID, COLLECTON_TARGET_AMOUNT, REMARKS,ENTRY_DATE, ENTRY_BY_ID, STATUS) 
-                    VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $COLLECTON_TARGET_AMOUNT,'$REMARKS', SYSDATE, $log_user_id, 1)";
+                    VALUES ($USER_ID, TO_DATE('$START_DATE','dd/mm/yyyy'), TO_DATE('$END_DATE','dd/mm/yyyy'), $BRAND_ID, $COLLECTON_TARGET_AMOUNT,'$REMARKS', SYSDATE, $USER_LOGIN_ID, 1)";
                     $strSQL = oci_parse($objConnect, $query);
 
                     // Execute the query

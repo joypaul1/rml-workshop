@@ -23,7 +23,7 @@ $sale_executive_all_retailer_query = "SELECT A.USER_ID
     FROM USER_MANPOWER_SETUP A, USER_PROFILE B
     WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
         (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id)";
+        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)";
 
 $sale_executive_all_retailer_query .= " UNION ALL ";
 
@@ -34,7 +34,7 @@ $sale_executive_all_retailer_query .= "SELECT B.ID
             (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
             WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                 (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id))";
+                WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
 
 $strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
 @oci_execute($strSQL3);
@@ -61,7 +61,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -81,7 +81,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -102,7 +102,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -123,7 +123,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -143,7 +143,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -161,7 +161,7 @@ $totalvisitQuery = "SELECT
     AND CA.USER_ID IN
     (SELECT USER_ID
     FROM USER_MANPOWER_SETUP
-    WHERE PARENT_USER_ID = $log_user_id
+    WHERE PARENT_USER_ID = $USER_LOGIN_ID
     UNION ALL
     SELECT USER_ID
     FROM USER_MANPOWER_SETUP
@@ -180,7 +180,7 @@ $totalvisitQuery = "SELECT
     AND CA.USER_ID IN
     (SELECT USER_ID
     FROM USER_MANPOWER_SETUP
-    WHERE PARENT_USER_ID = $log_user_id
+    WHERE PARENT_USER_ID = $USER_LOGIN_ID
     UNION ALL
     SELECT USER_ID
     FROM USER_MANPOWER_SETUP
@@ -201,7 +201,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -221,7 +221,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -241,7 +241,7 @@ $totalvisitQuery = "SELECT
                 SELECT A.USER_ID
                 FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID
-                AND PARENT_USER_ID = $log_user_id
+                AND PARENT_USER_ID = $USER_LOGIN_ID
             )
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
@@ -259,7 +259,7 @@ $totalvisitQuery = "SELECT
     AND CA.USER_ID IN
         (SELECT USER_ID
         FROM USER_MANPOWER_SETUP
-        WHERE PARENT_USER_ID = $log_user_id
+        WHERE PARENT_USER_ID = $USER_LOGIN_ID
         UNION ALL
         SELECT USER_ID
         FROM USER_MANPOWER_SETUP
@@ -278,7 +278,7 @@ $totalvisitQuery = "SELECT
     AND CA.USER_ID IN
         (SELECT USER_ID
         FROM USER_MANPOWER_SETUP
-        WHERE PARENT_USER_ID = $log_user_id
+        WHERE PARENT_USER_ID = $USER_LOGIN_ID
         UNION ALL
         SELECT USER_ID
         FROM USER_MANPOWER_SETUP
@@ -565,7 +565,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                 FROM USER_PROFILE A,
                                                     (SELECT USER_ID
                                                     FROM USER_MANPOWER_SETUP
-                                                    WHERE PARENT_USER_ID = $log_user_id
+                                                    WHERE PARENT_USER_ID = $USER_LOGIN_ID
                                                     UNION ALL
                                                     SELECT USER_ID
                                                     FROM USER_MANPOWER_SETUP
@@ -913,7 +913,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                             <?php
                             $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
                             WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID=$log_user_id FETCH FIRST 8 ROWS ONLY";
+                            AND PARENT_USER_ID=$USER_LOGIN_ID FETCH FIRST 8 ROWS ONLY";
                             $coordinatorSQL = oci_parse($objConnect, $cooquery);
                             @oci_execute($coordinatorSQL);
                             while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
@@ -959,7 +959,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             SELECT A.USER_ID
                                             FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                             WHERE A.USER_ID=B.ID
-                                            AND PARENT_USER_ID = $log_user_id
+                                            AND PARENT_USER_ID = $USER_LOGIN_ID
                                             ) FETCH FIRST 8 ROWS ONLY";
                             $coordinatorSQL = oci_parse($objConnect, $cooquery);
                             @oci_execute($coordinatorSQL);
@@ -1038,7 +1038,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                 <hr>
                                 <div class="d-flex align-items-center justify-content-center gap-3">
                                     <div>
-                                        <h3 class="mb-0">$ 9$log_user_id5.43</h3>
+                                        <h3 class="mb-0">$ 9$USER_LOGIN_ID5.43</h3>
                                         <p class="mb-0">+3% Since Last Week</p>
                                     </div>
                                     <div class="fs-1">

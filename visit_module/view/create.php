@@ -96,7 +96,7 @@ if (isset($_POST['retailer_type'])) {
                                     WHERE UBS.USER_PROFILE_ID = UP.ID
                                     AND  UMP.USER_ID = UP.ID
                                     AND UBS.STATUS = 1
-                                    AND UMP.PARENT_USER_ID =" . $log_user_id;
+                                    AND UMP.PARENT_USER_ID =" . $USER_LOGIN_ID;
                                 } else {
                                     $query = "SELECT UP.ID,UMP.USER_ID,UP.USER_NAME,UP.DISTRICT_ID,
                                     (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
@@ -107,7 +107,7 @@ if (isset($_POST['retailer_type'])) {
                                     AND UMP.PARENT_USER_ID
                                     IN (SELECT A.USER_ID
                                     FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                    WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = $log_user_id)";
+                                    WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = $USER_LOGIN_ID)";
                                 }
 
                                 if (isset($_POST['USER_NAME_MOBILE'])) {

@@ -11,7 +11,7 @@ if (!isset($_SESSION['USER_SFCM_INFO'])) {
 }
 
 $sfcmBasePath   = $_SESSION['sfcmBasePath'];
-$log_user_id    = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_LOGIN_ID    = $_SESSION['USER_SFCM_INFO']['ID'];
 $USER_BRANDS    = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"] ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"] : 0;
 
 include_once('../../../../_includes/header.php');

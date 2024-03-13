@@ -20,9 +20,7 @@ include_once('../../_helper/2step_com_conn.php');
 
         <div class="card rounded-4">
             <?php
-            $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-                ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-                : 0;
+            
             $headerType = "List";
             $leftSideName = "Set Collection Target Amount";
             include "../../_includes/com_header.php";

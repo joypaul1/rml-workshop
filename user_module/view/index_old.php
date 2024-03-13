@@ -126,7 +126,6 @@ $number = 0;
                                             AND UP.USER_MOBILE NOT IN ('01735699133', '123456789')";
                                     } else {
 
-                                        $USER_BRANDS = $_SESSION['USER_SFCM_INFO']['USER_BRANDS'];
                                         $query = "SELECT UP.ID,
                                                             UP.USER_NAME,
                                                             UP.USER_MOBILE,

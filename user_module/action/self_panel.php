@@ -6,7 +6,7 @@ $sfcmBasePath   = $_SESSION['sfcmBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
 $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP");
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_LOGIN_ID   = $_SESSION['USER_SFCM_INFO']['ID'];
 
 
 
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
     // Prepare the SQL statement
     $query = "INSERT INTO USER_PROFILE 
             (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,LANG, LAT,LOCATION_REMARKS,DISTRICT_ID, PLAZA_PARENT_ID) 
-            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $log_user_id,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS', '$DISTRICT_ID', $PLAZA_PARENT_ID)";
+            VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $USER_LOGIN_ID,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS', '$DISTRICT_ID', $PLAZA_PARENT_ID)";
 
 
     $strSQL = @oci_parse($objConnect, $query);
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'edit
     PENDRIVE_ID         = '$PENDRIVE_ID',
     RML_IDENTITY_ID     = '$RML_ID',
     USER_TYPE_ID        = '$USER_TYPE_ID',  
-    UPDATED_BY_ID       =  $log_user_id,
+    UPDATED_BY_ID       =  $USER_LOGIN_ID,
     LANG                = '$LANG',
     LAT                 = '$LAT',
     DISTRICT_ID         = '$DISTRICT_ID',
@@ -283,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'reso
     // Bind parameters
     oci_bind_by_name($strSQL, ':PARENT_USER_ID', $PARENT_USER_ID);
     oci_bind_by_name($strSQL, ':USER_ID', $USER_ID);
-    oci_bind_by_name($strSQL, ':ENTRY_BY_ID', $log_user_id);
+    oci_bind_by_name($strSQL, ':ENTRY_BY_ID', $USER_LOGIN_ID);
     oci_bind_by_name($strSQL, ':BRAND_ID', $BRAND_ID);
     // echo $query;
 

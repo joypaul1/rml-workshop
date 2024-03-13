@@ -4,8 +4,7 @@ require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
 require_once '../../vendor/autoload.php';
 $sfcmBasePath   = $_SESSION['sfcmBasePath'];
-$log_user_id    = $_SESSION['USER_SFCM_INFO']['ID'];
-$USER_BRANDS    = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"] ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"] : 0;
+
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
