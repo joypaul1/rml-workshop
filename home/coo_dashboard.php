@@ -49,7 +49,7 @@ $totalvisitQuery = "SELECT
 /* Start TOTAL_VISIT_OF_MAHINDRA */
 (
     SELECT
-        NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_MAHINDRA
+        NVL(COUNT(VA.ID), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -71,7 +71,7 @@ $totalvisitQuery = "SELECT
 /* Start TOTAL_COMPLETE_VISIT_OF_MAHINDRA */
 (
     SELECT
-        NVL(COUNT(VA.ID), 0) AS TOTAL_COMPLETE_VISIT_OF_MAHINDRA
+        NVL(COUNT(VA.ID), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -93,7 +93,7 @@ $totalvisitQuery = "SELECT
 
 /* Start TOTAL_COLLECTION_OF_MAHINDRA */
 (
-    SELECT NVL(SUM(VA.COLLECTION_AMOUNT_COLLECTED), 0) AS TOTAL_COLLECTION_OF_MAHINDRA
+    SELECT NVL(SUM(VA.COLLECTION_AMOUNT_COLLECTED), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -112,9 +112,36 @@ $totalvisitQuery = "SELECT
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
 ) AS TOTAL_COLLECTION_OF_MAHINDRA,
 /* End TOTAL_COLLECTION_OF_MAHINDRA */
+
+/* Start TOTAL_COLLECTION_TARGET_OF_MAHINDRA */
+(
+    SELECT NVL(SUM(CA.COLLECTON_TARGET_AMOUNT), 0)
+    FROM
+    COLLECTION_ASSIGN CA
+    WHERE TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+    AND CA.BRAND_ID = 1
+    AND CA.USER_ID IN  ($sale_executive_all_retailer_ids_str)
+) AS TOTAL_COLLECTION_TARGET_OF_MAHINDRA,
+/* End TOTAL_COLLECTION_TARGET_OF_MAHINDRA */
+
+/* Start TOTAL_SALES_TARGET_OF_MAHINDRA */
+(
+    SELECT NVL(SUM(CA.SALES_TARGET_AMOUNT), 0)
+    FROM
+    COLLECTION_ASSIGN CA
+    WHERE TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+    AND CA.BRAND_ID = 1
+    AND CA.USER_ID IN  ($sale_executive_all_retailer_ids_str)
+) AS TOTAL_SALES_TARGET_OF_MAHINDRA,
+/* End TOTAL_SALES_TARGET_OF_MAHINDRA */
+
+
+
 /* Start TOTAL_SALES_OF_MAHINDRA */
 (
-    SELECT NVL(SUM(VA.SALES_AMOUNT_COLLECTED), 0) AS TOTAL_SALES_OF_MAHINDRA
+    SELECT NVL(SUM(VA.SALES_AMOUNT_COLLECTED), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -137,7 +164,7 @@ $totalvisitQuery = "SELECT
 /* Start TOTAL_VISIT_OF_EICHER */
 (
     SELECT
-        NVL(COUNT(VA.ID), 0) AS TOTAL_VISIT_OF_EICHER
+        NVL(COUNT(VA.ID), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -159,7 +186,7 @@ $totalvisitQuery = "SELECT
 /* Start TOTAL_COMPLETE_VISIT_OF_EICHER */
 (
     SELECT
-        NVL(COUNT(VA.ID), 0) AS TOTAL_COMPLETE_VISIT_OF_EICHER
+        NVL(COUNT(VA.ID), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -181,7 +208,7 @@ $totalvisitQuery = "SELECT
 
 /* Start TOTAL_SALES_OF_EICHER */
 (
-    SELECT NVL(SUM(VA.SALES_AMOUNT_COLLECTED), 0) AS TOTAL_SALES_OF_EICHER
+    SELECT NVL(SUM(VA.SALES_AMOUNT_COLLECTED), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -200,9 +227,10 @@ $totalvisitQuery = "SELECT
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
 ) AS TOTAL_SALES_OF_EICHER,
 /* End TOTAL_SALES_OF_EICHER */
+
 /* Start TOTAL_COLLECTION_OF_EICHER */
 (
-    SELECT NVL(SUM(VA.COLLECTION_AMOUNT_COLLECTED), 0) AS TOTAL_COLLECTION_OF_EICHER
+    SELECT NVL(SUM(VA.COLLECTION_AMOUNT_COLLECTED), 0)
     FROM
         VISIT_ASSIGN VA
     WHERE
@@ -219,13 +247,38 @@ $totalvisitQuery = "SELECT
                 AND PARENT_USER_ID = '$log_user_id'
         )
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
-) AS TOTAL_COLLECTION_OF_EICHER
+) AS TOTAL_COLLECTION_OF_EICHER,
 /* End TOTAL_COLLECTION_OF_EICHER */
+
+/* Start TOTAL_COLLECTION_TARGET_OF_EICHER */
+(
+    SELECT NVL(SUM(CA.COLLECTON_TARGET_AMOUNT), 0)
+    FROM
+    COLLECTION_ASSIGN CA
+    WHERE TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+    AND CA.BRAND_ID = 2
+    AND CA.USER_ID IN  ($sale_executive_all_retailer_ids_str)
+) AS TOTAL_COLLECTION_TARGET_OF_EICHER,
+/* End TOTAL_COLLECTION_TARGET_OF_EICHER */
+
+/* Start TOTAL_SALES_TARGET_OF_EICHER */
+(
+    SELECT NVL(SUM(CA.SALES_TARGET_AMOUNT), 0)
+    FROM
+    COLLECTION_ASSIGN CA
+    WHERE TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
+    AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')
+    AND CA.BRAND_ID = 2
+    AND CA.USER_ID IN  ($sale_executive_all_retailer_ids_str)
+) AS TOTAL_SALES_TARGET_OF_EICHER
+/* End TOTAL_SALES_TARGET_OF_EICHER */
+
 FROM DUAL";
 // echo $totalvisitQuery;
 $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 @oci_execute($strSQL2);
-$visitRow = @oci_fetch_assoc($strSQL2);
+$visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
 
 //End visiT queries
 
@@ -269,7 +322,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit Plan</p>
                                                 <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_MAHINDRA'] ? $visitRow['TOTAL_VISIT_OF_MAHINDRA'] : 0) ?>
+                                                    <?php print_r($visit_plan_month_wise_data['TOTAL_VISIT_OF_MAHINDRA'] ? $visit_plan_month_wise_data['TOTAL_VISIT_OF_MAHINDRA'] : 0) ?>
                                                 </h4>
                                                 <p class="mb-0 font-10 text-white">Current Month </p>
                                             </div>
@@ -287,7 +340,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                             <div>
                                                 <p class="mb-0 text-white">Visit Complete</p>
                                                 <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_COMPLETE_VISIT_OF_MAHINDRA'] ? $visitRow['TOTAL_COMPLETE_VISIT_OF_MAHINDRA'] : 0) ?>
+                                                    <?php print_r($visit_plan_month_wise_data['TOTAL_COMPLETE_VISIT_OF_MAHINDRA'] ? $visit_plan_month_wise_data['TOTAL_COMPLETE_VISIT_OF_MAHINDRA'] : 0) ?>
                                                 </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
@@ -300,37 +353,50 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-smile">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_COLLECTION_OF_MAHINDRA'] ? $visitRow['TOTAL_COLLECTION_OF_MAHINDRA'] : 0) ?>
-                                                </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
-
+                                                <p class="mb-0 text-white">Collection</p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA']) ? number_format($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA']) : 0 ?>
+                                                </h6>
                                             </div>
-                                            <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
+                                            <div>
+                                                <p class="mb-0 text-white">Target</p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? number_format($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) : 0 ?>
+                                                </h6>
                                             </div>
                                         </div>
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bx-collection' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-pinki">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Sale </p>
-                                                <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_SALES_OF_MAHINDRA'] ? $visitRow['TOTAL_SALES_OF_MAHINDRA'] : 0) ?>
-                                                </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 text-white"> Sale </p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_SALES_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_SALES_OF_MAHINDRA'] : 0 ?>
+                                                </h6>
                                             </div>
-                                            <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
+                                            <div>
+                                                <p class="mb-0 text-white">Target </p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_MAHINDRA']) ? number_format($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_MAHINDRA']) : 0 ?>
+                                                </h6>
                                             </div>
                                         </div>
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bxs-cart-add' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -346,7 +412,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                             <div>
                                                 <p class="mb-0 text-white">Total Visit Plan</p>
                                                 <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_VISIT_OF_EICHER'] ? $visitRow['TOTAL_VISIT_OF_EICHER'] : 0) ?>
+                                                    <?php print_r($visit_plan_month_wise_data['TOTAL_VISIT_OF_EICHER'] ? $visit_plan_month_wise_data['TOTAL_VISIT_OF_EICHER'] : 0) ?>
                                                 </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
@@ -364,7 +430,7 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                             <div>
                                                 <p class="mb-0 text-white"> Visit Complete</p>
                                                 <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_COMPLETE_VISIT_OF_EICHER'] ? $visitRow['TOTAL_COMPLETE_VISIT_OF_EICHER'] : 0) ?>
+                                                    <?php print_r($visit_plan_month_wise_data['TOTAL_COMPLETE_VISIT_OF_EICHER'] ? $visit_plan_month_wise_data['TOTAL_COMPLETE_VISIT_OF_EICHER'] : 0) ?>
                                                 </h4>
                                                 <p class="mb-0 font-13 text-white">Current Month </p>
                                             </div>
@@ -377,37 +443,50 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-smile">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white">Total Collection</p>
-                                                <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_COLLECTION_OF_EICHER'] ? $visitRow['TOTAL_COLLECTION_OF_EICHER'] : 0) ?>
-                                                </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
-
+                                                <p class="mb-0 text-white">Collection</p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER']) ? number_format($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER']) : 0 ?>
+                                                </h6>
                                             </div>
-                                            <div class="fs-1 text-white"><i class='bx bxs-wallet'></i>
+                                            <div>
+                                                <p class="mb-0 text-white">Target</p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_COLLECTON_TARGET_OF_EICHER']) ? number_format($visit_plan_month_wise_data['TOTAL_COLLECTON_TARGET_OF_EICHER']) : 0 ?>
+                                                </h6>
                                             </div>
                                         </div>
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bx-collection' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-pinki">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <p class="mb-0 text-white"> Total Sale </p>
-                                                <h4 class="my-1 text-white">
-                                                    <?php print_r($visitRow['TOTAL_SALES_OF_EICHER'] ? $visitRow['TOTAL_SALES_OF_EICHER'] : 0) ?>
-                                                </h4>
-                                                <p class="mb-0 font-13 text-white">Current Month </p>
+                                                <p class="mb-0 text-white"> Sale </p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER'] : 0 ?>
+                                                </h6>
                                             </div>
-                                            <div class="fs-1 text-white"><i class='bx bxs-bar-chart-alt-2'></i>
+                                            <div>
+                                                <p class="mb-0 text-white"> Target </p>
+                                                <h6 class="my-1 text-white">
+                                                    <?php echo isset($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER'] : 0 ?>
+                                                </h6>
                                             </div>
                                         </div>
+                                        <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
+                                            <i class='bx bxs-cart-add' style="font-size:18px"></i>
+                                            <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
+                                            <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -817,16 +896,8 @@ $visitRow = @oci_fetch_assoc($strSQL2);
                                                         TO_DATE('$v_start_date', 'DD/MM/YYYY'),
                                                         TO_DATE('$v_end_date', 'DD/MM/YYYY'),
                                                         'COLLECTION') AS COLLECTION_TARGET
-                                                FROM USER_PROFILE A,
-                                                    (SELECT USER_ID
-                                                    FROM USER_MANPOWER_SETUP
-                                                    WHERE PARENT_USER_ID = $log_user_id
-                                                    UNION ALL
-                                                    SELECT USER_ID
-                                                    FROM USER_MANPOWER_SETUP
-                                                    WHERE PARENT_USER_ID IN
-                                                        ($sale_executive_all_retailer_ids_str)) B
-                                                WHERE A.ID = B.USER_ID";
+                                                FROM USER_PROFILE A
+                                                WHERE A.ID IN ($sale_executive_all_retailer_ids_str)";
                                     $strSQL = @oci_parse($objConnect, $TGVSAC_QUERY);
                                     @oci_execute($strSQL);
                                     $number = 0;

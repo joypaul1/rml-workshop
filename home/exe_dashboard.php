@@ -232,29 +232,24 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-smile">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Collection</p>
                                                 <h6 class="my-1 text-white">
                                                     <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA']) ? number_format($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_OF_MAHINDRA']) : 0 ?>
                                                 </h6>
-
-
                                             </div>
                                             <div>
                                                 <p class="mb-0 text-white">Target</p>
                                                 <h6 class="my-1 text-white">
                                                     <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? number_format($visit_plan_month_wise_data[0]['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) : 0 ?>
                                                 </h6>
-
                                             </div>
                                         </div>
                                         <p class="mb-0 font-10 text-white text-center d-flex justify-content-between">
                                             <i class='bx bx-collection' style="font-size:18px"></i>
                                             <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
                                             <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
-
                                         </p>
                                     </div>
                                 </div>
@@ -262,14 +257,12 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-pinki">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white"> Sale </p>
                                                 <h6 class="my-1 text-white">
                                                     <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_MAHINDRA'] : 0 ?>
                                                 </h6>
-
                                             </div>
                                             <div>
                                                 <p class="mb-0 text-white">Target </p>
@@ -330,7 +323,6 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-smile">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white">Collection</p>
@@ -350,21 +342,18 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                             <span>As of <?php echo date('F') ?> <?php echo date('Y') ?></span>
                                             <i class='bx bx-bar-chart-alt' style="font-size:18px"></i>
                                         </p>
-
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card rounded-4 bg-gradient-pinki">
                                     <div class="card-body" style="padding: 2% 10%;">
-
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div>
                                                 <p class="mb-0 text-white"> Sale </p>
                                                 <h6 class="my-1 text-white">
                                                     <?php echo isset($visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data[0]['TOTAL_SALES_OF_EICHER'] : 0 ?>
                                                 </h6>
-
                                             </div>
                                             <div>
                                                 <p class="mb-0 text-white"> Target </p>
