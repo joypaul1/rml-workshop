@@ -192,7 +192,8 @@ $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                                 @oci_execute($brandstrSQL);
 
                                                 while ($brandData = @oci_fetch_assoc($brandstrSQL)) {
-                                                    echo '<span class="badge rounded-pill bg-gradient-success">' . $brandData['TITLE'] . '</span> ';
+                                                    echo '<span class="badge rounded-pill bg-gradient-success">
+                                                    <i class="bx bx-map-pin text-danger"></i> ' . $brandData['TITLE'] . '</span> ';
                                                 }
 
                                                 ?>
@@ -202,11 +203,15 @@ $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                             </td>
 
                                             <td class="text-center">
-                                                <?php echo $row['USER_TYPE']; ?>
+
+                                                <span class="badge rounded-pill bg-gradient-primary rounded-5 w-100">
+                                                <i class="bx bx-log-in-circle"></i>  <?php echo $row['USER_TYPE']; ?>
+                                                </span>
                                                 <br />
+                                                <!-- <i class='bx bxs-bookmark-star'></i> -->
                                                 <?php if ($row['PLAZA_PARENT_TYPE']) {
                                                     echo ' <span class="badge rounded-pill bg-gradient-info">
-                                                    ' . $row['PLAZA_PARENT_TYPE'] . ' </span>';
+                                                    <i class="bx bxs-bookmark-star"></i> ' . $row['PLAZA_PARENT_TYPE'] . ' </span>';
                                                 } ?>
                                             </td>
 
