@@ -147,7 +147,7 @@ $number = 0;
                                         $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
                                     } else {
-                                        $query .= " AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
+                                        $query .= " AND UMS.PARENT_USER_ID = $log_user_id";
                                     }
 
                                     if (isset($_POST['USER_MOBILE']) && !empty($_POST['USER_MOBILE'])) {

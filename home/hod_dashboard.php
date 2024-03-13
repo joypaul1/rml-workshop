@@ -149,7 +149,7 @@ $totalvisitQuery = "SELECT
         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date', 'DD/MM/YYYY') AND TO_DATE('$v_end_date', 'DD/MM/YYYY')
     ) AS TOTAL_COLLECTION_OF_MAHINDRA,
     /* END TOTAL_COLLECTION_OF_MAHINDRA */
-    
+
     /* Start TOTAL_COLLECTION_TARGET_OF_MAHINDRA */
 (
     SELECT NVL(SUM(CA.COLLECTON_TARGET_AMOUNT), 0)
@@ -300,26 +300,30 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
         <div class="card">
             <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
-                            <div class="d-flex align-items-center">
-                                <div class="tab-icon">
-                                    <i class='bx bxs-hand-down  me-1'></i>
+                    <?php if (in_array(1, explode(',', $USER_BRANDS))) { ?>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon">
+                                        <i class='bx bxs-hand-down  me-1'></i>
+                                    </div>
+                                    <div class="tab-title">MAHINDRA </div>
                                 </div>
-                                <div class="tab-title">MAHINDRA </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
-                            <div class="d-flex align-items-center">
-                                <div class="tab-icon">
-                                    <i class='bx bxs-hand-down  me-1'></i>
+                            </a>
+                        </li>
+                    <?PHP } ?>
+                    <?php if (in_array(2, explode(',', $USER_BRANDS))) { ?>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon">
+                                        <i class='bx bxs-hand-down  me-1'></i>
+                                    </div>
+                                    <div class="tab-title">EICHER</div>
                                 </div>
-                                <div class="tab-title">EICHER</div>
-                            </div>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    <?PHP } ?>
 
                 </ul>
                 <div class="tab-content pt-2">
@@ -639,8 +643,13 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             <?php
                                             $totalSales = ($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER);
                                             $totalSaleTarget = ($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER);
-                                            echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . round(($totalSales / $totalSaleTarget) / 100) . '%' . '</span>';
+                                            if ($totalSales > 0 || $totalSaleTarget > 0) {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;">' . round(($totalSales / $totalSaleTarget) / 100) . '%' . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0% </span>';
+                                            }
                                             ?>
                                         </td>
 
@@ -648,24 +657,40 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             <?php
                                             $TOTAL_COLLECTION_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA'] : 0;
                                             $TOTAL_COLLECTION_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER'] : 0;
-                                            echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
+                                            if ($TOTAL_COLLECTION_OF_MAHINDRA > 0 || $TOTAL_COLLECTION_OF_EICHER > 0) {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0 </span>';
+                                            }
                                             ?>
                                         </td>
                                         <td class="text-end">
                                             <?php
+
                                             $TOTAL_COLLECTION_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA'] : 0;
                                             $TOTAL_COLLECTION_TARGET_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER'] : 0;
-                                            echo '<span style="text-decoration-line: underline;
+                                            if ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA > 0 || $TOTAL_COLLECTION_TARGET_OF_EICHER > 0) {
+                                                echo '<span style="text-decoration-line: underline;
                                             text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER)) . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0 </span>';
+                                            }
                                             ?>
                                         </td>
                                         <td class="text-center">
                                             <?php
                                             $totalCollection = ($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER);
                                             $totalCollectionTarget = ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER);
-                                            echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . round(($totalCollection / $totalCollectionTarget) / 100) . '%' . '</span>';
+                                            if ($totalCollection > 0 || $totalCollectionTarget > 0) {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;">' . round(($totalCollection / $totalCollectionTarget) / 100) . '%' . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0% </span>';
+                                            }
                                             ?>
                                         </td>
                                     </tr>
@@ -680,26 +705,32 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
         <div class="card">
             <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome2" role="tab" aria-selected="true">
-                            <div class="d-flex align-items-center">
-                                <div class="tab-icon">
-                                    <i class='bx bxs-hand-down  me-1'></i>
+                    <?php if (in_array(1, explode(',', $USER_BRANDS))) { ?>
+
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome2" role="tab" aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon">
+                                        <i class='bx bxs-hand-down  me-1'></i>
+                                    </div>
+                                    <div class="tab-title">MAHINDRA </div>
                                 </div>
-                                <div class="tab-title">MAHINDRA </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile2" role="tab" aria-selected="false" tabindex="-1">
-                            <div class="d-flex align-items-center">
-                                <div class="tab-icon">
-                                    <i class='bx bxs-hand-down  me-1'></i>
+                            </a>
+                        </li>
+                    <?php } ?>
+                    <?php if (in_array(2, explode(',', $USER_BRANDS))) { ?>
+
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile2" role="tab" aria-selected="false" tabindex="-1">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon">
+                                        <i class='bx bxs-hand-down  me-1'></i>
+                                    </div>
+                                    <div class="tab-title">EICHER</div>
                                 </div>
-                                <div class="tab-title">EICHER</div>
-                            </div>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    <?php } ?>
 
                 </ul>
                 <div class="tab-content pt-2">

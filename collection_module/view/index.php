@@ -14,7 +14,6 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
     : 0;
-$USER_LOGIN_ID = $_SESSION["USER_SFCM_INFO"]["ID"];
 $v_start_date = date('01/m/Y');
 $v_end_date   = date('t/m/Y');
 ?>
@@ -121,13 +120,13 @@ $v_end_date   = date('t/m/Y');
                                             (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                             WHERE  A.USER_ID = B.ID AND PARENT_USER_ID IN
                                             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                            WHERE A.USER_ID =B.ID AND PARENT_USER_ID='$USER_LOGIN_ID')))
+                                            WHERE A.USER_ID =B.ID AND PARENT_USER_ID='$log_user_id')))
                                         UNION ALL
                                                 SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                 WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                     (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                     WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-                                                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = '$USER_LOGIN_ID'))))
+                                                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = '$log_user_id'))))
                                         AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
                                         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     } else {
@@ -150,13 +149,13 @@ $v_end_date   = date('t/m/Y');
                                                         (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                         (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,  USER_PROFILE B
-                                                        WHERE A.USER_ID = B.ID  AND PARENT_USER_ID = '$USER_LOGIN_ID'))
+                                                        WHERE A.USER_ID = B.ID  AND PARENT_USER_ID = '$log_user_id'))
                                                     UNION ALL
                                                         SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                         (SELECT A.USER_ID
                                                         FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$USER_LOGIN_ID')))
+                                                        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = '$log_user_id')))
                                                     AND UP.ID = CA.USER_ID
                                                     AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     }
