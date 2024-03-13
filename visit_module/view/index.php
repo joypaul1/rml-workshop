@@ -11,7 +11,7 @@ $dynamic_link_js[]  = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepick
 include_once('../../_helper/2step_com_conn.php');
 define('RECORDS_PER_PAGE', 10);
 $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+
 $v_start_date = date('d/m/Y');
 $v_end_date   = date('d/m/Y');
 $sale_executive_all_retailer_query = "SELECT A.USER_ID

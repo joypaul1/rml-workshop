@@ -2,7 +2,6 @@
 include_once('../../_helper/2step_com_conn.php');
 $number = 0;
 
-$USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
 ?>
 
 <!--start page wrapper -->
@@ -32,8 +31,8 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                                     $typeRow = [];
                                                     $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                                     $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
-                                                    $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
-                                        AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
+                                                    $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'
+                                                                AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
                                                     $strSQL  = @oci_parse($objConnect, $query);
 
                                                     @oci_execute($strSQL);
@@ -83,7 +82,7 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                         <div class="table-responsives ">
                             <table class="table table-sm table-bordered align-middle mb-0">
                                 <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
-                                    <tr >
+                                    <tr>
                                         <th>SL.</th>
                                         <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
                                             || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
@@ -108,8 +107,7 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                 <tbody>
                                     <?php
 
-                                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
-                                    ) {
+                                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')) {
                                         $query = "SELECT UP.ID,
                                                     UP.USER_NAME,
                                                     UP.USER_MOBILE,
@@ -148,7 +146,7 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
                                         $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
-                                    }else{
+                                    } else {
                                         $query .= " AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
                                     }
 
@@ -206,12 +204,12 @@ $USER_LOGIN_ID = $_SESSION['USER_SFCM_INFO']['ID'];
                                                 <br />
                                                 <?php if ($row['PLAZA_PARENT_TYPE']) {
                                                     echo ' <span class="badge rounded-pill bg-gradient-info">
-                                                    '. $row['PLAZA_PARENT_TYPE'].' </span>';
+                                                    ' . $row['PLAZA_PARENT_TYPE'] . ' </span>';
                                                 } ?>
                                             </td>
 
                                             <td class="text-center">
-                                                <?php if (($row['USER_TYPE'] == 'RETAILER') || ($row['USER_TYPE'] == 'PLAZA RETAILER') ) { ?>
+                                                <?php if (($row['USER_TYPE'] == 'RETAILER') || ($row['USER_TYPE'] == 'PLAZA RETAILER')) { ?>
                                                     <?php
                                                     $latitu = $row['LAT'];
                                                     $lng = $row['LANG'];

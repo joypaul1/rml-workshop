@@ -11,7 +11,7 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 
 include_once('../../_helper/2step_com_conn.php');
 
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
+
 
 if (isset($_POST['retailer_type'])) {
     $retailer_type = $_POST['retailer_type'];

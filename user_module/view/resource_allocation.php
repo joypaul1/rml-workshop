@@ -4,7 +4,6 @@ $dynamic_link_css[] = '../../assets/plugins/select2/css/select2-bootstrap4.css';
 $dynamic_link_js[]  = '../../assets/plugins/select2/js/select2.min.js';
 include_once('../../_helper/2step_com_conn.php');
 $number = 0;
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 ?>
 
 <!--start page wrapper -->

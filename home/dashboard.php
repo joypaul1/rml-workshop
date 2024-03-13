@@ -3,13 +3,10 @@
 // $dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js';
 $dynamic_link_js[]  = '../assets/plugins/apexcharts-bundle/js/apexcharts.min.js';
 $dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.min.js';
-
-
 include_once('../_helper/com_conn.php');
-$log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
-$USER_BRANDS = $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    ? $_SESSION["USER_SFCM_INFO"]["USER_BRANDS"]
-    : 0;
+
+
+
 $user_type_brand_wise_data = [];
 
 // COUNT QUERY USER TYPE WISE
