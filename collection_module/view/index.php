@@ -160,6 +160,9 @@ $v_end_date   = date('t/m/Y');
                                                     AND UP.ID = CA.USER_ID
                                                     AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     }
+                                    if (isset($_POST['f_retailer_type'])) {
+                                        $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
+                                    }
 
                                     $strSQL = @oci_parse($objConnect, $query);
 

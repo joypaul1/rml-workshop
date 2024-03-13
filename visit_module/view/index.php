@@ -89,7 +89,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                             )
                                                         )";
                                                     } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
-                                                        $query= "SELECT  UP.ID, UP.USER_NAME
+                                                        $query = "SELECT  UP.ID, UP.USER_NAME
                                                                 FROM USER_PROFILE UP WHERE UP.ID IN
                                                                 ($sale_executive_all_retailer_ids_str)";
                                                     } else {
@@ -239,17 +239,19 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                             </td>
 
                                             <td>
-                                                <?php echo $row['VISIT_DATE']; ?>
+                                                <?= $row['VISIT_DATE']; ?>
                                             </td>
                                             <td>
-                                                <?php echo $row['RETAILER_NAME']; ?>
-                                                <br />
-                                                <span class="badge bg-success"><?php echo $row['RETAILER_BRAND']; ?></span></h6>
+                                                <h6>
+                                                    <?=  $row['RETAILER_NAME'] ?>
+                                                    <br />
+                                                    <span class="badge bg-success"><?=  $row['RETAILER_BRAND'] ?></span>
+                                                </h6>
 
                                             </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-gradient-primary">
-                                                    <?php echo $row['VISIT_TYPE']; ?>
+                                                    <?= $row['VISIT_TYPE'] ?>
                                                 </button>
 
 
@@ -264,12 +266,8 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                 } ?>
                                             </td>
                                             <td>
-                                                <?php echo $row['USER_REMARKS']; ?>
+                                                <?=  $row['USER_REMARKS']; ?>
                                             </td>
-
-                                            <!-- <td class="text-center">
-                                                <a href="<?php echo $sfcmBasePath . '/visit_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-info text-white"><i class='bx bx-street-view'></i></a>
-                                            </td> -->
 
                                         </tr>
 
