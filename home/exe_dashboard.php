@@ -94,14 +94,14 @@ AS TOTAL_COMPLETE_VISIT_OF_EICHER,
         FROM COLLECTION_ASSIGN CA WHERE  TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY') AND CA.BRAND_ID = 2
         AND  CA.USER_ID IN    (SELECT USER_ID
-          FROM USER_MANPOWER_SETUP
-         WHERE PARENT_USER_ID = '$log_user_id'
+        FROM USER_MANPOWER_SETUP
+        WHERE PARENT_USER_ID = '$log_user_id'
         UNION ALL
         SELECT USER_ID
-          FROM USER_MANPOWER_SETUP
-         WHERE PARENT_USER_ID IN (SELECT USER_ID
-                                    FROM USER_MANPOWER_SETUP
-                                   WHERE PARENT_USER_ID = '$log_user_id')))
+        FROM USER_MANPOWER_SETUP
+        WHERE PARENT_USER_ID IN (SELECT USER_ID
+        FROM USER_MANPOWER_SETUP
+        WHERE PARENT_USER_ID = '$log_user_id')))
         AS TOTAL_COLLECTION_TARGET_OF_EICHER,
         /* TOTAL_COLLECTION_TARGET_OF_EICHER */
         /* TOTAL_SALES_OF_MAHINDRA */

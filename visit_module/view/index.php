@@ -14,6 +14,30 @@ $currentPage  = isset($_GET['page']) ? $_GET['page'] : 1;
 $log_user_id   = $_SESSION['USER_SFCM_INFO']['ID'];
 $v_start_date = date('d/m/Y');
 $v_end_date   = date('d/m/Y');
+$sale_executive_all_retailer_query = "SELECT A.USER_ID
+FROM USER_MANPOWER_SETUP A,
+USER_PROFILE B
+WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id)
+UNION
+SELECT B.ID
+FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+WHERE A.USER_ID = B.ID
+    AND PARENT_USER_ID IN
+        (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $log_user_id))";
+$strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
+@oci_execute($strSQL3);
+
+while ($row = oci_fetch_assoc($strSQL3)) {
+    $sale_executive_all_retailer_ids[] = $row['USER_ID'];
+}
+if (count($sale_executive_all_retailer_ids) > 0) {
+    $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
+}
 ?>
 <style type="text/css">
     .ui-datepicker-calendar {
@@ -65,24 +89,20 @@ $v_end_date   = date('d/m/Y');
                                                             )
                                                         )";
                                                     } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
-                                                        $query = "SELECT DISTINCT UP.ID, UP.USER_NAME
-                                                                    FROM VISIT_ASSIGN VA, USER_PROFILE UP
-                                                                    WHERE VA.USER_ID IN (
-                                                                        SELECT A.USER_ID
-                                                                        FROM USER_MANPOWER_SETUP A
-                                                                        WHERE   A.PARENT_USER_ID = '$log_user_id'
-                                                                    ) AND UP.ID = VA.USER_ID";
+                                                        $query= "SELECT  UP.ID, UP.USER_NAME
+                                                                FROM USER_PROFILE UP WHERE UP.ID IN
+                                                                ($sale_executive_all_retailer_ids_str)";
                                                     } else {
                                                         $query = "SELECT UP.ID, UMP.USER_ID, UP.USER_NAME
-                                                    FROM USER_MANPOWER_SETUP UMP
-                                                    INNER JOIN USER_PROFILE UP ON UMP.USER_ID = UP.ID
-                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-                                                    WHERE UBS.STATUS = 1
-                                                    AND (UMP.PARENT_USER_ID = '$log_user_id'
-                                                        OR UMP.PARENT_USER_ID IN
-                                                        (SELECT UMP.USER_ID FROM USER_MANPOWER_SETUP UMS
-                                                        INNER JOIN USER_PROFILE UP ON UMS.USER_ID = UP.ID
-                                                        WHERE UMS.PARENT_USER_ID = '$log_user_id'))";
+                                                                    FROM USER_MANPOWER_SETUP UMP
+                                                                    INNER JOIN USER_PROFILE UP ON UMP.USER_ID = UP.ID
+                                                                    LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                                    WHERE UBS.STATUS = 1
+                                                                AND (UMP.PARENT_USER_ID = '$log_user_id'
+                                                                    OR UMP.PARENT_USER_ID IN
+                                                                    (SELECT UMP.USER_ID FROM USER_MANPOWER_SETUP UMS
+                                                                    INNER JOIN USER_PROFILE UP ON UMS.USER_ID = UP.ID
+                                                                    WHERE UMS.PARENT_USER_ID = '$log_user_id'))";
                                                     }
 
                                                     $strSQL = @oci_parse($objConnect, $query);
@@ -203,7 +223,7 @@ $v_end_date   = date('d/m/Y');
                                         $query .= " AND (VA.RETAILER_ID= $retailerID)";
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC";
-
+                                    // echo $query;
                                     // $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
                                     $strSQL = @oci_parse($objConnect, $query);
 

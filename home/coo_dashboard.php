@@ -324,7 +324,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                 <h4 class="my-1 text-white">
                                                     <?php print_r($visit_plan_month_wise_data['TOTAL_VISIT_OF_MAHINDRA'] ? $visit_plan_month_wise_data['TOTAL_VISIT_OF_MAHINDRA'] : 0) ?>
                                                 </h4>
-                                                <p class="mb-0 font-10 text-white">Current Month </p>
+                                                <p class="mb-0 font-10 text-white"> Current Month </p>
                                             </div>
                                             <div class="fs-1 text-white"><i class='bx bxs-cart'></i>
                                             </div>
@@ -1046,7 +1046,6 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         FROM VISIT_ASSIGN VA
                                         WHERE   VA.RETAILER_ID IN ($sale_executive_all_retailer_ids_str)
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
-                                    // echo  $sucessQuery;
                                     $strSQL = @oci_parse($objConnect, $sucessQuery);
 
                                     @oci_execute($strSQL);
@@ -1063,7 +1062,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                     <?= $sucessRow['RETAILER_BRAND'] ?>
                                                 </span>
                                             </td>
-                                            <td><?= $sucessRow['VISIT_DATE'] ?></td>
+                                            <td class="text-center"><?= $sucessRow['VISIT_DATE'] ?></td>
                                             <td>
                                                 <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['USER_REMARKS']; ?>">
                                                     <?php echo mb_strlen($sucessRow['USER_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['USER_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['USER_REMARKS']; ?>
