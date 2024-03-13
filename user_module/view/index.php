@@ -26,23 +26,25 @@ $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                         <div class="row justify-content-center align-items-center">
                                             <div class="col-sm-12  col-md-4">
                                                 <label for="validationCustom06" class="form-label">User Type </label>
-                                                <select class="form-select " id="validationCustom06" name="USER_TYPE_ID">
+                                                <select class="form-select" id="validationCustom06" name="USER_TYPE_ID">
                                                     <option value=""><- Select Type -></option>
                                                     <?php
                                                     $typeRow = [];
-                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
-                                                    $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'
-                                                                AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
-                                                    $strSQL  = @oci_parse($objConnect, $query);
-
+                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ?? '';
+                                                    $query = "SELECT ID, TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > '$currentUserTypeID' ORDER BY ID ASC";
+                                                    $strSQL = @oci_parse($objConnect, $query);
                                                     @oci_execute($strSQL);
+                                                    $firstIteration = true; // Flag to track the first iteration
                                                     while ($typeRow = @oci_fetch_assoc($strSQL)) {
                                                     ?>
-                                                        <option value="<?php echo $typeRow['ID'] ?>" <?php echo $USER_TYPE_ID == $typeRow['ID'] ? 'Selected' : ' ' ?>>
+                                                        <option value="<?php echo $typeRow['ID'] ?>" <?php echo ($USER_TYPE_ID == $typeRow['ID'] || ($firstIteration && !$USER_TYPE_ID)) ? 'selected' : '' ?>>
                                                             <?php echo $typeRow['TITLE'] ?>
                                                         </option>
-                                                    <?php } ?>
+                                                    <?php
+                                                        $firstIteration = false; // Set flag to false after the first iteration
+                                                    } ?>
                                                 </select>
+
                                                 <div class="invalid-feedback">Please select a User Type.</div>
                                             </div>
                                             <div class="col-sm-3">
@@ -205,7 +207,7 @@ $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                             <td class="text-center">
 
                                                 <span class="badge rounded-pill bg-gradient-primary rounded-5 w-100">
-                                                <i class="bx bx-log-in-circle"></i>  <?php echo $row['USER_TYPE']; ?>
+                                                    <i class="bx bx-log-in-circle"></i> <?php echo $row['USER_TYPE']; ?>
                                                 </span>
                                                 <br />
                                                 <!-- <i class='bx bxs-bookmark-star'></i> -->

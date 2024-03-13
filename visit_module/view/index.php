@@ -68,26 +68,16 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
                                                     if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
-                                                        $query = "SELECT  DISTINCT
-                                                        (SELECT DISTINCT UP.USER_NAME
-                                                        FROM USER_PROFILE UP
-                                                        WHERE UP.ID = VA.RETAILER_ID) AS USER_NAME,
-                                                        (SELECT DISTINCT UP.ID
-                                                        FROM USER_PROFILE UP
-                                                        WHERE UP.ID = VA.RETAILER_ID) AS ID
-                                                    FROM VISIT_ASSIGN VA
-                                                    WHERE
-                                                        VA.USER_ID IN (
-                                                            SELECT DISTINCT B.ID
-                                                            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                            WHERE A.USER_ID = B.ID
-                                                            AND PARENT_USER_ID IN (
-                                                                SELECT DISTINCT A.USER_ID
-                                                                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                                                WHERE A.USER_ID = B.ID
-                                                                AND PARENT_USER_ID = '$USER_LOGIN_ID'
-                                                            )
-                                                        )";
+                                                        $query = "SELECT A.ID,A.USER_NAME  FROM USER_PROFILE A,
+                                                        (SELECT USER_ID
+                                                        FROM USER_MANPOWER_SETUP
+                                                        WHERE PARENT_USER_ID = $USER_LOGIN_ID
+                                                        UNION ALL
+                                                        SELECT USER_ID
+                                                        FROM USER_MANPOWER_SETUP
+                                                        WHERE PARENT_USER_ID IN
+                                                            ($sale_executive_all_retailer_ids_str)) B
+                                                    WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
                                                     } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
                                                         $query = "SELECT  UP.ID, UP.USER_NAME
                                                                 FROM USER_PROFILE UP WHERE UP.ID IN
