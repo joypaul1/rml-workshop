@@ -863,8 +863,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                 <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
                                         <th>SL.</th>
-                                        <th>RETAILER NAME </th>
-                                        <th>TYPE </th>
+                                        <th>RETAILER NAME & TYPE </th>
                                         <th>SA. AMT. </th>
                                         <th>SA. TAR.</th>
                                         <th>RATE (%)</th>
@@ -906,10 +905,12 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     ?>
                                         <tr class="table-info">
                                             <td><?= $number ?></td>
-                                            <td><?= $sucessRow['USER_NAME'] ?></td>
-                                            <td class="text-center"><span class="badge bg-success"><?= $sucessRow['USER_TYPE'] ?></span></td>
-                                            <td><?= number_format($sucessRow['SALES_AMOUNT']) ?></td>
-                                            <td><?= number_format($sucessRow['SALES_TARGET']) ?></td>
+                                            <td> <?= $sucessRow['USER_NAME'] ?>
+                                                <br>
+                                                <span class="badge bg-success"><i class='bx bx-log-in-circle'></i> <?= $sucessRow['USER_TYPE'] ?></span>
+                                            </td>
+                                            <td class="text-end"><?= number_format($sucessRow['SALES_AMOUNT']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['SALES_TARGET']) ?></td>
                                             <?php
                                             $percentageRate = 0;
                                             if (
@@ -925,8 +926,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                     <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%' ?>"></div>
                                                 </div>
                                             </td>
-                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT']) ?></td>
-                                            <td><?= number_format($sucessRow['COLLECTION_TARGET']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['COLLECTION_AMOUNT']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['COLLECTION_TARGET']) ?></td>
                                             <?php
                                             $percentageRate2 = 0;
                                             if (
@@ -936,7 +937,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                 $percentageRate2 = round(($sucessRow['COLLECTION_AMOUNT'] / $sucessRow['COLLECTION_TARGET']) * 100);
                                             }
                                             ?>
-                                            <td>
+                                            <td class="text-center">
                                                 <?= $percentageRate2 ?>%
                                                 <div class="progress" style="height: 6px;">
                                                     <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate2 . '%' ?>"></div>
@@ -945,6 +946,59 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         </tr>
                                     <?php } ?>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td class="text-end" colspan="3">
+                                            <?php
+                                            $TOTAL_SALES_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_SALES_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_SALES_OF_MAHINDRA'] : 0;
+                                            $TOTAL_SALES_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <td class="text-end">
+                                            <?php
+                                            $TOTAL_SALES_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_MAHINDRA'] : 0;
+                                            $TOTAL_SALES_TARGET_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php
+                                            $totalSales = ($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER);
+                                            $totalSaleTarget = ($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER);
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . round(($totalSales / $totalSaleTarget) / 100) . '%' . '</span>';
+                                            ?>
+                                        </td>
+
+                                        <td class="text-end">
+                                            <?php
+                                            $TOTAL_COLLECTION_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA'] : 0;
+                                            $TOTAL_COLLECTION_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <td class="text-end">
+                                            <?php
+                                            $TOTAL_COLLECTION_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA'] : 0;
+                                            $TOTAL_COLLECTION_TARGET_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER'] : 0;
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER)) . '</span>';
+                                            ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php
+                                            $totalCollection = ($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER);
+                                            $totalCollectionTarget = ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER);
+                                            echo '<span style="text-decoration-line: underline;
+                                            text-decoration-style: double;">' . round(($totalCollection / $totalCollectionTarget) / 100) . '%' . '</span>';
+                                            ?>
+                                        </td>
+                                    </tr>
+                                </tfoot>
 
                             </table>
                         </div>
@@ -973,7 +1027,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                 <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
                                         <th>SL.</th>
-                                        <th>RETAILER NAME </th>
+                                        <th>RETAILER NAME & COST CENTER </th>
                                         <th>DATE </th>
                                         <th>ENTRY REMARKS</th>
                                         <th>S. AMT. </th>
@@ -1004,7 +1058,10 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             <td><?= $number ?></td>
                                             <td><?= $sucessRow['RETAILER_NAME'] ?>
                                                 </br>
-                                                <span class="badge bg-success"><?= $sucessRow['RETAILER_BRAND'] ?></span>
+                                                <span class="badge bg-success">
+                                                    <i class='bx bx-map-pin'></i>
+                                                    <?= $sucessRow['RETAILER_BRAND'] ?>
+                                                </span>
                                             </td>
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
                                             <td>
@@ -1013,8 +1070,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                 </span>
                                             </td>
 
-                                            <td><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
-                                            <td><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
+                                            <td class="text-end"><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
                                             <td>
                                                 <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['AFTER_VISIT_REMARKS']; ?>">
                                                     <?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['AFTER_VISIT_REMARKS']; ?>

@@ -853,11 +853,6 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                                 <span class="badge bg-success">
                                                     <i class='bx bx-map-pin'></i>
                                                     <?= $sucessRow['RETAILER_BRAND'] ?>
-                                                    </br>
-                                                    <span class="badge bg-success">
-                                                        <i class='bx bx-map-pin'></i>
-                                                        <?= $sucessRow['RETAILER_BRAND'] ?>
-                                                    </span>
                                                 </span>
                                             </td>
                                             <td><?= $sucessRow['VISIT_DATE'] ?></td>
