@@ -1,6 +1,7 @@
 <?php
 include_once('../../_helper/2step_com_conn.php');
 $number = 0;
+$currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
 
 ?>
 
@@ -29,7 +30,6 @@ $number = 0;
                                                     <option value=""><- Select Type -></option>
                                                     <?php
                                                     $typeRow = [];
-                                                    $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                                     $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
                                                     $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'
                                                                 AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
@@ -46,7 +46,7 @@ $number = 0;
                                                 <div class="invalid-feedback">Please select a User Type.</div>
                                             </div>
                                             <div class="col-sm-3">
-                                                <label>MOBILE : </label>
+                                                <label> MOBILE : </label>
                                                 <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="USER_MOBILE" type="text" value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
@@ -120,6 +120,7 @@ $number = 0;
                                                     LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
                                             FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
                                             WHERE  UBS.USER_PROFILE_ID = UP.ID
+                                            AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
                                             AND UP.ID = UMS.USER_ID
                                             AND UBS.STATUS = 1
                                             AND UP.USER_STATUS = 1";
@@ -139,6 +140,7 @@ $number = 0;
                                             WHERE  UBS.USER_PROFILE_ID = UP.ID
                                             AND UP.ID = UMS.USER_ID
                                             AND UBS.STATUS = 1
+                                            AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
                                             AND  UP.USER_STATUS = 1
                                             ";
                                     }

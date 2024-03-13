@@ -968,8 +968,13 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             <?php
                                             $totalSales = ($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER);
                                             $totalSaleTarget = ($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER);
-                                            echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . round(($totalSales / $totalSaleTarget) / 100) . '%' . '</span>';
+                                            if ($totalSales > 0 || $totalSaleTarget > 0) {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;">' . round(($totalSales / $totalSaleTarget) / 100) . '%' . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0% </span>';
+                                            }
                                             ?>
                                         </td>
 
@@ -977,24 +982,39 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             <?php
                                             $TOTAL_COLLECTION_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA'] : 0;
                                             $TOTAL_COLLECTION_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER'] : 0;
-                                            echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
+                                            if ($TOTAL_COLLECTION_OF_MAHINDRA > 0 || $TOTAL_COLLECTION_OF_EICHER > 0) {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0 </span>';
+                                            }
                                             ?>
                                         </td>
                                         <td class="text-end">
                                             <?php
                                             $TOTAL_COLLECTION_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA'] : 0;
                                             $TOTAL_COLLECTION_TARGET_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER'] : 0;
-                                            echo '<span style="text-decoration-line: underline;
+                                            if ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA > 0 || $TOTAL_COLLECTION_TARGET_OF_EICHER > 0) {
+                                                echo '<span style="text-decoration-line: underline;
                                             text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER)) . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0 </span>';
+                                            }
                                             ?>
                                         </td>
                                         <td class="text-center">
                                             <?php
                                             $totalCollection = ($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER);
                                             $totalCollectionTarget = ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER);
-                                            echo '<span style="text-decoration-line: underline;
-                                            text-decoration-style: double;">' . round(($totalCollection / $totalCollectionTarget) / 100) . '%' . '</span>';
+                                            if ($totalCollection > 0 || $totalCollectionTarget > 0) {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;">' . round(($totalCollection / $totalCollectionTarget) / 100) . '%' . '</span>';
+                                            } else {
+                                                echo '<span style="text-decoration-line: underline;
+                                                text-decoration-style: double;"> 0% </span>';
+                                            }
                                             ?>
                                         </td>
                                     </tr>
