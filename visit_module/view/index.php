@@ -223,7 +223,6 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                         $query .= " AND (VA.RETAILER_ID= $retailerID)";
                                     }
                                     $query .= " ORDER BY VA.VISIT_DATE DESC";
-                                    // echo $query;
                                     // $query .= " ORDER BY VA.VISIT_DATE DESC OFFSET $offset ROWS FETCH NEXT " . RECORDS_PER_PAGE . " ROWS ONLY";
                                     $strSQL = @oci_parse($objConnect, $query);
 
