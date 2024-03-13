@@ -165,8 +165,12 @@ $v_end_date   = date('t/m/Y');
 
                                     @oci_execute($strSQL);
                                     $number = 0;
+                                    $COLLECTON_TARGET_AMOUNT = 0;
+                                    $SALES_TARGET_AMOUNT = 0;
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
+                                        $COLLECTON_TARGET_AMOUNT += $row['COLLECTON_TARGET_AMOUNT'];
+                                        $SALES_TARGET_AMOUNT += $row['SALES_TARGET_AMOUNT'];
                                     ?>
                                         <tr>
                                             <td class="text-center">
@@ -199,36 +203,44 @@ $v_end_date   = date('t/m/Y');
                                                     echo ' <button type="button" class="btn btn-sm btn-gradient-danger"> Failed </button>';
                                                 } ?>
                                             </td>
-                                            <td>
+                                            <td class="text-end">
                                                 <?php echo number_format($row['COLLECTON_TARGET_AMOUNT']) ?>
                                             </td>
-                                            <td>
+                                            <td class="text-end">
                                                 <?php echo number_format($row['SALES_TARGET_AMOUNT']) ?>
                                             </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="6" class="text-end"><strong>TOTAL</strong></td>
+                                        <td class="text-end">
+                                            <span style="text-decoration-line: underline;text-decoration-style: double"><?= number_format($COLLECTON_TARGET_AMOUNT) ?></span>
+                                        </td>
+                                        <td class="text-end">
+                                            <span style="text-decoration-line: underline;text-decoration-style: double"><?= number_format($SALES_TARGET_AMOUNT) ?></span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                             <!-- <div class="d-flex justify-content-center mt-3">
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination round-pagination">
                                         <?php
                                         //$countQuery = "SELECT COUNT(CA.ID) AS total  FROM COLLECTION_ASSIGN CA
-                                                        // INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
-                                                        // WHERE CA.BRAND_ID IN ($USER_BRANDS)
-                                                        // AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY')
-                                                        // AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
+                                        // INNER JOIN USER_PROFILE UP ON CA.USER_ID = UP.ID
+                                        // WHERE CA.BRAND_ID IN ($USER_BRANDS)
+                                        // AND TRUNC(CA.START_DATE) >= TO_DATE('$v_start_date','DD/MM/YYYY')
+                                        // AND TRUNC(CA.END_DATE) <= TO_DATE('$v_end_date','DD/MM/YYYY')";
                                         // check retailer data exist
                                         //if (isset($_POST['f_retailer_type'])) {
-                                            //$query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
+                                        //$query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
                                         //}
-
                                         // $countResult = oci_parse($objConnect, $countQuery);
                                         // oci_execute($countResult);
                                         // $countData = oci_fetch_assoc($countResult);
                                         // $totalRecords = $countData['TOTAL'];
-
-
                                         // for ($i = 1; $i <= ceil($totalRecords / RECORDS_PER_PAGE); $i++) {
                                         //     $activeClass = ($i == $currentPage) ? 'active' : '';
                                         //     echo "<li class='page-item $activeClass'><a class='page-link' href='index.php?page=$i'>$i</a></li>";
