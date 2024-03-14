@@ -169,26 +169,30 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
         <div class="card">
             <div class="card-body">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
-                            <div class="d-flex align-items-center">
-                                <div class="tab-icon">
-                                    <i class='bx bxs-hand-down  me-1'></i>
+                    <?php if (in_array(1, explode(',', $USER_BRANDS))) { ?>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon">
+                                        <i class='bx bxs-hand-down  me-1'></i>
+                                    </div>
+                                    <div class="tab-title">MAHINDRA </div>
                                 </div>
-                                <div class="tab-title">MAHINDRA </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
-                            <div class="d-flex align-items-center">
-                                <div class="tab-icon">
-                                    <i class='bx bxs-hand-down  me-1'></i>
+                            </a>
+                        </li>
+                    <?PHP } ?>
+                    <?php if (in_array(2, explode(',', $USER_BRANDS))) { ?>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon">
+                                        <i class='bx bxs-hand-down  me-1'></i>
+                                    </div>
+                                    <div class="tab-title">EICHER</div>
                                 </div>
-                                <div class="tab-title">EICHER</div>
-                            </div>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    <?PHP } ?>
 
                 </ul>
                 <div class="tab-content pt-2">
