@@ -911,9 +911,12 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                     <div class="card-body" style="height:380px; overflow: auto;">
                         <div class="categories-list">
                             <?php
-                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                            WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID=$USER_LOGIN_ID FETCH FIRST 8 ROWS ONLY";
+                            $cooquery = "SELECT DISTINCT UP.USER_NAME,UP.USER_MOBILE,UP.IMAGE_LINK FROM USER_MANPOWER_SETUP UMS,USER_PROFILE UP,USER_BRAND_SETUP UBS
+                            WHERE UMS.USER_ID=UP.ID
+                            AND UBS.USER_PROFILE_ID = UP.ID
+                            AND UBS.STATUS = 1
+                            AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                            AND UMS.PARENT_USER_ID=$USER_LOGIN_ID FETCH FIRST 8 ROWS ONLY";
                             $coordinatorSQL = oci_parse($objConnect, $cooquery);
                             @oci_execute($coordinatorSQL);
                             while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
@@ -951,15 +954,18 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                     <div class="card-body" style="height:380px; overflow: auto;">
                         <div class="categories-list">
                             <?php
-                            $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
-                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                                            WHERE A.USER_ID = B.ID
-                                            AND PARENT_USER_ID IN
+                            $cooquery = "SELECT DISTINCT UP.USER_NAME,UP.USER_MOBILE,UP.IMAGE_LINK
+                                            FROM USER_MANPOWER_SETUP UMS,USER_PROFILE UP,USER_BRAND_SETUP UBS
+                                            WHERE UMS.USER_ID = UP.ID
+                                            AND UBS.USER_PROFILE_ID = UP.ID
+                                            AND UBS.STATUS = 1
+                                            AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                            AND UMS.PARENT_USER_ID IN
                                             (
-                                            SELECT A.USER_ID
-                                            FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                            WHERE A.USER_ID=B.ID
-                                            AND PARENT_USER_ID = $USER_LOGIN_ID
+                                                SELECT A.USER_ID
+                                                FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                                                WHERE A.USER_ID=B.ID
+                                                AND PARENT_USER_ID = $USER_LOGIN_ID
                                             ) FETCH FIRST 8 ROWS ONLY";
                             $coordinatorSQL = oci_parse($objConnect, $cooquery);
                             @oci_execute($coordinatorSQL);
