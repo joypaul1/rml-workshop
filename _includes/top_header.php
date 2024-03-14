@@ -20,7 +20,7 @@
                     <?php //if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") { 
                     ?>
                     <li class="nav-item dropdown dropdown-large">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class='bx bx-category'></i>
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class='bx bx-category text-white'></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <div class="row row-cols-3 g-3 p-3">
@@ -188,9 +188,9 @@
                     </li> -->
                 </ul>
             </div>
-            <!-- <div class="user-box" style="margin: 1rem;    border-right: 1px solid white;">
+            <div class="user-box" style="margin: 1rem;    border-right: 1px solid white;">
                 <div class="d-flex justify-content-center align-items-center nav-link" >
-                    <div class="clock" id="clock" style="
+                    <div class="clock text-white " id="clock" style="
                         font-family: 'Black Ops One', system-ui;
                         font-weight: 400;
                         font-style: normal;
@@ -200,7 +200,7 @@
 
                 </div>
 
-            </div> -->
+            </div>
             <div class=" user-box dropdown">
                 <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
