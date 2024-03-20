@@ -30,7 +30,7 @@ $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
                                                     <option value=""><- Select Type -></option>
                                                     <?php
                                                     $typeRow = [];
-                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ?? '';
+                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ?  $_POST['USER_TYPE_ID'] : '';
                                                     $query = "SELECT ID, TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > '$currentUserTypeID' ORDER BY ID ASC";
                                                     $strSQL = @oci_parse($objConnect, $query);
                                                     @oci_execute($strSQL);

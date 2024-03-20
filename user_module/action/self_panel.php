@@ -269,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'reso
     // Prepare the SQL statement
     $query = "MERGE INTO USER_MANPOWER_SETUP UMS
           USING DUAL
-          ON (UMS.USER_ID = :USER_ID AND UMS.BRAND_ID = :BRAND_ID) 
+          ON (UMS.USER_ID = :USER_ID AND UMS.BRAND_ID = :BRAND_ID)
           WHEN MATCHED THEN
                 UPDATE SET UMS.ENTRY_DATE = SYSDATE,
                         UMS.PARENT_USER_ID = :PARENT_USER_ID,
