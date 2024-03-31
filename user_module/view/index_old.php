@@ -28,7 +28,7 @@ $number = 0;
                                                     <option value=""><- Select Type -></option>
                                                     <?php
                                                     $typeRow = [];
-                                                    $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                                    $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                     $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
                                                     $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
                                         AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
@@ -50,7 +50,7 @@ $number = 0;
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                                                <a href="<?php echo $sfcmBasePath  ?>/user_module/view/index.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                                                <a href="<?php echo $cspdBasePath  ?>/user_module/view/index.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
                                             </div>
                                         </div>
                                     </form>
@@ -67,8 +67,8 @@ $number = 0;
                     <?php
                     $headerType    = 'List';
                     $leftSideName  = 'User List';
-                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
-                        || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                    if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')
+                        || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                     ) {
                         $rightSideName = 'User Create';
                         $routePath     = 'user_module/view/create.php';
@@ -83,8 +83,8 @@ $number = 0;
                                 <thead class="text-white text-uppercase text-center" style="background-color: #3b005c !important">
                                     <tr>
                                         <th>SL.</th>
-                                        <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
-                                            || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                        <?php if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')
+                                            || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                                         ) {
                                             echo '<th>Action</th>';
                                         }
@@ -94,8 +94,8 @@ $number = 0;
                                         <th>TYPE</th>
                                         <th>Location </th>
 
-                                        <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
-                                            || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                        <?php if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')
+                                            || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                                         ) {
                                             echo '<th>Tree User</th>';
                                         }
@@ -106,8 +106,8 @@ $number = 0;
                                 <tbody>
                                     <?php
 
-                                    if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
-                                        //|| ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                    if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')
+                                        //|| ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                                     ) {
                                         $query = "SELECT UP.ID,
                                                     UP.USER_NAME,
@@ -145,16 +145,16 @@ $number = 0;
                                                     AND  UBS.STATUS = 1
                                                     AND UP.USER_STATUS = 1";
 
-                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR') {
+                                        if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR') {
                                             $query .= " AND UP.USER_TYPE_ID IN (3,4,5)";
                                         }
-                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
+                                        if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'SALE EXECUTIVE') {
                                             $query .= " AND UP.USER_TYPE_ID IN (4,5)";
                                         }
-                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'RETAILER') {
+                                        if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'RETAILER') {
                                             $query .= " AND UP.USER_TYPE_ID IN (5,6)";
                                         }
-                                        if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'MECHANICS') {
+                                        if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'MECHANICS') {
                                             $query .= " AND UP.USER_TYPE_ID IN (6)";
                                         }
                                     }
@@ -183,12 +183,12 @@ $number = 0;
                                                     <?php echo $number; ?>
                                                 </strong>
                                             </td>
-                                            <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
-                                                || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                            <?php if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')
+                                                || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                                             ) { ?>
                                                 <td class="text-center">
-                                                    <a href="<?php echo $sfcmBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>`
-                                                    <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
+                                                    <a href="<?php echo $cspdBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>`
+                                                    <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($cspdBasePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
                                                 </td>
                                             <?php } ?>
                                             <td>
@@ -234,32 +234,32 @@ $number = 0;
                                             </td>
 
 
-                                            <?php if (($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'HOD')
-                                                || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'COORDINATOR')
-                                                || ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
+                                            <?php if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')
+                                                || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
+                                                || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
                                             ) {
                                             ?>
                                                 <?php if (($row['USER_TYPE'] == 'HOD')) { ?>
                                                     <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
                                                 <?php if (($row['USER_TYPE'] == 'COORDINATOR')) { ?>
                                                     <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
                                                 <?php }  ?>
                                                 <?php //if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) { 
                                                 ?>
                                                 <!-- <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td> -->
                                                 <?php // }  
                                                 ?>
                                                 <?php //if (($row['USER_TYPE'] == 'RETAILER')) { 
                                                 ?>
                                                 <!-- <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td> -->
                                                 <?php //}  
                                                 ?>

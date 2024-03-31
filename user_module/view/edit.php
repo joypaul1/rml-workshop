@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post" action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                            <form method="post" action="<?php echo ($cspdBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="actionType" value="edit">
                                 <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
                                 <div class="col-sm-12 col-md-4">
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                         <option hidden value="">- Select Type -</option>
 
                                         <?php
-                                        $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                        $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                         $query = "SELECT ID, TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > :currentUserTypeID ORDER BY ID ASC";
                                         $strSQL = oci_parse($objConnect, $query);
 
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                         <option hidden value="<?php echo Null ?>"><- Select Retailer Type -></option>
                                         <?php
                                         $typeRow = [];
-                                        $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                        $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                         $query   = "SELECT ID,TITLE FROM PLAZA_PARENT WHERE STATUS ='1'  
                                         ORDER BY ID ASC ";
                                         $strSQL  = @oci_parse($objConnect, $query);
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                                 <div class="row mt-3" id="addResponsiableData"></div>
                                 <div class="col-12">
                                     <label for="" class="form-label">User Profile Image</label>
-                                    <input type="file" name="IMAGE_LINK" class="dropify" data-default-file="<?php echo $sfcmBasePath . '/' . $data['IMAGE_LINK'] ?>" />
+                                    <input type="file" name="IMAGE_LINK" class="dropify" data-default-file="<?php echo $cspdBasePath . '/' . $data['IMAGE_LINK'] ?>" />
                                     <!-- <div class="valid-feedback">Looks good!</div> -->
 
                                 </div>
@@ -147,7 +147,7 @@ include_once('../../_includes/footer.php');
     const $DISTRICTID = "<?php echo $data['DISTRICT_ID'] ?>";
 
 
-    let url = "<?php echo ($sfcmBasePath . '/user_module/action/drop_down_panel.php') ?>";
+    let url = "<?php echo ($cspdBasePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
 
     $('select[name="USER_TYPE_ID"]').on('change', function() {

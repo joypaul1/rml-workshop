@@ -35,15 +35,15 @@ while ($brandRow = oci_fetch_assoc($brandSQL)) {
 </style>
 <!--start page wrapper -->
 <?php
-if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
+if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "HOD") {
     include_once('hod_dashboard.php');
-} else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
+} else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "COORDINATOR") {
     include_once('coo_dashboard.php');
-} else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "SALE EXECUTIVE") {
+} else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "SALE EXECUTIVE") {
     include_once('exe_dashboard.php');
-} else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "RETAILER") {
+} else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "RETAILER") {
     include_once('ret_dashboard.php');
-} else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "MECHANICS") {
+} else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "MECHANICS") {
     include_once('mac_dashboard.php');
 }
 

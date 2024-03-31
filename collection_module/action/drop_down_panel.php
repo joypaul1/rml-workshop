@@ -2,10 +2,10 @@
 session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
-$sfcmBasePath   = $_SESSION['sfcmBasePath'];
+$cspdBasePath   = $_SESSION['cspdBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
-$USER_LOGIN_ID   = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_LOGIN_ID   = $_SESSION['USER_CSPD_INFO']['ID'];
 
 
 // retailer_plaza_data

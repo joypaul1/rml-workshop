@@ -25,7 +25,7 @@ include_once('../../_helper/2step_com_conn.php');
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post" action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                            <form method="post" action="<?php echo ($cspdBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="actionType" value="create">
                                 <div class="col-sm-12 col-md-4">
                                     <label for="validationCustom01" class="form-label">User Name <span class="text-danger">*</span></label>
@@ -55,7 +55,7 @@ include_once('../../_helper/2step_com_conn.php');
                                         <option hidden value="<?php echo Null ?>"><- Select Type -></option>
                                         <?php
                                         $typeRow = [];
-                                        $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                        $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                         $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
                                         AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
                                         $strSQL  = @oci_parse($objConnect, $query);
@@ -76,7 +76,7 @@ include_once('../../_helper/2step_com_conn.php');
                                         <option hidden value="<?php echo Null ?>"><- Select Retailer Type -></option>
                                         <?php
                                         $typeRow = [];
-                                        $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                        $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                         $query   = "SELECT ID,TITLE FROM PLAZA_PARENT WHERE STATUS ='1'  
                                         ORDER BY ID ASC ";
                                         $strSQL  = @oci_parse($objConnect, $query);
@@ -118,7 +118,7 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
-    const url = "<?php echo ($sfcmBasePath . '/user_module/action/drop_down_panel.php') ?>";
+    const url = "<?php echo ($cspdBasePath . '/user_module/action/drop_down_panel.php') ?>";
     const $user_type_id = $('select[name="USER_TYPE_ID"]');
 
 

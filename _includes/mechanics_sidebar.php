@@ -22,7 +22,7 @@
                     <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
                 </div> -->
                 <div>
-                    <h4 class="logo-text">SFCM - SYSTEM</h4>
+                    <h4 class="logo-text">CSPD - SYSTEM</h4>
                 </div>
                 <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
                 </div>
@@ -30,7 +30,7 @@
             <!--navigation-->
             <ul class="metismenu" id="menu">
                 <li class="<?php echo isActive('/home/dashboard.php'); ?>">
-                    <a href="<?php echo $sfcmBasePath ?>/home/dashboard.php">
+                    <a href="<?php echo $cspdBasePath ?>/home/dashboard.php">
                         <div class="parent-icon"><i class="bx bx-home-circle"></i>
                         </div>
                         <div class="menu-title">Dashboard  </div>
@@ -62,9 +62,9 @@
                         <div class="menu-title">User Panel</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create User</a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/user_module/view/create.php"><i class='bx bxs-arrow-to-right'></i></i>Create User</a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of User</a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i></i>List Of User</a>
                         </li>
                     </ul>
                 </li>

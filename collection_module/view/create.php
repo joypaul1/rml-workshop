@@ -44,7 +44,7 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                                     WHERE UP.ID = UMS.USER_ID
                                                     AND  UP.USER_TYPE_ID = 3";
 
-                                if ($_SESSION["USER_SFCM_INFO"]["USER_TYPE"] == "COORDINATOR") {
+                                if ($_SESSION["USER_CSPD_INFO"]["USER_TYPE"] == "COORDINATOR") {
                                     $executiveQuery .= " AND UMS.USER_ID = UP.ID AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
                                 }
                                 $executiveSql = @oci_parse($objConnect, $executiveQuery);
@@ -69,7 +69,7 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
 
                         <div class="col-sm-6 col-md-3 d-flex gap-2">
                             <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search <i class='bx bx-file-find'></i></button>
-                            <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
+                            <a href="<?php echo $cspdBasePath ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
                         </div>
                     </div>
                 </form>
@@ -77,7 +77,7 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
 
             <div class="card-body p-4 border rounded">
                 <div class="">
-                    <form method="POST" action="<?php echo $sfcmBasePath . "/collection_module/action/self_panel.php"; ?>">
+                    <form method="POST" action="<?php echo $cspdBasePath . "/collection_module/action/self_panel.php"; ?>">
                         <div class="row justify-content-center align-items-center ">
                             <input type="hidden" name="actionType" value="create">
 
@@ -269,7 +269,7 @@ include_once('../../_includes/footer_info.php');
 include_once('../../_includes/footer.php');
 ?>
 <script>
-    const $URL = "<?php echo ($sfcmBasePath . '/collection_module/action/drop_down_panel.php') ?>";
+    const $URL = "<?php echo ($cspdBasePath . '/collection_module/action/drop_down_panel.php') ?>";
     const $F_SALE_EXECUTIVE = $('select[name="F_SALE_EXECUTIVE"]');
     const $F_PLAZA_RETAILER_ID = "<?php echo $F_PLAZA_RETAILER_ID ? $F_PLAZA_RETAILER_ID : null ?>";
 

@@ -29,7 +29,7 @@ $number = 0;
                                                     <option value=""><- Select Type -></option>
                                                     <?php
                                                     $typeRow = [];
-                                                    $currentUserTypeID = $_SESSION['USER_SFCM_INFO']['USER_TYPE_ID'];
+                                                    $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                     $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
                                                     $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
                                         AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
@@ -51,7 +51,7 @@ $number = 0;
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                                                <a href="<?php echo $sfcmBasePath  ?>/user_module/view/resource_allocation.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                                                <a href="<?php echo $cspdBasePath  ?>/user_module/view/resource_allocation.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
                                             </div>
                                         </div>
                                     </form>
@@ -170,7 +170,7 @@ $number = 0;
                                                 $userBrandID =  explode(',', $userBrandID);
                                                 if (in_array(1, $userBrandID)) {
                                                 ?>
-                                                    <form action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
+                                                    <form action="<?php echo ($cspdBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
                                                         <input type="hidden" name="actionType" value="resource_allocation">
                                                         <input type="hidden" name="USER_ID" value="<?php echo $row['ID'] ?>">
                                                         <input type="hidden" name="BRAND_ID" value="1">
@@ -228,7 +228,7 @@ $number = 0;
                                                 <?php
                                                 if (in_array(2, $userBrandID)) {
                                                 ?>
-                                                    <form action="<?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
+                                                    <form action="<?php echo ($cspdBasePath . '/user_module/action/self_panel.php') ?>" method="post" class="d-flex gap-3">
                                                         <input type="hidden" name="actionType" value="resource_allocation">
                                                         <input type="hidden" name="USER_ID" value="<?php echo $row['ID'] ?>">
                                                         <input type="hidden" name="BRAND_ID" value="2">

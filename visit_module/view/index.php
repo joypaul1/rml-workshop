@@ -70,7 +70,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                 <select name="retailer" class="form-control single-select">
                                                     <option value="<?php echo null ?>" hidden><- Select Retailer -></option>
                                                     <?php
-                                                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
+                                                    if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "HOD") {
                                                         $query = "SELECT A.ID,A.USER_NAME  FROM USER_PROFILE A,
                                                         (SELECT USER_ID
                                                         FROM USER_MANPOWER_SETUP
@@ -81,7 +81,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                         WHERE PARENT_USER_ID IN
                                                             ($sale_executive_all_retailer_ids_str)) B
                                                     WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
-                                                    } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
+                                                    } else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "COORDINATOR") {
                                                         $query = "SELECT  UP.ID, UP.USER_NAME
                                                                 FROM USER_PROFILE UP WHERE UP.ID IN
                                                                 ($sale_executive_all_retailer_ids_str)";
@@ -144,7 +144,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                     }
                     $headerType    = 'List';
                     $leftSideName  = 'Visit List';
-                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "SALE EXECUTIVE") {
+                    if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "SALE EXECUTIVE") {
                         $rightSideName = 'Visit Create';
                         $routePath     = 'visit_module/view/create.php';
                     }
@@ -174,7 +174,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
 
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
 
-                                    if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "HOD") {
+                                    if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "HOD") {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
                                         VA.ENTRY_BY_ID,
@@ -188,7 +188,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                             AND PARENT_USER_ID IN
                                             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
-                                    } else if ($_SESSION['USER_SFCM_INFO']['USER_TYPE'] == "COORDINATOR") {
+                                    } else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "COORDINATOR") {
                                         $query = "SELECT VA.ID, VA.VISIT_DATE,
                                         VA.USER_REMARKS, VA.VISIT_STATUS, VA.ENTRY_DATE,
                                         VA.ENTRY_BY_ID,

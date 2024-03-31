@@ -2,8 +2,8 @@
 session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
-$sfcmBasePath   = $_SESSION['sfcmBasePath'];
-$USER_LOGIN_ID   = $_SESSION['USER_SFCM_INFO']['ID'];
+$cspdBasePath   = $_SESSION['cspdBasePath'];
+$USER_LOGIN_ID   = $_SESSION['USER_CSPD_INFO']['ID'];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'create') {
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
                     'status' => 'false',
                 ];
                 $_SESSION['noti_message'] = $message;
-                echo "<script> window.location.href = '{$sfcmBasePath}/visit_module/view/create.php'</script>";
+                echo "<script> window.location.href = '{$cspdBasePath}/visit_module/view/create.php'</script>";
                 exit();
             }
         }
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
         ];
 
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/visit_module/view/create.php'</script>";
+        echo "<script> window.location.href = '{$cspdBasePath}/visit_module/view/create.php'</script>";
         exit();
     } else {
         $message                  = [
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/visit_module/view/create.php'</script>";
+        echo "<script> window.location.href = '{$cspdBasePath}/visit_module/view/create.php'</script>";
         exit();
     }
 }

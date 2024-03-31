@@ -28,9 +28,9 @@ if (isset($_POST['login_submit'])) {
 
         if ($dataRow) {
             unset($dataRow['USER_PASSWORD']);
-            $_SESSION['USER_SFCM_INFO']   = $dataRow;
+            $_SESSION['USER_CSPD_INFO']   = $dataRow;
             $_SESSION['baseUrl']     = $baseUrl;
-            $_SESSION['sfcmBasePath']    = $sfcmBasePath;
+            $_SESSION['cspdBasePath']    = $cspdBasePath;
             $_SESSION['rs_img_path'] = $rs_img_path;
             header('location:home/dashboard.php');
             exit;
@@ -41,7 +41,7 @@ if (isset($_POST['login_submit'])) {
 }
 
 if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
-    $sfcmBasePath    = $_SESSION['sfcmBasePath'];
+    $cspdBasePath    = $_SESSION['cspdBasePath'];
     $rs_img_path = $_SESSION['rs_img_path'];
     session_start();
     session_unset();
@@ -49,7 +49,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     session_write_close();
     setcookie(session_name(), '', 0, '/');
     session_regenerate_id(true);
-    header("location:" . $sfcmBasePath . "/index.php");
+    header("location:" . $cspdBasePath . "/index.php");
     exit;
 }
 
@@ -82,7 +82,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
     <link href="../../../css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="assets/css/app.css" rel="stylesheet">
     <link href="assets/css/icons.css" rel="stylesheet">
-    <title>SFCM-SYSTEM | RML</title>
+    <title>CSPD-SYSTEM | RML</title>
 </head>
 
 <body class="bg-login">
@@ -97,7 +97,7 @@ if (isset($_GET['logout_hr']) && $_GET['logout_hr'] == true) {
                                 <div class="border p-4 rounded-4">
                                     <div class="text-center">
                                         <img src="assets/images/logo-img.png" width="200" alt="">
-                                        <h5 class="mt-3 mb-0"><u> SFCM - SYSTEM </u></h5>
+                                        <h5 class="mt-3 mb-0"><u> CSPD - SYSTEM </u></h5>
                                         <p class="mb-4">Please Login Before Enter The Dashboard.</p>
                                     </div>
 

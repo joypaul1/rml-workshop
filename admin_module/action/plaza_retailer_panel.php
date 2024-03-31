@@ -2,11 +2,11 @@
 session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
-$sfcmBasePath   = $_SESSION['sfcmBasePath'];
+$cspdBasePath   = $_SESSION['cspdBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
 
-$USER_LOGIN_ID   = $_SESSION['USER_SFCM_INFO']['ID'];
+$USER_LOGIN_ID   = $_SESSION['USER_CSPD_INFO']['ID'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'create') {
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'create') 
             'status' => 'true',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/plaza_retailer_type.php'</script>";
+        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/plaza_retailer_type.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'create') 
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/dis_create.php'</script>";
+        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/dis_create.php'</script>";
     }
 }
 
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'edit') {
         ];
 
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/plaza_retailer_type.php'</script>";
+        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/plaza_retailer_type.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -68,6 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'edit') {
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/pr_edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/pr_edit.php?id={$editId}&actionType=edit'</script>";
     }
 }

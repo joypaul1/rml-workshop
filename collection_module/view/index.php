@@ -98,7 +98,7 @@ $v_end_date   = date('t/m/Y');
                                 <tbody>
                                     <?php
                                     $offset = ($currentPage  - 1) * RECORDS_PER_PAGE;
-                                    if ($_SESSION["USER_SFCM_INFO"]["USER_TYPE"] == "HOD") {
+                                    if ($_SESSION["USER_CSPD_INFO"]["USER_TYPE"] == "HOD") {
                                         $query = "SELECT CA.ID,
                                             CA.START_DATE,
                                             CA.END_DATE,
@@ -179,7 +179,7 @@ $v_end_date   = date('t/m/Y');
                                                 </strong>
                                             </td>
                                             <td class="text-center">
-                                                <a href="<?php echo $sfcmBasePath . '/collection_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                <a href="<?php echo $cspdBasePath . '/collection_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
                                             </td>
                                             <td>
                                                 <?php echo $row['START_DATE']; ?> TO <?php echo $row['END_DATE']; ?>
