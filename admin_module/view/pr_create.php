@@ -18,7 +18,7 @@ include_once('../../_helper/2step_com_conn.php');
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form method="post" action="<?php echo ($cspdBasePath . '/admin_module/action/plaza_retailer_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
+                            <form method="post" action="<?php echo ($sfcmBasePath . '/admin_module/action/plaza_retailer_panel.php') ?>" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="actionType" value="create">
                                 <div class="col-sm-12 col-md-4">
                                     <label for="validationCustom01" class="form-label"> Type Name <span class="text-danger">*</span></label>

@@ -2,7 +2,7 @@
 session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
-$cspdBasePath   = $_SESSION['cspdBasePath'];
+$sfcmBasePath   = $_SESSION['sfcmBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'dis_creat
             'status' => 'true',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/district.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/district.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'dis_creat
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/dis_create.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/dis_create.php'</script>";
     }
 }
 
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'dis_edit'
         ];
 
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/district.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/district.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'dis_edit'
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/dis_edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/dis_edit.php?id={$editId}&actionType=edit'</script>";
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'ut_edit') {
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'ut_edit')
 
         $_SESSION['noti_message'] = $message;
 
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/user_type.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/user_type.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'ut_edit')
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/ut_edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/ut_edit.php?id={$editId}&actionType=edit'</script>";
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'vt_edit') {
@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'vt_edit')
 
         $_SESSION['noti_message'] = $message;
 
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/visit_type.php'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/visit_type.php'</script>";
     } else {
         $e                        = @oci_error($strSQL);
         $message                  = [
@@ -140,6 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST["actionType"] == 'vt_edit')
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$cspdBasePath}/admin_module/view/vt_edit.php?id={$editId}&actionType=edit'</script>";
+        echo "<script> window.location.href = '{$sfcmBasePath}/admin_module/view/vt_edit.php?id={$editId}&actionType=edit'</script>";
     }
 }

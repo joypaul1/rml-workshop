@@ -69,7 +69,7 @@ if (isset($_POST['retailer_type'])) {
                             </div>
                             <div class="col-sm-3 d-flex gap-2">
                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data</button>
-                                <a href="<?php echo $cspdBasePath  ?>/visit_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data</a>
+                                <a href="<?php echo $sfcmBasePath  ?>/visit_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data</a>
                             </div>
                         </div>
                     </form>
@@ -77,7 +77,7 @@ if (isset($_POST['retailer_type'])) {
             </div>
             <div class="card-body">
                 <div class=" card card-body col-sm-12 col-md-12  col-xl-12 mx-auto p-4 border rounded">
-                    <form method="POST" action="<?php echo ($cspdBasePath . '/visit_module/action/self_panel.php') ?>">
+                    <form method="POST" action="<?php echo ($sfcmBasePath . '/visit_module/action/self_panel.php') ?>">
                         <div class="row justify-content-end align-items-center ">
                             <input type="hidden" name="actionType" value="create">
 

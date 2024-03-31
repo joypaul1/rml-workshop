@@ -69,7 +69,7 @@ include_once('../../_helper/2step_com_conn.php');
 
                         <div class="col-sm-6 col-md-3 d-flex gap-2">
                             <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search <i class='bx bx-file-find'></i></button>
-                            <a href="<?php echo $cspdBasePath ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
+                            <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset <i class='bx bx-file'></i></a>
                         </div>
                     </div>
                 </form>
@@ -77,7 +77,7 @@ include_once('../../_helper/2step_com_conn.php');
 
             <div class="card-body p-4 border rounded">
                 <div class="">
-                    <form method="POST" action="<?php echo $cspdBasePath . "/collection_module/action/self_panel.php"; ?>">
+                    <form method="POST" action="<?php echo $sfcmBasePath . "/collection_module/action/self_panel.php"; ?>">
                         <div class="row justify-content-center align-items-center ">
                             <input type="hidden" name="actionType" value="create">
 

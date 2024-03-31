@@ -4,7 +4,7 @@ session_start();
 
 class Imageupload
 {
-    public $cspdBasePath =  $_SESSION['cspdBasePath'];
+    public $sfcmBasePath =  $_SESSION['sfcmBasePath'];
     public  $defaulPath = '../uploads/';
     public $extenstion = null;
     public $width = null;

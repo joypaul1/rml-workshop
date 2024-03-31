@@ -13,7 +13,7 @@ if (isset($headerType) && $headerType == 'List') {
         <div>';
 
     if (isset($routePath)) {
-        $route = $cspdBasePath . '/' . $routePath;
+        $route = $sfcmBasePath . '/' . $routePath;
         $html .= '<a href="' . $route . '" class="btn btn-sm btn-gradient-primary">';
     }
 
@@ -39,7 +39,7 @@ else {
         <div>';
 
     if (isset($routePath)) {
-        $route = $cspdBasePath . '/' . $routePath;
+        $route = $sfcmBasePath . '/' . $routePath;
         $html .= '<a href="' . $route . '" class="btn btn-sm btn-gradient-primary">';
     }
 

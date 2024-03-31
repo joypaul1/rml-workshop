@@ -6,12 +6,12 @@ if (!isset($_SESSION['USER_CSPD_INFO'])) {
     $includeFilePath   = $directoryPath . '../../config_file_path.php';
     $realIncludePath   = realpath($includeFilePath);
     require($includeFilePath);
-    header("Location:" . $cspdBasePath);
+    header("Location:" . $sfcmBasePath);
     exit;
 }
 include_once('../../_config/connoracle.php');
 
-$cspdBasePath   = $_SESSION['cspdBasePath'];
+$sfcmBasePath   = $_SESSION['sfcmBasePath'];
 $USER_LOGIN_ID    = $_SESSION['USER_CSPD_INFO']['ID'];
 $USER_BRANDS    = $_SESSION["USER_CSPD_INFO"]["USER_BRANDS"] ? $_SESSION["USER_CSPD_INFO"]["USER_BRANDS"] : 0;
 

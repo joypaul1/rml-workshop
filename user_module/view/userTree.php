@@ -24,7 +24,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     }
     //end coodinoatorData
 }
-$cspdBasePath    = $_SESSION['cspdBasePath'];
+$sfcmBasePath    = $_SESSION['sfcmBasePath'];
 ?>
 
 
@@ -41,14 +41,14 @@ $cspdBasePath    = $_SESSION['cspdBasePath'];
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
     <!--favicon-->
-    <link rel="icon" href="<?php echo $cspdBasePath ?>assets/images/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="<?php echo $sfcmBasePath ?>assets/images/favicon-32x32.png" type="image/png">
     <!--plugins-->
     <!-- Bootstrap CSS -->
-    <link href="<?php echo $cspdBasePath ?>/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo $cspdBasePath ?>/assets/css/bootstrap-extended.css" rel="stylesheet">
+    <link href="<?php echo $sfcmBasePath ?>/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $sfcmBasePath ?>/assets/css/bootstrap-extended.css" rel="stylesheet">
     <link href="../../../css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link href="<?php echo $cspdBasePath ?>/assets/css/app.css" rel="stylesheet">
-    <link href="<?php echo $cspdBasePath ?>/assets/css/icons.css" rel="stylesheet">
+    <link href="<?php echo $sfcmBasePath ?>/assets/css/app.css" rel="stylesheet">
+    <link href="<?php echo $sfcmBasePath ?>/assets/css/icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.3/css/jquery.orgchart.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
@@ -162,9 +162,9 @@ $cspdBasePath    = $_SESSION['cspdBasePath'];
     </div>
     <!--end wrapper-->
     <!-- Bootstrap JS -->
-    <script src="<?php echo $cspdBasePath ?>/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo $sfcmBasePath ?>/assets/js/bootstrap.bundle.min.js"></script>
     <!--plugins-->
-    <script src="<?php echo $cspdBasePath ?>/assets/js/jquery.min.js"></script>
+    <script src="<?php echo $sfcmBasePath ?>/assets/js/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.3/js/jquery.orgchart.min.js"></script>
     <!--Password show & hide js -->
 
@@ -197,7 +197,7 @@ $cspdBasePath    = $_SESSION['cspdBasePath'];
                     var coordinatorPromise = new Promise(function(resolve, reject) {
                         $.ajax({
                             type: "GET",
-                            url: "<?php echo ($cspdBasePath . '/user_module/action/getSaleExecutive.php') ?>",
+                            url: "<?php echo ($sfcmBasePath . '/user_module/action/getSaleExecutive.php') ?>",
                             data: {
                                 coordinator: userData.ID
                             },
@@ -218,7 +218,7 @@ $cspdBasePath    = $_SESSION['cspdBasePath'];
                                         var executivePromise = new Promise(function(resolve, reject) {
                                             $.ajax({
                                                 type: "GET",
-                                                url: "<?php echo ($cspdBasePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                                url: "<?php echo ($sfcmBasePath . '/user_module/action/getSaleExecutive.php') ?>",
                                                 data: {
                                                     sale_executive: executiveData.ID
                                                 },
@@ -240,7 +240,7 @@ $cspdBasePath    = $_SESSION['cspdBasePath'];
                                                                 // Add AJAX call to get Mechanics data
                                                                 $.ajax({
                                                                     type: "GET",
-                                                                    url: "<?php echo ($cspdBasePath . '/user_module/action/getSaleExecutive.php') ?>",
+                                                                    url: "<?php echo ($sfcmBasePath . '/user_module/action/getSaleExecutive.php') ?>",
                                                                     data: {
                                                                         retailer: retailerData.ID
                                                                     },
