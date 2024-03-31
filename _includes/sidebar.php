@@ -33,7 +33,7 @@
             <!--navigation-->
             <ul class="metismenu" id="menu">
                 <li class="<?php echo isActive('/home/dashboard.php'); ?>">
-                    <a href="<?php echo $sfcmBasePath ?>/home/dashboard.php">
+                    <a href="<?php echo $cspdBasePath ?>/home/dashboard.php">
                         <div class="parent-icon"><i class="bx bx-home-circle"></i>
                         </div>
                         <div class="menu-title">Dashboard </div>
@@ -50,13 +50,13 @@
                         <div class="menu-title">Collection Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Assign Collection </a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/collection_module/view/create.php"><i class='bx bxs-arrow-to-right'></i> Assign Collection </a>
                         </li>
 
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Assign </a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/collection_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Assign </a>
 
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/collection_module/view/excel_upload.php"><i class='bx bxs-arrow-to-right'></i> Excel Upload </a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/collection_module/view/excel_upload.php"><i class='bx bxs-arrow-to-right'></i> Excel Upload </a>
                         </li>
                     </ul>
                 </li>
@@ -68,7 +68,7 @@
                         <div class="menu-title">Visit Plan Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Schedule </a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/visit_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of Schedule </a>
                         </li>
                     </ul>
                 </li>
@@ -79,11 +79,11 @@
                         <div class="menu-title">User Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/user_module/view/index.php"><i class='bx bxs-arrow-to-right'></i> List Of User</a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Cost Center Assign</a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/user_module/view/brandAssign.php"><i class='bx bxs-arrow-to-right'></i> Cost Center Assign</a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/user_module/view/resource_allocation.php"><i class='bx bxs-arrow-to-right'></i> Resource Allocation </a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/user_module/view/resource_allocation.php"><i class='bx bxs-arrow-to-right'></i> Resource Allocation </a>
                         </li>
                     </ul>
                 </li>
@@ -96,13 +96,13 @@
                         <div class="menu-title">Admin Module</div>
                     </a>
                     <ul>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/user_type.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/admin_module/view/user_type.php"><i class='bx bxs-arrow-to-right'></i> User Type Config.</a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/visit_type.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/admin_module/view/visit_type.php"><i class='bx bxs-arrow-to-right'></i> Visit Type Config.</a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/plaza_retailer_type.php"><i class='bx bxs-arrow-to-right'></i> Plaza Retailer Type </a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/admin_module/view/plaza_retailer_type.php"><i class='bx bxs-arrow-to-right'></i> Plaza Retailer Type </a>
                         </li>
-                        <li> <a href="<?php echo $sfcmBasePath ?>/admin_module/view/district.php"><i class='bx bxs-arrow-to-right'></i> Districts Name Config.</a>
+                        <li> <a href="<?php echo $cspdBasePath ?>/admin_module/view/district.php"><i class='bx bxs-arrow-to-right'></i> Districts Name Config.</a>
                         </li>
                     </ul>
                 </li>

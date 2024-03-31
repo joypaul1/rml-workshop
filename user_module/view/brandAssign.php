@@ -50,7 +50,7 @@ $number = 0;
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
                                                 <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                                                <a href="<?php echo $sfcmBasePath  ?>/user_module/view/brandAssign.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                                                <a href="<?php echo $cspdBasePath  ?>/user_module/view/brandAssign.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
                                             </div>
                                         </div>
                                     </form>
@@ -190,7 +190,7 @@ include_once('../../_includes/footer.php');
 
     $(document).on('click', '.delete_check', function() {
         var userID = $(this).attr('data-userId');
-        let url = "<?php echo ($sfcmBasePath . '/user_module/action/drop_down_panel.php') ?>";
+        let url = "<?php echo ($cspdBasePath . '/user_module/action/drop_down_panel.php') ?>";
         //console.log($(this).is(":checked"));
         if ($(this).is(":checked")) {
             $.ajax({

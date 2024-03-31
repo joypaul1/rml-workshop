@@ -37,7 +37,7 @@ include_once('../../_helper/2step_com_conn.php');
 
                             </div>
 
-                            <form method="POST" action="<?php echo ($sfcmBasePath . '/collection_module/action/uploadExcel.php') ?>" class="row g-3 needs-validation mt-2" enctype="multipart/form-data" novalidate="">
+                            <form method="POST" action="<?php echo ($cspdBasePath . '/collection_module/action/uploadExcel.php') ?>" class="row g-3 needs-validation mt-2" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="importSubmit" value="importSubmit">
 
                                 <div class="col-12">

@@ -39,7 +39,7 @@ $USER_BRANDS =  $_SESSION['USER_CSPD_INFO']['USER_BRANDS']
                                 <div class="card bg-gradient-worldcup">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
-                                            <img src="<?php echo $_SESSION['USER_CSPD_INFO']['IMAGE_LINK'] != null ? ($sfcmBasePath . '/' . $_SESSION['USER_CSPD_INFO']['IMAGE_LINK']) : $sfcmBasePath . '/' . "assets/images/avatars/default_user.png"; ?>" alt=" " class="rounded-circle p-1 bg-primary" width="110">
+                                            <img src="<?php echo $_SESSION['USER_CSPD_INFO']['IMAGE_LINK'] != null ? ($cspdBasePath . '/' . $_SESSION['USER_CSPD_INFO']['IMAGE_LINK']) : $cspdBasePath . '/' . "assets/images/avatars/default_user.png"; ?>" alt=" " class="rounded-circle p-1 bg-primary" width="110">
                                             <div class="mt-3 text-white">
                                                 <u>
                                                     <h4 class="text-white fw-bold">
@@ -86,22 +86,22 @@ $USER_BRANDS =  $_SESSION['USER_CSPD_INFO']['USER_BRANDS']
 
                                                 </p>
                                                 <?php if (($data['USER_TYPE'] == 'HOD')) { ?>
-                                                    <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                    <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
                                                         <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
                                                     </a>
                                                 <?php }  ?>
                                                 <?php if (($data['USER_TYPE'] == 'COORDINATOR')) { ?>
-                                                    <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/coo_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                    <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/coo_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
                                                         <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
                                                     </a>
                                                 <?php }  ?>
                                                 <?php if (($data['USER_TYPE'] == 'SALE EXECUTIVE')) { ?>
-                                                    <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/saleex_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                    <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/saleex_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
                                                         <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
                                                     </a>
                                                 <?php }  ?>
                                                 <?php if (($data['USER_TYPE'] == 'RETAILER')) { ?>
-                                                    <a target="_blank" href="<?php echo $sfcmBasePath . '/user_module/view/retailer_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
+                                                    <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/retailer_userTree.php?id=' . $data['ID']  ?>" class="btn btn btn-gradient-info btn-buy-now text-nowrap">
                                                         <i class="bx bx-group me-1"></i> View Team Member <i class="bx bx-arrow-down"></i>
                                                     </a>
                                                 <?php }  ?>
@@ -116,7 +116,7 @@ $USER_BRANDS =  $_SESSION['USER_CSPD_INFO']['USER_BRANDS']
                             <div class="col-lg-8">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form method="POST" action=" <?php echo ($sfcmBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3" enctype="multipart/form-data">
+                                        <form method="POST" action=" <?php echo ($cspdBasePath . '/user_module/action/self_panel.php') ?>" class="row g-3" enctype="multipart/form-data">
                                             <input type="hidden" name="actionType" value="profileUpdate">
                                             <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
                                             <div class="row mb-3">
@@ -144,7 +144,7 @@ $USER_BRANDS =  $_SESSION['USER_CSPD_INFO']['USER_BRANDS']
                                                     <h6 class="mb-0">Your Image </h6>
                                                 </div>
                                                 <div class="col-sm-9 text-secondary">
-                                                    <input type="file" name="user_image" data-default-file="<?php echo $sfcmBasePath . '/' . $data['IMAGE_LINK'] ?>" class="dropify" />
+                                                    <input type="file" name="user_image" data-default-file="<?php echo $cspdBasePath . '/' . $data['IMAGE_LINK'] ?>" class="dropify" />
                                                 </div>
                                             </div>
                                             <div class="row">

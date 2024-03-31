@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($_GET["actionType"]) == 'edit')
                     ?>
                     <div class="card-body">
                         <div class="p-4 border rounded">
-                            <form action="<?php echo ($sfcmBasePath . '/collection_module/action/self_panel.php') ?>" method="POST" class="row g-3 needs-validations justify-content-center">
+                            <form action="<?php echo ($cspdBasePath . '/collection_module/action/self_panel.php') ?>" method="POST" class="row g-3 needs-validations justify-content-center">
                                 <input type="hidden" name="actionType" value="edit">
                                 <input type="hidden" name="editId" value="<?php echo trim($_GET["id"]) ?>">
 

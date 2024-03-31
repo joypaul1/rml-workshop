@@ -2,7 +2,7 @@
 session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
-$sfcmBasePath   = $_SESSION['sfcmBasePath'];
+$cspdBasePath   = $_SESSION['cspdBasePath'];
 $USER_LOGIN_ID   = $_SESSION['USER_CSPD_INFO']['ID'];
 require_once '../../vendor/autoload.php';
 
@@ -58,7 +58,7 @@ if (isset($_POST['importSubmit'])) {
                             'status' => 'false',
                         ];
                         $_SESSION['noti_message'] = $message;
-                        echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+                        echo "<script> window.location.href = '{$cspdBasePath}/collection_module/view/excel_upload.php'</script>";
                         exit();
                     }
                 }
@@ -69,7 +69,7 @@ if (isset($_POST['importSubmit'])) {
                 ];
 
                 $_SESSION['noti_message'] = $message;
-                echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+                echo "<script> window.location.href = '{$cspdBasePath}/collection_module/view/excel_upload.php'</script>";
                 exit();
             }
 
@@ -79,7 +79,7 @@ if (isset($_POST['importSubmit'])) {
             ];
 
             $_SESSION['noti_message'] = $message;
-            echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+            echo "<script> window.location.href = '{$cspdBasePath}/collection_module/view/excel_upload.php'</script>";
             exit();
         } else {
             $message = [
@@ -87,7 +87,7 @@ if (isset($_POST['importSubmit'])) {
                 'status' => 'false',
             ];
             $_SESSION['noti_message'] = $message;
-            echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+            echo "<script> window.location.href = '{$cspdBasePath}/collection_module/view/excel_upload.php'</script>";
             exit();
         }
     } else {
@@ -96,7 +96,7 @@ if (isset($_POST['importSubmit'])) {
             'status' => 'false',
         ];
         $_SESSION['noti_message'] = $message;
-        echo "<script> window.location.href = '{$sfcmBasePath}/collection_module/view/excel_upload.php'</script>";
+        echo "<script> window.location.href = '{$cspdBasePath}/collection_module/view/excel_upload.php'</script>";
         exit();
     }
 }

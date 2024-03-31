@@ -204,7 +204,7 @@
             <div class=" user-box dropdown">
                 <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-                    <img src="<?php echo $_SESSION['USER_CSPD_INFO']['IMAGE_LINK'] != null ? ($sfcmBasePath . '/' . $_SESSION['USER_CSPD_INFO']['IMAGE_LINK']) : $sfcmBasePath . '/' . "assets/images/avatars/default_user.png"; ?>" class="user-img" alt="">
+                    <img src="<?php echo $_SESSION['USER_CSPD_INFO']['IMAGE_LINK'] != null ? ($cspdBasePath . '/' . $_SESSION['USER_CSPD_INFO']['IMAGE_LINK']) : $cspdBasePath . '/' . "assets/images/avatars/default_user.png"; ?>" class="user-img" alt="">
                     <div class="user-info ps-3">
                         <p class="user-name mb-0">
                             <?php echo $_SESSION['USER_CSPD_INFO']['USER_NAME'] ?>
@@ -214,11 +214,11 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="<?php echo $sfcmBasePath . '/user_module/view/profile.php?id=' . $_SESSION['USER_CSPD_INFO']['ID'] . '&actionType=profileEdit' ?>"><i class="bx bx-user"></i><span>Profile</span></a>
+                    <li><a class="dropdown-item" href="<?php echo $cspdBasePath . '/user_module/view/profile.php?id=' . $_SESSION['USER_CSPD_INFO']['ID'] . '&actionType=profileEdit' ?>"><i class="bx bx-user"></i><span>Profile</span></a>
                     </li>
 
                     <li>
-                        <a class="dropdown-item" href="<?php echo $sfcmBasePath ?>/index.php?logout_hr=true"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+                        <a class="dropdown-item" href="<?php echo $cspdBasePath ?>/index.php?logout_hr=true"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
                     </li>
                 </ul>
             </div>
@@ -228,7 +228,7 @@
 <!--end header -->
 <script>
     document.getElementById("dlAppsApk").addEventListener("click", function() {
-        var fileUrl = "<?php echo $sfcmBasePath . '/hr.apk' ?>";
+        var fileUrl = "<?php echo $cspdBasePath . '/hr.apk' ?>";
         var link = document.createElement('a');
         link.href = fileUrl;
         link.download = 'workshop_apps'; // Specify the filename

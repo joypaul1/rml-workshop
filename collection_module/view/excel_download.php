@@ -3,7 +3,7 @@ session_start();
 require_once('../../config_file_path.php');
 require_once('../../_config/connoracle.php');
 require_once '../../vendor/autoload.php';
-$sfcmBasePath   = $_SESSION['sfcmBasePath'];
+$cspdBasePath   = $_SESSION['cspdBasePath'];
 
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
