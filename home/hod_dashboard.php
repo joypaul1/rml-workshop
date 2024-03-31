@@ -293,10 +293,13 @@ $strSQL2 = @oci_parse($objConnect, $totalvisitQuery);
 $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
 // end visit row
 
+
 ?>
 
 <div class="page-wrapper">
     <div class="page-content">
+        <?php //print_r($user_type_brand_wise_data); 
+        ?>
         <div class="card">
             <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
@@ -741,7 +744,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[0]['MAHINDRA_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[0]) ? $user_type_brand_wise_data[0]['MAHINDRA_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">HOD</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -756,7 +759,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[1]['MAHINDRA_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[1]) ? $user_type_brand_wise_data[1]['MAHINDRA_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">COORDINATOR</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -771,7 +774,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[2]['MAHINDRA_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[2]) ? $user_type_brand_wise_data[2]['MAHINDRA_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">SALE EXE.</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -786,7 +789,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['MAHINDRA_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[3]) ? $user_type_brand_wise_data[3]['MAHINDRA_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -801,7 +804,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]?$user_type_brand_wise_data[4]['MAHINDRA_USER']:'' ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[4]) ? $user_type_brand_wise_data[4]['MAHINDRA_USER'] : 0  ?></h4>
                                                 <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -821,7 +824,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[0]['EICHER_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[0]) ? $user_type_brand_wise_data[0]['EICHER_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">HOD</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -836,7 +839,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[1]['EICHER_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[1]) ? $user_type_brand_wise_data[1]['EICHER_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">COORDINATOR</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -851,7 +854,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[2]['EICHER_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[2]) ? $user_type_brand_wise_data[2]['EICHER_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">SALE EXE.</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -866,7 +869,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[3]['EICHER_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[3]) ? $user_type_brand_wise_data[3]['EICHER_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -881,7 +884,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= $user_type_brand_wise_data[4]['EICHER_USER'] ?></h4>
+                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[4]) ? $user_type_brand_wise_data[4]['EICHER_USER'] : 0 ?></h4>
                                                 <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
