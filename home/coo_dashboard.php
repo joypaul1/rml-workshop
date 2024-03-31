@@ -285,8 +285,6 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
 ?>
 <div class="page-wrapper">
     <div class="page-content">
-
-
         <div class="card">
             <div class="card-body" style="paddings:0 1%">
                 <ul class="nav nav-tabs nav-primary" role="tablist">
@@ -699,7 +697,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
     </div>
 
     <!--end row-->
-    <div class="row">
+
+    <div class="row" style="padding:0 2%">
         <div class="col-12 col-lg-4 d-flex">
             <div class="card rounded-4 w-100">
                 <div class="card-header" style="background-color: #3b005c;">
@@ -839,22 +838,10 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                 </div>
             </div>
         </div>
-        <!-- <div class="col-12 col-lg-4 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h6 class="mb-0">Monthly Orders [DEMO DATA]</h6>
-                            </div>
+    </div>
+    <!--end row-->
 
-                        </div>
-                        <div id="chart2"></div>
-                    </div>
-                </div>
-            </div> -->
-    </div><!--end row-->
-
-    <div class="row">
+    <div class="row mt-2" style="padding:0 2%">
         <div class="col-12">
             <div class="card rounded-4">
                 <div class="card-header" style="background: #3b005c;">
@@ -1038,7 +1025,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
         </div>
     </div>
     <!-- end row-->
-    <div class="row">
+    <div class="row mt-2" style="padding:0 2%">
         <div class="col-12">
             <div class="card rounded-4">
                 <div class="card-header" style="background: #3b005c;">
@@ -1119,7 +1106,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
         </div>
     </div>
     <!-- end row-->
-    <div class="row">
+    <!-- <div class="row">
 
         <div class="col-12 col-lg-8 d-flex">
             <div class="card rounded-4 w-100">
@@ -1192,7 +1179,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                 </div>
             </div>
         </div>
-    </div><!--end row-->
+    </div> -->
+    <!--end row-->
 
     <!-- <div class="row">
             <div class="col-12 col-lg-4 d-flex">
@@ -1253,7 +1241,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
         </div> -->
     <!--end row-->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-12">
             <div class="card rounded-4">
                 <div class="card-header">
@@ -1366,7 +1354,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                 </div>
             </div>
         </div>
-    </div><!--end row-->
+    </div> -->
+    <!--end row-->
 
 </div>
 </div>

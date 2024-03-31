@@ -954,6 +954,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                             <h6 class="mb-0 fw-bold text-white">Sale Executive List </h6>
                         </div>
                     </div>
+                    <!-- style="paddings:0 1%" -->
                     <div class="card-body" style="height:380px; overflow: auto;">
                         <div class="categories-list">
                             <?php
@@ -1009,10 +1010,11 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                     </div>
                 </div>
             </div>
-        </div><!--end row-->
+        </div>
+        <!--end row-->
 
 
-        <div class="row">
+        <!-- <div class="row">
 
             <div class="col-12 col-lg-8 d-flex">
                 <div class="card rounded-4 w-100">
@@ -1085,7 +1087,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                     </div>
                 </div>
             </div>
-        </div><!--end row-->
+        </div> -->
+        <!--end row-->
 
         <!-- <div class="row">
             <div class="col-12 col-lg-4 d-flex">
@@ -1146,7 +1149,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
         </div> -->
         <!--end row-->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-12">
                 <div class="card rounded-4">
                     <div class="card-header">
@@ -1259,7 +1262,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                     </div>
                 </div>
             </div>
-        </div><!--end row-->
+        </div> -->
+        <!--end row-->
 
     </div>
 </div>
