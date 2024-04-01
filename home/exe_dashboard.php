@@ -622,9 +622,9 @@ while ($totalvisitRow = @oci_fetch_assoc($totalvisitSQL)) {
                                     <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
                                 </strong>
                             </h6>
-                            <span>
+                            <!-- <span>
                                 <input type="text" id="id" name="name" placeholder="placeholder" class="bg-danger" />
-                            </span>
+                            </span> -->
                         </div>
                     </div>
                     <div class="card-body">

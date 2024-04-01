@@ -853,9 +853,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                 <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
                             </strong>
                         </h6>
-                        <span>
-                            <input type="text" id="id" name="name" placeholder="placeholder" class="search here" />
-                        </span>
+                        <!-- <span> -->
+                        <!-- <input type="text" id="id" name="name" placeholder="placeholder" class="search here" /> -->
+                        <!-- </span> -->
                     </div>
                 </div>
                 <div class="card-body">
