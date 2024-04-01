@@ -11,7 +11,6 @@ $dynamic_link_js[]  = '../../assets/plugins/bootstrap-material-datetimepicker/js
 
 include_once('../../_helper/2step_com_conn.php');
 
-
 $brandquery = "SELECT ID, TITLE FROM PRODUCT_BRAND WHERE ID IN ($USER_BRANDS) AND STATUS = 1 ORDER BY ID ASC";
 $F_SALE_EXECUTIVE_ID = isset($_GET['F_SALE_EXECUTIVE']) ? $_GET['F_SALE_EXECUTIVE'] : null;
 $F_PLAZA_RETAILER_ID = isset($_GET['F_PLAZA_RETAILER']) ? $_GET['F_PLAZA_RETAILER'] : null;
@@ -118,8 +117,7 @@ $F_REATILER_ID       = isset($_GET['F_REATILER']) ? $_GET['F_REATILER'] : null;
                                     <tr>
                                         <?php
                                         @oci_execute($brandSQL);
-                                        // Flag to check if any data is found for any brand
-                                        $dataFound = false;
+                                        $dataFound = false;// Flag to check if any data is found for any brand
 
                                         while (
                                             $brandRow = @oci_fetch_assoc($brandSQL)

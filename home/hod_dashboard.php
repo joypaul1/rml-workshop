@@ -595,7 +595,13 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                 isset($sucessRow['SALES_AMOUNT'], $sucessRow['SALES_AMOUNT']) &&
                                                 !empty($sucessRow['SALES_AMOUNT']) && !empty($sucessRow['SALES_AMOUNT'])
                                             ) {
-                                                $percentageRate = round(($sucessRow['SALES_AMOUNT'] / $sucessRow['SALES_TARGET']) * 100);
+                                                $salesAmount = $sucessRow['SALES_AMOUNT'] ? $sucessRow['SALES_AMOUNT'] : 0;
+                                                $salesTarget =  $sucessRow['SALES_TARGET'] ? $sucessRow['SALES_TARGET'] : 0;
+                                                if ($salesTarget != 0) {
+                                                    $percentageRate = round(($salesAmount / $salesTarget) * 100);
+                                                } else {
+                                                    $percentageRate = 0;
+                                                }
                                             }
                                             ?>
                                             <td class="text-center">
@@ -612,7 +618,16 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                 isset($sucessRow['COLLECTION_AMOUNT'], $sucessRow['COLLECTION_TARGET']) &&
                                                 !empty($sucessRow['COLLECTION_AMOUNT']) && !empty($sucessRow['COLLECTION_TARGET'])
                                             ) {
-                                                $percentageRate2 = round(($sucessRow['COLLECTION_AMOUNT'] / $sucessRow['COLLECTION_TARGET']) * 100);
+
+                                                $collectionAmount = $sucessRow['COLLECTION_AMOUNT'] ? $sucessRow['COLLECTION_AMOUNT'] : 0;
+                                                $collectionTarget =  $sucessRow['COLLECTION_TARGET'] ? $sucessRow['COLLECTION_TARGET'] : 0;
+                                                if ($collectionAmount != 0) {
+                                                    $percentageRate2 = round(($collectionAmount / $collectionTarget) * 100);
+                                                } else {
+                                                    $percentageRate2 = 0;
+                                                }
+
+                                                // $percentageRate2 = round(($sucessRow['COLLECTION_AMOUNT'] / $sucessRow['COLLECTION_TARGET']) * 100);
                                             }
                                             ?>
                                             <td class="text-center">
@@ -644,14 +659,14 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         </td>
                                         <td class="text-center">
                                             <?php
-                                            $totalSales = ($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER);
-                                            $totalSaleTarget = ($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER);
-                                            if ($totalSales > 0 || $totalSaleTarget > 0) {
-                                                echo '<span style="text-decoration-line: underline;
-                                                text-decoration-style: double;">' . round(($totalSales / $totalSaleTarget) / 100) . '%' . '</span>';
+                                            $totalSales = $TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER;
+                                            $totalSaleTarget = $TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER;
+
+                                            if ($totalSaleTarget != 0) {
+                                                $percentage = round(($totalSales / $totalSaleTarget) * 100);
+                                                echo '<span style="text-decoration-line: underline; text-decoration-style: double;">' . $percentage . '%</span>';
                                             } else {
-                                                echo '<span style="text-decoration-line: underline;
-                                                text-decoration-style: double;"> 0% </span>';
+                                                echo '<span style="text-decoration-line: underline; text-decoration-style: double;">0%</span>';
                                             }
                                             ?>
                                         </td>
@@ -685,14 +700,14 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         </td>
                                         <td class="text-center">
                                             <?php
-                                            $totalCollection = ($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER);
-                                            $totalCollectionTarget = ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER);
-                                            if ($totalCollection > 0 || $totalCollectionTarget > 0) {
-                                                echo '<span style="text-decoration-line: underline;
-                                                text-decoration-style: double;">' . round(($totalCollection / $totalCollectionTarget) / 100) . '%' . '</span>';
+                                            $totalCollection = $TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER;
+                                            $totalCollectionTarget = $TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER;
+
+                                            if ($totalCollectionTarget != 0) {
+                                                $percentage = round(($totalCollection / $totalCollectionTarget) * 100);
+                                                echo '<span style="text-decoration-line: underline; text-decoration-style: double;">' . $percentage . '%</span>';
                                             } else {
-                                                echo '<span style="text-decoration-line: underline;
-                                                text-decoration-style: double;"> 0% </span>';
+                                                echo '<span style="text-decoration-line: underline; text-decoration-style: double;">0%</span>';
                                             }
                                             ?>
                                         </td>

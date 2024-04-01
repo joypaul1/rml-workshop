@@ -6,17 +6,19 @@ $cspdBasePath   = $_SESSION['cspdBasePath'];
 $folderPath = $rs_img_path;
 ini_set('memory_limit', '2560M');
 $USER_LOGIN_ID   = $_SESSION['USER_CSPD_INFO']['ID'];
-
+$USER_BRANDS     = $_SESSION["USER_CSPD_INFO"]["USER_BRANDS"] ? $_SESSION["USER_CSPD_INFO"]["USER_BRANDS"] : 0;
 
 // retailer_plaza_data
 if (isset($_GET["sale_executive_id"]) && $_GET["retailer_plaza_data"]) {
     $sale_executive_id = $_GET["sale_executive_id"];
-    $query    = "SELECT UP.ID,UP.USER_NAME,UP.USER_MOBILE,
-    (SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
+
+    // --(SELECT ID FROM PRODUCT_BRAND WHERE ID=UBS.PRODUCT_BRAND_ID) AS USER_BRAND_ID
+    $query    = "SELECT UP.ID,UP.USER_NAME,UP.USER_MOBILE
     FROM USER_MANPOWER_SETUP UMP,USER_PROFILE UP
     LEFT JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
     WHERE UMP.USER_ID = UP.ID
     AND UBS.STATUS = 1
+    AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
     AND UMP.PARENT_USER_ID = $sale_executive_id";
 
     $strSQL = @oci_parse($objConnect, $query);
@@ -28,7 +30,10 @@ if (isset($_GET["sale_executive_id"]) && $_GET["retailer_plaza_data"]) {
 
         $response['status'] = true;
         $response['data']   = $data;
+        // echo ('<pre>');
         echo json_encode($response);
+        // echo ('</pre>');
+
         exit();
     } else {
         $response['status']  = false;
