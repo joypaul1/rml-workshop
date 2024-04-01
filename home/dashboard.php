@@ -5,10 +5,7 @@ $dynamic_link_js[]  = '../assets/plugins/apexcharts-bundle/js/apexcharts.min.js'
 $dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.min.js';
 include_once('../_helper/com_conn.php');
 
-
-
 $user_type_brand_wise_data = [];
-
 // COUNT QUERY USER TYPE WISE
 $query = "SELECT UT.ID, UT.TITLE,
         COUNT(USER_TYPE_ID) AS TOTAL_USER,
