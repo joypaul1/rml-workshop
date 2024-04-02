@@ -860,17 +860,17 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                 </div>
                 <div class="card-body">
                     <div class="table-responsiveS">
-                        <table class="table table-sm table-bordered align-middle mb-0 table-hover">
+                        <table class="table table-sm table-bordered align-middle mb-0 table-hover tablemanager">
                             <thead class="bg-gradient-info text-center text-white fw-bold">
                                 <tr>
-                                    <th>SL.</th>
+                                    <th class="disableFilterBy">SL.</th>
                                     <th>RETAILER NAME & TYPE </th>
-                                    <th>SA. AMT. </th>
-                                    <th>SA. TAR.</th>
-                                    <th>RATE (%)</th>
-                                    <th>COL. AMT.</th>
-                                    <th>COL. TAR.</th>
-                                    <th>RATE (%)</th>
+                                    <th class="disableFilterBy">SA. AMT. </th>
+                                    <th class="disableFilterBy">SA. TAR.</th>
+                                    <th class="disableFilterBy">RATE (%)</th>
+                                    <th class="disableFilterBy">COL. AMT.</th>
+                                    <th class="disableFilterBy">COL. TAR.</th>
+                                    <th class="disableFilterBy">RATE (%)</th>
                                 </tr>
                             </thead>
                             <tbody>

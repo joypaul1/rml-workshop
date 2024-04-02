@@ -50,3 +50,25 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "HOD") {
 include_once('../_includes/footer_info.php');
 include_once('../_includes/footer.php');
 ?>
+<script type="text/javascript">
+    // basic usage
+    $(".tablemanager").tablemanager({
+        firstSort: [
+            [0, 0],
+            [0, 0],
+            [0, "asc"],
+        ],
+        disable: ["last"],
+        appendFilterby: true,
+        debug: true,
+        vocabulary: {
+            voc_filter_by: "Filter By Retailer Name",
+            voc_type_here_filter: "Filter Data...",
+            voc_show_rows: "Rows Per Page",
+        },
+        pagination: true,
+        showrows: [25, 50, 100, 200, 500, 700, 1000],
+        disableFilterBy: [1],
+    });
+    // $('.tablemanager').tablemanager();
+</script>

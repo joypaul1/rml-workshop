@@ -10,10 +10,29 @@
         background: floralwhite !important;
         font-weight: 600 !important;
     }
+
+    /*Style disabled*/
+    .tablemanager th.disableSort {}
+
+    #for_numrows {
+        padding: 10px;
+        float: left;
+    }
+
+    #for_filter_by {
+        padding: 10px;
+        float: right;
+    }
+
+    #pagesControllers {
+        display: block;
+        text-align: center;
+    }
 </style>
 
 <?php
 $dynamic_link_js[]  = '../assets/js/hod.js';
+$dynamic_link_js[]  = '../assets/js/tableManager.js';
 $v_start_date = date("01/m/Y");
 $v_end_date = date("t/m/Y");
 $sale_executive_all_retailer_ids = [];
@@ -516,7 +535,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
             <div class="col-12">
                 <div class="card rounded-4">
                     <div class="card-header" style="background: #3b005c;">
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center justify-content-between">
                             <h6 class="mb-0 border-success">
                                 <strong class="text-white">
                                     <i class="bx bx-flag "></i>
@@ -528,17 +547,17 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                     </div>
                     <div class="card-body">
                         <div class="table-responsiveS">
-                            <table class="table table-sm table-bordered align-middle mb-0 table-hover">
+                            <table class="table table-sm table-bordered align-middle mb-0 table-hover tablemanager">
                                 <thead class="bg-gradient-info text-center text-white fw-bold">
                                     <tr>
-                                        <th>SL.</th>
+                                        <th class="disableFilterBy">SL.</th>
                                         <th>RETAILER NAME & TYPE </th>
-                                        <th>SA. AMT. </th>
-                                        <th>SA. TAR.</th>
-                                        <th>RATE (%)</th>
-                                        <th>COL. AMT.</th>
-                                        <th>COL. TAR.</th>
-                                        <th>RATE (%)</th>
+                                        <th class="disableFilterBy">SA. AMT. </th>
+                                        <th class="disableFilterBy">SA. TAR.</th>
+                                        <th class="disableFilterBy">RATE (%)</th>
+                                        <th class="disableFilterBy">COL. AMT.</th>
+                                        <th class="disableFilterBy">COL. TAR.</th>
+                                        <th class="disableFilterBy">RATE (%)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
