@@ -11,28 +11,10 @@
         font-weight: 600 !important;
     }
 
-    /*Style disabled*/
-    .tablemanager th.disableSort {}
-
-    #for_numrows {
-        padding: 10px;
-        float: left;
-    }
-
-    #for_filter_by {
-        padding: 10px;
-        float: right;
-    }
-
-    #pagesControllers {
-        display: block;
-        text-align: center;
-    }
 </style>
 
 <?php
 $dynamic_link_js[]  = '../assets/js/hod.js';
-$dynamic_link_js[]  = '../assets/js/tableManager.js';
 $v_start_date = date("01/m/Y");
 $v_end_date = date("t/m/Y");
 $sale_executive_all_retailer_ids = [];

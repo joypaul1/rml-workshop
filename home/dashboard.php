@@ -3,6 +3,7 @@
 // $dynamic_link_js[]  = '../assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js';
 $dynamic_link_js[]  = '../assets/plugins/apexcharts-bundle/js/apexcharts.min.js';
 $dynamic_link_js[]  = '../assets/plugins/chartjs/js/Chart.min.js';
+$dynamic_link_js[]  = '../assets/js/tableManager.js';
 include_once('../_helper/com_conn.php');
 
 $user_type_brand_wise_data = [];
@@ -28,6 +29,24 @@ while ($brandRow = oci_fetch_assoc($brandSQL)) {
 <style>
     .card {
         margin-bottom: 0.5rem !important;
+    }
+
+    /*Style disabled*/
+    .tablemanager th.disableSort {}
+
+    #for_numrows {
+        padding: 10px;
+        float: left;
+    }
+
+    #for_filter_by {
+        padding: 10px;
+        float: right;
+    }
+
+    #pagesControllers {
+        display: block;
+        text-align: center;
     }
 </style>
 <!--start page wrapper -->
@@ -64,7 +83,7 @@ include_once('../_includes/footer.php');
         vocabulary: {
             voc_filter_by: "Filter By Retailer Name",
             voc_type_here_filter: "Filter Data...",
-            voc_show_rows: "Rows Per Page",
+            voc_show_rows: "Rows Per Page ",
         },
         pagination: true,
         showrows: [25, 50, 100, 200, 500, 700, 1000],
