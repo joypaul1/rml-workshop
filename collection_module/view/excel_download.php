@@ -5,7 +5,7 @@ require_once('../../_config/connoracle.php');
 $fileName = $_GET['brand_name'] . "_" . date("Y-m-d") . '.xlsx'; // Set the desired file name
 $brand_ID = $_GET['brand_type'];
 $USER_LOGIN_ID  = $_SESSION['USER_CSPD_INFO']['ID'];
-// print_r($_SESSION['USER_CSPD_INFO']);
+
 $sale_executive_all_retailer_ids = [];
 if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
     $sale_executive_all_retailer_ids_str  = '0';
@@ -33,7 +33,7 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
     while ($row = oci_fetch_assoc($strSQL3)) {
         $sale_executive_all_retailer_ids[] = $row['USER_ID'];
     }
-    // print_r($sale_executive_all_retailer_ids);
+
     if (count($sale_executive_all_retailer_ids) > 0) {
         $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
     }
@@ -77,19 +77,12 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
         <tbody>
             <?php
             if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
-                $TGVSAC_QUERY = "SELECT A.ID,
-                                A.USER_NAME,
-                                (SELECT TITLE
-                                    FROM USER_TYPE
-                                    WHERE ID = A.USER_TYPE_ID) AS USER_TYPE
-                            FROM USER_PROFILE A,
-                                (SELECT USER_ID
-                                    FROM USER_MANPOWER_SETUP
-                                    WHERE PARENT_USER_ID = $USER_LOGIN_ID
+                $TGVSAC_QUERY = "SELECT A.ID, A.USER_NAME,
+                                (SELECT TITLE FROM USER_TYPE WHERE ID = A.USER_TYPE_ID) AS USER_TYPE
+                                FROM USER_PROFILE A,
+                                    (SELECT USER_ID FROM USER_MANPOWER_SETUP WHERE PARENT_USER_ID = $USER_LOGIN_ID
                                 UNION ALL
-                                SELECT USER_ID
-                                    FROM USER_MANPOWER_SETUP
-                                    WHERE PARENT_USER_ID IN ($sale_executive_all_retailer_ids_str)) B
+                                    SELECT USER_ID FROM USER_MANPOWER_SETUP WHERE PARENT_USER_ID IN ($sale_executive_all_retailer_ids_str)) B
                             WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
                 $strSQL = oci_parse($objConnect, $TGVSAC_QUERY); // Assuming $objConnect is your Oracle connection object
                 oci_execute($strSQL); // Execute the SQL query
