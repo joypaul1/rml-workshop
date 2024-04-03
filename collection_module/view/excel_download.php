@@ -2,9 +2,12 @@
 session_start();
 require_once('../../_config/connoracle.php');
 
-$fileName = $_GET['brand_name'] . "_" . date("Y-m-d") . '.xlsx'; // Set the desired file name
-$brand_ID = $_GET['brand_type'];
+$fileName       = $_GET['brand_name'] . "_" . date("Y-m-d") . '.xlsx'; // Set the desired file name
+$brand_ID       = $_GET['brand_type'];
 $USER_LOGIN_ID  = $_SESSION['USER_CSPD_INFO']['ID'];
+$v_start_date   = date("01/m/Y");
+$v_end_date     = date("t/m/Y");
+
 
 $sale_executive_all_retailer_ids = [];
 if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
@@ -94,8 +97,8 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
                         <td><?= $sucessRow['ID'] ?></td>
                         <td><?= $brand_ID ?></td>
                         <td><?= $sucessRow['USER_NAME'] ?> <br> <?= $sucessRow['USER_TYPE'] ?> <br> </td>
-                        <td></td>
-                        <td></td>
+                        <td><?= $v_start_date ?></td>
+                        <td><?= $v_end_date ?></td>
                         <td></td>
                         <td></td>
                     </tr>
