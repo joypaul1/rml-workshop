@@ -28,10 +28,10 @@ if (isset($_POST['login_submit'])) {
 
         if ($dataRow) {
             unset($dataRow['USER_PASSWORD']);
-            $_SESSION['USER_CSPD_INFO']   = $dataRow;
-            $_SESSION['baseUrl']     = $baseUrl;
-            $_SESSION['cspdBasePath']    = $cspdBasePath;
-            $_SESSION['rs_img_path'] = $rs_img_path;
+            $_SESSION['USER_CSPD_INFO']     = $dataRow;
+            $_SESSION['baseUrl']            = $baseUrl;
+            $_SESSION['cspdBasePath']       = $cspdBasePath;
+            $_SESSION['rs_img_path']        = $rs_img_path;
             header('location:home/dashboard.php');
             exit;
         } else {

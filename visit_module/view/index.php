@@ -236,9 +236,9 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                             </td>
                                             <td>
                                                 <h6>
-                                                    <?=  $row['RETAILER_NAME'] ?>
+                                                    <?= $row['RETAILER_NAME'] ?>
                                                     <br />
-                                                    <span class="badge bg-success"><?=  $row['RETAILER_BRAND'] ?></span>
+                                                    <span class="badge bg-success"><?= $row['RETAILER_BRAND'] ?></span>
                                                 </h6>
 
                                             </td>
@@ -259,7 +259,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                 } ?>
                                             </td>
                                             <td>
-                                                <?=  $row['USER_REMARKS']; ?>
+                                                <?= $row['USER_REMARKS']; ?>
                                             </td>
 
                                         </tr>
