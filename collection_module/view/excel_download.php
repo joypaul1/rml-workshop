@@ -10,8 +10,9 @@ $v_end_date     = date("t/m/Y");
 
 
 $sale_executive_all_retailer_ids = [];
+$sale_executive_all_retailer_ids_str  = '0';
+
 if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
-    $sale_executive_all_retailer_ids_str  = '0';
     // sale_executive_all_retailer_query
     $sale_executive_all_retailer_query = "SELECT A.USER_ID
     FROM USER_MANPOWER_SETUP A, USER_PROFILE B
@@ -29,27 +30,33 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
             WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                 (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
-
-    $strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
-    @oci_execute($strSQL3);
-
-    while ($row = oci_fetch_assoc($strSQL3)) {
-        $sale_executive_all_retailer_ids[] = $row['USER_ID'];
-    }
-
-    if (count($sale_executive_all_retailer_ids) > 0) {
-        $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
-    }
 } else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR') {
-    $query = "SELECT UP.ID, UP.USER_NAME, UP.USER_MOBILE
-    FROM
-        USER_PROFILE UP
-    LEFT JOIN
-        USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
-    WHERE
-        UBS.PRODUCT_BRAND_ID IN ($brand_ID)
-        AND UBS.STATUS = 1
-        AND UP.USER_TYPE_ID = 3";
+    $sale_executive_all_retailer_query = "SELECT A.USER_ID
+        FROM USER_MANPOWER_SETUP A,
+        USER_PROFILE B
+        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)
+        UNION
+        SELECT B.ID
+        FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+        WHERE A.USER_ID = B.ID
+            AND PARENT_USER_ID IN
+                (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+                    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
+}
+
+$strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
+@oci_execute($strSQL3);
+
+while ($row = oci_fetch_assoc($strSQL3)) {
+    $sale_executive_all_retailer_ids[] = $row['USER_ID'];
+}
+
+if (count($sale_executive_all_retailer_ids) > 0) {
+    $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
 }
 ?>
 
@@ -80,15 +87,15 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
         <tbody>
             <?php
             if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
-                $TGVSAC_QUERY = "SELECT A.ID, A.USER_NAME,
+                $QUERY = "SELECT A.ID, A.USER_NAME,
                                 (SELECT TITLE FROM USER_TYPE WHERE ID = A.USER_TYPE_ID) AS USER_TYPE
                                 FROM USER_PROFILE A,
                                     (SELECT USER_ID FROM USER_MANPOWER_SETUP WHERE PARENT_USER_ID = $USER_LOGIN_ID
                                 UNION ALL
                                     SELECT USER_ID FROM USER_MANPOWER_SETUP WHERE PARENT_USER_ID IN ($sale_executive_all_retailer_ids_str)) B
                             WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
-                $strSQL = oci_parse($objConnect, $TGVSAC_QUERY); // Assuming $objConnect is your Oracle connection object
-                oci_execute($strSQL); // Execute the SQL query
+                $strSQL = oci_parse($objConnect, $QUERY);
+                oci_execute($strSQL);
                 $number = 0;
                 while ($sucessRow = oci_fetch_assoc($strSQL)) {
                     $number++;
@@ -102,10 +109,30 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
                         <td></td>
                         <td></td>
                     </tr>
+                <?php
+                }
+            } else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR') {
+                $QUERY = "SELECT A.ID, A.USER_NAME,
+                            (SELECT TITLE FROM USER_TYPE WHERE ID = A.USER_TYPE_ID) AS USER_TYPE
+                                FROM USER_PROFILE A WHERE A.ID IN ($sale_executive_all_retailer_ids_str)";
+                $strSQL = @oci_parse($objConnect, $QUERY);
+                @oci_execute($strSQL);
+                $number = 0;
+                while ($sucessRow = @oci_fetch_assoc($strSQL)) {
+                    $number++;
+                ?>
+                    <tr>
+                        <td><?= $sucessRow['ID'] ?></td>
+                        <td><?= $brand_ID ?></td>
+                        <td><?= $sucessRow['USER_NAME'] ?> <br> <?= $sucessRow['USER_TYPE'] ?> <br> </td>
+                        <td><?= $v_start_date ?></td>
+                        <td><?= $v_end_date ?></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
             <?php
                 }
-            }
-            ?>
+            } ?>
         </tbody>
 
     </table>

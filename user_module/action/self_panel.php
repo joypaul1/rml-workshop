@@ -70,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'crea
     $query = "INSERT INTO USER_PROFILE
             (USER_NAME, USER_MOBILE, USER_PASSWORD,PENDRIVE_ID,RML_IDENTITY_ID, USER_TYPE_ID, IMAGE_LINK,USER_STATUS,CREATED_BY_ID,CREATED_DATE,LANG, LAT,LOCATION_REMARKS,DISTRICT_ID, PLAZA_PARENT_ID) 
             VALUES  ('$USER_NAME', '$USER_MOBILE', '$USER_PASSWORD','$PENDRIVE_ID','$RML_ID','$USER_TYPE_ID', '$filename','1', $USER_LOGIN_ID,SYSDATE,'$LANG', '$LAT', '$LOCATION_REMARKS', '$DISTRICT_ID', '$PLAZA_PARENT_ID')";
-            // echo $query ;
-            // die();
+    // echo $query ;
+    // die();
 
 
     $strSQL = @oci_parse($objConnect, $query);
@@ -223,16 +223,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && trim($_POST["actionType"]) == 'prof
             }
         }
     }
-
+    $md5Password = md5($USER_PASSWORD);
     if ($USER_PASSWORD) {
         // Prepare the SQL statement
-        $query = "UPDATE USER_PROFILE SET 
+        $query = "UPDATE USER_PROFILE SET
         USER_NAME       = '$USER_NAME',
-        USER_PASSWORD   = '$USER_PASSWORD',
+        USER_PASSWORD   = '$md5Password',
         PENDRIVE_ID     = '$USER_PASSWORD'
         WHERE ID        = $editId";
     } else {
-        $query = "UPDATE USER_PROFILE SET 
+        $query = "UPDATE USER_PROFILE SET
         USER_NAME       = '$USER_NAME'
         WHERE ID        = $editId";
     }
