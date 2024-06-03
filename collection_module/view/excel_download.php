@@ -69,8 +69,8 @@ if (count($sale_executive_all_retailer_ids) > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -110,21 +110,25 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                 }
             }
             ?>
-
         </tbody>
-
     </table>
+    <div class="text-end">
+        <button id="downloadBtn" class="btn btn-sm btn-primary">Download as Excel</button>
+    </div>
+
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            // Select the table
+            var table = document.querySelector('table');
+            // Convert table to worksheet
+            var workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+            // Generate Excel file
+            XLSX.writeFile(workbook, '<?= $fileName; ?>');
+        });
+    </script>
 </body>
 
 </html>
-
-
-
-
-<script>
-    console.log(3333);
-</script>

@@ -31,8 +31,8 @@ include_once('../../_helper/2step_com_conn.php');
                         </div>
                         <div class="p-4 border rounded">
                             <div class="col-12 text-center">
-                                <a href="excel_download.php?brand_type=1&brand_name=Mahindra" class="btn btn-gradient-primary"> Mahindra Excel File Download <i class='bx bxs-download'></i> </a>
-                                <a href="excel_download.php?brand_type=2&brand_name=Eicher" class="btn btn-gradient-success"> Eicher Excel File Download <i class='bx bxs-download'></i> </a>
+                                <a href="excel_download.php?brand_type=1&brand_name=Mahindra" class="btn btn-gradient-primary" target="_blank"> Mahindra Excel File Download <i class='bx bxs-download'></i> </a>
+                                <a href="excel_download.php?brand_type=2&brand_name=Eicher" class="btn btn-gradient-success" target="_blank"> Eicher Excel File Download <i class='bx bxs-download'></i> </a>
                             </div>
                             <form method="POST" action="<?php echo ($cspdBasePath . '/collection_module/action/uploadExcel.php') ?>" class="row g-3 needs-validation mt-2" enctype="multipart/form-data" novalidate="">
                                 <input type="hidden" name="importSubmit" value="importSubmit">
