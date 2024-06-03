@@ -1,16 +1,16 @@
 <?php
 session_start();
-require_once('../../_config/connoracle.php');
+require_once ('../../_config/connoracle.php');
 
-$fileName       = $_GET['brand_name'] . "_" . date("Y-m-d") . '.xlsx'; // Set the desired file name
-$brand_ID       = $_GET['brand_type'];
-$USER_LOGIN_ID  = $_SESSION['USER_CSPD_INFO']['ID'];
-$v_start_date   = date("01/m/Y");
-$v_end_date     = date("t/m/Y");
+$fileName      = $_GET['brand_name'] . "_" . date("Y-m-d") . '.xlsx'; // Set the desired file name
+$brand_ID      = $_GET['brand_type'];
+$USER_LOGIN_ID = $_SESSION['USER_CSPD_INFO']['ID'];
+$v_start_date  = date("01/m/Y");
+$v_end_date    = date("t/m/Y");
 
 
-$sale_executive_all_retailer_ids = [];
-$sale_executive_all_retailer_ids_str  = '0';
+$sale_executive_all_retailer_ids     = [];
+$sale_executive_all_retailer_ids_str = '0';
 
 if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
     // sale_executive_all_retailer_query
@@ -30,7 +30,8 @@ if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
             WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                 (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                 WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
-} else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR') {
+}
+else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR') {
     $sale_executive_all_retailer_query = "SELECT A.USER_ID
         FROM USER_MANPOWER_SETUP A,
         USER_PROFILE B
@@ -66,7 +67,8 @@ if (count($sale_executive_all_retailer_ids) > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>Document</title>
 </head>
@@ -80,64 +82,41 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                 <th>USER_INFO</th>
                 <th>START_DATE</th>
                 <th>END_DATE</th>
-                <th>SALES_TARGET_AMOUNT</th>
-                <th>COLLECTON_TARGET_AMOUNT</th>
+                <th>TARGET_AMOUNT</th>
             </tr>
         </thead>
         <tbody>
             <?php
             if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
-                $QUERY = "SELECT A.ID, A.USER_NAME,
+                $QUERY  = "SELECT A.ID, A.USER_NAME,
                                 (SELECT TITLE FROM USER_TYPE WHERE ID = A.USER_TYPE_ID) AS USER_TYPE
-                                FROM USER_PROFILE A,
-                                    (SELECT USER_ID FROM USER_MANPOWER_SETUP WHERE PARENT_USER_ID = $USER_LOGIN_ID
-                                UNION ALL
-                                    SELECT USER_ID FROM USER_MANPOWER_SETUP WHERE PARENT_USER_ID IN ($sale_executive_all_retailer_ids_str)) B
-                            WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
+                                FROM USER_PROFILE A
+                            WHERE  A.USER_TYPE_ID IN (4,5)";
                 $strSQL = oci_parse($objConnect, $QUERY);
                 oci_execute($strSQL);
                 $number = 0;
                 while ($sucessRow = oci_fetch_assoc($strSQL)) {
                     $number++;
+                    ?>
+                    <tr>
+                        <td><?= $sucessRow['ID'] ?></td>
+                        <td><?= $brand_ID ?></td>
+                        <td><?= $sucessRow['USER_NAME'] ?> <br> <?= $sucessRow['USER_TYPE'] ?> <br> </td>
+                        <td><?= $v_start_date ?></td>
+                        <td><?= $v_end_date ?></td>
+                        <td></td>
+                    </tr>
+                    <?php
+                }
+            }
             ?>
-                    <tr>
-                        <td><?= $sucessRow['ID'] ?></td>
-                        <td><?= $brand_ID ?></td>
-                        <td><?= $sucessRow['USER_NAME'] ?> <br> <?= $sucessRow['USER_TYPE'] ?> <br> </td>
-                        <td><?= $v_start_date ?></td>
-                        <td><?= $v_end_date ?></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                <?php
-                }
-            } else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR') {
-                $QUERY = "SELECT A.ID, A.USER_NAME,
-                            (SELECT TITLE FROM USER_TYPE WHERE ID = A.USER_TYPE_ID) AS USER_TYPE
-                                FROM USER_PROFILE A WHERE A.ID IN ($sale_executive_all_retailer_ids_str)";
-                $strSQL = @oci_parse($objConnect, $QUERY);
-                @oci_execute($strSQL);
-                $number = 0;
-                while ($sucessRow = @oci_fetch_assoc($strSQL)) {
-                    $number++;
-                ?>
-                    <tr>
-                        <td><?= $sucessRow['ID'] ?></td>
-                        <td><?= $brand_ID ?></td>
-                        <td><?= $sucessRow['USER_NAME'] ?> <br> <?= $sucessRow['USER_TYPE'] ?> <br> </td>
-                        <td><?= $v_start_date ?></td>
-                        <td><?= $v_end_date ?></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-            <?php
-                }
-            } ?>
+
         </tbody>
 
     </table>
     <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
 

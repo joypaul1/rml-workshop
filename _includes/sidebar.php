@@ -1,19 +1,12 @@
 <body>
 
     <?php
-    // $v_active      = 'mm-active';
-    // $v_active_open = 'mm-active';
     $currentUrl    = $_SERVER['REQUEST_URI'];
-  
     function isActive($url)
     {
-        // $url = parse_url($url);
-        // echo $url;
         global $currentUrl;
         return strpos($currentUrl, $url) !== false ? 'mm-active' : '';
     }
-    // echo isActive('collection_module/view/create.php');
-    // die();
     ?>
     <!--wrapper-->
     <div class="wrapper">
