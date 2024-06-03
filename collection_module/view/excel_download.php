@@ -8,57 +8,6 @@ $USER_LOGIN_ID = $_SESSION['USER_CSPD_INFO']['ID'];
 $v_start_date  = date("01/m/Y");
 $v_end_date    = date("t/m/Y");
 
-
-$sale_executive_all_retailer_ids     = [];
-$sale_executive_all_retailer_ids_str = '0';
-
-if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
-    // sale_executive_all_retailer_query
-    $sale_executive_all_retailer_query = "SELECT A.USER_ID
-    FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-    WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-        (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-        WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)";
-
-    $sale_executive_all_retailer_query .= " UNION ALL ";
-
-    $sale_executive_all_retailer_query .= "SELECT B.ID
-    FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-    WHERE A.USER_ID = B.ID
-        AND PARENT_USER_ID IN
-            (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-            WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-                (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
-}
-else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR') {
-    $sale_executive_all_retailer_query = "SELECT A.USER_ID
-        FROM USER_MANPOWER_SETUP A,
-        USER_PROFILE B
-        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)
-        UNION
-        SELECT B.ID
-        FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-        WHERE A.USER_ID = B.ID
-            AND PARENT_USER_ID IN
-                (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
-}
-
-$strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
-@oci_execute($strSQL3);
-
-while ($row = oci_fetch_assoc($strSQL3)) {
-    $sale_executive_all_retailer_ids[] = $row['USER_ID'];
-}
-
-if (count($sale_executive_all_retailer_ids) > 0) {
-    $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
-}
 ?>
 
 <!DOCTYPE html>
