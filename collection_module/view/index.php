@@ -124,10 +124,11 @@ $v_end_date   = date('t/m/Y');
                                                 WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
                                                     (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                     WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-                                                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = '$USER_LOGIN_ID'))))
+                                                    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID ))))
                                         AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
                                         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
-                                        
+                                        // AND PARENT_USER_ID='$USER_LOGIN_ID'
+                                        // AND A.PARENT_USER_ID = '$USER_LOGIN_ID'
                                     } else {
                                         $query =  "SELECT
                                                     CA.ID,
@@ -176,7 +177,7 @@ $v_end_date   = date('t/m/Y');
                                         <tr>
                                             <td class="text-center">
                                                 <strong>
-                                                    <?php echo $row['ID']; ?>
+                                                    <?php echo $number; ?>
                                                 </strong>
                                             </td>
                                             <td class="text-center">
