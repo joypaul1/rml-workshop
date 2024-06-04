@@ -1,5 +1,5 @@
 <?php
-include_once('../../_helper/2step_com_conn.php');
+include_once ('../../_helper/2step_com_conn.php');
 $number = 0;
 
 ?>
@@ -12,13 +12,15 @@ $number = 0;
             <div class="card rounded-4">
                 <div class="card-body">
 
-                    <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
                         <strong><i class='bx bx-filter-alt'></i> Filter Data</strong>
                     </button>
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
 
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                                         <div class="row justify-content-center align-items-center">
@@ -27,16 +29,15 @@ $number = 0;
                                                 <select class="form-select " id="validationCustom06" name="USER_TYPE_ID">
                                                     <option value=""><- Select Type -></option>
                                                     <?php
-                                                    $typeRow = [];
+                                                    $typeRow           = [];
                                                     $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
-                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
-                                                    $query   = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1'  
-                                        AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
-                                                    $strSQL  = @oci_parse($objConnect, $query);
+                                                    $USER_TYPE_ID      = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
+                                                    $query             = "SELECT ID,TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > '$currentUserTypeID'  ORDER BY ID ASC ";
+                                                    $strSQL            = @oci_parse($objConnect, $query);
 
                                                     @oci_execute($strSQL);
                                                     while ($typeRow = @oci_fetch_assoc($strSQL)) {
-                                                    ?>
+                                                        ?>
                                                         <option value="<?php echo $typeRow['ID'] ?>" <?php echo $USER_TYPE_ID == $typeRow['ID'] ? 'Selected' : ' ' ?>>
                                                             <?php echo $typeRow['TITLE'] ?>
                                                         </option>
@@ -46,11 +47,15 @@ $number = 0;
                                             </div>
                                             <div class="col-sm-3">
                                                 <label>MOBILE / LOGIN ID: </label>
-                                                <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="USER_MOBILE" type="text" value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
+                                                <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                                    name="USER_MOBILE" type="text"
+                                                    value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
-                                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                                                <a href="<?php echo $cspdBasePath  ?>/user_module/view/brandAssign.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i
+                                                        class='bx bx-file-find'></i></button>
+                                                <a href="<?php echo $cspdBasePath ?>/user_module/view/brandAssign.php"
+                                                    class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
                                             </div>
                                         </div>
                                     </form>
@@ -65,9 +70,9 @@ $number = 0;
             <div class="">
                 <div class="card rounded-4">
                     <?php
-                    $headerType    = 'List';
-                    $leftSideName  = 'Cost Center Assign List';
-                    include('../../_includes/com_header.php');
+                    $headerType   = 'List';
+                    $leftSideName = 'Cost Center Assign List';
+                    include ('../../_includes/com_header.php');
                     ?>
                     <div class="card-body">
                         <div class="table-responsives ">
@@ -81,21 +86,21 @@ $number = 0;
                                 </thead>
                                 <tbody>
                                     <?php
-                                   
+
                                     $query = "SELECT UP.ID,
-                                                    UP.USER_NAME,
-                                                    UP.USER_MOBILE,
-                                                    UP.RML_IDENTITY_ID AS RML_ID,
-                                                    (SELECT TITLE
-                                                    FROM USER_TYPE
-                                                    WHERE ID = UP.USER_TYPE_ID)
-                                                    AS USER_TYPE
+                                                UP.USER_NAME,
+                                                UP.USER_MOBILE,
+                                                UP.RML_IDENTITY_ID AS RML_ID,
+                                                (SELECT TITLE
+                                                FROM USER_TYPE UT
+                                                WHERE UT.ID = UP.USER_TYPE_ID)
+                                                AS USER_TYPE
                                             FROM USER_PROFILE UP
-                                            WHERE UP.USER_STATUS = '1'";
+                                            WHERE UP.USER_STATUS = 1";
 
 
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
-                                        $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
+                                        $USER_TYPE_ID = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
                                     }
 
@@ -104,14 +109,14 @@ $number = 0;
                                         $query .= " AND UP.USER_MOBILE LIKE '%" . $USER_MOBILE . "%'";
                                     }
 
-                                    $query .= " ORDER BY UP.USER_TYPE_ID";
+                                    $query .= " ORDER BY UP.USER_TYPE_ID, UP.ID";
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);
 
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
-                                    ?>
+                                        ?>
                                         <tr>
                                             <td class="text-center">
                                                 <strong>
@@ -133,7 +138,7 @@ $number = 0;
                                             <td>
                                                 <?php
                                                 $USER_PROFILE_ID = $row['ID'];
-                                                $brandQuery = "SELECT PB.ID, PB.TITLE, 
+                                                $brandQuery      = "SELECT PB.ID, PB.TITLE, 
                                                 CASE 
                                                     WHEN EXISTS (
                                                         SELECT UBS.STATUS
@@ -165,7 +170,7 @@ $number = 0;
 
                                         </tr>
 
-                                    <?php
+                                        <?php
                                     }
                                     if ($number == 0) {
                                         echo '<tr><td colspan="9" class="text-center text-danger fw-bold"> !</td></tr>';
@@ -182,52 +187,52 @@ $number = 0;
 </div>
 <!--end page wrapper -->
 <?php
-include_once('../../_includes/footer_info.php');
-include_once('../../_includes/footer.php');
+include_once ('../../_includes/footer_info.php');
+include_once ('../../_includes/footer.php');
 ?>
 <script>
     //delete data processing
 
-    $(document).on('click', '.delete_check', function() {
+    $(document).on('click', '.delete_check', function () {
         var userID = $(this).attr('data-userId');
         let url = "<?php echo ($cspdBasePath . '/user_module/action/drop_down_panel.php') ?>";
         //console.log($(this).is(":checked"));
         if ($(this).is(":checked")) {
             $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        userId: userID,
-                        brandAssignID: $(this).val(),
-                        status: '1'
+                url: url,
+                type: 'GET',
+                data: {
+                    userId: userID,
+                    brandAssignID: $(this).val(),
+                    status: '1'
 
-                    },
-                    dataType: 'json'
-                })
-                .done(function(response) {
+                },
+                dataType: 'json'
+            })
+                .done(function (response) {
                     swal.fire('Success!', response.message, response.status);
                     // location.reload(); // Reload the page
                 })
-                .fail(function() {
+                .fail(function () {
                     swal.fire('Oops...', 'Something went wrong!', 'error');
                 });
         } else {
             $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        userId: userID,
-                        brandAssignID: $(this).val(),
-                        status: '0'
+                url: url,
+                type: 'GET',
+                data: {
+                    userId: userID,
+                    brandAssignID: $(this).val(),
+                    status: '0'
 
-                    },
-                    dataType: 'json'
-                })
-                .done(function(response) {
+                },
+                dataType: 'json'
+            })
+                .done(function (response) {
                     swal.fire('Deleted!', response.message, response.status);
                     location.reload(); // Reload the page
                 })
-                .fail(function() {
+                .fail(function () {
                     swal.fire('Oops...', 'Something went wrong!', 'error');
                 });
         }

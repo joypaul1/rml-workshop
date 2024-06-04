@@ -29,6 +29,7 @@ $v_end_date    = date("t/m/Y");
                 <th>USER_ID</th>
                 <th>BRAND_ID</th>
                 <th>USER_INFO</th>
+                <th>USER CO Number</th>
                 <th>START_DATE</th>
                 <th>END_DATE</th>
                 <th>TARGET_AMOUNT</th>
@@ -37,10 +38,12 @@ $v_end_date    = date("t/m/Y");
         <tbody>
             <?php
             if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD') {
-                $QUERY  = "SELECT A.ID, A.USER_NAME,
+                $QUERY  = "SELECT A.ID, A.USER_NAME,A.RML_IDENTITY_ID,
                                 (SELECT TITLE FROM USER_TYPE WHERE ID = A.USER_TYPE_ID) AS USER_TYPE
-                                FROM USER_PROFILE A
-                            WHERE  A.USER_TYPE_ID IN (4,5)";
+                                FROM USER_PROFILE A , USER_BRAND_SETUP B
+                            WHERE A.ID = b.USER_PROFILE_ID
+                            AND B.PRODUCT_BRAND_ID = $brand_ID
+                            AND A.USER_TYPE_ID IN (4,5) ORDER BY A.ID";
                 $strSQL = oci_parse($objConnect, $QUERY);
                 oci_execute($strSQL);
                 $number = 0;
@@ -51,6 +54,7 @@ $v_end_date    = date("t/m/Y");
                         <td><?= $sucessRow['ID'] ?></td>
                         <td><?= $brand_ID ?></td>
                         <td><?= $sucessRow['USER_NAME'] ?> <br> <?= $sucessRow['USER_TYPE'] ?> <br> </td>
+                        <td><?= $sucessRow['RML_IDENTITY_ID'] ?></td>
                         <td><?= $v_start_date ?></td>
                         <td><?= $v_end_date ?></td>
                         <td></td>

@@ -118,7 +118,7 @@ $v_end_date   = date('t/m/Y');
                                             (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                             WHERE  A.USER_ID = B.ID AND PARENT_USER_ID IN
                                             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-                                            WHERE A.USER_ID =B.ID AND PARENT_USER_ID='$USER_LOGIN_ID')))
+                                            WHERE A.USER_ID =B.ID )))
                                         UNION ALL
                                                 SELECT B.ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
                                                 WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
@@ -127,6 +127,7 @@ $v_end_date   = date('t/m/Y');
                                                     (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID = B.ID AND A.PARENT_USER_ID = '$USER_LOGIN_ID'))))
                                         AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY')
                                         AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
+                                        
                                     } else {
                                         $query =  "SELECT
                                                     CA.ID,
@@ -157,12 +158,12 @@ $v_end_date   = date('t/m/Y');
                                                     AND UP.ID = CA.USER_ID
                                                     AND TRUNC (CA.START_DATE) >= TO_DATE ('$v_start_date', 'DD/MM/YYYY') AND TRUNC (CA.END_DATE) <= TO_DATE ('$v_end_date', 'DD/MM/YYYY')";
                                     }
-                                    if (isset($_POST['f_retailer_type'])) {
+                                    if (isset($_POST['f_retailer_type']) && !empty($_POST['f_retailer_type'])) {
                                         $query .=  " AND UP.USER_TYPE_ID =" . $_POST['f_retailer_type'];
                                     }
 
                                     $strSQL = @oci_parse($objConnect, $query);
-
+                                    
                                     @oci_execute($strSQL);
                                     $number = 0;
                                     $COLLECTON_TARGET_AMOUNT = 0;
@@ -175,7 +176,7 @@ $v_end_date   = date('t/m/Y');
                                         <tr>
                                             <td class="text-center">
                                                 <strong>
-                                                    <?php echo $number; ?>
+                                                    <?php echo $row['ID']; ?>
                                                 </strong>
                                             </td>
                                             <td class="text-center">
@@ -204,10 +205,10 @@ $v_end_date   = date('t/m/Y');
                                                 } ?>
                                             </td>
                                             <td class="text-end">
-                                                <?php echo number_format($row['COLLECTON_TARGET_AMOUNT']) ?>
+                                                <?=  number_format($row['COLLECTON_TARGET_AMOUNT'], 2) ?>
                                             </td>
                                             <td class="text-end">
-                                                <?php echo number_format($row['SALES_TARGET_AMOUNT']) ?>
+                                                <?= number_format($row['SALES_TARGET_AMOUNT'], 2) ?>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -216,10 +217,10 @@ $v_end_date   = date('t/m/Y');
                                     <tr>
                                         <td colspan="6" class="text-end"><strong>TOTAL</strong></td>
                                         <td class="text-end">
-                                            <span style="text-decoration-line: underline;text-decoration-style: double"><?= number_format($COLLECTON_TARGET_AMOUNT) ?></span>
+                                            <span style="text-decoration-line: underline;text-decoration-style: double"><?= number_format($COLLECTON_TARGET_AMOUNT, 2) ?></span>
                                         </td>
                                         <td class="text-end">
-                                            <span style="text-decoration-line: underline;text-decoration-style: double"><?= number_format($SALES_TARGET_AMOUNT) ?></span>
+                                            <span style="text-decoration-line: underline;text-decoration-style: double"><?= number_format($SALES_TARGET_AMOUNT, 2) ?></span>
                                         </td>
                                     </tr>
                                 </tfoot>

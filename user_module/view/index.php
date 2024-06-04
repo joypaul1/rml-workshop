@@ -1,6 +1,6 @@
 <?php
-include_once('../../_helper/2step_com_conn.php');
-$number = 0;
+include_once ('../../_helper/2step_com_conn.php');
+$number            = 0;
 $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
 
 ?>
@@ -14,13 +14,15 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
             <div class="card rounded-4">
                 <div class="card-body">
 
-                    <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <button class="accordion-button" style="color:#0dcaf0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
                         <strong><i class='bx bx-filter-alt'></i> Filter Data</strong>
                     </button>
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
 
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="POST">
                                         <div class="row justify-content-center align-items-center">
@@ -29,18 +31,18 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                 <select class="form-select" id="validationCustom06" name="USER_TYPE_ID">
                                                     <option value=""><- Select Type -></option>
                                                     <?php
-                                                    $typeRow = [];
-                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ?  $_POST['USER_TYPE_ID'] : '';
-                                                    $query = "SELECT ID, TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > '$currentUserTypeID' ORDER BY ID ASC";
-                                                    $strSQL = @oci_parse($objConnect, $query);
+                                                    $typeRow      = [];
+                                                    $USER_TYPE_ID = $_POST['USER_TYPE_ID'] ? $_POST['USER_TYPE_ID'] : '';
+                                                    $query        = "SELECT ID, TITLE FROM USER_TYPE WHERE STATUS ='1' AND ID > '$currentUserTypeID' ORDER BY ID ASC";
+                                                    $strSQL       = @oci_parse($objConnect, $query);
                                                     @oci_execute($strSQL);
                                                     $firstIteration = true; // Flag to track the first iteration
                                                     while ($typeRow = @oci_fetch_assoc($strSQL)) {
-                                                    ?>
+                                                        ?>
                                                         <option value="<?php echo $typeRow['ID'] ?>" <?php echo ($USER_TYPE_ID == $typeRow['ID'] || ($firstIteration && !$USER_TYPE_ID)) ? 'selected' : '' ?>>
                                                             <?php echo $typeRow['TITLE'] ?>
                                                         </option>
-                                                    <?php
+                                                        <?php
                                                         $firstIteration = false; // Set flag to false after the first iteration
                                                     } ?>
                                                 </select>
@@ -49,11 +51,15 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                             </div>
                                             <div class="col-sm-3">
                                                 <label> MOBILE : </label>
-                                                <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="USER_MOBILE" type="text" value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
+                                                <input class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                                                    name="USER_MOBILE" type="text"
+                                                    value='<?php echo isset($_POST['USER_MOBILE']) ? $_POST['USER_MOBILE'] : ''; ?>' />
                                             </div>
                                             <div class="col-sm-4 d-flex gap-2">
-                                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i class='bx bx-file-find'></i></button>
-                                                <a href="<?php echo $cspdBasePath  ?>/user_module/view/index.php" class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
+                                                <button type="submit" class="form-control btn btn-sm btn-gradient-primary mt-4">Search Data<i
+                                                        class='bx bx-file-find'></i></button>
+                                                <a href="<?php echo $cspdBasePath ?>/user_module/view/index.php"
+                                                    class="form-control btn btn-sm btn-gradient-info mt-4">Reset Data<i class='bx bx-file'></i></a>
                                             </div>
                                         </div>
                                     </form>
@@ -68,8 +74,8 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
             <div class="col-12">
                 <div class="card rounded-4">
                     <?php
-                    $headerType    = 'List';
-                    $leftSideName  = 'User List';
+                    $headerType   = 'List';
+                    $leftSideName = 'User List';
                     if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')
                         || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                     ) {
@@ -77,7 +83,7 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                         $routePath     = 'user_module/view/create.php';
                     }
 
-                    include('../../_includes/com_header.php');
+                    include ('../../_includes/com_header.php');
 
                     ?>
                     <div class="card-body">
@@ -123,10 +129,11 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                             FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
                                             WHERE  UBS.USER_PROFILE_ID = UP.ID
                                             AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                            AND UP.ID = UMS.USER_ID
+                                           --AND UP.ID = UMS.USER_ID
                                             AND UBS.STATUS = 1
                                             AND UP.USER_STATUS = 1";
-                                    } else {
+                                    }
+                                    else {
 
                                         $query = "SELECT UP.ID,
                                                     UP.USER_NAME,
@@ -140,7 +147,7 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                     LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
                                             FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
                                             WHERE  UBS.USER_PROFILE_ID = UP.ID
-                                            AND UP.ID = UMS.USER_ID
+                                            --AND UP.ID = UMS.USER_ID
                                             AND UBS.STATUS = 1
                                             AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
                                             AND  UP.USER_STATUS = 1
@@ -148,9 +155,10 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                     }
 
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
-                                        $USER_TYPE_ID   = $_POST['USER_TYPE_ID'];
+                                        $USER_TYPE_ID = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
-                                    } else {
+                                    }
+                                    else {
                                         $query .= " AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
                                     }
 
@@ -167,7 +175,7 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
 
                                     while ($row = @oci_fetch_assoc($strSQL)) {
                                         $number++;
-                                    ?>
+                                        ?>
                                         <tr>
                                             <td class="text-center">
                                                 <strong>
@@ -178,7 +186,8 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                 || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                                             ) { ?>
                                                 <td class="text-center">
-                                                    <a href="<?php echo $cspdBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>" class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
+                                                    <a href="<?php echo $cspdBasePath . '/user_module/view/edit.php?id=' . $row['ID'] . '&actionType=edit' ?>"
+                                                        class="btn btn-sm btn-gradient-warning text-white"><i class='bx bxs-edit-alt'></i></a>
                                                     <!-- <button type="button" data-id="<?php echo $row['ID'] ?>" data-href="<?php echo ($cspdBasePath . '/user_module/action/self_panel.php') ?>" class="btn btn-sm btn-gradient-danger delete_check"><i class='bx bxs-trash'></i></button> -->
                                                 </td>
                                             <?php } ?>
@@ -188,9 +197,9 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                 TRACK ID : <?php echo $row['RML_ID']; ?> <br>
                                                 <?php
                                                 $userBrandID = $row['USER_BRANDS'];
-                                                $brandQuery = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN
+                                                $brandQuery  = "SELECT TITLE FROM PRODUCT_BRAND WHERE  ID IN
                                                 ($userBrandID)";
-                                                $brandstrSQL  = @oci_parse($objConnect, $brandQuery);
+                                                $brandstrSQL = @oci_parse($objConnect, $brandQuery);
                                                 @oci_execute($brandstrSQL);
 
                                                 while ($brandData = @oci_fetch_assoc($brandstrSQL)) {
@@ -221,10 +230,11 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                 <?php if (($row['USER_TYPE'] == 'RETAILER') || ($row['USER_TYPE'] == 'PLAZA RETAILER')) { ?>
                                                     <?php
                                                     $latitu = $row['LAT'];
-                                                    $lng = $row['LANG'];
-                                                    $url = "http://www.google.com/maps/place/" . $latitu . "," . $lng;
+                                                    $lng    = $row['LANG'];
+                                                    $url    = "http://www.google.com/maps/place/" . $latitu . "," . $lng;
                                                     ?>
-                                                    <a class="btn btn-sm btn-gradient-info text-white" href="<?php echo $url; ?>" target="_blank"><i class='bx bx-map'></i></a>
+                                                    <a class="btn btn-sm btn-gradient-info text-white" href="<?php echo $url; ?>" target="_blank"><i
+                                                            class='bx bx-map'></i></a>
                                                 <?php } ?>
                                             </td>
 
@@ -233,38 +243,41 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                 || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'COORDINATOR')
                                                 || ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'SALE EXECUTIVE')
                                             ) {
-                                            ?>
+                                                ?>
                                                 <?php if (($row['USER_TYPE'] == 'HOD')) { ?>
                                                     <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/userTree.php?id=' . $row['ID'] ?>"
+                                                            class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
-                                                <?php }  ?>
+                                                <?php } ?>
                                                 <?php if (($row['USER_TYPE'] == 'COORDINATOR')) { ?>
                                                     <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/coo_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank"
+                                                            href="<?php echo $cspdBasePath . '/user_module/view/coo_userTree.php?id=' . $row['ID'] ?>"
+                                                            class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td>
-                                                <?php }  ?>
+                                                <?php } ?>
                                                 <?php //if (($row['USER_TYPE'] == 'SALE EXECUTIVE')) { 
-                                                ?>
+                                                        ?>
                                                 <!-- <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/saleex_userTree.php?id=' . $row['ID'] ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td> -->
                                                 <?php // }  
-                                                ?>
+                                                        ?>
                                                 <?php //if (($row['USER_TYPE'] == 'RETAILER')) { 
-                                                ?>
+                                                        ?>
                                                 <!-- <td class="text-center">
-                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID']  ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
+                                                        <a target="_blank" href="<?php echo $cspdBasePath . '/user_module/view/retailer_userTree.php?id=' . $row['ID'] ?>" class="btn btn-sm btn-gradient-primary text-white"><i class='bx bx-street-view'></i></a>
                                                     </td> -->
                                                 <?php //}  
-                                                ?>
+                                                        ?>
 
-                                            <?php }  ?>
+                                            <?php } ?>
 
                                         </tr>
 
 
-                                    <?php
+                                        <?php
                                     } ?>
                                     <?php
                                     //   echo $number;
@@ -283,13 +296,13 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
 </div>
 <!--end page wrapper -->
 <?php
-include_once('../../_includes/footer_info.php');
-include_once('../../_includes/footer.php');
+include_once ('../../_includes/footer_info.php');
+include_once ('../../_includes/footer.php');
 ?>
 <script>
     //delete data processing
 
-    $(document).on('click', '.delete_check', function() {
+    $(document).on('click', '.delete_check', function () {
         var id = $(this).data('id');
         let url = $(this).data('href');
         swal.fire({
@@ -309,18 +322,18 @@ include_once('../../_includes/footer.php');
                 });
 
                 $.ajax({
-                        url: url,
-                        type: 'GET',
-                        data: {
-                            deleteID: id
-                        },
-                        dataType: 'json'
-                    })
-                    .done(function(response) {
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        deleteID: id
+                    },
+                    dataType: 'json'
+                })
+                    .done(function (response) {
                         swal.fire('Deleted!', response.message, response.status);
                         location.reload(); // Reload the page
                     })
-                    .fail(function() {
+                    .fail(function () {
                         swal.fire('Oops...', 'Something went wrong!', 'error');
                     });
 
