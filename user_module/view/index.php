@@ -135,12 +135,12 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                                     UT.TITLE AS USER_TYPE,
                                                     PPT.TITLE AS PLAZA_PARENT_TYPE,
                                                     LISTAGG(UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
-                                                FROM 
+                                                FROM
                                                     USER_PROFILE UP
                                                     JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
                                                     LEFT JOIN USER_TYPE_CTE UT ON UT.ID = UP.USER_TYPE_ID
                                                     LEFT JOIN PLAZA_PARENT_CTE PPT ON PPT.ID = UP.PLAZA_PARENT_ID
-                                                WHERE 
+                                                WHERE
                                                     UBS.STATUS = 1
                                                     AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
                                                     AND UP.USER_STATUS = 1";
