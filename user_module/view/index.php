@@ -116,59 +116,80 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                                     <?php
 
                                     if (($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == 'HOD')) {
-                                        $query = "SELECT UP.ID,
+                                        $query = "WITH USER_TYPE_CTE AS (
+                                                    SELECT ID, TITLE
+                                                    FROM USER_TYPE
+                                                ),
+                                                PLAZA_PARENT_CTE AS (
+                                                    SELECT ID, TITLE
+                                                    FROM PLAZA_PARENT
+                                                )
+                                                SELECT 
+                                                    UP.ID,
                                                     UP.USER_NAME,
                                                     UP.USER_MOBILE,
                                                     UP.RML_IDENTITY_ID AS RML_ID,
                                                     UP.LAT,
                                                     UP.LANG,
                                                     UP.CREATED_DATE,
-                                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE ,
-                                                    (SELECT TITLE FROM PLAZA_PARENT WHERE ID = UP.PLAZA_PARENT_ID) AS PLAZA_PARENT_TYPE ,
-                                                    LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
-                                            FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
-                                            WHERE  UBS.USER_PROFILE_ID = UP.ID
-                                            AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                           --AND UP.ID = UMS.USER_ID
-                                            AND UBS.STATUS = 1
-                                            AND UP.USER_STATUS = 1";
+                                                    UT.TITLE AS USER_TYPE,
+                                                    PPT.TITLE AS PLAZA_PARENT_TYPE,
+                                                    LISTAGG(UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
+                                                FROM 
+                                                    USER_PROFILE UP
+                                                    JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                    LEFT JOIN USER_TYPE_CTE UT ON UT.ID = UP.USER_TYPE_ID
+                                                    LEFT JOIN PLAZA_PARENT_CTE PPT ON PPT.ID = UP.PLAZA_PARENT_ID
+                                                WHERE 
+                                                    UBS.STATUS = 1
+                                                    AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                                    AND UP.USER_STATUS = 1";
                                     }
                                     else {
 
-                                        $query = "SELECT UP.ID,
+                                        $query = "WITH USER_TYPE_CTE AS (
+                                                    SELECT ID, TITLE
+                                                    FROM USER_TYPE
+                                                ),
+                                                PLAZA_PARENT_CTE AS (
+                                                    SELECT ID, TITLE
+                                                    FROM PLAZA_PARENT
+                                                )
+                                                SELECT
+                                                    UP.ID,
                                                     UP.USER_NAME,
                                                     UP.USER_MOBILE,
                                                     UP.RML_IDENTITY_ID AS RML_ID,
                                                     UP.LAT,
                                                     UP.LANG,
                                                     UP.CREATED_DATE,
-                                                    (SELECT TITLE FROM USER_TYPE WHERE ID = UP.USER_TYPE_ID) AS USER_TYPE ,
-                                                    (SELECT TITLE FROM PLAZA_PARENT WHERE ID = UP.PLAZA_PARENT_ID) AS PLAZA_PARENT_TYPE ,
-                                                    LISTAGG (UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
-                                            FROM USER_PROFILE UP, USER_BRAND_SETUP UBS , USER_MANPOWER_SETUP UMS
-                                            WHERE  UBS.USER_PROFILE_ID = UP.ID
-                                            --AND UP.ID = UMS.USER_ID
-                                            AND UBS.STATUS = 1
-                                            AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
-                                            AND  UP.USER_STATUS = 1
-                                            ";
+                                                    UT.TITLE AS USER_TYPE,
+                                                    PPT.TITLE AS PLAZA_PARENT_TYPE,
+                                                    LISTAGG(UBS.PRODUCT_BRAND_ID, ', ') WITHIN GROUP (ORDER BY UBS.PRODUCT_BRAND_ID) AS USER_BRANDS
+                                                FROM
+                                                    USER_PROFILE UP
+                                                    JOIN USER_BRAND_SETUP UBS ON UBS.USER_PROFILE_ID = UP.ID
+                                                    LEFT JOIN USER_TYPE_CTE UT ON UT.ID = UP.USER_TYPE_ID
+                                                    LEFT JOIN PLAZA_PARENT_CTE PPT ON PPT.ID = UP.PLAZA_PARENT_ID
+                                                WHERE
+                                                    UBS.STATUS = 1
+                                                    AND UBS.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                                    AND UP.USER_STATUS = 1";
                                     }
 
                                     if (isset($_POST['USER_TYPE_ID']) && !empty($_POST['USER_TYPE_ID'])) {
                                         $USER_TYPE_ID = $_POST['USER_TYPE_ID'];
                                         $query .= " AND UP.USER_TYPE_ID = $USER_TYPE_ID";
                                     }
-                                    else {
-                                        $query .= " AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
-                                    }
-
+                                    // else {
+                                    //     $query .= " AND UMS.PARENT_USER_ID = $USER_LOGIN_ID";
+                                    // }
                                     if (isset($_POST['USER_MOBILE']) && !empty($_POST['USER_MOBILE'])) {
                                         $USER_MOBILE = $_POST['USER_MOBILE'];
                                         $query .= " AND UP.USER_MOBILE LIKE '%" . $USER_MOBILE . "%'";
                                     }
 
-                                    $query .= " GROUP BY UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UP.USER_TYPE_ID, UP.PLAZA_PARENT_ID ORDER BY UP.USER_TYPE_ID";
-                                    // ECHO $query;
+                                    $query .= " GROUP BY  UP.ID, UP.USER_NAME, UP.USER_MOBILE, UP.RML_IDENTITY_ID, UP.LAT, UP.LANG, UP.CREATED_DATE, UT.TITLE, PPT.TITLE,  UP.USER_TYPE_ID ORDER BY UP.USER_TYPE_ID";
                                     $strSQL = @oci_parse($objConnect, $query);
 
                                     @oci_execute($strSQL);

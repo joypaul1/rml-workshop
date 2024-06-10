@@ -13,33 +13,49 @@
 </style>
 
 <?php
-$dynamic_link_js[]  = '../assets/js/hod.js';
-$v_start_date = date("01/m/Y");
-$v_end_date = date("t/m/Y");
-$sale_executive_all_retailer_ids = [];
-$sale_executive_all_retailer_ids_str  = '0';
+$dynamic_link_js[]                   = '../assets/js/hod.js';
+$v_start_date                        = date("01/m/Y");
+$v_end_date                          = date("t/m/Y");
+$sale_executive_all_retailer_ids     = [];
+$sale_executive_all_retailer_ids_str = '0';
 // sale_executive_all_retailer_query
-$sale_executive_all_retailer_query = "SELECT A.USER_ID
-FROM USER_MANPOWER_SETUP A,
-USER_PROFILE B
-WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)
+$sale_executive_all_retailer_query = "WITH SALES_EXE_USERS AS (
+    SELECT DISTINCT A.USER_ID AS USER_ID
+    FROM USER_MANPOWER_SETUP A
+    JOIN USER_PROFILE B ON A.USER_ID = B.ID
+    JOIN USER_BRAND_SETUP C ON C.USER_PROFILE_ID = B.ID
+    WHERE A.PARENT_USER_ID = '$USER_LOGIN_ID'
+    AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+),
+PLAZA_USERS AS (
+    SELECT DISTINCT A.USER_ID AS USER_ID
+    FROM USER_MANPOWER_SETUP A
+    JOIN USER_PROFILE B ON A.USER_ID = B.ID
+    JOIN USER_BRAND_SETUP C ON C.USER_PROFILE_ID = B.ID
+    WHERE A.PARENT_USER_ID IN (SELECT USER_ID FROM SALES_EXE_USERS)
+    AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+),
+RETAILER_USERS AS (
+    SELECT DISTINCT A.USER_ID AS USER_ID
+    FROM USER_MANPOWER_SETUP A
+    JOIN USER_PROFILE B ON A.USER_ID = B.ID
+    JOIN USER_BRAND_SETUP C ON C.USER_PROFILE_ID = B.ID
+    WHERE A.PARENT_USER_ID IN (SELECT USER_ID FROM PLAZA_USERS)
+    AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+)
+-- Select USER_IDs from PLAZA_USERS and RETAILER_USERS
+SELECT USER_ID FROM PLAZA_USERS
 UNION
-SELECT B.ID
-FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-WHERE A.USER_ID = B.ID
-    AND PARENT_USER_ID IN
-        (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
+SELECT USER_ID FROM RETAILER_USERS";
+
+
 $strSQL3 = @oci_parse($objConnect, $sale_executive_all_retailer_query);
 @oci_execute($strSQL3);
 
 while ($row = oci_fetch_assoc($strSQL3)) {
     $sale_executive_all_retailer_ids[] = $row['USER_ID'];
 }
+
 if (count($sale_executive_all_retailer_ids) > 0) {
     $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
 }
@@ -537,7 +553,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[0]) ? $user_type_brand_wise_data[0]['MAHINDRA_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[0]) ? $user_type_brand_wise_data[0]['MAHINDRA_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">HOD</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -552,7 +570,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[1]) ? $user_type_brand_wise_data[1]['MAHINDRA_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[1]) ? $user_type_brand_wise_data[1]['MAHINDRA_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">COORDINATOR</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -567,7 +587,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[2]) ? $user_type_brand_wise_data[2]['MAHINDRA_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[2]) ? $user_type_brand_wise_data[2]['MAHINDRA_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">SALE EXE.</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -582,7 +604,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[3]) ? $user_type_brand_wise_data[3]['MAHINDRA_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[3]) ? $user_type_brand_wise_data[3]['MAHINDRA_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -597,7 +621,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[4]) ? $user_type_brand_wise_data[4]['MAHINDRA_USER'] : 0  ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[4]) ? $user_type_brand_wise_data[4]['MAHINDRA_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -617,7 +643,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[0]) ? $user_type_brand_wise_data[0]['EICHER_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[0]) ? $user_type_brand_wise_data[0]['EICHER_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">HOD</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -632,7 +660,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[1]) ? $user_type_brand_wise_data[1]['EICHER_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[1]) ? $user_type_brand_wise_data[1]['EICHER_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">COORDINATOR</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -647,7 +677,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[2]) ? $user_type_brand_wise_data[2]['EICHER_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[2]) ? $user_type_brand_wise_data[2]['EICHER_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">SALE EXE.</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -662,7 +694,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[3]) ? $user_type_brand_wise_data[3]['EICHER_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[3]) ? $user_type_brand_wise_data[3]['EICHER_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">PLAZA RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -677,7 +711,9 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <div class="card-body" style="padding: 0% 10%;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="">
-                                                <h4 class="mb-0 text-white"><?= isset($user_type_brand_wise_data[4]) ? $user_type_brand_wise_data[4]['EICHER_USER'] : 0 ?></h4>
+                                                <h4 class="mb-0 text-white">
+                                                    <?= isset($user_type_brand_wise_data[4]) ? $user_type_brand_wise_data[4]['EICHER_USER'] : 0 ?>
+                                                </h4>
                                                 <p class="mb-0 text-white">RETAILER</p>
                                             </div>
                                             <div class="fs-1 text-white">
@@ -709,18 +745,24 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                 <div class="card-body" style="height:380px; overflow: auto;">
                     <div class="categories-list">
                         <?php
-                        $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                            WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID='$USER_LOGIN_ID' FETCH FIRST 8 ROWS ONLY";
+                        $cooquery       = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
+                                            FROM USER_MANPOWER_SETUP A, USER_PROFILE B, USER_BRAND_SETUP C
+                                            WHERE A.USER_ID=B.ID
+                                            AND PARENT_USER_ID='$USER_LOGIN_ID'
+                                            AND B.USER_TYPE_ID = 3
+                                            AND C.USER_PROFILE_ID = B.ID
+                                            AND C.PRODUCT_BRAND_ID  IN ($USER_BRANDS)
+                                            FETCH FIRST 8 ROWS ONLY";
                         $coordinatorSQL = oci_parse($objConnect, $cooquery);
                         @oci_execute($coordinatorSQL);
                         while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
-                        ?>
+                            ?>
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
                                     <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
                                         echo '<img src="' . $cspdBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . '" class="product-img-2" alt="img">';
-                                    } else {
+                                    }
+                                    else {
                                         echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="img" class="product-img-2">';
                                     } ?>
                                 </div>
@@ -749,25 +791,34 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                 <div class="card-body" style="height:380px; overflow: auto;">
                     <div class="categories-list">
                         <?php
-                        $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
-                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                                            WHERE A.USER_ID=B.ID
-                                            AND PARENT_USER_ID IN
-                                            (
-                                            SELECT A.USER_ID
-                                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                                            WHERE A.USER_ID=B.ID
-                                            AND PARENT_USER_ID = $USER_LOGIN_ID
-                                            ) FETCH FIRST 8 ROWS ONLY";
-                        $coordinatorSQL = oci_parse($objConnect, $cooquery);
+
+                        $plazaRetailerQuery = "SELECT B.USER_NAME, B.USER_MOBILE, B.IMAGE_LINK
+                                                FROM USER_MANPOWER_SETUP A, USER_PROFILE B, USER_BRAND_SETUP C
+                                                WHERE A.USER_ID = B.ID
+                                                AND PARENT_USER_ID IN
+                                                    (SELECT B.ID
+                                                        FROM USER_MANPOWER_SETUP A,
+                                                        USER_PROFILE B,
+                                                        USER_BRAND_SETUP C
+                                                        WHERE A.USER_ID = B.ID
+                                                        AND PARENT_USER_ID = '$USER_LOGIN_ID'
+                                                        AND B.USER_TYPE_ID = 3
+                                                        AND C.USER_PROFILE_ID = B.ID
+                                                        AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS))
+                                                AND C.USER_PROFILE_ID = B.ID
+                                                AND B.USER_TYPE_ID = 4
+                                                AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                            FETCH FIRST 8 ROWS ONLY";
+                        $coordinatorSQL = oci_parse($objConnect, $plazaRetailerQuery);
                         @oci_execute($coordinatorSQL);
                         while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
-                        ?>
+                            ?>
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
                                     <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
                                         echo '<img src="' . $cspdBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . '" class="product-img-2" alt="img">';
-                                    } else {
+                                    }
+                                    else {
                                         echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="img" class="product-img-2">';
                                     } ?>
                                 </div>
@@ -796,30 +847,53 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                 <div class="card-body" style="height:380px; overflow: auto;">
                     <div class="categories-list">
                         <?php
-                        $cooquery = "SELECT B.USER_NAME,B.USER_MOBILE,B.IMAGE_LINK
-                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                            WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID IN
-                            (SELECT USER_ID
-                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                            WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID IN
-                            (
-                            SELECT A.USER_ID
-                            FROM USER_MANPOWER_SETUP A,USER_PROFILE B
-                            WHERE A.USER_ID=B.ID
-                            AND PARENT_USER_ID= '$USER_LOGIN_ID'
-                            )
-                            ) FETCH FIRST 8 ROWS ONLY";
-                        $coordinatorSQL = oci_parse($objConnect, $cooquery);
+                        $retailerQuery = "WITH SALES_EXE_USERS AS (
+                                        SELECT DISTINCT A.USER_ID AS USER_ID
+                                        FROM USER_MANPOWER_SETUP A
+                                        JOIN USER_PROFILE B ON A.USER_ID = B.ID
+                                        JOIN USER_BRAND_SETUP C ON C.USER_PROFILE_ID = B.ID
+                                        WHERE A.PARENT_USER_ID = '$USER_LOGIN_ID'
+                                        AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                    ),
+                                    PLAZA_USERS AS (
+                                        SELECT DISTINCT A.USER_ID AS USER_ID
+                                        FROM USER_MANPOWER_SETUP A
+                                        JOIN USER_PROFILE B ON A.USER_ID = B.ID
+                                        JOIN USER_BRAND_SETUP C ON C.USER_PROFILE_ID = B.ID
+                                        WHERE A.PARENT_USER_ID IN (SELECT USER_ID FROM SALES_EXE_USERS)
+                                        AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                    ),
+                                    RETAILER_USERS AS (
+                                        SELECT DISTINCT A.USER_ID AS USER_ID
+                                        FROM USER_MANPOWER_SETUP A
+                                        JOIN USER_PROFILE B ON A.USER_ID = B.ID
+                                        JOIN USER_BRAND_SETUP C ON C.USER_PROFILE_ID = B.ID
+                                        WHERE A.PARENT_USER_ID IN (SELECT USER_ID FROM PLAZA_USERS)
+                                        AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                    )
+                                    SELECT
+                                        B.USER_NAME,
+                                        B.USER_MOBILE,
+                                        B.IMAGE_LINK
+                                    FROM
+                                        USER_MANPOWER_SETUP A
+                                    JOIN USER_PROFILE B ON A.USER_ID = B.ID
+                                    JOIN USER_BRAND_SETUP C ON C.USER_PROFILE_ID = B.ID
+                                    WHERE
+                                        A.PARENT_USER_ID IN (SELECT USER_ID FROM PLAZA_USERS)
+                                        AND C.PRODUCT_BRAND_ID IN ($USER_BRANDS)
+                                    FETCH FIRST 8 ROWS ONLY";
+                                    
+                        $coordinatorSQL = oci_parse($objConnect, $retailerQuery);
                         @oci_execute($coordinatorSQL);
                         while ($coodinatorRow = oci_fetch_assoc($coordinatorSQL)) {
-                        ?>
+                            ?>
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="">
                                     <?php if ($coodinatorRow['IMAGE_LINK'] != null) {
                                         echo '<img src="' . $cspdBasePath . '/' . $coodinatorRow["IMAGE_LINK"] . '" class="product-img-2" alt="img">';
-                                    } else {
+                                    }
+                                    else {
                                         echo '<img src="https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-login-interface-abstract-blue-icon-png-image_3917504.jpg"  alt="img" class="product-img-2">';
                                     } ?>
                                 </div>
@@ -852,10 +926,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                 TARGET VS ACHIVEMENT
                                 <span class="badge bg-primary"> <?= date('F - Y') ?> </span>
                             </strong>
-                        </h6>
-                        <!-- <span> -->
-                        <!-- <input type="text" id="id" name="name" placeholder="placeholder" class="search here" /> -->
-                        <!-- </span> -->
+                        </h6>SS
                     </div>
                 </div>
                 <div class="card-body">
@@ -898,12 +969,12 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                                         'COLLECTION') AS COLLECTION_TARGET
                                                 FROM USER_PROFILE A
                                                 WHERE A.ID IN ($sale_executive_all_retailer_ids_str)";
-                                $strSQL = @oci_parse($objConnect, $TGVSAC_QUERY);
+                                $strSQL       = @oci_parse($objConnect, $TGVSAC_QUERY);
                                 @oci_execute($strSQL);
                                 $number = 0;
                                 while ($sucessRow = @oci_fetch_assoc($strSQL)) {
                                     $number++;
-                                ?>
+                                    ?>
                                     <tr class="table-info">
                                         <td><?= $number ?></td>
                                         <td> <?= $sucessRow['USER_NAME'] ?>
@@ -919,10 +990,11 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             !empty($sucessRow['SALES_AMOUNT']) && !empty($sucessRow['SALES_AMOUNT'])
                                         ) {
                                             $salesAmount = $sucessRow['SALES_AMOUNT'] ? $sucessRow['SALES_AMOUNT'] : 0;
-                                            $salesTarget =  $sucessRow['SALES_TARGET'] ? $sucessRow['SALES_TARGET'] : 0;
+                                            $salesTarget = $sucessRow['SALES_TARGET'] ? $sucessRow['SALES_TARGET'] : 0;
                                             if ($salesTarget != 0) {
                                                 $percentageRate = round(($salesAmount / $salesTarget) * 100);
-                                            } else {
+                                            }
+                                            else {
                                                 $percentageRate = 0;
                                             }
                                         }
@@ -930,7 +1002,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         <td class="text-center">
                                             <?= $percentageRate ?>%
                                             <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate . '%' ?>"></div>
+                                                <div class="progress-bar bg-gradient-ibiza" role="progressbar"
+                                                    style="<?= 'width:' . $percentageRate . '%' ?>"></div>
                                             </div>
                                         </td>
                                         <td class="text-end"><?= number_format($sucessRow['COLLECTION_AMOUNT']) ?></td>
@@ -942,10 +1015,11 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                             !empty($sucessRow['COLLECTION_AMOUNT']) && !empty($sucessRow['COLLECTION_TARGET'])
                                         ) {
                                             $collectionAmount = $sucessRow['COLLECTION_AMOUNT'] ? $sucessRow['COLLECTION_AMOUNT'] : 0;
-                                            $collectionTarget =  $sucessRow['COLLECTION_TARGET'] ? $sucessRow['COLLECTION_TARGET'] : 0;
+                                            $collectionTarget = $sucessRow['COLLECTION_TARGET'] ? $sucessRow['COLLECTION_TARGET'] : 0;
                                             if ($collectionAmount != 0) {
                                                 $percentageRate2 = round(($collectionAmount / $collectionTarget) * 100);
-                                            } else {
+                                            }
+                                            else {
                                                 $percentageRate2 = 0;
                                             }
                                         }
@@ -953,7 +1027,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         <td class="text-center">
                                             <?= $percentageRate2 ?>%
                                             <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-gradient-ibiza" role="progressbar" style="<?= 'width:' . $percentageRate2 . '%' ?>"></div>
+                                                <div class="progress-bar bg-gradient-ibiza" role="progressbar"
+                                                    style="<?= 'width:' . $percentageRate2 . '%' ?>"></div>
                                             </div>
                                         </td>
                                     </tr>
@@ -964,7 +1039,7 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <td class="text-end" colspan="3">
                                         <?php
                                         $TOTAL_SALES_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_SALES_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_SALES_OF_MAHINDRA'] : 0;
-                                        $TOTAL_SALES_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER'] : 0;
+                                        $TOTAL_SALES_OF_EICHER   = isset($visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_OF_EICHER'] : 0;
                                         echo '<span style="text-decoration-line: underline;
                                             text-decoration-style: double;">' . number_format(($TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER)) . '</span>';
                                         ?>
@@ -972,20 +1047,21 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <td class="text-end">
                                         <?php
                                         $TOTAL_SALES_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_MAHINDRA'] : 0;
-                                        $TOTAL_SALES_TARGET_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER'] : 0;
+                                        $TOTAL_SALES_TARGET_OF_EICHER   = isset($visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_SALES_TARGET_OF_EICHER'] : 0;
                                         echo '<span style="text-decoration-line: underline;
                                             text-decoration-style: double;">' . number_format(($TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER)) . '</span>';
                                         ?>
                                     </td>
                                     <td class="text-center">
                                         <?php
-                                        $totalSales = $TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER;
+                                        $totalSales      = $TOTAL_SALES_OF_MAHINDRA + $TOTAL_SALES_OF_EICHER;
                                         $totalSaleTarget = $TOTAL_SALES_TARGET_OF_MAHINDRA + $TOTAL_SALES_TARGET_OF_EICHER;
 
                                         if ($totalSaleTarget != 0) {
                                             $percentage = round(($totalSales / $totalSaleTarget) * 100);
                                             echo '<span style="text-decoration-line: underline; text-decoration-style: double;">' . $percentage . '%</span>';
-                                        } else {
+                                        }
+                                        else {
                                             echo '<span style="text-decoration-line: underline; text-decoration-style: double;">0%</span>';
                                         }
                                         ?>
@@ -994,11 +1070,12 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <td class="text-end">
                                         <?php
                                         $TOTAL_COLLECTION_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_MAHINDRA'] : 0;
-                                        $TOTAL_COLLECTION_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER'] : 0;
+                                        $TOTAL_COLLECTION_OF_EICHER   = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_OF_EICHER'] : 0;
                                         if ($TOTAL_COLLECTION_OF_MAHINDRA > 0 || $TOTAL_COLLECTION_OF_EICHER > 0) {
                                             echo '<span style="text-decoration-line: underline;
                                                 text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER)) . '</span>';
-                                        } else {
+                                        }
+                                        else {
                                             echo '<span style="text-decoration-line: underline;
                                                 text-decoration-style: double;"> 0 </span>';
                                         }
@@ -1007,11 +1084,12 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     <td class="text-end">
                                         <?php
                                         $TOTAL_COLLECTION_TARGET_OF_MAHINDRA = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_MAHINDRA'] : 0;
-                                        $TOTAL_COLLECTION_TARGET_OF_EICHER = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER'] : 0;
+                                        $TOTAL_COLLECTION_TARGET_OF_EICHER   = isset($visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER']) ? $visit_plan_month_wise_data['TOTAL_COLLECTION_TARGET_OF_EICHER'] : 0;
                                         if ($TOTAL_COLLECTION_TARGET_OF_MAHINDRA > 0 || $TOTAL_COLLECTION_TARGET_OF_EICHER > 0) {
                                             echo '<span style="text-decoration-line: underline;
                                             text-decoration-style: double;">' . number_format(($TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER)) . '</span>';
-                                        } else {
+                                        }
+                                        else {
                                             echo '<span style="text-decoration-line: underline;
                                                 text-decoration-style: double;"> 0 </span>';
                                         }
@@ -1019,13 +1097,14 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                     </td>
                                     <td class="text-center">
                                         <?php
-                                        $totalCollection = $TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER;
+                                        $totalCollection       = $TOTAL_COLLECTION_OF_MAHINDRA + $TOTAL_COLLECTION_OF_EICHER;
                                         $totalCollectionTarget = $TOTAL_COLLECTION_TARGET_OF_MAHINDRA + $TOTAL_COLLECTION_TARGET_OF_EICHER;
 
                                         if ($totalCollectionTarget != 0) {
                                             $percentage = round(($totalCollection / $totalCollectionTarget) * 100);
                                             echo '<span style="text-decoration-line: underline; text-decoration-style: double;">' . $percentage . '%</span>';
-                                        } else {
+                                        }
+                                        else {
                                             echo '<span style="text-decoration-line: underline; text-decoration-style: double;">0%</span>';
                                         }
 
@@ -1080,13 +1159,13 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         FROM VISIT_ASSIGN VA
                                         WHERE   VA.RETAILER_ID IN ($sale_executive_all_retailer_ids_str)
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
-                                $strSQL = @oci_parse($objConnect, $sucessQuery);
+                                $strSQL      = @oci_parse($objConnect, $sucessQuery);
 
                                 @oci_execute($strSQL);
                                 $number = 0;
                                 while ($sucessRow = @oci_fetch_assoc($strSQL)) {
                                     $number++;
-                                ?>
+                                    ?>
                                     <tr class="table-info">
                                         <td><?= $number ?></td>
                                         <td><?= $sucessRow['RETAILER_NAME'] ?>
@@ -1098,7 +1177,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         </td>
                                         <td class="text-center"><?= $sucessRow['VISIT_DATE'] ?></td>
                                         <td>
-                                            <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['USER_REMARKS']; ?>">
+                                            <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="<?= $sucessRow['USER_REMARKS']; ?>">
                                                 <?php echo mb_strlen($sucessRow['USER_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['USER_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['USER_REMARKS']; ?>
                                             </span>
                                         </td>
@@ -1106,7 +1186,8 @@ $visit_plan_month_wise_data = @oci_fetch_assoc($strSQL2);
                                         <td class="text-end"><?= number_format($sucessRow['SALES_AMOUNT_COLLECTED']) ?></td>
                                         <td class="text-end"><?= number_format($sucessRow['COLLECTION_AMOUNT_COLLECTED']) ?></td>
                                         <td>
-                                            <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $sucessRow['AFTER_VISIT_REMARKS']; ?>">
+                                            <span style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="<?= $sucessRow['AFTER_VISIT_REMARKS']; ?>">
                                                 <?php echo mb_strlen($sucessRow['AFTER_VISIT_REMARKS'], 'UTF-8') > 20 ? mb_substr($sucessRow['AFTER_VISIT_REMARKS'], 0, 20, 'UTF-8') . '...' : $sucessRow['AFTER_VISIT_REMARKS']; ?>
                                             </span>
                                         </td>
