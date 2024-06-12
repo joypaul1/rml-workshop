@@ -15,33 +15,35 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 $v_start_date = date('d/m/Y');
 $v_end_date   = date('d/m/Y');
 
-$sale_executive_all_retailer_ids_str = '0';
+// $sale_executive_all_retailer_ids_str = '0';
 
-$sale_executive_all_retailer_query = "SELECT A.USER_ID
-FROM USER_MANPOWER_SETUP A,
-USER_PROFILE B
-WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-    (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-    WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)
-UNION
-SELECT B.ID
-FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-WHERE A.USER_ID = B.ID
-    AND PARENT_USER_ID IN
-        (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-        WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
-            (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
-            WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
-$strSQL3                           = @oci_parse($objConnect, $sale_executive_all_retailer_query);
-@oci_execute($strSQL3);
+// $sale_executive_all_retailer_query = "SELECT A.USER_ID
+// FROM USER_MANPOWER_SETUP A,
+// USER_PROFILE B
+// WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+//     (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+//     WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID)
+// UNION
+// SELECT B.ID
+// FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+// WHERE A.USER_ID = B.ID
+//     AND PARENT_USER_ID IN
+//         (SELECT USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+//         WHERE A.USER_ID = B.ID AND PARENT_USER_ID IN
+//             (SELECT A.USER_ID FROM USER_MANPOWER_SETUP A, USER_PROFILE B
+//             WHERE A.USER_ID = B.ID AND PARENT_USER_ID = $USER_LOGIN_ID))";
+// $strSQL3                           = @oci_parse($objConnect, $sale_executive_all_retailer_query);
+// @oci_execute($strSQL3);
 
-while ($row = oci_fetch_assoc($strSQL3)) {
-    $sale_executive_all_retailer_ids[] = $row['USER_ID'];
-}
-if (count($sale_executive_all_retailer_ids) > 0) {
-    $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
-}
-?>
+// while ($row = oci_fetch_assoc($strSQL3)) {
+//     $sale_executive_all_retailer_ids[] = $row['USER_ID'];
+// }
+// if (count($sale_executive_all_retailer_ids) > 0) {
+//     $sale_executive_all_retailer_ids_str = implode(',', $sale_executive_all_retailer_ids);
+// }
+include_once ('../../home/coo_retailers.php');
+
+    ?>
 <style type="text/css">
     .ui-datepicker-calendar {
         display: none;
@@ -82,7 +84,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                                         FROM USER_MANPOWER_SETUP
                                                         WHERE PARENT_USER_ID IN
                                                             ($sale_executive_all_retailer_ids_str)) B
-                                                    WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
+                                                        WHERE A.ID = B.USER_ID AND A.USER_TYPE_ID IN (4,5)";
                                                     }
                                                     else if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "COORDINATOR") {
                                                         $query = "SELECT  UP.ID, UP.USER_NAME
@@ -178,7 +180,7 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                 </thead>
                                 <tbody>
                                     <?php
-
+// echo $sale_executive_all_retailer_query;
                                     $offset = ($currentPage - 1) * RECORDS_PER_PAGE;
 
                                     if ($_SESSION['USER_CSPD_INFO']['USER_TYPE'] == "HOD") {
@@ -204,8 +206,8 @@ if (count($sale_executive_all_retailer_ids) > 0) {
                                         (SELECT UP.USER_NAME FROM USER_PROFILE UP WHERE UP.ID = VA.RETAILER_ID) AS RETAILER_NAME,
                                         (SELECT TITLE FROM PRODUCT_BRAND WHERE ID=VA.PRODUCT_BRAND_ID) AS RETAILER_BRAND
                                         FROM VISIT_ASSIGN VA
-                                        WHERE VA.USER_ID  IN
-                                        (SELECT B.ID FROM USER_MANPOWER_SETUP A,USER_PROFILE B WHERE A.USER_ID=B.ID AND PARENT_USER_ID='$USER_LOGIN_ID')
+                                        WHERE VA.RETAILER_ID  IN
+                                        ($sale_executive_all_retailer_ids_str)
                                         AND TRUNC(VA.VISIT_DATE) BETWEEN TO_DATE('$v_start_date','DD/MM/YYYY') AND TO_DATE('$v_end_date','DD/MM/YYYY')";
                                     }
                                     else {
