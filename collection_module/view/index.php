@@ -90,7 +90,7 @@ $v_end_date   = date('t/m/Y');
                                         <th>Date</th>
                                         <th>Retailer Name</th>
                                         <th>Brand </th>
-                                        <th>STATUS</th>
+                                        <!-- <th>STATUS</th> -->
                                         <th>COL. AMT.</th>
                                         <th>SL. AMT.</th>
                                     </tr>
@@ -196,15 +196,9 @@ $v_end_date   = date('t/m/Y');
                                                     <?php echo $row['BRAND_NAME']; ?>
                                                 </button>
                                             </td>
-                                            <td class="text-center">
-                                                <?php if ($row['STATUS'] == '0') {
-                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-warning text-white"> Pending </button>';
-                                                } else if ($row['STATUS'] == '1') {
-                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-success"> Success </button>';
-                                                } else if ($row['STATUS'] == '2') {
-                                                    echo ' <button type="button" class="btn btn-sm btn-gradient-danger"> Failed </button>';
-                                                } ?>
-                                            </td>
+                                            <!-- <td class="text-center">
+                                                
+                                            </td> -->
                                             <td class="text-end">
                                                 <?=  number_format($row['COLLECTON_TARGET_AMOUNT'], 2) ?>
                                             </td>
@@ -216,7 +210,7 @@ $v_end_date   = date('t/m/Y');
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="6" class="text-end"><strong>TOTAL</strong></td>
+                                        <td colspan="5" class="text-end"><strong>TOTAL</strong></td>
                                         <td class="text-end">
                                             <span style="text-decoration-line: underline;text-decoration-style: double"><?= number_format($COLLECTON_TARGET_AMOUNT, 2) ?></span>
                                         </td>
