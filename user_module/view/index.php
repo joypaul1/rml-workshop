@@ -20,7 +20,6 @@ $currentUserTypeID = $_SESSION['USER_CSPD_INFO']['USER_TYPE_ID'];
                     </button>
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
-
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
